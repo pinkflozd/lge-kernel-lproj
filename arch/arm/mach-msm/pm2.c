@@ -1589,6 +1589,19 @@ void msm_pm_cpu_enter_lowpower(unsigned int cpu)
 	}
 }
 
+#if defined(CONFIG_MACH_LGE)
+void lge_set_reboot_reason(unsigned int reason)
+{
+        restart_reason = reason;
+
+        return;
+}
+#endif
+
+/******************************************************************************
+ *
+ *****************************************************************************/
+
 /*
  * Initialize the power management subsystem.
  *

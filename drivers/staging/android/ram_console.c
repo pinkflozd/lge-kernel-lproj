@@ -27,6 +27,104 @@
 static struct persistent_ram_zone *ram_console_zone;
 static const char *bootinfo;
 static size_t bootinfo_size;
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION
+#include <linux/rslib.h>
+#endif
+
+struct ram_console_buffer {
+	uint32_t    sig;
+	uint32_t    start;
+	uint32_t    size;
+	uint8_t     data[0];
+};
+
+#define RAM_CONSOLE_SIG (0x43474244) /* DBGC */
+
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_EARLY_INIT
+static char __initdata
+	ram_console_old_log_init_buffer[CONFIG_ANDROID_RAM_CONSOLE_EARLY_SIZE];
+#endif
+static char *ram_console_old_log;
+static size_t ram_console_old_log_size;
+
+static struct ram_console_buffer *ram_console_buffer;
+static size_t ram_console_buffer_size;
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION
+static char *ram_console_par_buffer;
+static struct rs_control *ram_console_rs_decoder;
+static int ram_console_corrected_bytes;
+static int ram_console_bad_blocks;
+#define ECC_BLOCK_SIZE CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION_DATA_SIZE
+#define ECC_SIZE CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION_ECC_SIZE
+#define ECC_SYMSIZE CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION_SYMBOL_SIZE
+#define ECC_POLY CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION_POLYNOMIAL
+#endif
+
+#if defined(CONFIG_LGE_SUPPORT_ERS) || defined(CONFIG_LGE_HANDLE_PANIC)
+/* LGE_CHANGES_S [j.y.han@lge.com] 20090904, helper function */
+inline struct ram_console_buffer *get_ram_console_buffer(void)
+{
+	return ram_console_buffer;
+}
+#endif
+
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION
+static void ram_console_encode_rs8(uint8_t *data, size_t len, uint8_t *ecc)
+{
+	int i;
+	uint16_t par[ECC_SIZE];
+	/* Initialize the parity buffer */
+	memset(par, 0, sizeof(par));
+	encode_rs8(ram_console_rs_decoder, data, len, par, 0);
+	for (i = 0; i < ECC_SIZE; i++)
+		ecc[i] = par[i];
+}
+
+static int ram_console_decode_rs8(void *data, size_t len, uint8_t *ecc)
+{
+	int i;
+	uint16_t par[ECC_SIZE];
+	for (i = 0; i < ECC_SIZE; i++)
+		par[i] = ecc[i];
+	return decode_rs8(ram_console_rs_decoder, data, par, len,
+				NULL, 0, NULL, 0, NULL);
+}
+#endif
+
+static void ram_console_update(const char *s, unsigned int count)
+{
+	struct ram_console_buffer *buffer = ram_console_buffer;
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION
+	uint8_t *buffer_end = buffer->data + ram_console_buffer_size;
+	uint8_t *block;
+	uint8_t *par;
+	int size = ECC_BLOCK_SIZE;
+#endif
+	memcpy(buffer->data + buffer->start, s, count);
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION
+	block = buffer->data + (buffer->start & ~(ECC_BLOCK_SIZE - 1));
+	par = ram_console_par_buffer +
+	      (buffer->start / ECC_BLOCK_SIZE) * ECC_SIZE;
+	do {
+		if (block + ECC_BLOCK_SIZE > buffer_end)
+			size = buffer_end - block;
+		ram_console_encode_rs8(block, size, par);
+		block += ECC_BLOCK_SIZE;
+		par += ECC_SIZE;
+	} while (block < buffer->data + buffer->start + count);
+#endif
+}
+
+static void ram_console_update_header(void)
+{
+#ifdef CONFIG_ANDROID_RAM_CONSOLE_ERROR_CORRECTION
+	struct ram_console_buffer *buffer = ram_console_buffer;
+	uint8_t *par;
+	par = ram_console_par_buffer +
+	      DIV_ROUND_UP(ram_console_buffer_size, ECC_BLOCK_SIZE) * ECC_SIZE;
+	ram_console_encode_rs8((uint8_t *)buffer, sizeof(*buffer), par);
+#endif
+}
 
 static void
 ram_console_write(struct console *console, const char *s, unsigned int count)

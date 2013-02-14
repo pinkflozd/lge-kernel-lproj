@@ -127,7 +127,9 @@
 #elif defined(CONFIG_ARCH_FSM9XXX)
 #include "msm_iomap-fsm9xxx.h"
 #else
+
 #error "Target compiled without IO map\n"
+
 #endif
 
 #endif

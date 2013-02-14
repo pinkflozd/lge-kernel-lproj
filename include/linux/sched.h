@@ -483,12 +483,16 @@ struct task_cputime {
 #define virt_exp	utime
 #define sched_exp	sum_exec_runtime
 
+#ifdef __SPLINT__
+#define INIT_CPUTIME  NULL
+#else
 #define INIT_CPUTIME	\
 	(struct task_cputime) {					\
 		.utime = 0,					\
 		.stime = 0,					\
 		.sum_exec_runtime = 0,				\
 	}
+#endif
 
 /*
  * Disable preemption until the scheduler is running.
