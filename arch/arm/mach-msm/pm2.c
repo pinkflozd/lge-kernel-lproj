@@ -39,6 +39,10 @@
 #include <asm/vfp.h>
 #endif
 
+#ifdef CONFIG_MACH_LGE
+#include <mach/board_lge.h>
+#endif
+
 #ifdef CONFIG_MSM_MEMORY_LOW_POWER_MODE_SUSPEND_DEEP_POWER_DOWN
 #include <mach/msm_migrate_pages.h>
 #endif
@@ -882,7 +886,8 @@ static int msm_pm_power_collapse
 		WARN_ON(ret);
 	}
 
-	if (msm_cpr_ops)
+	/* Call CPR suspend only for "idlePC" case */
+	if (msm_cpr_ops && from_idle)
 		msm_cpr_ops->cpr_suspend();
 
 	msm_pm_irq_extns->enter_sleep1(true, from_idle,
@@ -1122,7 +1127,8 @@ static int msm_pm_power_collapse
 		WARN_ON(ret);
 	}
 
-	if (msm_cpr_ops)
+	/* Call CPR resume only for "idlePC" case */
+	if (msm_cpr_ops && from_idle)
 		msm_cpr_ops->cpr_resume();
 
 	return 0;
@@ -1177,7 +1183,8 @@ power_collapse_restore_gpio_bail:
 	if (collapsed)
 		smd_sleep_exit();
 
-	if (msm_cpr_ops)
+	/* Call CPR resume only for "idlePC" case */
+	if (msm_cpr_ops && from_idle)
 		msm_cpr_ops->cpr_resume();
 
 power_collapse_bail:
@@ -1292,7 +1299,7 @@ static int msm_pm_swfi(bool ramp_acpu)
 
 static int64_t msm_pm_timer_enter_suspend(int64_t *period)
 {
-	int time = 0;
+	int64_t time = 0;
 
 	time = msm_timer_get_sclk_time(period);
 	if (!time)
@@ -1569,12 +1576,141 @@ void msm_pm_cpu_enter_lowpower(unsigned int cpu)
 	bool allow[MSM_PM_SLEEP_MODE_NR];
 	int i;
 
+/******************************************************************************
+ * Restart Definitions
+ *****************************************************************************/
+
+static uint32_t restart_reason = 0x776655AA;
+
+#ifdef CONFIG_MACH_LGE
+/* LGE_CHANGE
+ * flush console before reboot
+ * from google's mahimahi kernel
+ * 2010-05-04, cleaneye.kim@lge.com
+ */
+
+static bool console_flushed;
+
+void msm_pm_flush_console(void)
+{
+	if (console_flushed)
+		return;
+
+	console_flushed = true;
+
+	printk("\n");
+	printk(KERN_EMERG "Restarting %s\n", linux_banner);
+
+	mdelay(50);
+
+	local_irq_disable();
+}
+#endif
+
+static void msm_pm_power_off(void)
+{
+
+#ifdef CONFIG_MACH_LGE
+	/* To prevent Phone freezing during power off
+	 * blue.park@lge.com 2010-04-14 <To prevent Phone freezing during power off>
+	 */
+	smsm_change_state_nonotify(SMSM_APPS_STATE,
+						  0, SMSM_SYSTEM_POWER_DOWN);
+#endif
+
+/* FIXME: Block the rpcrouter close when system restart
+ *	  Sometimes, RPC CALL is called atfer RPC is closed
+ *        taehung.kim@lge.com
+ */
+#if 0
+	msm_rpcrouter_close();
+#endif
+	msm_proc_comm(PCOM_POWER_DOWN, 0, 0);
+	for (;;)
+		;
+}
+
+static void msm_pm_restart(char str, const char *cmd)
+{
+#ifdef CONFIG_MACH_LGE
+	/* LGE_CHANGE
+	 * flush console before reboot
+	 * from google's mahimahi kernel
+	 * 2010-05-04, cleaneye.kim@lge.com
+	 */
+    unsigned long irqflags;
+	static DEFINE_SPINLOCK(state_lock);
+	msm_pm_flush_console();
+	if (restart_reason == 0x776655BB) {
+		void *copy_addr;
+		unsigned int *rc_buffer;
+
+		copy_addr = lge_get_fb_copy_virt_addr();
+		*((unsigned *)copy_addr) = restart_reason;
+
+		rc_buffer = (unsigned int *)get_ram_console_buffer();
+		*rc_buffer = 0x0;
+
+		spin_lock_irqsave(&state_lock, irqflags);
+		/*
+		 * 2011-03-27, jinkyu.choi@lge.com
+		 * instead of the arm9 crash, use the PCOM_RESET_CHIP_IMM for fast reboot.
+		 */
+		msm_proc_comm(PCOM_RESET_CHIP_IMM, &restart_reason, 0);
+
+		while (1)
+			;
+	}
+#endif
+
+/* FIXME: Block the rpcrouter close when system restart
+ *	  Sometimes, RPC CALL is called atfer RPC is closed
+ *        taehung.kim@lge.com
+ */
+#if 0
+	msm_rpcrouter_close();
+#endif
+	/*
+	 * 2011-04-20, jinkyu.choi@lge.com,
+	 * use the PCOM_RESET_CHIP_IMM,
+	 * because the reboot reason is overwritten by another rpoc_com such as ebi1_clk_min
+	 */
+#ifdef CONFIG_MACH_LGE
+	msm_proc_comm(PCOM_RESET_CHIP_IMM, &restart_reason, 0);
+#else /* QCT origin */
+	msm_proc_comm(PCOM_RESET_CHIP, &restart_reason, 0);
+#endif
+
 	for (i = 0; i < MSM_PM_SLEEP_MODE_NR; i++) {
 		struct msm_pm_platform_data *mode;
-
 		mode = &msm_pm_modes[MSM_PM_MODE(cpu, i)];
 		allow[i] = mode->suspend_supported && mode->suspend_enabled;
 	}
+
+static int msm_reboot_call
+	(struct notifier_block *this, unsigned long code, void *_cmd)
+{
+	if ((code == SYS_RESTART) && _cmd) {
+		char *cmd = _cmd;
+		if (!strcmp(cmd, "bootloader")) {
+			restart_reason = 0x77665500;
+		} else if (!strcmp(cmd, "recovery")) {
+			restart_reason = 0x77665502;
+		} else if (!strcmp(cmd, "eraseflash")) {
+			restart_reason = 0x776655EF;
+		} else if (!strncmp(cmd, "oem-", 4)) {
+			unsigned code = simple_strtoul(cmd + 4, 0, 16) & 0xff;
+			restart_reason = 0x6f656d00 | code;
+		} else if (!strncmp(cmd, "", 1)) {
+			restart_reason = 0x776655AA;
+		} else if (!strncmp(cmd, "charge_reset", 12)) {
+			restart_reason = 0x776655BB;
+
+		} else {
+			restart_reason = 0x77665501;
+		}
+	}
+}
 
 	MSM_PM_DPRINTK(MSM_PM_DEBUG_HOTPLUG, KERN_INFO,
 		"CPU%u: %s: shutting down cpu\n", cpu, __func__);
@@ -1588,7 +1724,6 @@ void msm_pm_cpu_enter_lowpower(unsigned int cpu)
 			"CPU%u: %s: shutting down failed!!!\n", cpu, __func__);
 	}
 }
-
 #if defined(CONFIG_MACH_LGE)
 void lge_set_reboot_reason(unsigned int reason)
 {

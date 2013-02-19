@@ -306,11 +306,9 @@ config WCNSS_CORE
 source "drivers/net/wireless/ath/Kconfig"
 source "drivers/net/wireless/b43/Kconfig"
 source "drivers/net/wireless/b43legacy/Kconfig"
-<<<<<<< HEAD
-=======
 source "drivers/net/wireless/bcm4325/Kconfig"
 source "drivers/net/wireless/bcm4329/Kconfig"
->>>>>>> ee04b12... bf283dd50041bcc4a8524b5d3f2adf1294f98a0a smd: add function smsm_change_state_nonotify
+source "drivers/net/wireless/bcm4330/Kconfig"
 source "drivers/net/wireless/bcmdhd/Kconfig"
 source "drivers/net/wireless/brcm80211/Kconfig"
 source "drivers/net/wireless/hostap/Kconfig"
