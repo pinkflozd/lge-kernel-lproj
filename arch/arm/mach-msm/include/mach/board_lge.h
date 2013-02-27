@@ -38,7 +38,11 @@
 #ifdef CONFIG_ARCH_MSM7X25
 #define MSM_PMEM_MDP_SIZE   0xb21000
 #define MSM_PMEM_ADSP_SIZE  0x97b000
-#define MSM_FB_SIZE     0x200000
+#ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
+#define MSM_FB_SIZE	    0x2EE000
+#else  
+#define MSM_FB_SIZE	    0x200000
+#endif
 #define PMEM_KERNEL_EBI1_SIZE   0x64000
 #endif
 
@@ -49,7 +53,11 @@
 #define MSM_FB_SIZE		0x50000
 #else
 #define MSM_PMEM_MDP_SIZE	0x1B76000
+#ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
+#define MSM_FB_SIZE		0x2EE000
+#else  
 #define MSM_FB_SIZE		0x177000
+#endif
 #endif
 #define MSM_PMEM_ADSP_SIZE     0xC00000 //12MB
 #define PMEM_KERNEL_EBI1_SIZE	0x1C000
