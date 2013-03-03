@@ -769,5 +769,9 @@ void mdp_ppp_dump_debug(const struct mdp_info *mdp);
 #ifdef CONFIG_MACH_MSM7X27_GELATO
 extern mdp_load_hitachi_lut(int);
 #endif
+#if defined(CONFIG_MACH_MSM7X27_PECAN)
+extern mdp_load_LG_lut();
+#endif
 
 #endif
+

@@ -29,6 +29,10 @@ obj-$(CONFIG_MACH_MSM7X27_PECAN) += board-pecan-input.o
 obj-$(CONFIG_MACH_MSM7X27_PECAN) += board-pecan-misc.o
 obj-$(CONFIG_MACH_MSM7X27_PECAN) += board-pecan-pm.o
 
+#obj-$(CONFIG_MACH_MSM7X27_PECAN) += lge_errorhandler.o #LGE_CHANGE [blue.park@lge.com] 2009-04-04 <For Error Handler>
+obj-$(CONFIG_MACH_MSM7X27_PECAN) += lge_temp.o # LGE_CHANGE neo.kang@lge.com just for Line PV. It will be removed
+obj-$(CONFIG_MACH_MSM7X27_PECAN) += lge_mtd_direct_access.o # LGE_CHANGE neo.kang@lge.com just for Line PV. It will be removed.
+
 obj-$(CONFIG_MACH_MSM7X27_THUNDERG) += board-thunderg.o
 obj-$(CONFIG_MACH_MSM7X27_THUNDERG) += board-thunderg-mmc.o
 obj-$(CONFIG_MACH_MSM7X27_THUNDERG) += board-thunderg-snd.o

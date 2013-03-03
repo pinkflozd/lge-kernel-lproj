@@ -51,6 +51,7 @@
 /* TODO: optimization needed, pmem_mdp is reduced for qvga by bongkyu.kim */
 #define MSM_PMEM_MDP_SIZE	0x1076000 /* 23->12MB + 4.46 MB */
 #define MSM_FB_SIZE		0x50000
+#define MSM_GPU_PHYS_SIZE  	SZ_2M
 #else
 #define MSM_PMEM_MDP_SIZE	0x1B76000
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
