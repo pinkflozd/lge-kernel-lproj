@@ -4,7 +4,7 @@
  *
  * Copyright (C) 1999-2010, Broadcom Corporation
  * 
- *      Unless you and Broadcom execute a separate written software license
+ *         Unless you and Broadcom execute a separate written software license
  * agreement governing use of this software, this software is licensed to you
  * under the terms of the GNU General Public License version 2 (the "GPL"),
  * available at http://www.broadcom.com/licenses/GPLv2.php, with the
@@ -22,7 +22,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: aiutils.c,v 1.6.4.7.4.6 2010/04/21 20:43:47 Exp $
+ * $Id: aiutils.c,v 1.6.4.7.4.1.62.2.24.1 2010/05/10 04:55:55 Exp $
  */
 
 #include <typedefs.h>
@@ -35,11 +35,6 @@
 #include <pcicfg.h>
 
 #include "siutils_priv.h"
-
-STATIC uint32
-get_asd(si_t *sih, uint32 *eromptr, uint sp, uint ad, uint st,
-	uint32 *addrl, uint32 *addrh, uint32 *sizel, uint32 *sizeh);
-
 
 /* EROM parsing */
 
@@ -76,7 +71,7 @@ get_erom_ent(si_t *sih, uint32 *eromptr, uint32 mask, uint32 match)
 	return ent;
 }
 
-STATIC uint32
+static uint32
 get_asd(si_t *sih, uint32 *eromptr, uint sp, uint ad, uint st,
 	uint32 *addrl, uint32 *addrh, uint32 *sizel, uint32 *sizeh)
 {
@@ -341,6 +336,15 @@ ai_setcoreidx(si_t *sih, uint coreidx)
 		sii->curwrap = sii->common_info->wrappers[coreidx];
 		break;
 
+#if !defined(BCMDONGLEHOST)
+	case PCI_BUS:
+		/* point bar0 window */
+		OSL_PCI_WRITE_CONFIG(sii->osh, PCI_BAR0_WIN, 4, addr);
+		regs = sii->curmap;
+		/* point bar0 2nd 4KB window */
+		OSL_PCI_WRITE_CONFIG(sii->osh, PCI_BAR0_WIN2, 4, wrap);
+		break;
+#endif /* !defined(BCMDONGLEHOST) */
 
 	case SPI_BUS:
 	case SDIO_BUS:
@@ -495,9 +499,6 @@ ai_corereg(si_t *sih, uint coreidx, uint regoff, uint mask, uint val)
 	ASSERT(GOODIDX(coreidx));
 	ASSERT(regoff < SI_CORE_SIZE);
 	ASSERT((val & ~mask) == 0);
-
-	if (coreidx >= SI_MAXCORES)
-		return 0;
 
 	if (BUSTYPE(sih->bustype) == SI_BUS) {
 		/* If internal bus, we can always get at everything */

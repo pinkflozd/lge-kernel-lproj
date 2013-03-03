@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999-2010, Broadcom Corporation
  * 
- *      Unless you and Broadcom execute a separate written software license
+ *         Unless you and Broadcom execute a separate written software license
  * agreement governing use of this software, this software is licensed to you
  * under the terms of the GNU General Public License version 2 (the "GPL"),
  * available at http://www.broadcom.com/licenses/GPLv2.php, with the
@@ -20,7 +20,7 @@
  *      Notwithstanding the above, under no circumstances may you combine this
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
- * $Id: bcmutils.c,v 1.210.4.5.2.4.6.19 2010/04/26 06:05:25 Exp $
+ * $Id: bcmutils.c,v 1.210.4.5.2.4.6.9.2.21.2.6 2010/09/21 19:31:21 Exp $
  */
 
 #include <typedefs.h>
@@ -30,14 +30,12 @@
 #ifdef BCMDRIVER
 #include <osl.h>
 #include <siutils.h>
+#if !defined(BCMDONGLEHOST)
+#include <bcmnvram.h>
+#endif /* !defined(BCMDONGLEHOST) */
 #else
 #include <stdio.h>
 #include <string.h>
-/* This case for external supplicant use */
-#if defined(BCMEXTSUP)
-#include <bcm_osl.h>
-#endif
-
 #endif /* BCMDRIVER */
 #include <bcmendian.h>
 #include <bcmdevs.h>
@@ -50,6 +48,487 @@
 
 #ifdef BCMDRIVER
 
+#ifndef BCMDONGLEHOST
+
+int
+BCMINITOVERLAYFN(1, pktpool_init)(osl_t *osh, pktpool_t *pktp, int *pplen, int plen, bool istx)
+{
+	int i, err = BCME_OK;
+	void *p;
+	int pktplen;
+
+	ASSERT(pktp);
+	ASSERT(osh);
+	ASSERT(pplen);
+
+	pktplen = *pplen;
+
+	bzero(pktp, sizeof(pktpool_t));
+	pktp->istx = istx ? TRUE : FALSE;
+	pktp->plen = (uint16)plen;
+	*pplen = 0;
+
+	pktp->maxlen = PKTPOOL_LEN_MAX;
+	if (pktplen > pktp->maxlen)
+		pktplen = pktp->maxlen;
+
+	for (i = 0; i < pktplen; i++) {
+		p = PKTGET(osh, plen, pktp->istx);
+		if (p == NULL) {
+			/* Not able to allocate all requested pkts
+			 * so just return what was actually allocated
+			 * We can add to the pool later
+			 */
+			if (pktp->w == 0)
+				err = BCME_NOMEM;
+
+			goto exit;
+		}
+
+		PKTSETPOOL(osh, p, TRUE, pktp);
+		pktp->q[i] = p;
+		pktp->w++;
+		pktp->len++;
+#ifdef BCMDBG_POOL
+		pktp->dbg_q[pktp->dbg_qlen++].p = p;
+#endif
+	}
+
+exit:
+	*pplen = pktp->w;
+	pktp->len++; /* Add one for end */
+	return err;
+}
+
+int
+BCMINITOVERLAYFN(1, pktpool_deinit)(osl_t *osh, pktpool_t *pktp)
+{
+	int i;
+	int cnt;
+
+	ASSERT(osh);
+	ASSERT(pktp);
+
+	cnt = pktp->len;
+	for (i = 0; i < cnt; i++) {
+		if (pktp->q[i] != NULL) {
+			PKTSETPOOL(osh, pktp->q[i], FALSE, NULL);
+			PKTFREE(osh, pktp->q[i], pktp->istx);
+			pktp->q[i] = NULL;
+			pktp->len--;
+		}
+#ifdef BCMDBG_POOL
+		if (pktp->dbg_q[i].p != NULL)
+			pktp->dbg_q[i].p = NULL;
+#endif
+	}
+
+	/* Are there still pending pkts? */
+	ASSERT(pktpool_len(pktp) == 0);
+
+	return 0;
+}
+
+uint16
+pktpool_avail(pktpool_t *pktp)
+{
+	ASSERT(pktp);
+	if (pktp->w == pktp->r)
+		return 0;
+
+	return (pktp->w > pktp->r) ? (pktp->w - pktp->r) : ((pktp->len) - (pktp->r - pktp->w));
+}
+
+static void *
+pktpool_deq(pktpool_t *pktp)
+{
+	void *p;
+
+	ASSERT(pktp);
+	if (pktp->r == pktp->w)
+		return NULL;
+
+	p = pktp->q[pktp->r];
+	ASSERT(p);
+
+	pktp->q[pktp->r++] = NULL;
+	pktp->r %= (pktp->len);
+
+	return p;
+}
+
+static void
+pktpool_enq(pktpool_t *pktp, void *p)
+{
+	uint16 next;
+
+	ASSERT(p);
+	ASSERT(pktp);
+
+	next = (pktp->w + 1) % (pktp->len);
+	if (next == pktp->r) {
+		/* Should not happen; otherwise pkt leak */
+		ASSERT(0);
+		return;
+	}
+
+	ASSERT(pktp->q[pktp->w] == NULL);
+
+	pktp->q[pktp->w] = p;
+	pktp->w = next;
+}
+
+int
+BCMINITOVERLAYFN(1, pktpool_avail_register)(osl_t *osh, pktpool_t *pktp, pktpool_cb_t cb, void *arg)
+{
+	int i;
+
+	ASSERT(pktp);
+	ASSERT(cb);
+
+	i = pktp->cbcnt;
+	if (i == PKTPOOL_CB_MAX)
+		return BCME_ERROR;
+
+	ASSERT(pktp->cbs[i].cb == NULL);
+	pktp->cbs[i].cb = cb;
+	pktp->cbs[i].arg = arg;
+	pktp->cbcnt++;
+
+	return 0;
+}
+
+int
+BCMINITOVERLAYFN(1, pktpool_empty_register)(osl_t *osh, pktpool_t *pktp, pktpool_cb_t cb, void *arg)
+{
+	int i;
+
+	ASSERT(pktp);
+	ASSERT(cb);
+
+	i = pktp->ecbcnt;
+	if (i == PKTPOOL_CB_MAX)
+		return BCME_ERROR;
+
+	ASSERT(pktp->ecbs[i].cb == NULL);
+	pktp->ecbs[i].cb = cb;
+	pktp->ecbs[i].arg = arg;
+	pktp->ecbcnt++;
+
+	return 0;
+}
+
+static int
+pktpool_empty_notify(pktpool_t *pktp)
+{
+	int i;
+
+	ASSERT(pktp);
+	pktp->empty = TRUE;
+	for (i = 0; i < pktp->ecbcnt; i++) {
+		ASSERT(pktp->ecbs[i].cb);
+		pktp->ecbs[i].cb(pktp, pktp->ecbs[i].arg);
+	}
+	pktp->empty = FALSE;
+
+	return 0;
+}
+
+#ifdef BCMDBG_POOL
+int
+pktpool_dbg_register(osl_t *osh, pktpool_t *pktp, pktpool_cb_t cb, void *arg)
+{
+	int i;
+
+	ASSERT(pktp);
+	ASSERT(cb);
+
+	i = pktp->dbg_cbcnt;
+	if (i == PKTPOOL_CB_MAX)
+		return BCME_ERROR;
+
+	ASSERT(pktp->dbg_cbs[i].cb == NULL);
+	pktp->dbg_cbs[i].cb = cb;
+	pktp->dbg_cbs[i].arg = arg;
+	pktp->dbg_cbcnt++;
+
+	return 0;
+}
+
+int pktpool_dbg_notify(pktpool_t *pktp);
+int
+pktpool_dbg_notify(pktpool_t *pktp)
+{
+	int i;
+
+	ASSERT(pktp);
+	for (i = 0; i < pktp->dbg_cbcnt; i++) {
+		ASSERT(pktp->dbg_cbs[i].cb);
+		pktp->dbg_cbs[i].cb(pktp, pktp->dbg_cbs[i].arg);
+	}
+
+	return 0;
+}
+
+int
+pktpool_dbg_dump(pktpool_t *pktp)
+{
+	int i;
+
+	printf("pool len=%d maxlen=%d\n",  pktp->dbg_qlen, pktp->maxlen);
+	for (i = 0; i < pktp->dbg_qlen; i++) {
+		ASSERT(pktp->dbg_q[i].p);
+		printf("%d, p: 0x%x dur:%lu us state:%d\n", i,
+			pktp->dbg_q[i].p, pktp->dbg_q[i].dur/100, PKTPOOLSTATE(pktp->dbg_q[i].p));
+	}
+
+	return 0;
+}
+
+int
+pktpool_stats_dump(pktpool_t *pktp, pktpool_stats_t *stats)
+{
+	int i;
+	int state;
+
+	ASSERT(pktp);
+	ASSERT(stats);
+
+	bzero(stats, sizeof(pktpool_stats_t));
+	for (i = 0; i < pktp->dbg_qlen; i++) {
+		ASSERT(pktp->dbg_q[i].p);
+
+		state = PKTPOOLSTATE(pktp->dbg_q[i].p);
+		switch (state) {
+			case POOL_TXENQ:
+				stats->enq++; break;
+			case POOL_TXDH:
+				stats->txdh++; break;
+			case POOL_TXD11:
+				stats->txd11++; break;
+			case POOL_RXDH:
+				stats->rxdh++; break;
+			case POOL_RXD11:
+				stats->rxd11++; break;
+			case POOL_RXQ:
+				stats->rxq++; break;
+			case POOL_IDLE:
+				stats->idle++; break;
+		}
+	}
+
+	return 0;
+}
+
+int
+pktpool_start_trigger(pktpool_t *pktp, void *p)
+{
+	uint32 cycles, i;
+
+	if (!PKTPOOL(NULL, p))
+		return 0;
+
+	OSL_GETCYCLES(cycles);
+
+	for (i = 0; i < pktp->dbg_qlen; i++) {
+		ASSERT(pktp->dbg_q[i].p);
+
+		if (pktp->dbg_q[i].p == p) {
+			pktp->dbg_q[i].cycles = cycles;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+/* 
+ * Assume 100Mhz for 4329 (100 cycles per 1us)
+ */
+int pktpool_stop_trigger(pktpool_t *pktp, void *p);
+int
+pktpool_stop_trigger(pktpool_t *pktp, void *p)
+{
+	uint32 cycles, i;
+
+	if (!PKTPOOL(NULL, p))
+		return 0;
+
+	OSL_GETCYCLES(cycles);
+
+	for (i = 0; i < pktp->dbg_qlen; i++) {
+		ASSERT(pktp->dbg_q[i].p);
+
+		if (pktp->dbg_q[i].p == p) {
+			if (pktp->dbg_q[i].cycles == 0)
+				break;
+
+			if (cycles >= pktp->dbg_q[i].cycles)
+				pktp->dbg_q[i].dur = cycles - pktp->dbg_q[i].cycles;
+			else
+				pktp->dbg_q[i].dur =
+					(((uint32)-1) - pktp->dbg_q[i].cycles) + cycles + 1;
+
+			pktp->dbg_q[i].cycles = 0;
+			break;
+		}
+	}
+
+	return 0;
+}
+#endif /* BCMDBG_POOL */
+
+int
+pktpool_avail_notify_normal(osl_t *osh, pktpool_t *pktp)
+{
+	ASSERT(pktp);
+	pktp->availcb_excl = NULL;
+	return 0;
+}
+
+int
+pktpool_avail_notify_exclusive(osl_t *osh, pktpool_t *pktp, pktpool_cb_t cb)
+{
+	int i;
+
+	ASSERT(pktp);
+	ASSERT(pktp->availcb_excl == NULL);
+	for (i = 0; i < pktp->cbcnt; i++) {
+		if (cb == pktp->cbs[i].cb) {
+			pktp->availcb_excl = &pktp->cbs[i];
+			break;
+		}
+	}
+
+	return 0;
+}
+
+static int
+pktpool_avail_notify(pktpool_t *pktp)
+{
+	int i, k, idx;
+	int avail;
+
+	ASSERT(pktp);
+	if (pktp->availcb_excl != NULL) {
+		pktp->availcb_excl->cb(pktp, pktp->availcb_excl->arg);
+		return 0;
+	}
+
+	k = pktp->cbcnt - 1;
+	for (i = 0; i < pktp->cbcnt; i++) {
+		avail = pktpool_avail(pktp);
+
+		if (avail) {
+			if (pktp->cbtoggle)
+				idx = i;
+			else
+				idx = k--;
+
+			ASSERT(pktp->cbs[idx].cb);
+			pktp->cbs[idx].cb(pktp, pktp->cbs[idx].arg);
+		}
+	}
+
+	/* Alternate between filling from head or tail
+	 */
+	pktp->cbtoggle ^= 1;
+
+	return 0;
+}
+
+void *
+pktpool_get(pktpool_t *pktp)
+{
+	void *p;
+
+	p = pktpool_deq(pktp);
+
+	if (p == NULL) {
+		/* Notify and try to reclaim tx pkts */
+		if (pktp->ecbcnt)
+			pktpool_empty_notify(pktp);
+
+		p = pktpool_deq(pktp);
+	}
+
+	return p;
+}
+
+void
+pktpool_free(pktpool_t *pktp, void *p)
+{
+	ASSERT(pktp);
+	ASSERT(p);
+
+#ifdef BCMDBG_POOL
+	/* pktpool_stop_trigger(pktp, p); */
+#endif
+
+	pktpool_enq(pktp, p);
+
+	if (pktp->emptycb_disable) {
+		return;
+	}
+
+	if (pktp->cbcnt) {
+		if (pktp->empty == FALSE)
+			pktpool_avail_notify(pktp);
+	}
+}
+
+int
+pktpool_add(pktpool_t *pktp, void *p)
+{
+	ASSERT(pktp);
+	ASSERT(p);
+
+	if (pktpool_len(pktp) == pktp->maxlen)
+		return BCME_RANGE;
+
+	ASSERT(pktp->plen == PKTLEN(NULL, p)); /* pkts in pool have same length */
+	PKTSETPOOL(NULL, p, TRUE, pktp);
+
+	pktp->len++;
+	if (pktp->r > pktp->w) {
+		/* Add to tail */
+		ASSERT(pktp->q[pktp->len - 1] == NULL);
+		pktp->q[pktp->len - 1] = p;
+	} else
+		pktpool_enq(pktp, p);
+
+#ifdef BCMDBG_POOL
+	pktp->dbg_q[pktp->dbg_qlen++].p = p;
+#endif
+
+	return 0;
+}
+
+int
+pktpool_setmaxlen(pktpool_t *pktp, uint16 maxlen)
+{
+	ASSERT(pktp);
+
+	if (maxlen > PKTPOOL_LEN_MAX)
+		maxlen = PKTPOOL_LEN_MAX;
+
+	/* if pool is already beyond maxlen, then just cap it
+	 * since we currently do not reduce the pool len
+	 * already allocated
+	 */
+	pktp->maxlen = (pktpool_len(pktp) > maxlen) ? pktpool_len(pktp) : maxlen;
+
+	return pktp->maxlen;
+}
+
+void
+pktpool_emptycb_disable(pktpool_t *pktp, bool disable)
+{
+	ASSERT(pktp);
+
+	pktp->emptycb_disable = disable;
+}
+#endif /* BCMDONGLEHOST */
 
 /* copy a pkt buffer chain into a buffer */
 uint
@@ -879,6 +1358,110 @@ bcm_mdelay(uint ms)
 	}
 }
 
+#if !defined(BCMDONGLEHOST)
+/*
+ * Search the name=value vars for a specific one and return its value.
+ * Returns NULL if not found.
+ */
+char *
+BCMINITOVERLAYFN(1, getvar)(char *vars, const char *name)
+{
+	char *s;
+	int len;
+
+	if (!name)
+		return NULL;
+
+	len = strlen(name);
+	if (len == 0)
+		return NULL;
+
+	/* first look in vars[] */
+	for (s = vars; s && *s;) {
+		/* CSTYLED */
+		if ((bcmp(s, name, len) == 0) && (s[len] == '='))
+			return (&s[len+1]);
+
+		while (*s++)
+			;
+	}
+
+	/* then query nvram */
+	return (nvram_get(name));
+}
+
+/*
+ * Search the vars for a specific one and return its value as
+ * an integer. Returns 0 if not found.
+ */
+int
+BCMINITOVERLAYFN(1, getintvar)(char *vars, const char *name)
+{
+	char *val;
+
+	if ((val = getvar(vars, name)) == NULL)
+		return (0);
+
+	return (bcm_strtoul(val, NULL, 0));
+}
+
+
+/* Search for token in comma separated token-string */
+static int
+findmatch(char *string, char *name)
+{
+	uint len;
+	char *c;
+
+	len = strlen(name);
+	/* CSTYLED */
+	while ((c = strchr(string, ',')) != NULL) {
+		if (len == (uint)(c - string) && !strncmp(string, name, len))
+			return 1;
+		string = c + 1;
+	}
+
+	return (!strcmp(string, name));
+}
+
+/* Return gpio pin number assigned to the named pin
+ *
+ * Variable should be in format:
+ *
+ *	gpio<N>=pin_name,pin_name
+ *
+ * This format allows multiple features to share the gpio with mutual
+ * understanding.
+ *
+ * 'def_pin' is returned if a specific gpio is not defined for the requested functionality
+ * and if def_pin is not used by others.
+ */
+uint
+getgpiopin(char *vars, char *pin_name, uint def_pin)
+{
+	char name[] = "gpioXXXX";
+	char *val;
+	uint pin;
+
+	/* Go thru all possibilities till a match in pin name */
+	for (pin = 0; pin < GPIO_NUMPINS; pin ++) {
+		snprintf(name, sizeof(name), "gpio%d", pin);
+		val = getvar(vars, name);
+		if (val && findmatch(val, pin_name))
+			return pin;
+	}
+
+	if (def_pin != GPIO_PIN_NOTDEFINED) {
+		/* make sure the default pin is not used by someone else */
+		snprintf(name, sizeof(name), "gpio%d", def_pin);
+		if (getvar(vars, name)) {
+			def_pin =  GPIO_PIN_NOTDEFINED;
+		}
+	}
+
+	return def_pin;
+}
+#endif /* !defined(BCMDONGLEHOST) */
 
 
 
@@ -1505,6 +2088,8 @@ bcm_format_hex(char *str, const void *bytes, int len)
 	}
 	return (int)(p - str);
 }
+#endif 
+
 
 /* pretty hex print a contiguous buffer */
 void
@@ -1532,7 +2117,27 @@ prhex(const char *msg, uchar *buf, uint nbytes)
 	if (p != line)
 		printf("%s\n", line);
 }
-#endif 
+
+static const char *crypto_algo_names[] = {
+	"NONE",
+	"WEP1",
+	"TKIP",
+	"WEP128",
+	"AES_CCM",
+	"AES_OCB_MSDU",
+	"AES_OCB_MPDU",
+	"NALG"
+	"UNDEF",
+	"UNDEF",
+	"UNDEF",
+	"UNDEF"
+};
+
+const char *
+bcm_crypto_algo_name(uint algo)
+{
+	return (algo < ARRAYSIZE(crypto_algo_names)) ? crypto_algo_names[algo] : "ERR";
+}
 
 
 /* Produce a human-readable string for boardrev */
@@ -1806,8 +2411,6 @@ bcm_print_bytes(char *name, const uchar *data, int len)
  * 32 SSID chars, max of 4 chars for each SSID char "\xFF", plus NULL.
  */
 
-#if defined(WLTINYDUMP) || defined(WLMSG_INFORM) || defined(WLMSG_ASSOC) || \
-	defined(WLMSG_PRPKT) || defined(WLMSG_WSEC)
 int
 bcm_format_ssid(char* buf, const uchar ssid[], uint ssid_len)
 {
@@ -1833,6 +2436,5 @@ bcm_format_ssid(char* buf, const uchar ssid[], uint ssid_len)
 
 	return (int)(p - buf);
 }
-#endif 
 
 #endif /* BCMDRIVER */

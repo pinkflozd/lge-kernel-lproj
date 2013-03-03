@@ -5,7 +5,7 @@
  *
  * Copyright (C) 1999-2010, Broadcom Corporation
  * 
- *      Unless you and Broadcom execute a separate written software license
+ *         Unless you and Broadcom execute a separate written software license
  * agreement governing use of this software, this software is licensed to you
  * under the terms of the GNU General Public License version 2 (the "GPL"),
  * available at http://www.broadcom.com/licenses/GPLv2.php, with the
@@ -22,7 +22,7 @@
  *      Notwithstanding the above, under no circumstances may you combine this
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
- * $Id: bcmwifi.c,v 1.18.24.2.4.1 2009/09/25 00:32:01 Exp $
+ * $Id: bcmwifi.c,v 1.18.24.2.106.1.24.1 2010/05/06 05:40:33 Exp $
  */
 
 
@@ -143,6 +143,7 @@ done:
 }
 
 
+
 int
 wf_mhz2channel(uint freq, uint start_factor)
 {
@@ -188,9 +189,9 @@ wf_channel2mhz(uint ch, uint start_factor)
 	int freq;
 
 	if ((start_factor == WF_CHAN_FACTOR_2_4_G && (ch < 1 || ch > 14)) ||
-	    (ch <= 200))
+	    (ch > 200))
 		freq = -1;
-	if ((start_factor == WF_CHAN_FACTOR_2_4_G) && (ch == 14))
+	else if ((start_factor == WF_CHAN_FACTOR_2_4_G) && (ch == 14))
 		freq = 2484;
 	else
 		freq = ch * 5 + start_factor / 2;

@@ -4,7 +4,7 @@
  *
  * Copyright (C) 1999-2010, Broadcom Corporation
  * 
- *      Unless you and Broadcom execute a separate written software license
+ *         Unless you and Broadcom execute a separate written software license
  * agreement governing use of this software, this software is licensed to you
  * under the terms of the GNU General Public License version 2 (the "GPL"),
  * available at http://www.broadcom.com/licenses/GPLv2.php, with the
@@ -22,7 +22,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: sbutils.c,v 1.662.4.10.2.7.4.2 2010/04/19 05:48:48 Exp $
+ * $Id: sbutils.c,v 1.662.4.10.2.7.106.2 2010/03/29 03:21:13 Exp $
  */
 
 #include <typedefs.h>
@@ -33,6 +33,9 @@
 #include <bcmdevs.h>
 #include <hndsoc.h>
 #include <sbchipc.h>
+#if !defined(BCMDONGLEHOST)
+#include <pci_core.h>
+#endif /* !defined(BCMDONGLEHOST) */
 #include <pcicfg.h>
 #include <sbpcmcia.h>
 
@@ -44,6 +47,9 @@ static uint _sb_scan(si_info_t *sii, uint32 sba, void *regs, uint bus, uint32 sb
                      uint ncores);
 static uint32 _sb_coresba(si_info_t *sii);
 static void *_sb_setcoreidx(si_info_t *sii, uint coreidx);
+STATIC uint _sb_coreidx(si_info_t *sii, uint32 sba);
+STATIC uint32 _sb_coresba(si_info_t *sii);
+STATIC uint _sb_scan(si_info_t *sii, uint32 sba, void *regs, uint bus, uint32 sbba, uint numcores);
 
 #define	SET_SBREG(sii, r, mask, val)	\
 		W_SBREG((sii), (r), ((R_SBREG((sii), (r)) & ~(mask)) | (val)))
@@ -174,8 +180,8 @@ sb_setint(si_t *sih, int siflag)
 }
 
 /* return core index of the core with address 'sba' */
-static uint
-_sb_coreidx(si_info_t *sii, uint32 sba)
+STATIC uint
+BCMATTACHOVERLAYFN(1, _sb_coreidx)(si_info_t *sii, uint32 sba)
 {
 	uint i;
 
@@ -186,8 +192,8 @@ _sb_coreidx(si_info_t *sii, uint32 sba)
 }
 
 /* return core address of the current core */
-static uint32
-_sb_coresba(si_info_t *sii)
+STATIC uint32
+BCMATTACHOVERLAYFN(1, _sb_coresba)(si_info_t *sii)
 {
 	uint32 sbaddr;
 
@@ -363,9 +369,6 @@ sb_corereg(si_t *sih, uint coreidx, uint regoff, uint mask, uint val)
 	ASSERT(regoff < SI_CORE_SIZE);
 	ASSERT((val & ~mask) == 0);
 
-	if (coreidx >= SI_MAXCORES)
-		return 0;
-
 	if (BUSTYPE(sii->pub.bustype) == SI_BUS) {
 		/* If internal bus, we can always get at everything */
 		fast = TRUE;
@@ -453,8 +456,9 @@ sb_corereg(si_t *sih, uint coreidx, uint regoff, uint mask, uint val)
  * starting from bus 'sbba', inclusive.
  */
 #define SB_MAXBUSES	2
-static uint
-_sb_scan(si_info_t *sii, uint32 sba, void *regs, uint bus, uint32 sbba, uint numcores)
+STATIC uint
+BCMATTACHOVERLAYFN(1, _sb_scan)(si_info_t *sii, uint32 sba, void *regs, uint bus,
+	uint32 sbba, uint numcores)
 {
 	uint next;
 	uint ncc = 0;
@@ -545,7 +549,7 @@ _sb_scan(si_info_t *sii, uint32 sba, void *regs, uint bus, uint32 sbba, uint num
 
 /* scan the sb enumerated space to identify all cores */
 void
-sb_scan(si_t *sih, void *regs, uint devid)
+BCMATTACHOVERLAYFN(1, sb_scan)(si_t *sih, void *regs, uint devid)
 {
 	si_info_t *sii;
 	uint32 origsba;
@@ -594,17 +598,18 @@ sb_setcoreidx(si_t *sih, uint coreidx)
 static void *
 _sb_setcoreidx(si_info_t *sii, uint coreidx)
 {
-	uint32 sbaddr = sii->common_info->coresba[coreidx];
+	si_common_info_t *ci = sii->common_info;
+	uint32 sbaddr = ci->coresba[coreidx];
 	void *regs;
 
 	switch (BUSTYPE(sii->pub.bustype)) {
 	case SI_BUS:
 		/* map new one */
-		if (!sii->common_info->regs[coreidx]) {
-			sii->common_info->regs[coreidx] = REG_MAP(sbaddr, SI_CORE_SIZE);
-			ASSERT(GOODREGS(sii->common_info->regs[coreidx]));
+		if (!ci->regs[coreidx]) {
+			ci->regs[coreidx] = REG_MAP(sbaddr, SI_CORE_SIZE);
+			ASSERT(GOODREGS(ci->regs[coreidx]));
 		}
-		regs = sii->common_info->regs[coreidx];
+		regs = ci->regs[coreidx];
 		break;
 
 	case PCI_BUS:
@@ -626,11 +631,11 @@ _sb_setcoreidx(si_info_t *sii, uint coreidx)
 	case SPI_BUS:
 	case SDIO_BUS:
 		/* map new one */
-		if (!sii->common_info->regs[coreidx]) {
-			sii->common_info->regs[coreidx] = (void *)(uintptr)sbaddr;
-			ASSERT(GOODREGS(sii->common_info->regs[coreidx]));
+		if (!ci->regs[coreidx]) {
+			ci->regs[coreidx] = (void *)(uintptr)sbaddr;
+			ASSERT(GOODREGS(ci->regs[coreidx]));
 		}
-		regs = sii->common_info->regs[coreidx];
+		regs = ci->regs[coreidx];
 		break;
 
 
@@ -736,6 +741,14 @@ sb_commit(si_t *sih)
 		/* do the buffer registers update */
 		W_REG(sii->osh, &ccregs->broadcastaddress, SB_COMMIT);
 		W_REG(sii->osh, &ccregs->broadcastdata, 0x0);
+#if !defined(BCMDONGLEHOST)
+	} else if (PCI(sii)) {
+		sbpciregs_t *pciregs = (sbpciregs_t *)si_setcore(sih, PCI_CORE_ID, 0);
+
+		/* do the buffer registers update */
+		W_REG(sii->osh, &pciregs->bcastaddr, SB_COMMIT);
+		W_REG(sii->osh, &pciregs->bcastdata, 0x0);
+#endif /* !defined(BCMDONGLEHOST) */
 	} else
 		ASSERT(0);
 

@@ -3,7 +3,7 @@
  *
  * Copyright (C) 1999-2010, Broadcom Corporation
  * 
- *      Unless you and Broadcom execute a separate written software license
+ *         Unless you and Broadcom execute a separate written software license
  * agreement governing use of this software, this software is licensed to you
  * under the terms of the GNU General Public License version 2 (the "GPL"),
  * available at http://www.broadcom.com/licenses/GPLv2.php, with the
@@ -21,7 +21,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: linux_osl.c,v 1.125.12.3.8.7 2010/05/04 21:10:04 Exp $
+ * $Id: linux_osl.c,v 1.125.12.3.8.1.54.9.2.1 2010/06/30 03:10:10 Exp $
  */
 
 
@@ -35,7 +35,6 @@
 #include <bcmutils.h>
 #include <linux/delay.h>
 #include <pcicfg.h>
-#include <linux/mutex.h>
 
 #define PCI_CFG_RETRY 		10
 
@@ -47,7 +46,7 @@
 #define STATIC_BUF_SIZE	(PAGE_SIZE*2)
 #define STATIC_BUF_TOTAL_LEN (MAX_STATIC_BUF_NUM*STATIC_BUF_SIZE)
 typedef struct bcm_static_buf {
-	struct mutex static_sem;
+	struct semaphore static_sem;
 	unsigned char *buf_ptr;
 	unsigned char buf_use[MAX_STATIC_BUF_NUM];
 } bcm_static_buf_t;
@@ -58,7 +57,7 @@ static bcm_static_buf_t *bcm_static_buf = 0;
 typedef struct bcm_static_pkt {
 	struct sk_buff *skb_4k[MAX_STATIC_PKT_NUM];
 	struct sk_buff *skb_8k[MAX_STATIC_PKT_NUM];
-	struct mutex osl_pkt_sem;
+	struct semaphore osl_pkt_sem;
 	unsigned char pkt_use[MAX_STATIC_PKT_NUM*2];
 } bcm_static_pkt_t;
 static bcm_static_pkt_t *bcm_static_skb = 0;
@@ -125,10 +124,12 @@ static int16 linuxbcmerrormap[] =
 	-EIO,			
 	-EINVAL,		
 	-EINVAL,		
+	-ENODATA,		
+	-EOPNOTSUPP,		
 
 
 
-#if BCME_LAST != -41
+#if BCME_LAST != -43
 #error "You need to add a OS error translation in the linuxbcmerrormap \
 	for new error code defined in bcmutils.h"
 #endif 
@@ -152,10 +153,8 @@ osl_t *
 osl_attach(void *pdev, uint bustype, bool pkttag)
 {
 	osl_t *osh;
-	gfp_t flags;
 
-	flags = (in_atomic()) ? GFP_ATOMIC : GFP_KERNEL;
-	osh = kmalloc(sizeof(osl_t), flags);
+	osh = kmalloc(sizeof(osl_t), GFP_ATOMIC);
 	ASSERT(osh);
 
 	bzero(osh, sizeof(osl_t));
@@ -196,17 +195,17 @@ osl_attach(void *pdev, uint bustype, bool pkttag)
 			STATIC_BUF_TOTAL_LEN))) {
 			printk("can not alloc static buf!\n");
 		}
-		else {
-			/* printk("alloc static buf at %x!\n", (unsigned int)bcm_static_buf); */
-		}
-		
-		mutex_init(&bcm_static_buf->static_sem);
+		else
+			printk("alloc static buf at %x!\n", (unsigned int)bcm_static_buf);
 
-		
+
+		init_MUTEX(&bcm_static_buf->static_sem);
+
+
 		bcm_static_buf->buf_ptr = (unsigned char *)bcm_static_buf + STATIC_BUF_SIZE;
 
 	}
-	
+
 	if (!bcm_static_skb)
 	{
 		int i;
@@ -218,7 +217,7 @@ osl_attach(void *pdev, uint bustype, bool pkttag)
 		for (i = 0; i < MAX_STATIC_PKT_NUM*2; i++)
 			bcm_static_skb->pkt_use[i] = 0;
 
-		mutex_init(&bcm_static_skb->osl_pkt_sem);
+		init_MUTEX(&bcm_static_skb->osl_pkt_sem);
 	}
 #endif 
 	return osh;
@@ -237,7 +236,7 @@ osl_detach(osl_t *osh)
 	if (bcm_static_skb) {
 		bcm_static_skb = 0;
 	}
-#endif 
+#endif
 	ASSERT(osh->magic == OS_HANDLE_MAGIC);
 	kfree(osh);
 }
@@ -247,10 +246,8 @@ void*
 osl_pktget(osl_t *osh, uint len)
 {
 	struct sk_buff *skb;
-	gfp_t flags;
 
-	flags = (in_atomic()) ? GFP_ATOMIC : GFP_KERNEL;
-	if ((skb = __dev_alloc_skb(len, flags))) {
+	if ((skb = dev_alloc_skb(len))) {
 		skb_put(skb, len);
 		skb->priority = 0;
 
@@ -299,18 +296,17 @@ osl_pktget_static(osl_t *osh, uint len)
 	int i = 0;
 	struct sk_buff *skb;
 
-	
+
 	if (len > (PAGE_SIZE*2))
 	{
-		printk("Do we really need this big skb??\n");
 		return osl_pktget(osh, len);
 	}
 
-	
-	mutex_lock(&bcm_static_skb->osl_pkt_sem);
+
+	down(&bcm_static_skb->osl_pkt_sem);
 	if (len <= PAGE_SIZE)
 	{
-		
+
 		for (i = 0; i < MAX_STATIC_PKT_NUM; i++)
 		{
 			if (bcm_static_skb->pkt_use[i] == 0)
@@ -320,17 +316,17 @@ osl_pktget_static(osl_t *osh, uint len)
 		if (i != MAX_STATIC_PKT_NUM)
 		{
 			bcm_static_skb->pkt_use[i] = 1;
-			mutex_unlock(&bcm_static_skb->osl_pkt_sem);
+			up(&bcm_static_skb->osl_pkt_sem);
 
 			skb = bcm_static_skb->skb_4k[i];
 			skb->tail = skb->data + len;
 			skb->len = len;
-			
+
 			return skb;
 		}
 	}
 
-	
+
 	for (i = 0; i < MAX_STATIC_PKT_NUM; i++)
 	{
 		if (bcm_static_skb->pkt_use[i+MAX_STATIC_PKT_NUM] == 0)
@@ -340,17 +336,16 @@ osl_pktget_static(osl_t *osh, uint len)
 	if (i != MAX_STATIC_PKT_NUM)
 	{
 		bcm_static_skb->pkt_use[i+MAX_STATIC_PKT_NUM] = 1;
-		mutex_unlock(&bcm_static_skb->osl_pkt_sem);
+		up(&bcm_static_skb->osl_pkt_sem);
 		skb = bcm_static_skb->skb_8k[i];
 		skb->tail = skb->data + len;
 		skb->len = len;
-		
+
 		return skb;
 	}
 
 
-	
-	mutex_unlock(&bcm_static_skb->osl_pkt_sem);
+	up(&bcm_static_skb->osl_pkt_sem);
 	printk("all static pkt in use!\n");
 	return osl_pktget(osh, len);
 }
@@ -360,16 +355,16 @@ void
 osl_pktfree_static(osl_t *osh, void *p, bool send)
 {
 	int i;
-	
+
 	for (i = 0; i < MAX_STATIC_PKT_NUM*2; i++)
 	{
 		if (p == bcm_static_skb->skb_4k[i])
 		{
-			mutex_lock(&bcm_static_skb->osl_pkt_sem);
+			down(&bcm_static_skb->osl_pkt_sem);
 			bcm_static_skb->pkt_use[i] = 0;
-			mutex_unlock(&bcm_static_skb->osl_pkt_sem);
+			up(&bcm_static_skb->osl_pkt_sem);
 
-			
+
 			return;
 		}
 	}
@@ -458,8 +453,8 @@ void*
 osl_malloc(osl_t *osh, uint size)
 {
 	void *addr;
-	gfp_t flags;
 
+	
 	if (osh)
 		ASSERT(osh->magic == OS_HANDLE_MAGIC);
 
@@ -469,23 +464,23 @@ osl_malloc(osl_t *osh, uint size)
 		int i = 0;
 		if ((size >= PAGE_SIZE)&&(size <= STATIC_BUF_SIZE))
 		{
-			mutex_lock(&bcm_static_buf->static_sem);
-			
+			down(&bcm_static_buf->static_sem);
+
 			for (i = 0; i < MAX_STATIC_BUF_NUM; i++)
 			{
 				if (bcm_static_buf->buf_use[i] == 0)
 					break;
 			}
-			
+
 			if (i == MAX_STATIC_BUF_NUM)
 			{
-				mutex_unlock(&bcm_static_buf->static_sem);
+				up(&bcm_static_buf->static_sem);
 				printk("all static buff in use!\n");
 				goto original;
 			}
-			
+
 			bcm_static_buf->buf_use[i] = 1;
-			mutex_unlock(&bcm_static_buf->static_sem);
+			up(&bcm_static_buf->static_sem);
 
 			bzero(bcm_static_buf->buf_ptr+STATIC_BUF_SIZE*i, size);
 			if (osh)
@@ -496,8 +491,8 @@ osl_malloc(osl_t *osh, uint size)
 	}
 original:
 #endif 
-	flags = (in_atomic()) ? GFP_ATOMIC : GFP_KERNEL;
-	if ((addr = kmalloc(size, flags)) == NULL) {
+
+	if ((addr = kmalloc(size, GFP_ATOMIC)) == NULL) {
 		if (osh)
 			osh->failed++;
 		return (NULL);
@@ -518,12 +513,12 @@ osl_mfree(osl_t *osh, void *addr, uint size)
 			<= ((unsigned char *)bcm_static_buf + STATIC_BUF_TOTAL_LEN)))
 		{
 			int buf_idx = 0;
-			
+
 			buf_idx = ((unsigned char *)addr - bcm_static_buf->buf_ptr)/STATIC_BUF_SIZE;
-			
-			mutex_lock(&bcm_static_buf->static_sem);
+
+			down(&bcm_static_buf->static_sem);
 			bcm_static_buf->buf_use[buf_idx] = 0;
-			mutex_unlock(&bcm_static_buf->static_sem);
+			up(&bcm_static_buf->static_sem);
 
 			if (osh) {
 				ASSERT(osh->magic == OS_HANDLE_MAGIC);
@@ -609,10 +604,8 @@ void *
 osl_pktdup(osl_t *osh, void *skb)
 {
 	void * p;
-	gfp_t flags;
 
-	flags = (in_atomic()) ? GFP_ATOMIC : GFP_KERNEL;
-	if ((p = skb_clone((struct sk_buff*)skb, flags)) == NULL)
+	if ((p = skb_clone((struct sk_buff*)skb, GFP_ATOMIC)) == NULL)
 		return NULL;
 
 	

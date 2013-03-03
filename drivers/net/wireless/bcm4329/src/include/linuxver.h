@@ -33,12 +33,8 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 0))
 #include <linux/config.h>
 #else
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 33))
 #include <generated/autoconf.h>
-#else
-#include <linux/autoconf.h>
 #endif
-#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 0)) */
 #include <linux/module.h>
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 3, 0))
