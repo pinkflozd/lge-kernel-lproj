@@ -28,6 +28,7 @@
 #include <mach/mpp.h>
 #include <mach/board.h>
 #include "board-pecan.h"
+#include "../board-msm7627-regulator.h"
 
 static void sdcc_gpio_init(void)
 {

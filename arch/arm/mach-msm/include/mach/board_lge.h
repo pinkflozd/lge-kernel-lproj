@@ -87,7 +87,7 @@
     /* I dont know why I allocate bigger than real lcd size in muscat , because EBI2 interface? */
     #define HIDDEN_RESET_FB_SIZE 165600
 #elif defined(CONFIG_MACH_MSM7X27_PECAN)
-    #define HIDDEN_RESET_FB_SIZE (256 * 320 * 2)
+    #define HIDDEN_RESET_FB_SIZE (320 * 256 * 2)
 #else
     #define HIDDEN_RESET_FB_SIZE (320 * 480 * 2)
 #endif
