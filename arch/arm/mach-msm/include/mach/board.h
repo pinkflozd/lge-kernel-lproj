@@ -67,6 +67,9 @@ struct msm_camera_device_platform_data {
   struct msm_camera_io_clk ioclk;
   int (*camera_power_on) (void);
   int (*camera_power_off)(void);
+#ifdef CONFIG_MACH_MSM7X27_PECAN
+	void (*camera_standy_high)(void);  // 2011-03-21 Samsung camera sensor porting
+#endif
 };
 #else  /* original */
 struct msm_camera_device_platform_data {

@@ -37,9 +37,17 @@ endif
 obj-$(CONFIG_ARCH_MSM8960) += msm_vfe32.o msm_vpe.o
 =======
 ifeq ($(CONFIG_LGE_CAMERA_HIDDEN_MENU_TEST_PATCH), y)
+ifeq ($(CONFIG_MACH_MSM7X27_PECAN),y)
+obj-$(CONFIG_ISX005) += isx005_tun-pecan.o
+else
 obj-$(CONFIG_ISX005) += isx005_tun.o
+endif
+else
+ifeq ($(CONFIG_MACH_MSM7X27_PECAN),y)
+obj-$(CONFIG_ISX005) += isx005-pecan.o
 else
 obj-$(CONFIG_ISX005) += isx005.o
+endif
 endif
 obj-$(CONFIG_ISX006) += isx006.o isx006_reg.o
 obj-$(CONFIG_ARCH_MSM8960) += msm_io_8960.o msm_vfe32.o msm_vpe.o
