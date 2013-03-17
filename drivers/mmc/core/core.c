@@ -2483,6 +2483,11 @@ int mmc_suspend_host(struct mmc_host *host)
 	if (err)
 		goto out;
 
+#if defined(CONFIG_MACH_MSM7X27_PECAN)
+	if (!strncmp(mmc_hostname(host),"mmc0",4)) {
+		; //do nothing! for do not issue cmd0,cmd41 at wakeup time
+	} else {
+#endif
 	mmc_bus_get(host);
 	if (host->bus_ops && !host->bus_dead) {
 		/*
@@ -2535,6 +2540,10 @@ int mmc_suspend_host(struct mmc_host *host)
 	if (!err && !mmc_card_keep_power(host))
 		mmc_power_off(host);
 
+#if defined(CONFIG_MACH_MSM7X27_PECAN)
+	}
+#endif
+
 out:
 	return err;
 }
@@ -2555,6 +2564,12 @@ int mmc_resume_host(struct mmc_host *host)
 		mmc_bus_put(host);
 		return 0;
 	}
+
+#if defined(CONFIG_MACH_MSM7X27_PECAN)
+	if (!strncmp(mmc_hostname(host),"mmc0",4)) {
+		; // do nothing! for do not issue cmd0,cmd41 at wakekup time
+	} else {
+#endif
 
 	if (host->bus_ops && !host->bus_dead) {
 		if (!mmc_card_keep_power(host)) {
@@ -2581,6 +2596,9 @@ int mmc_resume_host(struct mmc_host *host)
 					    mmc_hostname(host), err);
 			err = 0;
 		}
+#if defined(CONFIG_MACH_MSM7X27_PECAN)
+	}
+#endif
 	}
 	host->pm_flags &= ~MMC_PM_KEEP_POWER;
 	mmc_bus_put(host);
