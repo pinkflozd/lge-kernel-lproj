@@ -157,12 +157,13 @@ enum{
 
 void Send_Touch( unsigned int x, unsigned int y)
 {
+	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_PRESSURE, 1);
 	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_TOUCH_MAJOR, 1);
 	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_POSITION_X, x);
 	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_POSITION_Y, y);
 	input_mt_sync(mcs7000_ts_dev.input_dev);
 	input_sync(mcs7000_ts_dev.input_dev);
-	
+	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_PRESSURE, 0);
 	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_TOUCH_MAJOR, 0);
 	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_POSITION_X, x);
 	input_report_abs(mcs7000_ts_dev.input_dev, ABS_MT_POSITION_Y, y);
@@ -855,6 +856,10 @@ static int mcs7000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 
 	input_set_abs_params(mcs7000_ts_input, ABS_MT_POSITION_X, ts_pdata->ts_x_min, ts_pdata->ts_x_max, 0, 0);
 	input_set_abs_params(mcs7000_ts_input, ABS_MT_POSITION_Y, ts_pdata->ts_y_min, ts_pdata->ts_y_max, 0, 0);
+		input_set_abs_params(mcs7000_ts_input, ABS_MT_PRESSURE, 0, 255, 0, 0);
+		input_set_abs_params(mcs7000_ts_input, ABS_MT_TOUCH_MINOR, 0, 15, 0, 0);
+		input_set_abs_params(mcs7000_ts_input, ABS_MT_TOUCH_MAJOR, 0, 15, 0, 0);
+		input_set_abs_params(mcs7000_ts_input, ABS_MT_TRACKING_ID, 0, 9, 0, 0);
 
 	dev = &mcs7000_ts_dev;
 
