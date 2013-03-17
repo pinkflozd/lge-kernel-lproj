@@ -907,12 +907,12 @@ int dhd_deep_sleep(struct net_device *dev, int flag)
 		   /* Disable MPC */	
 		   powervar = 0;
 		   bcm_mkiovar("mpc", (char *)&powervar, 4, iovbuf, sizeof(iovbuf));
-		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf));
+		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE);
 
 		   /* Enable Deep Sleep */
 		   powervar = 1;
 		   bcm_mkiovar("deepsleep", (char *)&powervar, 4, iovbuf, sizeof(iovbuf));
-		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf));
+		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE);
 		   break;
 
 	case 0: /*DEEPSLEEP OFF*/
@@ -921,12 +921,12 @@ int dhd_deep_sleep(struct net_device *dev, int flag)
 		   /* Disable Deep Sleep */	
 		   powervar = 0;
 		   bcm_mkiovar("deepsleep", (char *)&powervar, 4, iovbuf, sizeof(iovbuf));
-		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf));
+		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf), TRUE);
 
 		   /* Enable MPC */
 		   powervar = 1;
 		   bcm_mkiovar("mpc", (char *)&powervar, 4, iovbuf, sizeof(iovbuf));
-		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf));
+		   dhdcdc_set_ioctl(dhd_pub, 0, WLC_SET_VAR, iovbuf, sizeof(iovbuf),TRUE);
 		   break;
 
 	default: 
