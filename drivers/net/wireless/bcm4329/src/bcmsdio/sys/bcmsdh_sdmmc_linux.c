@@ -524,7 +524,7 @@ dhd_enable_hwakeup(void)
 {
 	int ret;
 
-	ret = irq_set_irq_wake(dhd_wifi_sleep->host_wake_irq, 1);
+	ret = set_irq_wake(dhd_wifi_sleep->host_wake_irq, 1);
 
 	if (ret < 0) {
 		DHD_ERROR(("Couldn't enable WLAN_HOST_WAKE as wakeup interrupt"));
@@ -540,7 +540,7 @@ dhd_enable_hwakeup(void)
 static void
 dhd_disable_hwakeup(void)
 {
-	if (irq_set_irq_wake(dhd_wifi_sleep->host_wake_irq, 0))
+	if (set_irq_wake(dhd_wifi_sleep->host_wake_irq, 0))
 		DHD_ERROR(("Couldn't disable hostwake IRQ wakeup mode\n"));
 }
 
@@ -621,7 +621,7 @@ dhd_register_hwakeup(void)
 		DHD_INFO(("[WiFi] install HostWakeup IRQ \n"));
 	}
 
-	irq_set_irq_type(dhd_wifi_sleep->host_wake_irq, IRQ_TYPE_EDGE_RISING);
+	set_irq_type(dhd_wifi_sleep->host_wake_irq, IRQ_TYPE_EDGE_RISING);
 
 	disable_irq(dhd_wifi_sleep->host_wake_irq);
 

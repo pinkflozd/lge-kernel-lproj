@@ -655,7 +655,7 @@ wl_iw_get_macaddr(
 	return error;
 }
 
-#if defined(CONFIG_BRCM_LGE_WL_HOSTWAKEUP) && defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD)
+#if defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD)
 static int
 wl_iw_set_hostip(
 	struct net_device *dev,
@@ -680,7 +680,7 @@ wl_iw_set_hostip(
 
 	ret = strict_strtol((extra+1+ip_offset), 0, &ipaddr_int);
 
-	printk("%s: Received IP Address: " NIPQUAD_FMT "\n" ,__FUNCTION__, NIPQUAD(ipaddr_int));
+//	printk("%s: Received IP Address: " NIPQUAD_FMT "\n" ,__FUNCTION__, NIPQUAD(ipaddr_int));
 
 	ipaddr[0] = ((unsigned char *)&ipaddr_int)[0];
 	ipaddr[1] = ((unsigned char *)&ipaddr_int)[1];
@@ -708,7 +708,7 @@ wl_iw_set_hostip(
 
     return 0;
 }
-#endif	/* defined(CONFIG_BRCM_LGE_WL_HOSTWAKEUP) && defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD) */
+#endif	/* defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD) */
 
 static int
 wl_iw_set_country(
@@ -980,7 +980,7 @@ wl_iw_get_rssi(
 	return error;
 }
 
-static int
+int
 wl_iw_send_priv_event(
 	struct net_device *dev,
 	char *flag
@@ -2483,7 +2483,11 @@ static void wl_iw_send_scan_complete(iscan_info_t *iscan)
 
 		memset(&wrqu, 0, sizeof(wrqu));
 		memset(extra, 0, sizeof(extra));
-		wireless_send_event(iscan->dev, SIOCGIWSCAN, &wrqu, extra);
+		// UPDATE_S dk.moon 20110331, remove warning message in wireless EXT. (from BCM4330 src)
+		/* wext expects to get no data for SIOCGIWSCAN Event  */
+		wireless_send_event(iscan->dev, SIOCGIWSCAN, &wrqu, NULL);
+		//wireless_send_event(iscan->dev, SIOCGIWSCAN, &wrqu, extra);
+		// UPDATE_E dk.moon 20110331, remove warning message in wireless EXT.
 		WL_TRACE(("Send Event SCAN complete\n"));
 #endif
 }
@@ -6086,10 +6090,10 @@ wl_iw_set_priv(
 			ret = wl_iw_get_macaddr(dev, info, (union iwreq_data *)dwrq, extra);
 	    else if (strnicmp(extra, "COUNTRY", strlen("COUNTRY")) == 0)
 			ret = wl_iw_set_country(dev, info, (union iwreq_data *)dwrq, extra);
-#if defined(CONFIG_BRCM_LGE_WL_HOSTWAKEUP) && defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD)
+#if defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD)
 	    else if (strnicmp(extra, "IPADDR", strlen("IPADDR")) == 0)
 			ret = wl_iw_set_hostip(dev, info, (union iwreq_data *)dwrq, extra);
-#endif	/* defined(CONFIG_BRCM_LGE_WL_HOSTWAKEUP) && defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD) */
+#endif	/* defined(CONFIG_BRCM_LGE_WL_ARPOFFLOAD) */
 	    else if (strnicmp(extra, "STOP", strlen("STOP")) == 0)
 			ret = wl_iw_control_wl_off(dev, info);
 #if !defined(CONFIG_LGE_BCM432X_PATCH)
@@ -6992,8 +6996,14 @@ wl_iw_event(struct net_device *dev, wl_event_msg_t *e, void* data)
 		return;
 #endif	/* CONFIG_LGE_BCM432X_PATCH */
 #ifndef SANDGATE2G
-		if (cmd)
-			wireless_send_event(dev, cmd, &wrqu, extra);
+		// UPDATE_S dk.moon 20110331, remove warning message in wireless EXT. (from BCM4330 src)
+		if (cmd) {
+			if (cmd == SIOCGIWSCAN)
+				wireless_send_event(dev, cmd, &wrqu, NULL);
+			else
+				wireless_send_event(dev, cmd, &wrqu, extra);
+		}
+		// UPDATE_S dk.moon 20110331, remove warning message in wireless EXT.
 #endif
 
 #if defined(STA) || defined(BCMDONGLEHOST)
