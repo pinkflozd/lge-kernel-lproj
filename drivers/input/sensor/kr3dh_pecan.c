@@ -582,12 +582,11 @@ static int kr3dh_misc_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static int kr3dh_misc_ioctl(struct inode *inode, struct file *file,
-				unsigned int cmd, unsigned long arg)
+static long kr3dh_misc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	void __user *argp = (void __user *)arg;
 	int buf[3];
-	int err;
+	long err;
 	int interval;
 	struct kr3dh_data *kr = file->private_data;
 

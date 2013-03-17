@@ -537,13 +537,11 @@ static __inline int mcs7000_ts_ioctl_down_i2c_read(unsigned char addr,
 	return err;
 }
 
-int mcs7000_ts_ioctl_down(struct inode *inode, struct file *flip, unsigned int cmd, unsigned long arg)
+long mcs7000_ts_ioctl_down(struct file *flip, unsigned int cmd, unsigned long arg)
 {
-	int err = 0;
+	long err = 0;
 	struct mcs7000_ts_down_ioctl_i2c_type client_data;
-	struct mcs7000_ts_device *dev = NULL;
-
-	dev = &mcs7000_ts_dev;
+	struct mcs7000_ts_device *dev = &mcs7000_ts_dev;
 
 	//printk(KERN_INFO"%d\n", _IOC_NR(cmd));
 	if (_IOC_NR(cmd) >= MCS7000_TS_DOWN_IOCTL_MAXNR)
@@ -653,15 +651,13 @@ int mcs7000_ts_ioctl_down(struct inode *inode, struct file *flip, unsigned int c
 	return err;
 }
 
-static int mcs7000_ts_ioctl(struct inode *inode, struct file *flip,
-		     unsigned int cmd, unsigned long arg)
+static long mcs7000_ts_ioctl(struct file *flip, unsigned int cmd, unsigned long arg)
 {
-	int err = -1;
-	/* int size; */
+	long err = -1;
 
 	switch (_IOC_TYPE(cmd)) {
 		case MCS7000_TS_DOWN_IOCTL_MAGIC:
-			err = mcs7000_ts_ioctl_down(inode, flip, cmd, arg);
+			err = mcs7000_ts_ioctl_down( flip, cmd, arg);
 			break;
 		case MCS7000_TS_IOCTL_MAGIC :
 			switch(cmd){

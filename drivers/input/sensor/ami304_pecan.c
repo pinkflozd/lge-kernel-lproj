@@ -680,7 +680,7 @@ static int ami304_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static int ami304_ioctl(struct inode *inode, struct file *file, unsigned int cmd,unsigned long arg)
+static long ami304_ioctl(struct file *file, unsigned int cmd,unsigned long arg)
 {
 	char strbuf[AMI304_BUFSIZE];
 	int controlbuf[AMI304_CB_LENGTH];
@@ -690,7 +690,7 @@ static int ami304_ioctl(struct inode *inode, struct file *file, unsigned int cmd
 	long pedodata[3];	
 	int pedoparam[AMI304_PD_LENGTH];
 	void __user *data;
-	int retval=0;
+	long retval=0;
 	int mode=0,chipset=0;
 	int iEnReport;
 
@@ -950,8 +950,7 @@ static int ami304daemon_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static int ami304daemon_ioctl(struct inode *inode, struct file *file, unsigned int cmd,
-	   unsigned long arg)
+static long ami304daemon_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	int valuebuf[4];
 	int calidata[7];
@@ -962,7 +961,7 @@ static int ami304daemon_ioctl(struct inode *inode, struct file *file, unsigned i
 	int pedoparam[AMI304_PD_LENGTH];	
 	char i2creaddata[3];
 	void __user *data;
-	int retval=0;
+	long retval=0;
 	int mode;
 #if !defined(CONFIG_HAS_EARLYSUSPEND)
 	int iEnReport;
@@ -1213,13 +1212,13 @@ static int ami304hal_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static int ami304hal_ioctl(struct inode *inode, struct file *file, unsigned int cmd,unsigned long arg)
+static long ami304hal_ioctl(struct file *file, unsigned int cmd,unsigned long arg)
 {
 	int controlbuf[AMI304_CB_LENGTH];
 	char strbuf[AMI304_BUFSIZE];
 	int pedoparam[AMI304_PD_LENGTH];		
 	void __user *data;
-	int retval=0;
+	long retval=0;
 	switch (cmd) {
 		case AMI304HAL_IOCTL_GET_SENSORDATA:
 			data = (void __user *) arg;
