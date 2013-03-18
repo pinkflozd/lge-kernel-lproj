@@ -441,4 +441,11 @@ config AB8500_BATTERY_THERM_ON_BATCTRL
 	help
 	  Say Y to enable battery temperature measurements using
 	  thermistor connected on BATCTRL ADC.
+config LGE_FUEL_SPG
+	tristate "LGE FUEL SPG"
+	depends on ARCH_MSM && BATTERY_MSM
+	default n
+	help
+	  Say Y to enable LGE Fuel Gauge
+
 endif # POWER_SUPPLY
