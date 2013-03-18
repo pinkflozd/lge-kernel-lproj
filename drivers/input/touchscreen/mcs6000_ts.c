@@ -175,12 +175,14 @@ void Send_Touch( unsigned int x, unsigned int y)
 	}
 
 #ifdef LG_FW_MULTI_TOUCH
+	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_PRESSURE, 1);
 	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_TOUCH_MAJOR, 1);
 	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_POSITION_X, x);
 	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_POSITION_Y, y);
 	input_mt_sync(mcs6000_ext_ts->input_dev);
 	input_sync(mcs6000_ext_ts->input_dev);
 
+	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_PRESSURE, 0);
 	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_TOUCH_MAJOR, 0);
 	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_POSITION_X, x);
 	input_report_abs(mcs6000_ext_ts->input_dev, ABS_MT_POSITION_Y, y);
@@ -1297,6 +1299,10 @@ static int mcs6000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 	input_set_abs_params(ts->input_dev, ABS_X, pdata->ts_x_min, pdata->ts_x_max, 0, 0);
 	input_set_abs_params(ts->input_dev, ABS_Y, pdata->ts_y_min, pdata->ts_y_max, 0, 0);
 #endif
+	input_set_abs_params(ts->input_dev, ABS_MT_PRESSURE, 0, 255, 0, 0);
+	input_set_abs_params(ts->input_dev, ABS_MT_TOUCH_MINOR, 0, 15, 0, 0);
+	input_set_abs_params(ts->input_dev, ABS_MT_TOUCH_MAJOR, 0, 15, 0, 0);
+	input_set_abs_params(ts->input_dev, ABS_MT_TRACKING_ID, 0, 9, 0, 0);
 
 	ret = input_register_device(ts->input_dev);
 	if (ret < 0) {
