@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -50,10 +50,10 @@ struct kgsl_pwrctrl {
 	unsigned int interval_timeout;
 	bool strtstp_sleepwake;
 	struct regulator *gpu_reg;
+	struct regulator *gpu_dig;
 	uint32_t pcl;
 	unsigned int nap_allowed;
 	unsigned int idle_needed;
-	const char *regulator_name;
 	const char *irq_name;
 	s64 time;
 	struct kgsl_busy busy;

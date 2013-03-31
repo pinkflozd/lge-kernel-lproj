@@ -278,6 +278,12 @@ int mdp_lcdc_on(struct platform_device *pdev)
 	ctrl_polarity =
 	    (data_en_polarity << 2) | (vsync_polarity << 1) | (hsync_polarity);
 
+	if (!(mfd->cont_splash_done)) {
+		mdp_pipe_ctrl(MDP_CMD_BLOCK,
+			MDP_BLOCK_POWER_OFF, FALSE);
+		MDP_OUTP(MDP_BASE + timer_base, 0);
+	}
+
 	MDP_OUTP(MDP_BASE + timer_base + 0x4, hsync_ctrl);
 	MDP_OUTP(MDP_BASE + timer_base + 0x8, vsync_period);
 	MDP_OUTP(MDP_BASE + timer_base + 0xc, vsync_pulse_width * hsync_period);
@@ -327,6 +333,7 @@ int mdp_lcdc_on(struct platform_device *pdev)
 		pr_debug("%s: kobject_uevent(KOBJ_ADD)\n", __func__);
 		vsync_cntrl.sysfs_created = 1;
 	}
+	mdp_histogram_ctrl_all(TRUE);
 
 	return ret;
 }
@@ -346,6 +353,7 @@ int mdp_lcdc_off(struct platform_device *pdev)
 		timer_base = DTV_BASE;
 	}
 #endif
+	mdp_histogram_ctrl_all(FALSE);
 
 	down(&mfd->dma->mutex);
 	/* MDP cmd block enable */

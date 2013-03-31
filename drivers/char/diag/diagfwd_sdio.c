@@ -1,4 +1,4 @@
-/* Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -194,7 +194,7 @@ static int diag_sdio_probe(struct platform_device *pdev)
 static int diag_sdio_remove(struct platform_device *pdev)
 {
 	pr_debug("\n diag: sdio remove called");
-	/*Disable SDIO channel to prevent further read/write */
+	/* Disable SDIO channel to prevent further read/write */
 	driver->sdio_ch = NULL;
 	return 0;
 }

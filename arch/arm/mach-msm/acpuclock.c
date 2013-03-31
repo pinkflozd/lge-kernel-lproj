@@ -1,4 +1,4 @@
-/* Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -11,6 +11,7 @@
  */
 
 #include <linux/cpu.h>
+#include <linux/smp.h>
 #include "acpuclock.h"
 
 static struct acpuclk_data *acpuclk_data;
@@ -52,24 +53,7 @@ unsigned long acpuclk_wait_for_irq(void)
 	return rate;
 }
 
-void __init acpuclk_register(struct acpuclk_data *data)
+void __devinit acpuclk_register(struct acpuclk_data *data)
 {
 	acpuclk_data = data;
-}
-
-int __init acpuclk_init(struct acpuclk_soc_data *soc_data)
-{
-	int rc;
-
-	if (!soc_data->init)
-		return -EINVAL;
-
-	rc = soc_data->init(soc_data);
-	if (rc)
-		return rc;
-
-	if (!acpuclk_data)
-		return -ENODEV;
-
-	return 0;
 }

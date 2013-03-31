@@ -1,4 +1,4 @@
-/* Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -57,7 +57,7 @@
 #define TLMM_MSM_DIR_CONN_IRQ_8			(GIC_SPI_START + 12)
 #define TLMM_MSM_DIR_CONN_IRQ_9			(GIC_SPI_START + 13)
 #define PM8921_SEC_IRQ_N			(GIC_SPI_START + 14)
-#define PM8018_SEC_IRQ_N			(GIC_SPI_START + 15)
+#define PM8821_SEC_IRQ_N			(GIC_SPI_START + 15)
 #define TLMM_MSM_SUMMARY_IRQ			(GIC_SPI_START + 16)
 #define SPDM_RT_1_IRQ				(GIC_SPI_START + 17)
 #define SPDM_DIAG_IRQ				(GIC_SPI_START + 18)

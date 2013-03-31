@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -219,18 +219,7 @@ static struct platform_driver pmic8xxx_pwrkey_driver = {
 		.pm	= &pm8xxx_pwr_key_pm_ops,
 	},
 };
-
-static int __init pmic8xxx_pwrkey_init(void)
-{
-	return platform_driver_register(&pmic8xxx_pwrkey_driver);
-}
-module_init(pmic8xxx_pwrkey_init);
-
-static void __exit pmic8xxx_pwrkey_exit(void)
-{
-	platform_driver_unregister(&pmic8xxx_pwrkey_driver);
-}
-module_exit(pmic8xxx_pwrkey_exit);
+module_platform_driver(pmic8xxx_pwrkey_driver);
 
 MODULE_ALIAS("platform:pmic8xxx_pwrkey");
 MODULE_DESCRIPTION("PMIC8XXX Power Key driver");

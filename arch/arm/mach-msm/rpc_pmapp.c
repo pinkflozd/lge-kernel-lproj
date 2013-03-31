@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2009-2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -13,6 +13,7 @@
 
 #include <linux/slab.h>
 #include <linux/err.h>
+#include <linux/module.h>
 #include <asm/mach-types.h>
 #include <mach/board.h>
 #include <mach/rpc_pmapp.h>
@@ -423,7 +424,6 @@ static int pmapp_rpc_req_reply(struct pmapp_buf *tbuf, struct pmapp_buf *rbuf,
 
 	if (len <= 0) {
 		printk(KERN_ERR "%s: rpc failed! len = %d\n", __func__, len);
-		pm->endpoint = NULL;	/* re-connect later ? */
 		return len;
 	}
 
@@ -548,7 +548,7 @@ EXPORT_SYMBOL(pmapp_vreg_pincntrl_vote);
 
 int pmapp_disp_backlight_set_brightness(int value)
 {
-	if (value < 0 || value > 100)
+	if (value < 0 || value > 255)
 		return -EINVAL;
 
 	return pmapp_rpc_set_only(value, 0, 0, 0, 1,

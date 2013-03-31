@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -42,8 +42,8 @@ extern uint32 mdp_hw_revision;
 extern ulong mdp4_display_intf;
 extern spinlock_t mdp_spin_lock;
 extern int mdp_rev;
+extern int mdp_iommu_split_domain;
 extern struct mdp_csc_cfg mdp_csc_convert[4];
-
 extern struct workqueue_struct *mdp_hist_wq;
 
 extern uint32 mdp_intr_mask;
@@ -72,6 +72,7 @@ extern uint32 mdp_intr_mask;
 #define MDPOP_SHARPENING	BIT(11) /* enable sharpening */
 #define MDPOP_BLUR		BIT(12) /* enable blur */
 #define MDPOP_FG_PM_ALPHA       BIT(13)
+#define MDPOP_LAYER_IS_FG       BIT(14)
 #define MDP_ALLOC(x)  kmalloc(x, GFP_KERNEL)
 
 struct mdp_buf_type {
@@ -89,6 +90,7 @@ struct mdp_table_entry {
 extern struct mdp_ccs mdp_ccs_yuv2rgb ;
 extern struct mdp_ccs mdp_ccs_rgb2yuv ;
 extern unsigned char hdmi_prim_display;
+extern unsigned char hdmi_prim_resolution;
 
 struct vsync {
 	ktime_t vsync_time;
@@ -260,6 +262,7 @@ struct mdp_hist_lut_info {
 struct mdp_hist_mgmt {
 	uint32_t block;
 	uint32_t irq_term;
+	uint32_t intr;
 	uint32_t base;
 	struct completion mdp_hist_comp;
 	struct mutex mdp_hist_mutex;
@@ -327,6 +330,14 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define TV_OUT_DMA3_START   BIT(13)
 #define MDP_HIST_DONE       BIT(20)
 
+/*MDP4 MDP histogram interrupts*/
+/*note: these are only applicable on MDP4+ targets*/
+#define INTR_VG1_HISTOGRAM		BIT(5)
+#define INTR_VG2_HISTOGRAM		BIT(6)
+#define INTR_DMA_P_HISTOGRAM		BIT(17)
+#define INTR_DMA_S_HISTOGRAM		BIT(26)
+/*end MDP4 MDP histogram interrupts*/
+
 /* histogram interrupts */
 #define INTR_HIST_DONE			BIT(1)
 #define INTR_HIST_RESET_SEQ_DONE	BIT(0)
@@ -341,7 +352,6 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 			MDP_DMA_S_DONE| \
 			MDP_DMA_E_DONE| \
 			LCDC_UNDERFLOW| \
-			MDP_HIST_DONE| \
 			TV_ENC_UNDERRUN)
 #endif
 
@@ -800,15 +810,6 @@ static inline int mdp4_lcdc_on(struct platform_device *pdev)
 }
 #endif
 
-/* LGE_CHANGE_S : LCD ESD Protection 
- * 2012-01-30, yoonsoo@lge.com
- * LCD ESD Protection
- */
-#ifdef CONFIG_LGE_LCD_ESD_DETECTION
-void esd_dma_dsi_panel_off(void);
-void esd_dma_dsi_panel_on(void);
-#endif
-/* LGE_CHANGE_E : LCD ESD Protection*/
 void set_cont_splashScreen_status(int);
 
 int mdp_hw_cursor_update(struct fb_info *info, struct fb_cursor *cursor);
@@ -867,7 +868,6 @@ int mdp_histogram_block2mgmt(uint32_t block, struct mdp_hist_mgmt **mgmt);
 void mdp_histogram_handle_isr(struct mdp_hist_mgmt *mgmt);
 void __mdp_histogram_kickoff(struct mdp_hist_mgmt *mgmt);
 void __mdp_histogram_reset(struct mdp_hist_mgmt *mgmt);
-unsigned int mdp_check_suspended(void);
 void mdp_footswitch_ctrl(boolean on);
 
 #ifdef CONFIG_FB_MSM_MDP303
@@ -890,7 +890,6 @@ static inline int mdp4_overlay_dsi_state_get(void)
 }
 #endif
 
-void mdp_vid_quant_set(void);
 #ifndef CONFIG_FB_MSM_MDP40
 static inline void mdp_dsi_cmd_overlay_suspend(struct msm_fb_data_type *mfd)
 {
@@ -909,4 +908,12 @@ int mdp_ppp_v4l2_overlay_play(struct fb_info *info,
 	unsigned long srcp0_addr, unsigned long srcp0_size,
 	unsigned long srcp1_addr, unsigned long srcp1_size);
 
+#ifdef CONFIG_FB_MSM_DTV
+void mdp_vid_quant_set(void);
+#else
+static inline void mdp_vid_quant_set(void)
+{
+	/* empty */
+}
+#endif
 #endif /* MDP_H */

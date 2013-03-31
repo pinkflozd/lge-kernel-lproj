@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -349,13 +349,5 @@ void mipi_dsi_cmd_mdp_busy(void);
 #ifdef CONFIG_FB_MSM_MDP303
 void update_lane_config(struct msm_panel_info *pinfo);
 #endif
-/* LGE_CHANGE_S : LCD ESD Protection 
- * 2012-01-30, yoonsoo@lge.com
- * LCD ESD Protection
- */
-#ifdef CONFIG_LGE_LCD_ESD_DETECTION
-void esd_sw_test_lcd_panel_power_off(void);
-void esd_sw_test_lcd_panel_power_on(void);
-#endif
-/* LGE_CHANGE_E : LCD ESD Protection*/ 
+
 #endif /* MIPI_DSI_H */

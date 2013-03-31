@@ -1,4 +1,4 @@
-/* Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -32,5 +32,10 @@
 #define PM8901_MPP_SYS_TO_PM(sys_gpio)		(sys_gpio - PM901_MPP_BASE)
 #define PM8901_IRQ_BASE				(PM8058_IRQ_BASE + \
 						NR_PMIC8058_IRQS)
+
+#ifdef CONFIG_MSM_CAMERA_V4L2
+extern struct msm_camera_board_info msm8x60_camera_board_info;
+void msm8x60_init_cam(void);
+#endif
 
 #endif

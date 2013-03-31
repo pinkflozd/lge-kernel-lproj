@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2010, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2009-2010, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -15,6 +15,7 @@
  * OEM RAPI CLIENT Driver source file
  */
 
+#include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/kernel.h>
 #include <linux/err.h>
@@ -23,6 +24,7 @@
 #include <linux/debugfs.h>
 #include <linux/uaccess.h>
 #include <linux/delay.h>
+#include <linux/module.h>
 #include <mach/msm_rpcrouter.h>
 #include <mach/oem_rapi_client.h>
 
@@ -332,16 +334,6 @@ static const struct file_operations debug_ops = {
 	.read = debug_read,
 	.write = debug_write,
 };
-
-/* LGE_CHANGE_S : 0014110 jihoon.lee@lge.com 20110115 */
-/* MOD 0014110: [FACTORY RESET] stability */
-/* sync up with oem_rapi */
-uint32_t get_oem_rapi_open_cnt(void)
-{
-	return open_count;
-}
-EXPORT_SYMBOL(get_oem_rapi_open_cnt);
-/* LGE_CHANGE_E : 0014110 jihoon.lee@lge.com 20110115 */
 
 static void __exit oem_rapi_client_mod_exit(void)
 {

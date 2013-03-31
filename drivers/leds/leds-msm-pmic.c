@@ -1,7 +1,7 @@
 /*
  * leds-msm-pmic.c - MSM PMIC LEDs driver.
  *
- * Copyright (c) 2009, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2009, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -18,91 +18,21 @@
 #include <linux/leds.h>
 
 #include <mach/pmic.h>
-//LGE_CHANGE_S, [youngbae.choi@lge.com] , 2011-12-08
-#include <mach/board_lge.h>
-//LGE_CHANGE_E, [youngbae.choi@lge.com] , 2011-12-08
 
 #define MAX_KEYPAD_BL_LEVEL	16
 
 static void msm_keypad_bl_led_set(struct led_classdev *led_cdev,
 	enum led_brightness value)
 {
-//LGE_CHANGE_S, [youngbae.choi@lge.com] , 2011-12-08
-#if 0 /* original */
 	int ret;
 
 	ret = pmic_set_led_intensity(LED_KEYPAD, value / MAX_KEYPAD_BL_LEVEL);
 	if (ret)
 		dev_err(led_cdev->dev, "can't set keypad backlight\n");
-#else
-	int on_off;
-	int brightness;
-
-	/* debug mesg */
-	printk(KERN_INFO " LED DEBUG: Value is %d\n", value);
-	if (value == 0)
-		on_off = (int)PM_MPP__I_SINK__SWITCH_DIS;
-	else
-		on_off = (int)PM_MPP__I_SINK__SWITCH_ENA;
-
-	switch (value) {
-	case 5:
-		brightness = PM_MPP__I_SINK__LEVEL_5mA;
-		break;
-	case 10:
-		brightness = PM_MPP__I_SINK__LEVEL_10mA;
-		break;
-	case 15:
-		brightness = PM_MPP__I_SINK__LEVEL_15mA;
-		break;
-	case 20:
-		brightness = PM_MPP__I_SINK__LEVEL_20mA;
-		break;
-	case 25:
-		brightness = PM_MPP__I_SINK__LEVEL_25mA;
-		break;
-	case 30:
-		brightness = PM_MPP__I_SINK__LEVEL_30mA;
-		break;
-	case 35:
-		brightness = PM_MPP__I_SINK__LEVEL_35mA;
-		break;
-	case 40:
-		brightness = PM_MPP__I_SINK__LEVEL_40mA;
-		break;
-	default:
-#if defined(CONFIG_MACH_MSM7X25A_M4EU_REV_B) || defined(CONFIG_MACH_MSM7X25A_M4BR_REV_B)
-		brightness = PM_MPP__I_SINK__LEVEL_10mA;
-#else
-		brightness = PM_MPP__I_SINK__LEVEL_5mA;
-#endif	
-		break;
-	}
-#endif
-#if !defined(CONFIG_MACH_MSM7X25A_M4)
-	if (lge_bd_rev == LGE_REV_A) {
-	/* LED power(MPP pin) use
-	*REV.A
-	*EU	:MPP3, MPP4
-	*MPCS	:MPP4
-	*/
-	pmic_secure_mpp_config_i_sink((enum mpp_which)PM_MPP_4, brightness, (enum mpp_i_sink_switch)on_off);
-	} else if (lge_bd_rev >= LGE_REV_B) {
-	/* LED power(MPP pin) use
-	*REV.B
-	*EU	:MPP3
-	*MPCS	:MPP3
-	*/
-	pmic_secure_mpp_config_i_sink((enum mpp_which)PM_MPP_3, brightness, (enum mpp_i_sink_switch)on_off);
-	}
-#else
-	pmic_secure_mpp_config_i_sink((enum mpp_which)PM_MPP_7, brightness, (enum mpp_i_sink_switch)on_off);
-#endif
-//LGE_CHANGE_E, [youngbae.choi@lge.com] , 2011-12-08
 }
 
 static struct led_classdev msm_kp_bl_led = {
-	.name			= "button-backlight",
+	.name			= "keyboard-backlight",
 	.brightness_set		= msm_keypad_bl_led_set,
 	.brightness		= LED_OFF,
 };
@@ -116,12 +46,7 @@ static int msm_pmic_led_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "unable to register led class driver\n");
 		return rc;
 	}
-#if !defined(CONFIG_MACH_MSM7X25A_M4)
-	/* LGE_CHANGE_S: [murali.ramaiah@lge.com]: 2012-03-23,
-	   Enabled key backlight leds till idle screen */
-	msm_keypad_bl_led_set(&msm_kp_bl_led, 5); /* 5mA Brightness */
-	/* LGE_CHANGE_E: [murali.ramaiah@lge.com]-2012-03-23 */
-#endif
+	msm_keypad_bl_led_set(&msm_kp_bl_led, LED_OFF);
 	return rc;
 }
 

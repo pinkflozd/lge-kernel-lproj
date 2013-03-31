@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -13,14 +13,24 @@
 #ifndef __MSM_RTB_H__
 #define __MSM_RTB_H__
 
+/*
+ * These numbers are used from the kernel command line and sysfs
+ * to control filtering. Remove items from here with extreme caution.
+ */
 enum logk_event_type {
 	LOGK_NONE = 0,
-	LOGK_READL,
-	LOGK_WRITEL,
-	LOGK_LOGBUF,
-	LOGK_HOTPLUG,
-	LOGK_GRAPHICS_MMU,
-	LOGK_OTHER,
+	LOGK_READL = 1,
+	LOGK_WRITEL = 2,
+	LOGK_LOGBUF = 3,
+	LOGK_HOTPLUG = 4,
+	LOGK_CTXID = 5,
+	LOGK_TIMESTAMP = 6,
+};
+
+#define LOGTYPE_NOPC 0x80
+
+struct msm_rtb_platform_data {
+	unsigned int size;
 };
 
 #if defined(CONFIG_MSM_RTB)

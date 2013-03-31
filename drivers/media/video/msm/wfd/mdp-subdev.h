@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 and
@@ -10,6 +10,9 @@
 * GNU General Public License for more details.
 *
 */
+
+#ifndef _WFD_MDP_SUBDEV_
+#define _WFD_MDP_SUBDEV_
 
 #include <linux/videodev2.h>
 #include <media/v4l2-subdev.h>
@@ -30,6 +33,17 @@ struct mdp_prop {
 	u32 height;
 	u32 width;
 };
+
+static inline bool mdp_buf_info_equals(struct mdp_buf_info *a,
+		struct mdp_buf_info *b)
+{
+	return a->inst == b->inst
+		&& a->fd == b->fd
+		&& a->offset == b->offset
+		&& a->kvaddr == b->kvaddr
+		&& a->paddr == b->paddr;
+}
+
 #define MDP_Q_BUFFER  _IOW(MDP_MAGIC_IOCTL, 1, struct mdp_buf_info *)
 #define MDP_DQ_BUFFER  _IOR(MDP_MAGIC_IOCTL, 2, struct mdp_out_buf *)
 #define MDP_OPEN  _IOR(MDP_MAGIC_IOCTL, 3, void **)
@@ -39,3 +53,6 @@ struct mdp_prop {
 #define MDP_STOP  _IOR(MDP_MAGIC_IOCTL, 7, void *)
 extern int mdp_init(struct v4l2_subdev *sd, u32 val);
 extern long mdp_ioctl(struct v4l2_subdev *sd, unsigned int cmd, void *arg);
+
+
+#endif /* _WFD_MDP_SUBDEV_ */

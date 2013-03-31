@@ -181,14 +181,12 @@ static enum hrtimer_restart gpio_keypad_timer_func(struct hrtimer *timer)
 			gpio_set_value(gpio, polarity);
 		else
 			gpio_direction_output(gpio, polarity);
-		hrtimer_start(timer, timespec_to_ktime(mi->settle_time),
-			HRTIMER_MODE_REL);
+		hrtimer_start(timer, mi->settle_time, HRTIMER_MODE_REL);
 		return HRTIMER_NORESTART;
 	}
 	if (gpio_keypad_flags & GPIOKPF_DEBOUNCE) {
 		if (kp->key_state_changed) {
-			hrtimer_start(&kp->timer,
-				timespec_to_ktime(mi->debounce_delay),
+			hrtimer_start(&kp->timer, mi->debounce_delay,
 				      HRTIMER_MODE_REL);
 			return HRTIMER_NORESTART;
 		}
@@ -204,8 +202,7 @@ static enum hrtimer_restart gpio_keypad_timer_func(struct hrtimer *timer)
 		report_sync(kp);
 	}
 	if (!kp->use_irq || kp->some_keys_pressed) {
-		hrtimer_start(timer, timespec_to_ktime(mi->poll_time),
-			HRTIMER_MODE_REL);
+		hrtimer_start(timer, mi->poll_time, HRTIMER_MODE_REL);
 		return HRTIMER_NORESTART;
 	}
 
@@ -284,25 +281,11 @@ static int gpio_keypad_request_irqs(struct gpio_kp *kp)
 				"irq %d\n", mi->input_gpios[i], irq);
 			goto err_request_irq_failed;
 		}
-
-/* LGE_CHANGE_S  [yoonsoo.kim@lge.com]  20120303  : U0 Key Configuration */
-/* No wake up required for volume Keys*/
-/*After making patch for call scenario disable this code. 20120316*/
-#if 1		
 		err = enable_irq_wake(irq);
-#else
-		if( 38 == mi->input_gpios[i]) /*38 is Home Key GPIO*/
-		{
-			/*Register wakeup IRQ for only Home Key*/
-			err = enable_irq_wake(irq);
-		}
 		if (err) {
 			pr_err("gpiomatrix: set_irq_wake failed for input %d, "
 				"irq %d\n", mi->input_gpios[i], irq);
 		}
-#endif
-/* LGE_CHANGE_E  [yoonsoo.kim@lge.com]	20120303  : U0 Key Configuration */
-
 		disable_irq(irq);
 		if (kp->disabled_irq) {
 			kp->disabled_irq = 0;

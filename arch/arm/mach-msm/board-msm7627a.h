@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -13,7 +13,11 @@
 #ifndef __ARCH_ARM_MACH_MSM_BOARD_7627A__
 #define __ARCH_ARM_MACH_MSM_BOARD_7627A__
 
+#include "pm.h"
 void __init msm7627a_init_mmc(void);
+
+void __init msm_msm7627a_allocate_memory_regions(void);
+void __init msm_fb_add_devices(void);
 
 enum {
 	GPIO_EXPANDER_IRQ_BASE  = NR_MSM_IRQS + NR_GPIO_IRQS,
@@ -62,6 +66,7 @@ enum {
 	QRD_GPIO_CAM_GP_CAMIF_RESET,
 };
 
+#define ADSP_RPC_PROG           0x3000000a
 #if defined(CONFIG_BT) && defined(CONFIG_MARIMBA_CORE)
 
 #define FPGA_MSM_CNTRL_REG2 0x90008010
@@ -94,11 +99,16 @@ struct bt_vreg_info {
 	struct regulator *reg;
 };
 
-extern struct platform_device msm_bt_power_device;
-
 void __init msm7627a_bt_power_init(void);
 #endif
 
-void __init msm7627a_camera_init(void);
+extern struct platform_device msm_device_snd;
+extern struct platform_device msm_device_adspdec;
+extern struct platform_device msm_device_cad;
 
+void __init msm7627a_camera_init(void);
+int lcd_camera_power_onoff(int on);
+
+void __init msm7627a_add_io_devices(void);
+void __init qrd7627a_add_io_devices(void);
 #endif

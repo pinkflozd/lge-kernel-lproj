@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -238,11 +238,8 @@ kgsl_gem_alloc_memory(struct drm_gem_object *obj)
 	}
 
 	if (TYPE_IS_PMEM(priv->type)) {
-		int type;
-
 		if (priv->type == DRM_KGSL_GEM_TYPE_EBI ||
 		    priv->type & DRM_KGSL_GEM_PMEM_EBI) {
-				type = PMEM_MEMTYPE_EBI1;
 				result = kgsl_sharedmem_ebimem_user(
 						&priv->memdesc,
 						priv->pagetable,

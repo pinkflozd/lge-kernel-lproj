@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -485,9 +485,6 @@ void mdp_dma2_update(struct msm_fb_data_type *mfd)
 	static int first_vsync;
 	int need_wait = 0;
 
-	if (!mfd)
-		return;
-
 	down(&mfd->dma->mutex);
 	if ((mfd) && (mfd->panel_power_on)) {
 		down(&mfd->sem);
@@ -599,8 +596,9 @@ void mdp_set_dma_pan_info(struct fb_info *info, struct mdp_dirty_region *dirty,
 	down(&mfd->sem);
 
 	iBuf = &mfd->ibuf;
-	if (mfd->map_buffer)
-		iBuf->buf = (uint8 *)mfd->map_buffer->iova[0];
+
+	if (mfd->display_iova)
+		iBuf->buf = (uint8 *)mfd->display_iova;
 	else
 		iBuf->buf = (uint8 *) info->fix.smem_start;
 

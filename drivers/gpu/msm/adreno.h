@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -46,6 +46,12 @@
 #define ADRENO_ISTORE_START 0x5000 /* Istore offset */
 
 #define ADRENO_NUM_CTX_SWITCH_ALLOWED_BEFORE_DRAW	50
+
+/* One cannot wait forever for the core to idle, so set an upper limit to the
+ * amount of time to wait for the core to go idle
+ */
+
+#define ADRENO_IDLE_TIMEOUT (20 * 1000)
 
 enum adreno_gpurev {
 	ADRENO_REV_UNKNOWN = 0,
@@ -152,7 +158,7 @@ extern unsigned int hang_detect_regs[];
 extern const unsigned int hang_detect_regs_count;
 
 
-int adreno_idle(struct kgsl_device *device, unsigned int timeout);
+int adreno_idle(struct kgsl_device *device);
 void adreno_regread(struct kgsl_device *device, unsigned int offsetwords,
 				unsigned int *value);
 void adreno_regwrite(struct kgsl_device *device, unsigned int offsetwords,

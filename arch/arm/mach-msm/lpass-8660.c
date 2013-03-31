@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -78,9 +78,6 @@ int subsys_q6_shutdown(const struct subsys_data *crashed_subsys)
 
 	pil_force_shutdown("q6");
 	disable_irq_nosync(LPASS_Q6SS_WDOG_EXPIRED);
-
-	if (get_restart_level() == RESET_SUBSYS_MIXED)
-		smsm_reset_modem(SMSM_RESET);
 
 	return 0;
 }
