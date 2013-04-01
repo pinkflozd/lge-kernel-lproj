@@ -33,9 +33,9 @@ else
   obj-$(CONFIG_ARCH_MSM8X60) += msm_vfe31.o msm_vpe1.o
   obj-$(CONFIG_ARCH_MSM7X30) += msm_vfe31.o msm_vpe1.o
 endif
-<<<<<<< HEAD
+
 obj-$(CONFIG_ARCH_MSM8960) += msm_vfe32.o msm_vpe.o
-=======
+
 ifeq ($(CONFIG_LGE_CAMERA_HIDDEN_MENU_TEST_PATCH), y)
 ifeq ($(CONFIG_MACH_MSM7X27_PECAN),y)
 obj-$(CONFIG_ISX005) += isx005_tun-pecan.o
@@ -51,7 +51,7 @@ endif
 endif
 obj-$(CONFIG_ISX006) += isx006.o isx006_reg.o
 obj-$(CONFIG_ARCH_MSM8960) += msm_io_8960.o msm_vfe32.o msm_vpe.o
->>>>>>> ee04b12... bf283dd50041bcc4a8524b5d3f2adf1294f98a0a smd: add function smsm_change_state_nonotify
+
 obj-$(CONFIG_MT9T013) += mt9t013.o mt9t013_reg.o
 obj-$(CONFIG_SN12M0PZ) += sn12m0pz.o sn12m0pz_reg.o
 obj-$(CONFIG_MT9P012) += mt9p012_reg.o
