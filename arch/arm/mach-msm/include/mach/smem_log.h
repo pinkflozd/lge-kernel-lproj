@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2009, 2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2008-2009, 2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -89,6 +89,7 @@
 #define DEM_TIME_SYNC_POLL              (SMEM_LOG_DEM_EVENT_BASE + 0x22)
 #define DEM_TIME_SYNC_INIT              (SMEM_LOG_DEM_EVENT_BASE + 0x23)
 #define DEM_INIT                        (SMEM_LOG_DEM_EVENT_BASE + 0x25)
+#define DEM_DEBUG                       (SMEM_LOG_DEM_EVENT_BASE + 0x26)
 #else
 #define DEM_NO_SLEEP                    (SMEM_LOG_DEM_EVENT_BASE + 1)
 #define DEM_INSUF_TIME                  (SMEM_LOG_DEM_EVENT_BASE + 2)
@@ -132,6 +133,7 @@
 #define DEM_RPC_EARLY_EXIT              (SMEM_LOG_DEM_EVENT_BASE + 0x28)
 #define DEMAPPS_WAKEUP_REASON           (SMEM_LOG_DEM_EVENT_BASE + 0x29)
 #define DEM_INIT                        (SMEM_LOG_DEM_EVENT_BASE + 0x30)
+#define DEM_DEBUG                       (SMEM_LOG_DEM_EVENT_BASE + 0x31)
 #endif
 #define DEMMOD_UMTS_BASE                (SMEM_LOG_DEM_EVENT_BASE + 0x8000)
 #define DEMMOD_GL1_GO_TO_SLEEP          (DEMMOD_UMTS_BASE + 0x0000)
