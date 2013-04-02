@@ -1,4 +1,4 @@
-/* Copyright (c) 2009, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -292,4 +292,12 @@ int pmic_vib_mot_set_polarity(enum pm_vib_mot_pol pol);
 int pmic_vid_en(uint enable);
 int pmic_vid_load_detect_en(uint enable);
 
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+/* LGE_CHANGE_S : U0 Heating and DoU Issue
+ * 2012-01-26, yoonsoo.kim@lge.com,
+ * When user enter the streaming service, change the charging current
+ */
+int pmic_miniabb_charging_current_change(uint16_t charging_current);
+/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+#endif
 #endif

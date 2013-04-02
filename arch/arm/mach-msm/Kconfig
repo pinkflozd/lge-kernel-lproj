@@ -293,6 +293,7 @@ config ARCH_MSM8625
 	bool "MSM8625"
 	select ARCH_MSM_CORTEX_A5
 	select CPU_V7
+	select GIC_SECURE
 	select GPIO_MSM_V1
 	select MSM_GPIOMUX
 	select ARM_GIC
@@ -302,6 +303,7 @@ config ARCH_MSM8625
 	select MSM_RUN_QUEUE_STATS
 	select MIGHT_HAVE_CACHE_L2X0
 	select ARM_HAS_SG_CHAIN
+	select FIQ
 
 config ARCH_MSM9625
 	bool "MSM9625"
@@ -384,10 +386,11 @@ config ARCH_MSM7X27A
 	select MSM_PROC_COMM_REGULATOR
 	select MULTI_IRQ_HANDLER
 	select ARM_GIC
-	select ARCH_MSM_CORTEXMP
+#LGE_CHANGE_S : seven.kim@lge.com for v3	
+#	select ARCH_MSM_CORTEXMP
+#LGE_CHANGE_E : seven.kim@lge.com for v3	
 	select MIGHT_HAVE_CACHE_L2X0
 	select ARM_HAS_SG_CHAIN
-	select MSM_FIQ_SUPPORT
 
 config  MSM_VIC
 	bool
@@ -422,7 +425,7 @@ menu "MSM Board Selection"
 config MACH_HALIBUT
 	depends on ARCH_MSM7X01A
 	depends on MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "Halibut Board (QCT SURF7201A)"
 	help
 	  Support for the Qualcomm SURF7201A eval board.
@@ -430,7 +433,7 @@ config MACH_HALIBUT
 config MACH_MSM7201A_SURF
 	depends on ARCH_MSM7X01A
 	depends on MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM7201A SURF"
 	help
 	  Support for the Qualcomm MSM7201A SURF eval board.
@@ -438,7 +441,7 @@ config MACH_MSM7201A_SURF
 config MACH_MSM7201A_FFA
 	depends on ARCH_MSM7X01A
 	depends on MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM7201A FFA"
 	help
 	  Support for the Qualcomm MSM7201A FFA eval board.
@@ -446,7 +449,7 @@ config MACH_MSM7201A_FFA
 config MACH_TROUT
 	depends on ARCH_MSM7X01A
 	depends on MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "Trout"
 
 config MACH_MSM7X27_SURF
@@ -460,7 +463,7 @@ config MACH_MSM7X27_SURF
 config MACH_MSM7X27_FFA
 	depends on ARCH_MSM7X27
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM7x27 FFA"
 	help
 	  Support for the Qualcomm MSM7x27 FFA eval board.
@@ -468,7 +471,7 @@ config MACH_MSM7X27_FFA
 config MACH_MSM7X27A_RUMI3
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7x27A RUMI3"
         help
           Support for the Qualcomm MSM7x27A RUMI3 Emulation Platform.
@@ -476,7 +479,7 @@ config MACH_MSM7X27A_RUMI3
 config MACH_MSM7X27A_SURF
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7x27A SURF"
         help
           Support for the Qualcomm MSM7x27A SURF.
@@ -484,7 +487,7 @@ config MACH_MSM7X27A_SURF
 config MACH_MSM7X27A_FFA
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7x27A FFA"
         help
           Support for the Qualcomm MSM7x27A FFA.
@@ -492,7 +495,7 @@ config MACH_MSM7X27A_FFA
 config MACH_MSM7625A_SURF
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7625A SURF"
         help
           Support for the Qualcomm MSM7625A SURF.
@@ -500,7 +503,7 @@ config MACH_MSM7625A_SURF
 config MACH_MSM7625A_FFA
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7625A FFA"
         help
           Support for the Qualcomm MSM7625A FFA.
@@ -508,7 +511,7 @@ config MACH_MSM7625A_FFA
 config MACH_MSM7627A_QRD1
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7627A QRD1"
         help
           Support for the Qualcomm MSM7627A Reference Design.
@@ -516,7 +519,7 @@ config MACH_MSM7627A_QRD1
 config MACH_MSM7627A_QRD3
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7627A QRD3"
         help
           Support for the Qualcomm MSM7627A Reference Design.
@@ -524,27 +527,15 @@ config MACH_MSM7627A_QRD3
 config MACH_MSM7627A_EVB
         depends on ARCH_MSM7X27A
         depends on !MSM_STACKED_MEMORY
-        default y
+        default n
         bool "MSM7627A EVB"
         help
           Support for the Qualcomm MSM7627A Reference Design.
 
-config MACH_MSM7627A_EVT
-	depends on ARCH_MSM7X27A
-	depends on !MSM_STACKED_MEMORY
-	default y
-	bool "MSM7X27A EVT"
-	help
-	  Support for the Qualcomm MSM7X27A EVT Reference Design.
-	  Add support for a EVT reference design based on MSM7x27A
-	  chipset. This device is much closer to a phone than regular form
-	  factor devices, with new touch, display panel and other hardware
-	  configurations.
-
 config MACH_MSM8625_RUMI3
 	depends on ARCH_MSM8625
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM8625 RUMI3"
 	help
 	  Support for the Qualcomm MSM8625 RUMI3 Emulation Platform.
@@ -552,7 +543,7 @@ config MACH_MSM8625_RUMI3
 config MACH_MSM8625_SURF
 	depends on ARCH_MSM8625
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM8625 SURF"
 	help
 	  Support for the Qualcomm MSM8625 SURF.
@@ -560,7 +551,7 @@ config MACH_MSM8625_SURF
 config MACH_MSM8625_FFA
 	depends on ARCH_MSM8625
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM8625 FFA"
 	help
 	  Support for the Qualcomm MSM8625 FFA.
@@ -568,7 +559,7 @@ config MACH_MSM8625_FFA
 config MACH_MSM8625_EVB
 	depends on ARCH_MSM8625
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM8625 EVB"
 	help
 	  Support for the Qualcomm MSM8625 Reference Design.
@@ -576,7 +567,7 @@ config MACH_MSM8625_EVB
 config MACH_MSM8625_QRD7
 	depends on ARCH_MSM8625
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM8625 QRD7"
 	help
 	  Support for the Qualcomm MSM8625 Reference Design.
@@ -584,7 +575,7 @@ config MACH_MSM8625_QRD7
 config MACH_MSM8625_EVT
 	depends on ARCH_MSM8625
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM8625 EVT"
 	help
 	  Support for the Qualcomm MSM8625 Reference Design.
@@ -592,7 +583,7 @@ config MACH_MSM8625_EVT
 config MACH_MSM7X30_SURF
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM7x30 SURF"
        help
          Support for the Qualcomm MSM7x30 SURF eval board.
@@ -600,7 +591,7 @@ config MACH_MSM7X30_SURF
 config MACH_MSM7X30_FFA
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM7x30 FFA"
        help
          Support for the Qualcomm MSM7x30 FFA eval board.
@@ -608,7 +599,7 @@ config MACH_MSM7X30_FFA
 config MACH_MSM7X30_FLUID
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM7x30 FLUID"
        help
          Support for the Qualcomm MSM7x30 FLUID eval board.
@@ -622,7 +613,7 @@ config MACH_QSD8X50_SURF
 	depends on ARCH_QSD8X50
 	depends on MSM_SOC_REV_NONE
 	depends on MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "QSD8x50 SURF"
 	help
 	  Support for the Qualcomm QSD8x50 SURF eval board.
@@ -631,7 +622,7 @@ config MACH_QSD8X50_FFA
 	depends on ARCH_QSD8X50
 	depends on MSM_SOC_REV_NONE
 	depends on MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "QSD8x50 FFA"
 	help
 	  Support for the Qualcomm QSD8x50 FFA eval board.
@@ -639,7 +630,7 @@ config MACH_QSD8X50_FFA
 config MACH_MSM7X25_SURF
 	depends on ARCH_MSM7X25
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM7x25 SURF"
 	help
 	  Support for the Qualcomm MSM7x25 SURF eval board.
@@ -647,7 +638,7 @@ config MACH_MSM7X25_SURF
 config MACH_MSM7X25_FFA
 	depends on ARCH_MSM7X25
 	depends on !MSM_STACKED_MEMORY
-	default y
+	default n
 	bool "MSM7x25 FFA"
 	help
 	  Support for the Qualcomm MSM7x25 FFA eval board.
@@ -655,7 +646,7 @@ config MACH_MSM7X25_FFA
 config MACH_MSM8X55_SURF
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM8X55 SURF"
        help
          Support for the Qualcomm MSM8x55 SURF eval board.
@@ -663,7 +654,7 @@ config MACH_MSM8X55_SURF
 config MACH_MSM8X55_FFA
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM8X55 FFA"
        help
          Support for the Qualcomm MSM8x55 FFA eval board.
@@ -671,7 +662,7 @@ config MACH_MSM8X55_FFA
 config MACH_MSM8X55_SVLTE_FFA
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM8X55 SVLTE FFA"
        help
          Support for the Qualcomm MSM8x55 SVLTE FFA eval board.
@@ -679,7 +670,7 @@ config MACH_MSM8X55_SVLTE_FFA
 config MACH_MSM8X55_SVLTE_SURF
        depends on ARCH_MSM7X30
        depends on !MSM_STACKED_MEMORY
-       default y
+       default n
        bool "MSM8X55 SVLTE SURF"
        help
          Support for the Qualcomm MSM8x55 SVLTE SURF eval board.
@@ -888,6 +879,10 @@ config MACH_FSM9XXX_SURF
 	  FFA board.
 
 endmenu
+
+# LGE_CHANGE_S : seven.kim@lge.com for v3/v5
+source "arch/arm/mach-msm/lge/Kconfig"
+# LGE_CHANGE_E : seven.kim@lge.com for v3/v5
 
 config MSM_STACKED_MEMORY
 	bool "Stacked Memory"
@@ -2494,13 +2489,4 @@ config MSM_FIQ
 	  if apps is not responding and holding lock with irqs disabled.
 	  Modem will then generate an raise a FIQ on this line before sending
 	  SMSM reset
-config MSM_PBUS
-	bool "Enable PBUS handler for debugging"
-	depends on ARCH_MSM8625 || ARCH_MSM7X27A
-	default y
-	help
-	  Register PBUS interrupt handler. This will help
-	  in debugging PBUS hang issues. This handler reads
-	  client address which caused PBUS hang and PBUS
-	  master information at the time of hang.
 endif

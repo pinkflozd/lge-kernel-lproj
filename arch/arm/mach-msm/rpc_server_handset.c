@@ -1,6 +1,6 @@
 /* arch/arm/mach-msm/rpc_server_handset.c
  *
- * Copyright (c) 2008-2010,2012 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2008-2010,2012 Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -277,6 +277,8 @@ static void report_hs_key(uint32_t key_code, uint32_t key_parm)
 	if (key_parm == HS_REL_K)
 		key_code = key_parm;
 
+	printk("%s: reported key is %d\n",__func__,key);
+
 	switch (key) {
 	case KEY_POWER:
 	case KEY_END:
@@ -290,6 +292,8 @@ static void report_hs_key(uint32_t key_code, uint32_t key_parm)
 	case KEY_MEDIA:
 	case KEY_VOLUMEUP:
 	case KEY_VOLUMEDOWN:
+		// LGE_CHANGE,narasimha.chikka@lge.com,Add Power Key press Log
+		printk(KERN_INFO "%s,key=%d,key_code=%d \n",__func__,key,key_code);
 		input_report_key(hs->ipdev, key, (key_code != HS_REL_K));
 		break;
 	case SW_HEADPHONE_INSERT_W_MIC:
@@ -612,8 +616,11 @@ static int __devinit hs_probe(struct platform_device *pdev)
 	hs = kzalloc(sizeof(struct msm_handset), GFP_KERNEL);
 	if (!hs)
 		return -ENOMEM;
-
-	hs->sdev.name	= "h2w";
+#ifdef CONFIG_MACH_LGE
+	hs->sdev.name	= "h2w_rpc";
+#else /*qct original*/
+        hs->sdev.name	= "h2w";
+#endif /*CONFIG_MACH_LGE*/
 	hs->sdev.print_name = msm_headset_print_name;
 
 	rc = switch_dev_register(&hs->sdev);
