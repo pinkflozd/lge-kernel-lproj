@@ -1,4 +1,4 @@
-/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -395,7 +395,7 @@ static void __init msm7x27a_init_cam(void)
 		sensor_board_info_ov8825.num_vreg = 0;
 
 	}
-	if (machine_is_msm8625_evb() || machine_is_msm7627a_evt()
+	if (machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()) {
 		sensor_board_info_ov7692.cam_vreg =
 			ov7692_gpio_vreg;
@@ -413,7 +413,6 @@ static void __init msm7x27a_init_cam(void)
 	platform_device_register(&msm_camera_server);
 	if (machine_is_msm8625_surf() || machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()
-			|| machine_is_msm7627a_evt()
 			|| machine_is_msm8625_qrd7()) {
 		platform_device_register(&msm8625_device_csic0);
 		platform_device_register(&msm8625_device_csic1);
@@ -423,7 +422,6 @@ static void __init msm7x27a_init_cam(void)
 	}
 	if (machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()
-			|| machine_is_msm7627a_evt()
 			|| machine_is_msm8625_qrd7())
 		*(int *) msm7x27a_device_clkctl.dev.platform_data = 1;
 	platform_device_register(&msm7x27a_device_clkctl);
@@ -1208,7 +1206,6 @@ void __init msm7627a_camera_init(void)
 	/* LCD and camera power (VREG & LDO) init */
 	if (machine_is_msm7627a_evb() || machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()
-			|| machine_is_msm7627a_evt()
 			|| machine_is_msm7627a_qrd3()
 			|| machine_is_msm8625_qrd7()) {
 #ifndef CONFIG_MSM_CAMERA_V4L2
@@ -1225,7 +1222,6 @@ void __init msm7627a_camera_init(void)
 	} else if (machine_is_msm7627a_evb()
 			|| machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()
-			|| machine_is_msm7627a_evt()
 			|| machine_is_msm7627a_qrd3()
 			|| machine_is_msm8625_qrd7()) {
 		platform_add_devices(camera_devices_evb,
@@ -1239,7 +1235,6 @@ void __init msm7627a_camera_init(void)
 	if (!machine_is_msm7627a_qrd1() || !machine_is_msm7627a_evb()
 					|| !machine_is_msm8625_evb()
 					|| !machine_is_msm8625_evt()
-					|| !machine_is_msm7627a_evt()
 					|| !machine_is_msm7627a_qrd3()
 					|| !machine_is_msm8625_qrd7())
 		register_i2c_devices();
@@ -1270,7 +1265,6 @@ void __init msm7627a_camera_init(void)
 	} else if (machine_is_msm7627a_evb()
 			|| machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()
-			|| machine_is_msm7627a_evt()
 			|| machine_is_msm7627a_qrd3()
 			|| machine_is_msm8625_qrd7()) {
 		pr_debug("machine_is_msm7627a_evb i2c_register_board_info\n");

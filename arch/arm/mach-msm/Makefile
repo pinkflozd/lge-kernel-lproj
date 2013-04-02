@@ -245,15 +245,18 @@ obj-$(CONFIG_MACH_MSM7X27_SURF) += board-msm7x27.o devices-msm7x27.o
 obj-$(CONFIG_MACH_MSM7X27_FFA) += board-msm7x27.o devices-msm7x27.o
 obj-$(CONFIG_ARCH_MSM7X27A) += clock-pcom-lookup.o devices-msm7x27a.o
 board-7627a-all-objs += board-msm7627a-storage.o board-msm7627a-bt.o board-msm7627a-camera.o
-board-7627a-all-objs += audio-7627a-devices.o
+#board-7627a-all-objs += audio-7627a-devices.o
 board-7627a-all-objs += board-msm7627a-display.o board-msm7627a-wlan.o board-msm7627a-io.o
 obj-$(CONFIG_MACH_MSM7X27A_RUMI3) += board-msm7x27a.o board-7627a-all.o
 obj-$(CONFIG_MACH_MSM7X27A_SURF) += board-msm7x27a.o board-7627a-all.o
 obj-$(CONFIG_MACH_MSM7X27A_FFA) += board-msm7x27a.o board-7627a-all.o
+#LGE_CHANGE_S : seven.kim@lge.com kernel3.4 porting
+obj-$(CONFIG_MACH_LGE) += lge/
+#obj-$(CONFIG_MACH_LGE) += audio-7627a-devices.o
+#LGE_CHANGE_E : seven.kim@lge.com kernel3.4 porting
 obj-$(CONFIG_MACH_MSM7627A_QRD1) += board-qrd7627a.o board-7627a-all.o
 obj-$(CONFIG_MACH_MSM7627A_QRD3) += board-qrd7627a.o board-7627a-all.o
 obj-$(CONFIG_MACH_MSM7627A_EVB) += board-qrd7627a.o board-7627a-all.o
-obj-$(CONFIG_MACH_MSM7627A_EVT) += board-qrd7627a.o board-7627a-all.o
 obj-$(CONFIG_ARCH_MSM8625) += msm_smem_iface.o devices-msm7x27a.o clock-pcom-lookup.o mpm-8625.o
 obj-$(CONFIG_MACH_MSM8625_RUMI3) += board-msm7x27a.o
 obj-$(CONFIG_MACH_MSM8625_SURF) +=  board-msm7x27a.o board-7627a-all.o
@@ -371,7 +374,12 @@ ifdef CONFIG_MSM_PROC_COMM_REGULATOR
 obj-$(CONFIG_MACH_MSM7X27_SURF) += board-msm7627-regulator.o
 obj-$(CONFIG_MACH_MSM7X27_FFA) += board-msm7627-regulator.o
 obj-$(CONFIG_ARCH_MSM7X30) += board-msm7x30-regulator.o
+
+#LGE_CHANGE_S : seven.kim@lge.com for v3/v5
+ifndef CONFIG_MACH_LGE
 obj-$(CONFIG_ARCH_MSM7X27A) += board-msm7x27a-regulator.o
+endif
+#LGE_CHANGE_E : seven.kim@lge.com for v3/v5 
 endif
 
 obj-$(CONFIG_ARCH_MSM8960) += mdm2.o mdm_common.o
@@ -390,6 +398,8 @@ obj-$(CONFIG_MSM_VP_REGULATOR) += msm_vp.o
 ifdef CONFIG_MSM_CPR
 obj-$(CONFIG_DEBUG_FS) += msm_cpr-debug.o
 endif
+# LGE_CHANGE : bohyun.jung@lge.com 
+# MSM_FIQ is only supported on msm8625. Do you include below files for all msm7x chipset.
 obj-$(CONFIG_MSM_FIQ) += msm7k_fiq.o
 obj-$(CONFIG_MSM_FIQ) += msm7k_fiq_handler.o
-obj-$(CONFIG_MSM_PBUS) += pbus_support.o
+obj-$(CONFIG_MSM_FIQ) += msm_watchdog7k.o

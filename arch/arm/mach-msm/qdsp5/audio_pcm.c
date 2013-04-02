@@ -1,7 +1,7 @@
 
 /* audio_pcm.c - pcm audio decoder driver
  *
- * Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
  *
  * Based on the mp3 decoder driver in arch/arm/mach-msm/qdsp5/audio_mp3.c
  *
@@ -299,10 +299,9 @@ static int audio_enable(struct audio *audio)
 	cfg.snd_method = RPC_SND_METHOD_MIDI;
 
 	rc = audmgr_enable(&audio->audmgr, &cfg);
-	if (rc < 0) {
-		msm_adsp_dump(audio->audplay);
+	if (rc < 0)
 		return rc;
-	}
+
 	if (msm_adsp_enable(audio->audplay)) {
 		MM_ERR("msm_adsp_enable(audplay) failed\n");
 		audmgr_disable(&audio->audmgr);
@@ -342,9 +341,7 @@ static int audio_disable(struct audio *audio)
 		wake_up(&audio->write_wait);
 		msm_adsp_disable(audio->audplay);
 		audpp_disable(audio->dec_id, audio);
-		rc = audmgr_disable(&audio->audmgr);
-		if (rc < 0)
-			msm_adsp_dump(audio->audplay);
+		audmgr_disable(&audio->audmgr);
 		audio->out_needed = 0;
 		rmt_put_resource(audio);
 		audio->rmt_resource_released = 1;

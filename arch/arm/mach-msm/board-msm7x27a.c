@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -163,7 +163,7 @@ static struct msm_i2c_platform_data msm_gsbi1_qup_i2c_pdata = {
 #define MSM_PMEM_MDP_SIZE       0x2300000
 #define MSM7x25A_MSM_PMEM_MDP_SIZE       0x1500000
 
-#define MSM_PMEM_ADSP_SIZE      0x1300000
+#define MSM_PMEM_ADSP_SIZE      0x1200000
 #define MSM7x25A_MSM_PMEM_ADSP_SIZE      0xB91000
 #define CAMERA_ZSL_SIZE		(SZ_1M * 60)
 #endif

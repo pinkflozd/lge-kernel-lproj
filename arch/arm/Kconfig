@@ -9,7 +9,7 @@ config ARM
 	select RTC_LIB
 	select SYS_SUPPORTS_APM_EMULATION
 	select GENERIC_ATOMIC64 if (CPU_V6 || !CPU_32v6K || !AEABI)
-	select HAVE_OPROFILE if (HAVE_PERF_EVENTS)
+	select HAVE_OPROFILE if (HAVE_PERF_EVENTS && !MACH_MSM7X27A_U0_NO_DEBUG)
 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL
 	select HAVE_ARCH_KGDB
 	select HAVE_KPROBES if !XIP_KERNEL
@@ -1669,7 +1669,9 @@ config NR_CPUS
 	int "Maximum number of CPUs (2-32)"
 	range 2 32
 	depends on SMP
-	default "4"
+#LGE_CHANGE_S: 8x25 Supports 2 Core
+	default "2"
+#LGE_CHANGE_E
 
 config HOTPLUG_CPU
 	bool "Support for hot-pluggable CPUs (EXPERIMENTAL)"
@@ -2451,3 +2453,6 @@ source "security/Kconfig"
 source "crypto/Kconfig"
 
 source "lib/Kconfig"
+#LGE Diag Testmode porting [START]
+source "lge/Kconfig"
+#LGE Diag Testmode porting [END]

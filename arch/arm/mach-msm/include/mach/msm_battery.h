@@ -1,4 +1,4 @@
-/* Copyright (c) 2009, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -25,6 +25,11 @@ struct msm_psy_batt_pdata {
 	u32 avail_chg_sources;
 	u32 batt_technology;
 	u32 (*calculate_capacity)(u32 voltage);
+#ifdef CONFIG_LGE_LOW_VOLTAGE_BATTERY_CHECK
+	void  (*power_off_device)(void);
+#endif
 };
-
+#ifdef CONFIG_LGE_FUEL_GAUGE
+u32 msm_batt_get_vbatt_capacity(void);
+#endif
 #endif

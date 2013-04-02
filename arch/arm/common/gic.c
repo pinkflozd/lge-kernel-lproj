@@ -67,7 +67,10 @@ struct gic_chip_data {
 	u32 __percpu *saved_ppi_enable;
 	u32 __percpu *saved_ppi_conf;
 #endif
+
+#ifdef CONFIG_GIC_SECURE
 	u32 saved_dist_isr[DIV_ROUND_UP(1020, 32)];
+#endif
 	struct irq_domain *domain;
 	unsigned int gic_irqs;
 #ifdef CONFIG_GIC_NON_BANKED
@@ -642,11 +645,11 @@ static void gic_dist_save(unsigned int gic_nr)
 		gic_data[gic_nr].saved_spi_enable[i] =
 			readl_relaxed(dist_base + GIC_DIST_ENABLE_SET + i * 4);
 
-	if (is_cpu_secure()) {
-		for (i = 0; i < DIV_ROUND_UP(gic_irqs, 32); i++)
-			gic_data[gic_nr].saved_dist_isr[i] =
-				readl_relaxed(dist_base + GIC_DIST_ISR + i * 4);
-	}
+#ifdef CONFIG_GIC_SECURE
+	for (i = 0; i < DIV_ROUND_UP(gic_irqs, 32); i++)
+	 	gic_data[gic_nr].saved_dist_isr[i] =
+	   		readl_relaxed(dist_base + GIC_DIST_ISR + i * 4);
+#endif
 }
 
 /*
@@ -689,11 +692,11 @@ static void gic_dist_restore(unsigned int gic_nr)
 		writel_relaxed(gic_data[gic_nr].saved_spi_enable[i],
 			dist_base + GIC_DIST_ENABLE_SET + i * 4);
 
-	if (is_cpu_secure()) {
-		for (i = 0; i < DIV_ROUND_UP(gic_irqs, 32); i++)
-			writel_relaxed(gic_data[gic_nr].saved_dist_isr[i],
-					dist_base + GIC_DIST_ISR + i * 4);
-	}
+#ifdef CONFIG_GIC_SECURE
+	for (i = 0; i < DIV_ROUND_UP(gic_irqs, 32); i++)
+	  writel_relaxed(gic_data[gic_nr].saved_dist_isr[i],
+			dist_base + GIC_DIST_ISR + i * 4);
+#endif
 
 	writel_relaxed(saved_dist_ctrl, dist_base + GIC_DIST_CTRL);
 }
@@ -969,34 +972,6 @@ void __cpuinit gic_secondary_init(unsigned int gic_nr)
 }
 
 #ifdef CONFIG_SMP
-void gic_raise_secure_softirq(const struct cpumask *mask, unsigned int irq)
-{
-	int cpu;
-	unsigned long sgir;
-	unsigned long map = 0;
-	unsigned long flags = 0;
-	struct gic_chip_data *gic = &gic_data[0];
-
-	/* Convert our logical CPU mask into a physical one. */
-	for_each_cpu(cpu, mask)
-		map |= 1 << cpu_logical_map(cpu);
-
-	sgir = (map << 16) | irq;
-	/*
-	 * Ensure that stores to Normal memory are visible to the
-	 * other CPUs before issuing the IPI.
-	 */
-	dsb();
-
-	if (gic->need_access_lock)
-		raw_spin_lock_irqsave(&irq_controller_lock, flags);
-	/* this always happens on GIC0 */
-	writel_relaxed(sgir, gic_data_dist_base(gic) + GIC_DIST_SOFTINT);
-	if (gic->need_access_lock)
-		raw_spin_unlock_irqrestore(&irq_controller_lock, flags);
-	mb();
-}
-
 void gic_raise_softirq(const struct cpumask *mask, unsigned int irq)
 {
 	int cpu;
@@ -1032,30 +1007,24 @@ void gic_raise_softirq(const struct cpumask *mask, unsigned int irq)
 void gic_set_irq_secure(unsigned int irq)
 {
 	unsigned int gicd_isr_reg, gicd_pri_reg;
-	unsigned int mask = 0xFF;
-	void __iomem *dist_base;
-
-	dist_base = gic_data_dist_base(&gic_data[0]);
-	if (!dist_base)
-		return;
+	unsigned int mask = 0xFFFFFF00;
+	struct gic_chip_data *gic_data = &gic_data[0];
+	struct irq_data *d = irq_get_irq_data(irq);
 
 	if (is_cpu_secure()) {
 		raw_spin_lock(&irq_controller_lock);
-		gicd_isr_reg = readl_relaxed(dist_base +
-				GIC_DIST_ISR + irq / 32 * 4);
-		gicd_isr_reg &= ~BIT(irq % 32);
-		writel_relaxed(gicd_isr_reg, dist_base +
-				GIC_DIST_ISR + irq / 32 * 4);
+		gicd_isr_reg = readl_relaxed(gic_dist_base(d) +
+				GIC_DIST_ISR + gic_irq(d) / 32 * 4);
+		gicd_isr_reg &= ~BIT(gic_irq(d) % 32);
+		writel_relaxed(gicd_isr_reg, gic_dist_base(d) +
+				GIC_DIST_ISR + gic_irq(d) / 32 * 4);
 		/* Also increase the priority of that irq */
-		gicd_pri_reg = readl_relaxed(dist_base +
-					GIC_DIST_PRI + ((irq / 4) * 4));
-		mask = mask << (irq % 4) * 8;
-		mask = ~mask;
+		gicd_pri_reg = readl_relaxed(gic_dist_base(d) +
+					GIC_DIST_PRI + (gic_irq(d) * 4 / 4));
 		gicd_pri_reg &= mask;
-		/* Priority of 0x80 > 0xA0 */
-		gicd_pri_reg |= 0x80 << ((irq % 4) * 8);
-		writel_relaxed(gicd_pri_reg, dist_base + GIC_DIST_PRI +
-				(irq / 4) * 4);
+		gicd_pri_reg |= 0x80; /* Priority of 0x80 > 0xA0 */
+		writel_relaxed(gicd_pri_reg, gic_dist_base(d) + GIC_DIST_PRI +
+				gic_irq(d) * 4 / 4);
 		mb();
 		raw_spin_unlock(&irq_controller_lock);
 	} else {

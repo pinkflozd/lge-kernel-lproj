@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2008 HTC Corporation.
  * Copyright (C) 2007 Google, Inc.
- * Copyright (c) 2011 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011 Code Aurora Forum. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -33,7 +33,12 @@
 #endif
 
 #define HTC_PROCEDURE_SET_VIB_ON_OFF	21
+
+#if 1
+static int voltage_level = 3000;
+#else
 #define PMIC_VIBRATOR_LEVEL	(3000)
+#endif
 
 static struct work_struct work_vibrator_on;
 static struct work_struct work_vibrator_off;
@@ -51,7 +56,11 @@ static void set_pmic_vibrator(int on)
 	}
 
 	if (on)
+		#if 1
+		rc = pmic_vib_mot_set_volt(voltage_level);
+		#else
 		rc = pmic_vib_mot_set_volt(PMIC_VIBRATOR_LEVEL);
+		#endif
 	else
 		rc = pmic_vib_mot_set_volt(0);
 
@@ -97,10 +106,13 @@ static void pmic_vibrator_off(struct work_struct *work)
 	set_pmic_vibrator(0);
 }
 
+#if 1
+#else
 static void timed_vibrator_on(struct timed_output_dev *sdev)
 {
 	schedule_work(&work_vibrator_on);
 }
+#endif
 
 static void timed_vibrator_off(struct timed_output_dev *sdev)
 {
@@ -110,13 +122,18 @@ static void timed_vibrator_off(struct timed_output_dev *sdev)
 static void vibrator_enable(struct timed_output_dev *dev, int value)
 {
 	hrtimer_cancel(&vibe_timer);
-
+    printk(KERN_INFO"[msm_vibrator] vibrator_enable, value : %d",value);
+	cancel_work_sync(&work_vibrator_off);
 	if (value == 0)
 		timed_vibrator_off(dev);
 	else {
 		value = (value > 15000 ? 15000 : value);
+        /*[LGE_BSP_START][yunmo.yang@lge.com] Unlimit Vibrator Bug fix*/
+        if(value < 10)
+            value = 10;
+        /*[LGE_BSP_END][yunmo.yang@lge.com] Unlimit Vibrator Bug fix*/
 
-		timed_vibrator_on(dev);
+		set_pmic_vibrator(1);
 
 		hrtimer_start(&vibe_timer,
 			      ktime_set(value / 1000, (value % 1000) * 1000000),
@@ -134,6 +151,20 @@ static int vibrator_get_time(struct timed_output_dev *dev)
 	return 0;
 }
 
+
+static void vibrator_set_voltage(struct timed_output_dev *dev, int value)
+{
+		voltage_level = value;
+}
+
+
+static int vibrator_get_voltage(struct timed_output_dev *dev)
+{
+	return voltage_level;
+}
+
+
+
 static enum hrtimer_restart vibrator_timer_func(struct hrtimer *timer)
 {
 	timed_vibrator_off(NULL);
@@ -144,6 +175,8 @@ static struct timed_output_dev pmic_vibrator = {
 	.name = "vibrator",
 	.get_time = vibrator_get_time,
 	.enable = vibrator_enable,
+	.voltage = vibrator_set_voltage,
+	.get_voltage = vibrator_get_voltage,
 };
 
 void __init msm_init_pmic_vibrator(void)
