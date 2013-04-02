@@ -349,6 +349,22 @@ extern int func_ptr_is_kernel_text(void *ptr);
 struct pid;
 extern struct pid *session_of_pgrp(struct pid *pgrp);
 
+/*LGE_CHANGE_S : seven.kim@lge.com demigot crash handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+extern void set_crash_store_enable(void);
+extern void set_crash_store_disable(void);
+extern void set_kernel_panicmode(int val);
+extern int get_kernel_panicmode(void);
+/*LGE_CHANGE_S : youngbae.choi@lge.com for silence reset */
+#ifdef CONFIG_LGE_SILENCE_RESET
+extern void set_kernel_silencemode(int val);
+extern int get_kernel_silencemode(void);
+#endif
+/*LGE_CHANGE_E : youngbae.choi@lge.com for silence reset */
+extern void store_crash_log(char *p);
+#endif
+extern void set_magicnum_restart(unsigned reason);
+/*LGE_CHANGE_E : seven.kim@lge.com demigot crash handler*/
 unsigned long int_sqrt(unsigned long);
 
 extern void bust_spinlocks(int yes);

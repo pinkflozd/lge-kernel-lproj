@@ -1278,6 +1278,16 @@ enum v4l2_colorfx {
 #define V4L2_CID_SPECIAL_EFFECT			(V4L2_CID_BASE+43)
 /* Minimum number of buffer neede by the device */
 
+/* LGE_CHANGE_S : 2012-10-04 sungmin.cho@lge.com vt camera night mode */
+#define V4L2_CID_NIGHT_MODE			(V4L2_CID_BASE+44)
+/* LGE_CHANGE_E : 2012-10-04 sungmin.cho@lge.com vt camera night mode */
+/* LGE_CHANGE_S : 2012-10-04 sungmin.cho@lge.com vt camera fps range */
+#define V4L2_CID_FPS_RANGE			(V4L2_CID_BASE+45)
+/* LGE_CHANGE_E : 2012-10-04 sungmin.cho@lge.com vt camera fps range */
+//LGE_CAMERA_S: V3 CAMERA Scene mode applied hong.junki@lge.com 2012/10/08
+#define V4L2_CID_BESTSHOT_MODE		(V4L2_CID_BASE+46)
+//LGE_CAMERA_E: V3 CAMERA Scene mode applied hong.junki@lge.com 2012/10/08
+
 /*  MPEG-class control IDs defined by V4L2 */
 #define V4L2_CID_MPEG_BASE 			(V4L2_CTRL_CLASS_MPEG | 0x900)
 #define V4L2_CID_MPEG_CLASS 			(V4L2_CTRL_CLASS_MPEG | 1)

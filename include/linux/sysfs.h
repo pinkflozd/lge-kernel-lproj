@@ -180,6 +180,10 @@ void sysfs_put(struct sysfs_dirent *sd);
 
 int __must_check sysfs_init(void);
 
+#ifdef CONFIG_LGE_LAST_SYSFS_FILE_INFO
+void sysfs_printk_last_file(void);
+#endif
+
 #else /* CONFIG_SYSFS */
 
 static inline int sysfs_schedule_callback(struct kobject *kobj,
@@ -340,7 +344,11 @@ static inline int __must_check sysfs_init(void)
 {
 	return 0;
 }
-
+#ifdef CONFIG_LGE_LAST_SYSFS_FILE_INFO
+static inline void sysfs_printk_last_file(void)
+{
+}
+#endif
 #endif /* CONFIG_SYSFS */
 
 #endif /* _SYSFS_H_ */

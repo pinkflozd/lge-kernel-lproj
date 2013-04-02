@@ -11,7 +11,8 @@
 #include <linux/videodev2.h>
 
 
-#undef FM_DEBUG
+#define FM_DEBUG		//fm driver debug
+#define FM_DEBUG_I2C    //fm i2c debug
 
 /* constants */
 #define  RDS_BLOCKS_NUM             (4)

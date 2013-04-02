@@ -175,6 +175,8 @@ struct power_supply {
 	struct work_struct changed_work;
 	spinlock_t changed_lock;
 	bool changed;
+    /* LGE_CHANGE,narasimha.chikka@lge.com,Add power supply register flag */   
+    bool  registered;
 	struct wake_lock work_wake_lock;
 
 #ifdef CONFIG_LEDS_TRIGGERS
