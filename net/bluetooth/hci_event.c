@@ -1,6 +1,6 @@
 /*
    BlueZ - Bluetooth protocol stack for Linux
-   Copyright (c) 2000-2001, 2010-2012, The Linux Foundation. All rights reserved.
+   Copyright (c) 2000-2001, 2010-2012, Code Aurora Forum. All rights reserved.
 
    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
 
@@ -1642,6 +1642,10 @@ static inline void hci_conn_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 		if (conn->type == ACL_LINK) {
 			struct hci_cp_read_remote_version cp;
 			cp.handle = ev->handle;
+// +s LGBT_COMMON_PATCH_SR01017282 sunmee.choi@lge.com 2012-11-26 performance issue (opp request time)
+			hci_send_cmd(hdev, HCI_OP_READ_CLOCK_OFFSET,
+				sizeof(cp), &cp);
+// +e LGBT_COMMON_PATCH_SR01017282
 			hci_send_cmd(hdev, HCI_OP_READ_REMOTE_VERSION,
 				sizeof(cp), &cp);
 		}
@@ -1747,7 +1751,11 @@ static inline void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *sk
 			cp.rx_bandwidth   = cpu_to_le32(0x00001f40);
 			cp.max_latency    = cpu_to_le16(0x000A);
 			cp.content_format = cpu_to_le16(hdev->voice_setting);
-			cp.retrans_effort = 0x01;
+
+			// LGBT_BLUEZCOM_BUGFIX_SCORECONNFAILNTG, 
+			// sco reconnection fail with NTG4.5 (qct patch in e0), jeonghoon.lim@lge.com
+			// cp.retrans_effort = 0x01; // original
+			cp.retrans_effort = 0xff; 
 
 			hci_send_cmd(hdev, HCI_OP_ACCEPT_SYNC_CONN_REQ,
 							sizeof(cp), &cp);
