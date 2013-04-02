@@ -66,7 +66,9 @@ config BROKEN
 config BROKEN_ON_SMP
 	bool
 	depends on BROKEN || !SMP
-	default y
+#LGE_CHANGE_S : seven.kim@lge.com change default value to n
+	default n
+#LGE_CHANGE_E : seven.kim@lge.com change default value to n
 
 config INIT_ENV_ARG_LIMIT
 	int
@@ -1246,7 +1248,7 @@ config PCI_QUIRKS
 config SLUB_DEBUG
 	default y
 	bool "Enable SLUB debugging support" if EXPERT
-	depends on SLUB && SYSFS
+	depends on SLUB && SYSFS && !MACH_MSM7X27A_U0
 	help
 	  SLUB has extensive debug support features. Disabling these can
 	  result in significant savings in code size. This also disables
