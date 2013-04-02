@@ -35,9 +35,23 @@
 #include <asm/tls.h>
 #include <asm/system_misc.h>
 
+/*LGE_CHANGE_S : youngbae.choi@lge.com Demigod Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+#include <linux/rtc.h>
+#endif
+/*LGE_CHANGE_E : youngbae.choi@lge.com Demigod Crash Handler*/
+
 #include "signal.h"
 
 static const char *handler[]= { "prefetch abort", "data abort", "address exception", "interrupt" };
+
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+char tbuf[100];
+static int first_call_chain = 0;
+static int first_die = 1;
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 
 void *vectors_page;
 
@@ -57,7 +71,18 @@ static void dump_mem(const char *, const char *, unsigned long, unsigned long);
 void dump_backtrace_entry(unsigned long where, unsigned long from, unsigned long frame)
 {
 #ifdef CONFIG_KALLSYMS
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+	if(first_call_chain)
+		set_crash_store_enable();
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 	printk("[<%08lx>] (%pS) from [<%08lx>] (%pS)\n", where, (void *)where, from, (void *)from);
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+	set_crash_store_disable();
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 #else
 	printk("Function entered at [<%08lx>] from [<%08lx>]\n", where, from);
 #endif
@@ -233,15 +258,63 @@ void show_stack(struct task_struct *tsk, unsigned long *sp)
 #define S_ISA " ARM"
 #endif
 
+/*LGE_CHANGE_S : youngbae.choi@lge.com Demigod Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+static void set_crash_time_show(void)
+{
+	/* cpu currently holding logbuf_lock */
+	static volatile unsigned int printk_cpu = UINT_MAX;
+
+	unsigned tlen;
+	unsigned long long t;
+	unsigned long nanosec_rem;
+	struct timespec ts;
+	struct rtc_time tm;				
+
+	t = cpu_clock(printk_cpu);
+	nanosec_rem = do_div(t, 1000000000);	
+	
+	getnstimeofday(&ts);
+	rtc_time_to_tm(ts.tv_sec, &tm);
+	if(tm.tm_year < 90) // when CS network is disable.
+			rtc_time_to_tm(ts.tv_sec, &tm);
+
+	tlen = sprintf(tbuf, "(%d-%02d-%02d %02d:%02d:%02d UTC)(%5lu.%06lu) ",
+			tm.tm_year + 1900, 
+			tm.tm_mon + 1, tm.tm_mday,
+			tm.tm_hour, tm.tm_min, tm.tm_sec,(unsigned long) t,
+			nanosec_rem / 1000);	
+}
+#endif
+/*LGE_CHANGE_E : youngbae.choi@lge.com Demigod Crash Handler*/
+
 static int __die(const char *str, int err, struct thread_info *thread, struct pt_regs *regs)
 {
 	struct task_struct *tsk = thread->task;
 	static int die_counter;
 	int ret;
-
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+        if (first_die) {
+	   first_call_chain = 1;
+	   first_die = 0;
+	}
+#ifndef CONFIG_MACH_MSM7X25A_V3
+	set_crash_store_enable();
+#endif	
+	set_crash_time_show();
+	printk(KERN_EMERG "%s\n", tbuf);
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 	printk(KERN_EMERG "Internal error: %s: %x [#%d]" S_PREEMPT S_SMP
 	       S_ISA "\n", str, err, ++die_counter);
-
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+#ifndef CONFIG_MACH_MSM7X25A_V3
+	set_crash_store_disable();
+#endif
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 	/* trap and error numbers are mostly meaningless on ARM */
 	ret = notify_die(DIE_OOPS, str, regs, err, tsk->thread.trap_no, SIGSEGV);
 	if (ret == NOTIFY_STOP)
@@ -257,6 +330,12 @@ static int __die(const char *str, int err, struct thread_info *thread, struct pt
 			 THREAD_SIZE + (unsigned long)task_stack_page(tsk));
 		dump_backtrace(regs, tsk);
 		dump_instr(KERN_EMERG, regs);
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+                /* prevent from displaying call-chain after first oops */
+		first_call_chain = 0;
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 	}
 
 	return ret;
