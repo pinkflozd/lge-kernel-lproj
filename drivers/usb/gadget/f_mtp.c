@@ -1031,8 +1031,8 @@ static int mtp_ctrlrequest(struct usb_composite_dev *cdev,
 	} else if ((ctrl->bRequestType & USB_TYPE_MASK) == USB_TYPE_CLASS) {
 		DBG(cdev, "class request: %d index: %d value: %d length: %d\n",
 			ctrl->bRequest, w_index, w_value, w_length);
-
-		if (ctrl->bRequest == MTP_REQ_CANCEL && w_index == 0
+		/* LGE_CNANGE_S lbh.lee@lge.com window7 mtp transfer error fix   */
+		if (ctrl->bRequest == MTP_REQ_CANCEL && (w_index == 0 || w_index == 3) 
 				&& w_value == 0) {
 			DBG(cdev, "MTP_REQ_CANCEL\n");
 
@@ -1050,7 +1050,8 @@ static int mtp_ctrlrequest(struct usb_composite_dev *cdev,
 			 */
 			value = w_length;
 		} else if (ctrl->bRequest == MTP_REQ_GET_DEVICE_STATUS
-				&& w_index == 0 && w_value == 0) {
+				&& (w_index == 0 || w_index == 3) && w_value == 0) { 
+			/* LGE_CNANGE_E lbh.lee@lge.com window7 mtp transfer error fix   */
 			struct mtp_device_status *status = cdev->req->buf;
 			status->wLength =
 				__constant_cpu_to_le16(sizeof(*status));
@@ -1099,6 +1100,13 @@ mtp_function_bind(struct usb_configuration *c, struct usb_function *f)
 	if (id < 0)
 		return id;
 	mtp_interface_desc.bInterfaceNumber = id;
+
+/* 2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] ptp & MS DESC Assignment  [START] */
+#ifdef CONFIG_LGE_USB_GADGET_DRIVER	
+	 ptp_interface_desc.bInterfaceNumber = id;	
+	mtp_ext_config_desc.function.bFirstInterfaceNumber = id;
+#endif
+/* 2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] ptp & MS DESC Assignment  [END] */
 
 	/* allocate endpoints */
 	ret = mtp_create_bulk_endpoints(dev, &mtp_fullspeed_in_desc,

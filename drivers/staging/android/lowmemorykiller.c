@@ -38,6 +38,17 @@
 #include <linux/rcupdate.h>
 #include <linux/notifier.h>
 
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)
+#ifndef OOM_SCORE_CAL 
+#define	OOM_SCORE_CAL			((OOM_SCORE_ADJ_MAX) / -OOM_DISABLE) 
+#endif
+// This is a process currently hosting a backup operation. Killing it is not entirely fatal but is generally a bad idea.
+#define BACKUP_APP_ADJ			4		
+#define AGGRESSIVE_ADJ_SCORE 	(BACKUP_APP_ADJ * OOM_SCORE_CAL)
+
+static int s_miss_cnt = 0;
+#endif
+
 static uint32_t lowmem_debug_level = 2;
 static int lowmem_adj[6] = {
 	0,
@@ -62,6 +73,38 @@ static unsigned long lowmem_deathpending_timeout;
 			printk(x);			\
 	} while (0)
 
+
+/* LGE_CHANGE : bohyun.jung@lge.com 
+ * reduce burden of lowmme_shrink() divide is expensive routine for mass-tier chipset.
+ * compiler does take divide burden and use constant value. kernel/fs/proc/base.c together. */
+#if defined (CONFIG_LGE_DEATHPENDING_LMK)
+
+#ifndef OOM_SCORE_CAL 
+#define	OOM_SCORE_CAL	((OOM_SCORE_ADJ_MAX) / -OOM_DISABLE) 
+#endif
+
+static struct task_struct *lowmem_deathpending;
+
+static int
+task_notify_func(struct notifier_block *self, unsigned long val, void *data);
+
+static struct notifier_block task_nb = {
+	.notifier_call	= task_notify_func,
+};
+
+static int
+task_notify_func(struct notifier_block *self, unsigned long val, void *data)
+{
+	struct task_struct *task = data;
+
+	lowmem_print(6, "task_notify_func() is called.\n");
+	if (task == lowmem_deathpending)
+		lowmem_deathpending = NULL;
+
+	return NOTIFY_OK;
+}
+#endif	// end of CONFIG_LGE_DEATHPENDING_LMK
+
 static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 {
 	struct task_struct *tsk;
@@ -77,6 +120,22 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 	int other_file = global_page_state(NR_FILE_PAGES) -
 						global_page_state(NR_SHMEM);
 
+	/* LGE_CHANGE : bohyun.jung@lge.com 
+	 * return if victim is already selected to kill. prevent nested lowmem_shrink() */
+#if defined (CONFIG_LGE_DEATHPENDING_LMK)
+	/*
+	 * If we already have a death outstanding, then bail out right away; 
+	 * indicating to vmscan that we have nothing further to offer on this pass.
+	 *
+	 */
+	if (lowmem_deathpending &&
+	    time_before_eq(jiffies, lowmem_deathpending_timeout))
+		return 0;
+#endif
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)
+	s_miss_cnt++;
+#endif
+
 	if (lowmem_adj_size < array_size)
 		array_size = lowmem_adj_size;
 	if (lowmem_minfree_size < array_size)
@@ -84,14 +143,39 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 	for (i = 0; i < array_size; i++) {
 		if (other_free < lowmem_minfree[i] &&
 		    other_file < lowmem_minfree[i]) {
+		   /*LGE_CHANGE_S : seven.kim@lge.com low memory killer bug patch */
+#ifdef CONFIG_MACH_LGE
+		   	if (lowmem_adj[i] == OOM_ADJUST_MAX)
+    			min_score_adj = OOM_SCORE_ADJ_MAX;
+			else
+#if defined (CONFIG_LGE_DEATHPENDING_LMK)
+    			min_score_adj = lowmem_adj[i] * OOM_SCORE_CAL;
+#else
+    			min_score_adj = (lowmem_adj[i] * OOM_SCORE_ADJ_MAX) / -OOM_DISABLE;
+#endif
+#else /*qct original*/
 			min_score_adj = lowmem_adj[i];
+#endif
+			/*LGE_CHANGE_E : seven.kim@lge.com low memory killer bug patch */
 			break;
 		}
 	}
 	if (sc->nr_to_scan > 0)
+	{
 		lowmem_print(3, "lowmem_shrink %lu, %x, ofree %d %d, ma %d\n",
 				sc->nr_to_scan, sc->gfp_mask, other_free,
 				other_file, min_score_adj);
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)	
+		if (s_miss_cnt > 16 )
+		{
+			// set minimum score here (adj score for backup(4)). on for loop, biggest oom_socre_adj is selected.
+			if ( min_score_adj > AGGRESSIVE_ADJ_SCORE) 
+				min_score_adj = AGGRESSIVE_ADJ_SCORE;
+		}
+		s_miss_cnt++;			
+#endif
+	}
+
 	rem = global_page_state(NR_ACTIVE_ANON) +
 		global_page_state(NR_ACTIVE_FILE) +
 		global_page_state(NR_INACTIVE_ANON) +
@@ -147,10 +231,16 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		lowmem_print(1, "send sigkill to %d (%s), adj %d, size %d\n",
 			     selected->pid, selected->comm,
 			     selected_oom_score_adj, selected_tasksize);
+#if defined (CONFIG_LGE_DEATHPENDING_LMK)
+		lowmem_deathpending = selected;
+#endif
 		lowmem_deathpending_timeout = jiffies + HZ;
 		send_sig(SIGKILL, selected, 0);
 		set_tsk_thread_flag(selected, TIF_MEMDIE);
 		rem -= selected_tasksize;
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)
+		s_miss_cnt = 0;
+#endif
 	}
 	lowmem_print(4, "lowmem_shrink %lu, %x, return %d\n",
 		     sc->nr_to_scan, sc->gfp_mask, rem);
@@ -165,6 +255,9 @@ static struct shrinker lowmem_shrinker = {
 
 static int __init lowmem_init(void)
 {
+#if defined (CONFIG_LGE_DEATHPENDING_LMK)
+	task_free_register(&task_nb);
+#endif
 	register_shrinker(&lowmem_shrinker);
 	return 0;
 }
@@ -172,6 +265,9 @@ static int __init lowmem_init(void)
 static void __exit lowmem_exit(void)
 {
 	unregister_shrinker(&lowmem_shrinker);
+#if defined (CONFIG_LGE_DEATHPENDING_LMK)
+	task_free_unregister(&task_nb);
+#endif
 }
 
 module_param_named(cost, lowmem_shrinker.seeks, int, S_IRUGO | S_IWUSR);

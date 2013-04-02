@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -752,7 +752,7 @@ void mdp4_dsi_cmd_dma_busy_check(void);
 
 
 
-#ifdef CONFIG_FB_MSM_MIPI_DSI
+#if defined(CONFIG_FB_MSM_MIPI_DSI) || defined (CONFIG_FB_MSM_EBI2) /*LGE_CHANGE : added EBI CONFIG for v3 lcd*/
 void mdp_dsi_cmd_overlay_suspend(struct msm_fb_data_type *mfd);
 int mdp4_dsi_cmd_on(struct platform_device *pdev);
 int mdp4_dsi_cmd_off(struct platform_device *pdev);

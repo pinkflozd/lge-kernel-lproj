@@ -51,6 +51,33 @@ static ssize_t enable_store(
 
 static DEVICE_ATTR(enable, S_IRUGO | S_IWUSR, enable_show, enable_store);
 
+static ssize_t voltage_show(struct device *dev, struct device_attribute *attr,
+		char *buf)
+{
+	struct timed_output_dev *tdev = dev_get_drvdata(dev);
+	int vol = tdev->get_voltage(tdev);
+
+	return sprintf(buf, "%d\n", vol);
+}
+
+static ssize_t voltage_store(
+		struct device *dev, struct device_attribute *attr,
+		const char *buf, size_t size)
+{
+	struct timed_output_dev *tdev = dev_get_drvdata(dev);
+	int value;
+
+	if (sscanf(buf, "%d", &value) != 1)
+		return -EINVAL;
+
+	tdev->voltage(tdev, value);
+
+	return size;
+}
+
+static DEVICE_ATTR(voltage, S_IRUGO | S_IWUSR, voltage_show, voltage_store);
+
+
 static int create_timed_output_class(void)
 {
 	if (!timed_output_class) {
@@ -81,6 +108,11 @@ int timed_output_dev_register(struct timed_output_dev *tdev)
 		return PTR_ERR(tdev->dev);
 
 	ret = device_create_file(tdev->dev, &dev_attr_enable);
+	if (ret < 0)
+		goto err_create_file;
+
+	/*Vibrator Voltage Regist*/
+	ret = device_create_file(tdev->dev, &dev_attr_voltage);
 	if (ret < 0)
 		goto err_create_file;
 

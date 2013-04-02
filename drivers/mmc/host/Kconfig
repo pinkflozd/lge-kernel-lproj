@@ -465,6 +465,15 @@ config MMC_MSM
 	  This provides support for the SD/MMC cell found in the
           MSM and QSD SOCs from Qualcomm.
 
+#GE_CHANGE_S : seven.kim@lge.com pre-CS merge
+config MMC_MSM_CARD_HW_DETECTION
+	boolean "Qualcomm MMC Hardware detection support"
+	depends on MMC_MSM
+	default n
+	help
+	  Select Y if the hardware has support to detect card insertion/removal.
+#LGE_CHANGE_E : seven.kim@lge.com pre-CS merge
+
 config MMC_MSM_SDC1_SUPPORT
 	boolean "Qualcomm SDC1 support"
 	depends on MMC_MSM

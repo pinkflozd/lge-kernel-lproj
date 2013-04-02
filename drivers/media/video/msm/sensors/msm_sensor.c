@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -14,6 +14,7 @@
 #include "msm.h"
 #include "msm_ispif.h"
 #include "msm_camera_i2c_mux.h"
+
 
 /*=============================================================*/
 int32_t msm_sensor_adjust_frame_lines(struct msm_sensor_ctrl_t *s_ctrl,
@@ -53,10 +54,12 @@ int32_t msm_sensor_adjust_frame_lines(struct msm_sensor_ctrl_t *s_ctrl,
 int32_t msm_sensor_write_init_settings(struct msm_sensor_ctrl_t *s_ctrl)
 {
 	int32_t rc;
+	printk("%s : E\n", __func__); // sungmin.cho@lge.com
 	rc = msm_sensor_write_all_conf_array(
 		s_ctrl->sensor_i2c_client,
 		s_ctrl->msm_sensor_reg->init_settings,
 		s_ctrl->msm_sensor_reg->init_size);
+	printk("%s : X\n", __func__); // sungmin.cho@lge.com
 	return rc;
 }
 
@@ -106,6 +109,7 @@ int32_t msm_sensor_write_output_settings(struct msm_sensor_ctrl_t *s_ctrl,
 
 void msm_sensor_start_stream(struct msm_sensor_ctrl_t *s_ctrl)
 {
+	pr_err("%s: E\n", __func__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	msm_camera_i2c_write_tbl(
 		s_ctrl->sensor_i2c_client,
 		s_ctrl->msm_sensor_reg->start_stream_conf,
@@ -115,6 +119,7 @@ void msm_sensor_start_stream(struct msm_sensor_ctrl_t *s_ctrl)
 
 void msm_sensor_stop_stream(struct msm_sensor_ctrl_t *s_ctrl)
 {
+	pr_err("%s: E\n", __func__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	msm_camera_i2c_write_tbl(
 		s_ctrl->sensor_i2c_client,
 		s_ctrl->msm_sensor_reg->stop_stream_conf,
@@ -124,6 +129,7 @@ void msm_sensor_stop_stream(struct msm_sensor_ctrl_t *s_ctrl)
 
 void msm_sensor_group_hold_on(struct msm_sensor_ctrl_t *s_ctrl)
 {
+	pr_err("%s: E\n", __func__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	msm_camera_i2c_write_tbl(
 		s_ctrl->sensor_i2c_client,
 		s_ctrl->msm_sensor_reg->group_hold_on_conf,
@@ -133,6 +139,7 @@ void msm_sensor_group_hold_on(struct msm_sensor_ctrl_t *s_ctrl)
 
 void msm_sensor_group_hold_off(struct msm_sensor_ctrl_t *s_ctrl)
 {
+	pr_err("%s: E\n", __func__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	msm_camera_i2c_write_tbl(
 		s_ctrl->sensor_i2c_client,
 		s_ctrl->msm_sensor_reg->group_hold_off_conf,
@@ -143,6 +150,7 @@ void msm_sensor_group_hold_off(struct msm_sensor_ctrl_t *s_ctrl)
 int32_t msm_sensor_set_fps(struct msm_sensor_ctrl_t *s_ctrl,
 						struct fps_cfg *fps)
 {
+	pr_err("%s: E: fps_div = %d\n", __func__, fps->fps_div); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	s_ctrl->fps_divider = fps->fps_div;
 
 	return 0;
@@ -207,6 +215,7 @@ int32_t msm_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 	int32_t rc = 0;
 	static int csi_config;
 
+	printk("%s : E\n", __func__); // sungmin.cho@lge.com
 	s_ctrl->func_tbl->sensor_stop_stream(s_ctrl);
 	msleep(30);
 	if (update_type == MSM_SENSOR_REG_INIT) {
@@ -239,6 +248,7 @@ int32_t msm_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 		s_ctrl->func_tbl->sensor_start_stream(s_ctrl);
 		msleep(50);
 	}
+	printk("%s : X\n", __func__); // sungmin.cho@lge.com
 	return rc;
 }
 int32_t msm_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
@@ -317,7 +327,7 @@ int32_t msm_sensor_mode_init(struct msm_sensor_ctrl_t *s_ctrl,
 	s_ctrl->fps_divider = Q10;
 	s_ctrl->cam_mode = MSM_SENSOR_MODE_INVALID;
 
-	CDBG("%s: %d\n", __func__, __LINE__);
+	pr_err("%s: E: %d\n", __func__, __LINE__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	if (mode != s_ctrl->cam_mode) {
 		s_ctrl->curr_res = MSM_SENSOR_INVALID_RES;
 		s_ctrl->cam_mode = mode;
@@ -330,6 +340,7 @@ int32_t msm_sensor_mode_init(struct msm_sensor_ctrl_t *s_ctrl,
 			rc = s_ctrl->func_tbl->sensor_setting(s_ctrl,
 				MSM_SENSOR_REG_INIT, 0);
 	}
+	pr_err("%s: X: %d\n", __func__, __LINE__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	return rc;
 }
 
@@ -412,6 +423,7 @@ int32_t msm_sensor_config(struct msm_sensor_ctrl_t *s_ctrl, void __user *argp)
 	mutex_lock(s_ctrl->msm_sensor_mutex);
 	CDBG("msm_sensor_config: cfgtype = %d\n",
 	cdata.cfgtype);
+	pr_err("%s: cfgtype = %d\n", __func__, cdata.cfgtype); /* LGE_CHANGE, For debugging, 2012-09-13, jeongda.lee@lge.com */
 		switch (cdata.cfgtype) {
 		case CFG_SET_FPS:
 		case CFG_SET_PICT_FPS:
@@ -502,6 +514,23 @@ int32_t msm_sensor_config(struct msm_sensor_ctrl_t *s_ctrl, void __user *argp)
 				rc = -EFAULT;
 			break;
 
+		//Start :randy@qualcomm.com for calibration 2012.03.25
+		case CFG_GET_CALIB_DATA:
+			if (s_ctrl->func_tbl->sensor_get_eeprom_data
+				== NULL) {
+				rc = -EFAULT;
+				break;
+			}
+			rc = s_ctrl->func_tbl->sensor_get_eeprom_data(
+				s_ctrl,
+				&cdata);
+
+			if (copy_to_user((void *)argp,
+				&cdata,
+				sizeof(cdata)))
+				rc = -EFAULT;
+			break;
+		//End :randy@qualcomm.com for calibration 2012.03.25
 		case CFG_START_STREAM:
 			if (s_ctrl->func_tbl->sensor_start_stream == NULL) {
 				rc = -EFAULT;
@@ -532,6 +561,28 @@ int32_t msm_sensor_config(struct msm_sensor_ctrl_t *s_ctrl, void __user *argp)
 				sizeof(struct sensor_cfg_data)))
 				rc = -EFAULT;
 			break;
+
+/* LGE_CHANGE_S : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+		case CFG_SET_AEC_ROI_PARAMS:
+			rc = s_ctrl->func_tbl->
+				sensor_set_aec_roi(
+					s_ctrl,
+					cdata.cfg.aec_roi_pos);
+			break;
+/* LGE_CHANGE_E : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/* LGE_CHANGE_S : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+		case CFG_GET_SOC_SNAPSHOT_DATA:
+			if (s_ctrl->func_tbl->sensor_get_soc_snapshotdata == NULL) {
+				break;
+			}
+			rc = s_ctrl->func_tbl->sensor_get_soc_snapshotdata(s_ctrl, &cdata.cfg.snapshot_data);
+
+			if (copy_to_user((void *)argp,
+				&cdata,
+				sizeof(struct sensor_cfg_data)))
+				rc = -EFAULT;
+			break;
+/* LGE_CHANGE_E : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
 
 		default:
 			rc = -EFAULT;
@@ -572,6 +623,7 @@ int32_t msm_sensor_power_up(struct msm_sensor_ctrl_t *s_ctrl)
 	int32_t rc = 0;
 	struct msm_camera_sensor_info *data = s_ctrl->sensordata;
 	CDBG("%s: %d\n", __func__, __LINE__);
+	pr_err("%s: E: %s\n", __func__, data->sensor_name); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	s_ctrl->reg_ptr = kzalloc(sizeof(struct regulator *)
 			* data->sensor_platform_info->num_vreg, GFP_KERNEL);
 	if (!s_ctrl->reg_ptr) {
@@ -628,6 +680,7 @@ int32_t msm_sensor_power_up(struct msm_sensor_ctrl_t *s_ctrl)
 		data->sensor_platform_info->i2c_conf->use_i2c_mux)
 		msm_sensor_enable_i2c_mux(data->sensor_platform_info->i2c_conf);
 
+	pr_err("%s: X\n", __func__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	return rc;
 
 enable_clk_failed:
@@ -654,6 +707,8 @@ int32_t msm_sensor_power_down(struct msm_sensor_ctrl_t *s_ctrl)
 {
 	struct msm_camera_sensor_info *data = s_ctrl->sensordata;
 	CDBG("%s\n", __func__);
+	pr_err("%s: E: %s\n", __func__, data->sensor_name); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
+
 	if (data->sensor_platform_info->i2c_conf &&
 		data->sensor_platform_info->i2c_conf->use_i2c_mux)
 		msm_sensor_disable_i2c_mux(
@@ -674,6 +729,7 @@ int32_t msm_sensor_power_down(struct msm_sensor_ctrl_t *s_ctrl)
 		s_ctrl->reg_ptr, 0);
 	msm_camera_request_gpio_table(data, 0);
 	kfree(s_ctrl->reg_ptr);
+	pr_err("%s: X\n", __func__); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	return 0;
 }
 
@@ -826,6 +882,7 @@ int32_t msm_sensor_v4l2_s_ctrl(struct v4l2_subdev *sd,
 		if (v4l2_ctrl[i].ctrl_id == ctrl->id) {
 			if (v4l2_ctrl[i].s_v4l2_ctrl != NULL) {
 				CDBG("\n calling msm_sensor_s_ctrl_by_enum\n");
+				printk("%s : msm_sensor_v4l2_ctrl_info[%d], value = %d\n", __func__, i, ctrl->value); // sungmin.cho@lge.com
 				rc = v4l2_ctrl[i].s_v4l2_ctrl(
 					s_ctrl,
 					&s_ctrl->msm_sensor_v4l2_ctrl_info[i],

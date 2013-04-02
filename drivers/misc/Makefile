@@ -66,8 +66,19 @@ obj-$(CONFIG_PMIC8058_PWM) += pmic8058-pwm.o
 obj-$(CONFIG_PMIC8XXX_VIBRATOR) += pm8xxx-vibrator.o
 obj-$(CONFIG_PMIC8XXX_NFC) += pm8xxx-nfc.o
 obj-$(CONFIG_PMIC8XXX_UPL) += pm8xxx-upl.o
+#[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] Immersion Vibrator Porting
+obj-$(CONFIG_TSPDRV) += tspdrv/
+#[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
 obj-$(CONFIG_MSM_MEMORY_LOW_POWER_MODE_SUSPEND_DEEP_POWER_DOWN) \
 	+= msm_migrate_pages.o
 obj-$(CONFIG_PMIC8058_XOADC) += pmic8058-xoadc.o
 obj-$(CONFIG_QSEECOM) += qseecom.o
 obj-$(CONFIG_QFP_FUSE) += qfp_fuse.o
+
+# LGE AT-CMD Bypass interface porting, myunghwan.kim@lge.com [START]
+obj-y += lge_tty_atcmd.o
+# LGE AT-CMD Bypass interface porting, myunghwan.kim@lge.com [END]
+
+#LGE_CHANGE_S jungrock.oh@lge.com 2013-01-05 add lge_kcal
+obj-y += lge_kcal.o
+#LGE_CHANGE_E jungrock.oh@lge.com 2013-01-05 add lge_kcal 

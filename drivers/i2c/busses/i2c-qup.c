@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -131,11 +131,17 @@ enum {
 
 static char const * const i2c_rsrcs[] = {"i2c_clk", "i2c_sda"};
 
+/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+#if !defined (CONFIG_MACH_MSM7X27A_U0) 
+#if !defined (CONFIG_MACH_MSM7X25A_M4)	// samjinjang I2C recover QCT patch 0514
 static struct gpiomux_setting recovery_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_8MA,
 	.pull = GPIOMUX_PULL_NONE,
 };
+#endif
+#endif
+/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
 
 struct qup_i2c_dev {
 	struct device                *dev;
@@ -667,9 +673,75 @@ qup_set_wr_mode(struct qup_i2c_dev *dev, int rem)
 	return ret;
 }
 
-
+/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
+static int qup_i2c_recover_bus_busy(struct qup_i2c_dev *dev)	// samjinjang I2C recover QCT patch 0514
+#else	// original
 static void qup_i2c_recover_bus_busy(struct qup_i2c_dev *dev)
+#endif
+/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
 {
+/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
+	int i;
+//	uint32_t status = readl(dev->base + QUP_I2C_STATUS);
+	uint32_t status = readl_relaxed(dev->base + QUP_I2C_STATUS);
+	int gpio_clk = dev->pdata->pri_clk;
+	int gpio_dat = dev->pdata->pri_dat;
+	bool gpio_clk_status = false;
+	
+	if (!(status & (I2C_STATUS_BUS_ACTIVE)) ||
+			(status & (I2C_STATUS_BUS_MASTER)))
+		   return 0;
+	
+	if (!gpio_clk && !gpio_dat)
+		{
+			dev_err(dev->dev, "Recovery failed due to !gpio_clk && !gpio_dat\n");
+	       return -EBUSY;
+		}
+	
+	if (dev->pdata->msm_i2c_config_gpio)
+		   dev->pdata->msm_i2c_config_gpio(dev->adapter.nr, 0);
+	else
+		   return -EBUSY;
+	
+	dev_warn(dev->dev, "i2c_scl: %d, i2c_sda: %d\n",
+		   gpio_get_value(gpio_clk), gpio_get_value(gpio_dat));
+	
+	for (i = 0; i < 9; i++) {
+		 if (gpio_get_value(gpio_dat) && gpio_clk_status)
+						 break;
+	     gpio_direction_output(gpio_clk, 0);
+		 udelay(5);
+		 gpio_direction_output(gpio_dat, 0);
+		 udelay(5);
+		 gpio_direction_input(gpio_clk);
+		 udelay(5);
+		 if (!gpio_get_value(gpio_clk))
+				udelay(20);
+		 if (!gpio_get_value(gpio_clk))
+				 msleep(10);
+		 gpio_clk_status = gpio_get_value(gpio_clk);
+		 gpio_direction_input(gpio_dat);
+		 udelay(5);
+	}
+		
+	/* *configure ALT funciton to QUP I2C*/
+	if (dev->pdata->msm_i2c_config_gpio)
+			 dev->pdata->msm_i2c_config_gpio(dev->adapter.nr, 1);
+		
+	udelay(10);
+		
+	status = readl_relaxed(dev->base + QUP_I2C_STATUS);
+	if (!(status & I2C_STATUS_BUS_ACTIVE)) {
+		 dev_info(dev->dev, "Bus busy cleared after %d clock cycles, "
+				 					   "status %x\n",i, status);
+		 return 0;
+	}
+			
+	dev_warn(dev->dev, "Bus still busy, status %x\n",status);
+	return -EBUSY;
+#else	// original
 	int i;
 	int gpio_clk;
 	int gpio_dat;
@@ -742,6 +814,8 @@ static void qup_i2c_recover_bus_busy(struct qup_i2c_dev *dev)
 
 recovery_end:
 	enable_irq(dev->err_irq);
+#endif
+/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
 }
 
 static int
@@ -955,14 +1029,39 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 					timeout =
 					wait_for_completion_timeout(&complete,
 									HZ);
+/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
+					if (timeout)
+					{
+						dev_err(dev->dev,"1. timeout: status != BUS_ACTIVE || status == BUS_MASTER\n");
+						goto handle_irq;
+					}
+#else	// original
 					if (timeout)
 						goto timeout_err;
+#endif
+/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
 				}
+/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
+				disable_irq(dev->err_irq);
+				dev_err(dev->dev,"2. timeout: status == BUS_ACTIVE || status != BUS_MASTER\n");
+
+				ret = qup_i2c_recover_bus_busy(dev);
+				if (ret)
+					dev_err(dev->dev,"recover_bus_busy: ret = %x\n",ret);
+
+				enable_irq(dev->err_irq);
+					dev_err(dev->dev,
+						"Transaction timed out, SL-AD = 0x%x\n",
+						dev->msg->addr);
+#else
 				qup_i2c_recover_bus_busy(dev);
 				dev_err(dev->dev,
 					"Transaction timed out, SL-AD = 0x%x\n",
 					dev->msg->addr);
-
+#endif
+/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
 				dev_err(dev->dev, "I2C Status: %x\n", istatus);
 				dev_err(dev->dev, "QUP Status: %x\n", qstatus);
 				dev_err(dev->dev, "OP Flags: %x\n", op_flgs);
@@ -974,6 +1073,62 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 				ret = -ETIMEDOUT;
 				goto out_err;
 			}
+/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
+handle_irq:		// samjinjang I2C recover QCT patch 0514
+			if (dev->err) {
+				if (dev->err > 0 &&
+					dev->err & QUP_I2C_NACK_FLAG) {
+					dev_err(dev->dev,
+					"I2C slave addr:0x%x not connected\n",
+					dev->msg->addr);
+					dev->err = ENOTCONN;
+				} else if (dev->err < 0) {
+					dev_err(dev->dev,
+					"QUP data xfer error %d\n", dev->err);
+					ret = dev->err;
+					goto out_err;
+				} else if (dev->err > 0) {
+					/*
+					 * ISR returns +ve error if error code
+					 * is I2C related, e.g. unexpected start
+					 * So you may call recover-bus-busy when
+					 * this error happens
+					 */
+					disable_irq(dev->err_irq);
+					ret = qup_i2c_recover_bus_busy(dev);
+					enable_irq(dev->err_irq);
+					if (ret)
+						dev_err(dev->dev,"recovery fail: ret = %x\n",ret);
+				}
+				ret = -dev->err;
+				goto out_err;
+			}
+			if (dev->msg->flags & I2C_M_RD) {
+				int i;
+				uint32_t dval = 0;
+				for (i = 0; dev->pos < dev->msg->len; i++,
+						dev->pos++) {
+					uint32_t rd_status =
+						readl_relaxed(dev->base
+							+ QUP_OPERATIONAL);
+					if (i % 2 == 0) {
+						if ((rd_status &
+							QUP_IN_NOT_EMPTY) == 0)
+							break;
+						dval = readl_relaxed(dev->base +
+							QUP_IN_FIFO_BASE);
+						dev->msg->buf[dev->pos] =
+							dval & 0xFF;
+					} else
+						dev->msg->buf[dev->pos] =
+							((dval & 0xFF0000) >>
+							 16);
+				}
+				dev->cnt -= i;
+			} else
+				filled = false; /* refill output FIFO */
+#else	// original
 timeout_err:
 			if (dev->err) {
 				if (dev->err > 0 &&
@@ -1023,6 +1178,8 @@ timeout_err:
 				dev->cnt -= i;
 			} else
 				filled = false; /* refill output FIFO */
+#endif
+/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
 			dev_dbg(dev->dev, "pos:%d, len:%d, cnt:%d\n",
 					dev->pos, msgs->len, dev->cnt);
 		} while (dev->cnt > 0);

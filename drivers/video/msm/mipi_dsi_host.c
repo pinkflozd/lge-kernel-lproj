@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1519,7 +1519,7 @@ void mipi_dsi_cmd_mdp_busy(void)
 {
 	u32 status;
 	unsigned long flags;
-	int need_wait;
+	int need_wait = 0;
 
 	spin_lock_irqsave(&dsi_mdp_lock, flags);
 	status = MIPI_INP(MIPI_DSI_BASE + 0x0004);/* DSI_STATUS */

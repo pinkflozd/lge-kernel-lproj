@@ -53,7 +53,10 @@ obj-$(CONFIG_LEDS_PMIC_MPP)		+= leds-pmic-mpp.o
 obj-$(CONFIG_LEDS_QCIBL)		+= leds-qci-backlight.o
 obj-$(CONFIG_LEDS_MSM_PDM)		+= leds-msm-pdm.o
 obj-$(CONFIG_LEDS_MSM_TRICOLOR)		+= leds-msm-tricolor.o
-
+# LGE_CHANGE_S : 2012-09-15 sungmin.cho@lge.com flash led porting
+# Porting AS3647 LED Flash Driver
+obj-$(CONFIG_LEDS_AS364X)		+= leds-as364x.o
+# LGE_CHANGE_E : 2012-09-15 sungmin.cho@lge.com flash led porting
 # LED SPI Drivers
 obj-$(CONFIG_LEDS_DAC124S085)		+= leds-dac124s085.o
 

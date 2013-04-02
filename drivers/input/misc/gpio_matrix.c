@@ -116,9 +116,9 @@ static void report_key(struct gpio_kp *kp, int key_index, int out, int in)
 		if (keycode == KEY_RESERVED) {
 			if (mi->flags & GPIOKPF_PRINT_UNMAPPED_KEYS)
 				pr_info("gpiomatrix: unmapped key, %d-%d "
-					"(%d-%d) changed to %d\n",
+					"(%d-%d) changed to %d key_index:%d keyentry:%d keycode:%d\n",
 					out, in, mi->output_gpios[out],
-					mi->input_gpios[in], pressed);
+					mi->input_gpios[in], pressed,key_index,keyentry,keycode);
 		} else {
 			if (mi->flags & GPIOKPF_PRINT_MAPPED_KEYS)
 				pr_info("gpiomatrix: key %x, %d-%d (%d-%d) "
@@ -281,7 +281,21 @@ static int gpio_keypad_request_irqs(struct gpio_kp *kp)
 				"irq %d\n", mi->input_gpios[i], irq);
 			goto err_request_irq_failed;
 		}
-		err = enable_irq_wake(irq);
+/* LGE_CHANGE_S [jongjin7.park@lge.com] 2012-12-11 Handle to wake-up only home-key */
+#if !defined(CONFIG_MACH_MSM7X27A_U0)
+                err = enable_irq_wake(irq);
+#else
+                if( 38 == mi->input_gpios[i]) /*38 is Home Key GPIO*/
+                {
+                        /*Register wakeup IRQ for only Home Key*/
+                        err = enable_irq_wake(irq);
+                }
+                if (err) {
+                        pr_err("gpiomatrix: set_irq_wake failed for input %d, "
+                                "irq %d\n", mi->input_gpios[i], irq);
+                }
+#endif
+/* LGE_CHANGE_E [jongjin7.park@lge.com] 2012-12-11 Handle to wake-up only home-key */
 		if (err) {
 			pr_err("gpiomatrix: set_irq_wake failed for input %d, "
 				"irq %d\n", mi->input_gpios[i], irq);
@@ -400,7 +414,7 @@ int gpio_event_matrix_func(struct gpio_event_input_devs *input_devs,
 		err = gpio_keypad_request_irqs(kp);
 		kp->use_irq = err == 0;
 
-		pr_info("GPIO Matrix Keypad Driver: Start keypad matrix for "
+		printk("GPIO Matrix Keypad Driver: Start keypad matrix for "
 			"%s%s in %s mode\n", input_devs->dev[0]->name,
 			(input_devs->count > 1) ? "..." : "",
 			kp->use_irq ? "interrupt" : "polling");

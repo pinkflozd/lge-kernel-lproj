@@ -36,6 +36,81 @@ config IMX074
 	depends on MSM_CAMERA
 	---help---
 	SONY 13.5 MP Bayer Sensor
+
+# LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up
+config T8EV4
+	bool "Sensor T8EV4 (BAYER 8M)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	---help---
+	Toshiba 8 MP Bayer Sensor
+
+config T8EV4_ACT
+	bool "Actuator t8ev4 (BAYER 8M)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	select MSM_ACTUATOR
+	---help---
+	Actuator for Toshiba 8MP Bayer Sensor	
+	
+config HI707
+	bool "Sensor HI707 (SOC VGA)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	---help---
+	Hynix VGA Soc Sensor
+
+config IMX111
+	bool "Sensor IMX111 (Sony 8MP)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	---help---
+	  Sony 8M Bayer Sensor modules with Autofocus
+
+config IMX111_ACT
+	bool "Actuator imx111 (BAYER 8M)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	select MSM_ACTUATOR
+	---help---
+	Actuator for SONY 8 MP Bayer Sensor
+
+# LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up
+
+# LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree on V7 EVB2
+config HI707_ROT_180
+	bool "Hynix VGA ROTATE 180"
+	---help---
+	Hynix VGA Soc Sensor, Mount angle is rotated on V7 EVB2
+# LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree on V7 EVB2
+
+# LGE_CHANGE_S : 2012-11-14 sungmin.cho@lge.com DVDD and IOVDD is separated before Rev A
+config HI707_PWR_SEPARATE
+	bool "Hynix VGA POWER SEPARATED"
+	---help---
+	Hynix VGA Soc Sensor, DVDD and IOVDD is separated
+# LGE_CHANGE_E : 2012-11-14 sungmin.cho@lge.com DVDD and IOVDD is separated before Rev A
+
+# LGE_CHANGE_S: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
+config HI351
+	bool "Sensor HI351 (YUV 3M)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	---help---
+	Hynix 3M YUV Sensor
+# LGE_CHANGE_E: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25	
+# LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Camera Bring Up
+config HI542
+	bool "Sensor HI542 (BAYER 5M)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	---help---
+	Hynix 5MP Bayer Sensor
+config HI542_ACT
+	bool "Actuator HI542 (BAYER 5M)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	select MSM_ACTUATOR
+	---help---
+	Actuator for Hynix 5MP Bayer Sensor	
+config MT9V113
+	bool "Sensor MT9V113 (SOC VGA)"
+	depends on MSM_CAMERA && MSM_CAMERA_V4L2
+	---help---
+	Aptina VGA Soc Sensor
+# LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Camera Bring Up
 config OV5640
 	bool "Sensor OV5640 (YUV 5M)"
 	depends on MSM_CAMERA && !MSM_CAMERA_V4L2

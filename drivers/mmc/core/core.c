@@ -504,6 +504,9 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 {
 	int err;
 	u32 status;
+#if defined(CONFIG_MMC_ISSUE_HPI_CMD_ON_PRG_STATE)
+	unsigned long prg_wait;
+#endif
 
 	BUG_ON(!card);
 
@@ -519,6 +522,45 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 		goto out;
 	}
 
+/* [LGE_CHANGE_S] bohyun.jung@lge.com  
+ * issue hpi command on PROG STATE.  
+ * once mmc_send_hpi_cmd(), state remain PROG for 20ms. 
+ * original code has possibility sending hpi cmd continously */
+#if defined(CONFIG_MMC_ISSUE_HPI_CMD_ON_PRG_STATE)
+       switch (R1_CURRENT_STATE(status)) {
+       case R1_STATE_IDLE:
+       case R1_STATE_READY:
+       case R1_STATE_STBY:
+	   case R1_STATE_TRAN:
+               /*
+                * In idle states, HPI is not needed and the caller
+				* In idle and transfer states, HPI is not needed and the caller
+                * can issue the next intended command immediately
+                */
+               goto out;
+       case R1_STATE_PRG:
+               break;
+       default:
+               /* In all other states, it's illegal to issue HPI */
+               pr_debug("%s: HPI cannot be sent. Card state=%d\n",
+                       mmc_hostname(card->host), R1_CURRENT_STATE(status));
+               err = -EINVAL;
+               goto out;
+       }
+       err = mmc_send_hpi_cmd(card, &status);
+       if (err)
+               goto out;
+
+       prg_wait = jiffies + msecs_to_jiffies(card->ext_csd.out_of_int_time);
+       do {
+               err = mmc_send_status(card, &status);
+
+               if (!err && R1_CURRENT_STATE(status) == R1_STATE_TRAN)
+                       break;
+               if (time_after(jiffies, prg_wait))
+                       err = -ETIMEDOUT;
+       } while (!err);
+#else
 	/*
 	 * If the card status is in PRG-state, we can send the HPI command.
 	 */
@@ -543,6 +585,7 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 		} while (R1_CURRENT_STATE(status) == R1_STATE_PRG);
 	} else
 		pr_debug("%s: Left prg-state\n", mmc_hostname(card->host));
+#endif
 
 out:
 	mmc_release_host(card->host);
@@ -626,6 +669,20 @@ EXPORT_SYMBOL(mmc_read_bkops_status);
 int mmc_is_exception_event(struct mmc_card *card, unsigned int value)
 {
 	int err;
+
+	/* [LGE_CHANGE_S] bohyun.jung@lge.com - Test patch
+	 * QCT code behavior on bkops is like below.
+	 * level 1 / 2      - start bkops and send HPI before sending general r/w command.
+	 * level 3 (Urgent) - start bkops sync mode (timeout 240s)
+	 * If bkops in urgent mode does not end with 240s, emmc fails on io error. 
+	 * AS IS 			- start bkops, and send HPI before sending general r/w command.
+	 *
+	 * disable bkops until final fix.
+	 * DO NOT add feature for v7/u0/m4/etc without firm reason on emmc spec or vendor confirm */
+#if defined (CONFIG_MACH_MSM7X25A_V3) && defined (CONFIG_MACH_SAMSUNG_EMMC_V441_PLUS)
+//	pr_err("mmc_is_exception_event : %s - disable bkops for now.\n", mmc_hostname(card->host));
+ 	return 0;
+#endif
 
 	err = mmc_read_bkops_status(card);
 	if (err) {

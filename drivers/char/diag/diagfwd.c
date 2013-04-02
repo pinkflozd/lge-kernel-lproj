@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -44,6 +44,13 @@
 #define ALL_EQUIP_ID		100
 #define ALL_SSID		-1
 #define MAX_SSID_PER_RANGE	100
+
+#ifdef CONFIG_LGE_MTS
+#include "mtsk_tty.h"
+#endif /* CONFIG_LGE_MTS */
+#ifdef CONFIG_LGE_MTS_CHAR
+#include "mtschar.h"
+#endif /* CONFIG_LGE_MTS_CHAR */
 
 int diag_debug_buf_idx;
 unsigned char diag_debug_buf[1024];
@@ -365,6 +372,9 @@ int diag_device_write(void *buf, int proc_num, struct diag_request *write_ptr)
 						driver->write_ptr_svc);
 			} else
 				err = -1;
+#ifdef CONFIG_LGE_MTS
+		} else if(0 == mtsk_tty_process(buf, &(write_ptr->length), proc_num)) {
+#endif
 		} else if (proc_num == MODEM_DATA) {
 			write_ptr->buf = buf;
 #ifdef DIAG_DEBUG
@@ -610,11 +620,11 @@ static void diag_update_msg_mask(int start, int end , uint8_t *buf)
 				*(uint32_t *)(actual_last_ptr) = end;
 			}
 			if (CHK_OVERFLOW(ptr_buffer_start, ptr, ptr_buffer_end,
-					  (((end - start)+1)*4))) {
+						  (((end - start)+1)*4))) {
 				pr_debug("diag: update ssid start %d, end %d\n",
 								 start, end);
-				memcpy(ptr, buf , ((end - start)+1)*4);
-			} else
+					memcpy(ptr, buf , ((end - start)+1)*4);
+				} else
 				pr_alert("diag: Not enough space MSG_MASK\n");
 			found = 1;
 			break;
@@ -1587,6 +1597,10 @@ int diagfwd_connect(void)
 {
 	int err;
 
+#ifdef CONFIG_LGE_MTS_CHAR
+	wake_up_interruptible(&mtschar->waitq);
+#endif /* CONFIG_LGE_MTS_CHAR */
+
 	printk(KERN_DEBUG "diag: USB connected\n");
 	err = usb_diag_alloc_req(driver->legacy_ch, N_LEGACY_WRITE,
 			N_LEGACY_READ);
@@ -1624,6 +1638,10 @@ int diagfwd_connect(void)
 
 int diagfwd_disconnect(void)
 {
+#ifdef CONFIG_LGE_MTS_CHAR
+	wake_up_interruptible(&mtschar->waitq);
+#endif /* CONFIG_LGE_MTS_CHAR */
+
 	printk(KERN_DEBUG "diag: USB disconnected\n");
 	driver->usb_connected = 0;
 	driver->debug_flag = 1;

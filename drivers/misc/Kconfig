@@ -595,6 +595,14 @@ config PMIC8058_PWM
 	  purposes including software controlled brightness of backlight,
 	  motor control, and waveform generation.
 
+#[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] Immersion Vibrator changes
+config TSPDRV
+	bool "tspdrv"
+	default n
+	help
+	  This option enables the Immersion Touchsense Vibrator
+#[LGSI_SP4_BSP_END][kirankumar.vm@lge.com] Immersion Vibrator changes
+
 config PMIC8XXX_VIBRATOR
 	tristate "Qualcomm Vibrator support for PMIC8XXX"
 	depends on MFD_PM8XXX && ANDROID_TIMED_OUTPUT

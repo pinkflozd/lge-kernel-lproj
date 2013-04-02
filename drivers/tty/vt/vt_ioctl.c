@@ -130,7 +130,15 @@ static void vt_event_wait(struct vt_event_wait *vw)
 	list_add(&vw->list, &vt_events);
 	spin_unlock_irqrestore(&vt_event_lock, flags);
 	/* Wait for it to pass */
+/*LGE_CHANGE_S[jyothishre.nk@lge.com]20130107:
+ *Suspend queue corruption , wakeup on timeout*/
+#if defined (CONFIG_MACH_MSM7X25A_V3)
+	wait_event_interruptible_timeout(vt_event_waitqueue, vw->done, msecs_to_jiffies(500));
+#else
 	wait_event_interruptible(vt_event_waitqueue, vw->done);
+#endif
+/*LGE_CHANGE_E[jyothishre.nk@lge.com]20130107*/
+
 	/* Dequeue it */
 	spin_lock_irqsave(&vt_event_lock, flags);
 	list_del(&vw->list);

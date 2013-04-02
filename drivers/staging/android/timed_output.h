@@ -21,9 +21,13 @@ struct timed_output_dev {
 
 	/* enable the output and set the timer */
 	void	(*enable)(struct timed_output_dev *sdev, int timeout);
+	/*[LGE_BSP][yunmo.yang@lge.com] add voltage controll Interface*/
+	void	(*voltage)(struct timed_output_dev *sdev, int vol);
 
 	/* returns the current number of milliseconds remaining on the timer */
 	int		(*get_time)(struct timed_output_dev *sdev);
+	/*[LGE_BSP][yunmo.yang@lge.com] add voltage controll Interface*/
+	int		(*get_voltage)(struct timed_output_dev *sdev);
 
 	/* private data */
 	struct device	*dev;

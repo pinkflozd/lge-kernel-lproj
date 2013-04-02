@@ -1,4 +1,17 @@
 GCC_VERSION      := $(shell $(CONFIG_SHELL) $(PWD)/scripts/gcc-version.sh $(CROSS_COMPILE)gcc)
+#LGE_CHANGE_S : 2012-12-28 sungmin.cho@lge.com vt camera flicker
+ifeq ($(findstring cis, $(TARGET_PRODUCT)),cis)
+  KBUILD_CFLAGS += -DLGE_CAMERA_ANTIBAND_50HZ
+else ifeq ($(findstring cn, $(TARGET_PRODUCT)),cn)
+  KBUILD_CFLAGS += -DLGE_CAMERA_ANTIBAND_50HZ
+else ifeq ($(findstring ame, $(TARGET_PRODUCT)),ame)
+  KBUILD_CFLAGS += -DLGE_CAMERA_ANTIBAND_50HZ
+else ifeq ($(findstring hk, $(TARGET_PRODUCT)),hk)
+  KBUILD_CFLAGS += -DLGE_CAMERA_ANTIBAND_50HZ
+else ifeq ($(findstring eu, $(TARGET_PRODUCT)),eu)
+  KBUILD_CFLAGS += -DLGE_CAMERA_ANTIBAND_50HZ
+endif
+#LGE_CHANGE_E : 2012-12-28 sungmin.cho@lge.com vt camera flicker
 EXTRA_CFLAGS += -Idrivers/media/video/msm
 EXTRA_CFLAGS += -Idrivers/media/video/msm/io
 EXTRA_CFLAGS += -Idrivers/media/video/msm/eeprom
@@ -16,3 +29,15 @@ obj-$(CONFIG_MT9E013) += mt9e013_v4l2.o
 obj-$(CONFIG_WEBCAM_OV9726) += ov9726_v4l2.o
 obj-$(CONFIG_OV7692) += ov7692_v4l2.o
 obj-$(CONFIG_VX6953) += vx6953.o
+# LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up
+obj-$(CONFIG_T8EV4) += t8ev4_v4l2.o
+obj-$(CONFIG_IMX111) += imx111.o
+obj-$(CONFIG_HI707) += hi707_v4l2.o
+# LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up
+# LGE_CHANGE_S: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
+obj-$(CONFIG_HI351) += hi351_v4l2.o
+# LGE_CHANGE_E: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
+# LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Camera Bring Up
+obj-$(CONFIG_HI542) += hi542_v4l2.o
+obj-$(CONFIG_MT9V113) += mt9v113_v4l2.o
+# LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Camera Bring Up

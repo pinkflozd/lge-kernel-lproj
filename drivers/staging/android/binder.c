@@ -2525,14 +2525,38 @@ static void binder_release_work(struct list_head *list)
 			struct binder_transaction *t;
 
 			t = container_of(w, struct binder_transaction, work);
-			if (t->buffer->target_node && !(t->flags & TF_ONE_WAY))
+			if (t->buffer->target_node &&
+				!(t->flags & TF_ONE_WAY)) {
 				binder_send_failed_reply(t, BR_DEAD_REPLY);
+			 } else {
+				binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
+					"binder: undelivered transaction %d\n",
+					t->debug_id);
+				t->buffer->transaction = NULL;
+				kfree(t);
+				binder_stats_deleted(BINDER_STAT_TRANSACTION);
+			}
 		} break;
 		case BINDER_WORK_TRANSACTION_COMPLETE: {
+			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
+				"binder: undelivered TRANSACTION_COMPLETE\n");
 			kfree(w);
 			binder_stats_deleted(BINDER_STAT_TRANSACTION_COMPLETE);
 		} break;
+               case BINDER_WORK_DEAD_BINDER_AND_CLEAR:
+               case BINDER_WORK_CLEAR_DEATH_NOTIFICATION: {
+                       struct binder_ref_death *death;
+
+                       death = container_of(w, struct binder_ref_death, work);
+                       binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
+                               "binder: undelivered death notification, %p\n",
+                               death->cookie);
+                       kfree(death);
+                       binder_stats_deleted(BINDER_STAT_DEATH);
+               } break;
 		default:
+			pr_err("binder: unexpected work type, %d, not freed\n",
+                              w->type);
 			break;
 		}
 	}
@@ -2815,6 +2839,14 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 	const char *failure_string;
 	struct binder_buffer *buffer;
 
+/* LGE_CHANGE : bohyun.jung@lge.com - [2013.01.03] prevent kernel panic. from CodeAurora. 
+ *		binder: don't allow mmap() by process other than proc->tsk 
+ * 		http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=a79f41ed9786b75ebe75e52295ad54049b8551b6 */
+#if defined (CONFIG_MACH_MSM7X27A_U0)
+	if (proc->tsk != current)
+		return -EINVAL;
+#endif
+
 	if ((vma->vm_end - vma->vm_start) > SZ_4M)
 		vma->vm_end = vma->vm_start + SZ_4M;
 
@@ -2880,7 +2912,14 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 	binder_insert_free_buffer(proc, buffer);
 	proc->free_async_space = proc->buffer_size / 2;
 	barrier();
+/* LGE_CHANGE : bohyun.jung@lge.com - [2013.01.03] prevent kernel panic. from CodeAurora. 
+ *		binder: don't allow mmap() by process other than proc->tsk 
+ * 		http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=a79f41ed9786b75ebe75e52295ad54049b8551b6 */
+#if defined (CONFIG_MACH_MSM7X27A_U0)
+	proc->files = get_files_struct(current);
+#else
 	proc->files = get_files_struct(proc->tsk);
+#endif
 	proc->vma = vma;
 	proc->vma_vm_mm = vma->vm_mm;
 
@@ -3009,6 +3048,7 @@ static void binder_deferred_release(struct binder_proc *proc)
 		nodes++;
 		rb_erase(&node->rb_node, &proc->nodes);
 		list_del_init(&node->work.entry);
+		binder_release_work(&node->async_todo);
 		if (hlist_empty(&node->refs)) {
 			kfree(node);
 			binder_stats_deleted(BINDER_STAT_NODE);
@@ -3047,6 +3087,7 @@ static void binder_deferred_release(struct binder_proc *proc)
 		binder_delete_ref(ref);
 	}
 	binder_release_work(&proc->todo);
+	binder_release_work(&proc->delivered_death);
 	buffers = 0;
 
 	while ((n = rb_first(&proc->allocated_buffers))) {

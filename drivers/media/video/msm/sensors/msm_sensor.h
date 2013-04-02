@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -136,10 +136,21 @@ struct msm_sensor_fn_t {
 		(struct msm_sensor_ctrl_t *);
 	int (*sensor_power_up) (struct msm_sensor_ctrl_t *);
 	int32_t (*sensor_match_id)(struct msm_sensor_ctrl_t *s_ctrl);
+	//Start :randy@qualcomm.com for calibration 2012.03.25
+	int (*sensor_get_eeprom_data) (struct msm_sensor_ctrl_t *,
+		struct sensor_cfg_data *);
+	//End :randy@qualcomm.com for calibration 2012.03.25
 	int (*sensor_adjust_frame_lines)
 		(struct msm_sensor_ctrl_t *s_ctrl, uint16_t res);
 	int32_t (*sensor_get_csi_params)(struct msm_sensor_ctrl_t *,
 		struct csi_lane_params_t *);
+/* LGE_CHANGE_S : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+	int8_t (*sensor_set_aec_roi) (struct msm_sensor_ctrl_t *, int32_t);
+/* LGE_CHANGE_E : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */	
+/* LGE_CHANGE_S : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+	int8_t (*sensor_get_soc_snapshotdata) (struct msm_sensor_ctrl_t *, 
+		struct snapshot_soc_data_cfg *);
+/* LGE_CHANGE_E : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
 };
 
 struct msm_sensor_csi_info {

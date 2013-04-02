@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -39,6 +39,11 @@ u32 dsi_irq;
 u32 esc_byte_ratio;
 
 static boolean tlmm_settings = FALSE;
+/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com]*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
+static boolean lglogo_firstboot = TRUE;
+#endif
+/*[LGSI_SP4_BSP_END] [kiran.jainapure@lge.com]*/
 
 static int mipi_dsi_probe(struct platform_device *pdev);
 static int mipi_dsi_remove(struct platform_device *pdev);
@@ -50,7 +55,7 @@ static struct platform_device *pdev_list[MSM_FB_MAX_DEV_LIST];
 static int pdev_list_cnt;
 static struct mipi_dsi_platform_data *mipi_dsi_pdata;
 
-static int vsync_gpio = -1;
+static int vsync_gpio = 97;
 
 static struct platform_driver mipi_dsi_driver = {
 	.probe = mipi_dsi_probe,
@@ -62,6 +67,28 @@ static struct platform_driver mipi_dsi_driver = {
 };
 
 struct device dsi_dev;
+
+//LGE_CHANGE_S [Kiran] Change LCD sleep sequence
+#define DSI_VIDEO_BASE	0xF0000
+/*LGE_START: Kiran.kanneganti@lge.com 25-2-2012*/
+/*In case of ESD no delays required in power off*/
+#ifdef CONFIG_LGE_LCD_ESD_DETECTION
+extern boolean is_esd_occured;
+#endif
+/*LGE_END: Kiran.kanneganti@lge.com*/
+//LGE_CHANGE_E [Kiran] Change LCD sleep sequence
+
+/*LGE_CHANGE_S: Kiran.kanneganti@lge.com 05-03-2012*/
+/*LCD Reset After data pulled Down*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
+extern void mipi_ldp_lcd_panel_poweroff(void);
+#endif
+/*LGE_CHANGE_E LCD Reset After Data Pulled Down*/
+
+#ifdef CONFIG_FB_MSM_MIPI_DSI_HX8379A
+extern unsigned int maker_id;  //LGE_CHANGE, sohyun.nam@lge.com, 12-12-27, maker_id is using both LG4573B and HX8379A
+extern void mipi_ldp_lcd_hx8379a_panel_poweroff(void);
+#endif
 
 static int mipi_dsi_off(struct platform_device *pdev)
 {
@@ -77,12 +104,31 @@ static int mipi_dsi_off(struct platform_device *pdev)
 	else
 		down(&mfd->dma->mutex);
 
+/*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
+#if defined(CONFIG_MACH_MSM8X25_V7)
+	if(lglogo_firstboot){
+#ifdef CONFIG_FB_MSM_MIPI_DSI_HX8379A //LGE_CHANGE, sohyun.nam@lge.com, 12-12-27, using HX8379A
+	if( maker_id == 1 )
+#endif		
+		mipi_ldp_lcd_panel_poweroff();
+	 }
+#endif
+#endif
+/*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 	mdp4_overlay_dsi_state_set(ST_DSI_SUSPEND);
 
 	/* make sure dsi clk is on so that
 	 * dcs commands can be sent
 	 */
-	mipi_dsi_clk_cfg(1);
+/*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
+#if defined(CONFIG_MACH_MSM8X25_V7)
+	if(!lglogo_firstboot)
+		mipi_dsi_clk_cfg(1);
+#endif
+#endif
+/*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 
 	/* make sure dsi_cmd_mdp is idle */
 	mipi_dsi_cmd_mdp_busy();
@@ -119,8 +165,37 @@ static int mipi_dsi_off(struct platform_device *pdev)
 
 	mipi_dsi_ahb_ctrl(0);
 	spin_unlock_bh(&dsi_clk_lock);
+/*LGE_CHANGE_S: Kiran.kanneganti@lge.com 05-03-2012*/
+/*LCD Reset After data pulled Down*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
+/*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#if defined(CONFIG_MACH_MSM8X25_V7)
+	if(!lglogo_firstboot){
+#ifdef CONFIG_FB_MSM_MIPI_DSI_HX8379A //LGE_CHANGE, sohyun.nam@lge.com, 12-12-27, using HX8379A
+	if( maker_id == 1 )
+#endif		
+		mipi_ldp_lcd_panel_poweroff();
+	}
+#else
+	mipi_ldp_lcd_panel_poweroff();
+#endif
+/*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#endif
+/*LGE_CHANGE_E LCD Reset After Data Pulled Down*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_HX8379A //LGE_CHANGE, sohyun.nam@lge.com, 12-12-27, using HX8379A
+	if( maker_id == 0 )
+		mipi_ldp_lcd_hx8379a_panel_poweroff();
+#endif
 
-	mipi_dsi_unprepare_clocks();
+/*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
+#if defined(CONFIG_MACH_MSM8X25_V7)
+	if(!lglogo_firstboot)
+		mipi_dsi_unprepare_clocks();
+		lglogo_firstboot=false;
+#endif
+#endif
+/*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 	if (mipi_dsi_pdata && mipi_dsi_pdata->dsi_power_save)
 		mipi_dsi_pdata->dsi_power_save(0);
 
@@ -157,6 +232,20 @@ static int mipi_dsi_on(struct platform_device *pdev)
 	if (mipi_dsi_pdata && mipi_dsi_pdata->dsi_power_save)
 		mipi_dsi_pdata->dsi_power_save(1);
 
+	/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com]: reset mipi register for first display on, since mipi registers were initialized at modem side*/
+#ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B	
+/*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#if !defined(CONFIG_MACH_MSM8X25_V7)
+	if(lglogo_firstboot){
+		mipi_dsi_sw_reset();
+		usleep(100);
+		lglogo_firstboot=false;
+	}
+#endif	
+/*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
+#endif	
+	/*[LGSI_SP4_BSP_END] [kiran.jainapure@lge.com]*/
+	
 	cont_splash_clk_ctrl(0);
 	mipi_dsi_prepare_clocks();
 
@@ -618,5 +707,37 @@ static int __init mipi_dsi_driver_init(void)
 
 	return ret;
 }
+
+/* LGE_CHANGE_S : LCD ESD Protection 
+ * 2012-01-30, yoonsoo@lge.com
+ * LCD ESD Protection
+ */
+#ifdef CONFIG_LGE_LCD_ESD_DETECTION
+/********************************************************************
+Function Name  :-  esd_sw_test_lcd_panel_power_off
+Arguments 	   :-  None
+Return Value   :-  None
+Functionality  :-  to power off LCD panel.  
+dependencies   :-  Should be called when lcd panel is on.
+*********************************************************************/
+void esd_sw_test_lcd_panel_power_off()
+{
+	if (mipi_dsi_pdata && mipi_dsi_pdata->dsi_power_save)
+		mipi_dsi_pdata->dsi_power_save(0);	
+}
+/********************************************************************
+Function Name  :-  esd_sw_test_lcd_panel_power_on
+Arguments 	   :-  None
+Return Value   :-  None
+Functionality  :-  to power on LCD panel.  
+dependencies   :-  Should be called when lcd panel is off.
+*********************************************************************/
+void esd_sw_test_lcd_panel_power_on()
+{
+	if (mipi_dsi_pdata && mipi_dsi_pdata->dsi_power_save)
+		mipi_dsi_pdata->dsi_power_save(1);	
+}
+#endif
+/* LGE_CHANGE_E : LCD ESD Protection*/ 
 
 module_init(mipi_dsi_driver_init);

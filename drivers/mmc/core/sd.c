@@ -18,6 +18,9 @@
 #include <linux/mmc/card.h>
 #include <linux/mmc/mmc.h>
 #include <linux/mmc/sd.h>
+#if defined (CONFIG_MACH_MSM8X25_V7)
+#include <linux/export.h>
+#endif
 
 #include "core.h"
 #include "bus.h"
@@ -43,6 +46,11 @@ static const unsigned int tacc_mant[] = {
 	0,	10,	12,	13,	15,	20,	25,	30,
 	35,	40,	45,	50,	55,	60,	70,	80,
 };
+
+#if defined (CONFIG_MACH_MSM8X25_V7)
+unsigned int g_sd_power_dircect_ctrl = 0;
+EXPORT_SYMBOL(g_sd_power_dircect_ctrl);
+#endif
 
 #define UNSTUFF_BITS(resp,start,size)					\
 	({								\
@@ -1084,17 +1092,24 @@ static void mmc_sd_detect(struct mmc_host *host)
 	/*
 	 * Just check if our card has been removed.
 	 */
+// LGE_CHANGE_S [kh.tak@lge.com] 20121204 : prevent ESD shock 
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	while(retries) {
 		err = mmc_send_status(host->card, NULL);
 		if (err) {
 			retries--;
 			udelay(5);
+			if(!retries){
+				err = _mmc_detect_card_removed(host);
+				printk(KERN_ERR "%s(%s): _mmc_detect_card_removed retry = %d (%d)\n",
+			       __func__, mmc_hostname(host), retries, err);
+				break;
+			}
 			continue;
 		}
 		break;
 	}
-	if (!retries) {
+	if (!retries && err) {
 		printk(KERN_ERR "%s(%s): Unable to re-detect card (%d)\n",
 		       __func__, mmc_hostname(host), err);
 	}
@@ -1104,12 +1119,23 @@ static void mmc_sd_detect(struct mmc_host *host)
 	mmc_release_host(host);
 
 	if (err) {
+#if defined (CONFIG_MACH_MSM8X25_V7)		
+		mmc_sd_remove(host);
+
+		mmc_claim_host(host);
+		mmc_detach_bus(host);
+		g_sd_power_dircect_ctrl = 1;
+		mmc_power_off(host);
+		g_sd_power_dircect_ctrl = 0;
+		mmc_release_host(host);
+#else	
 		mmc_sd_remove(host);
 
 		mmc_claim_host(host);
 		mmc_detach_bus(host);
 		mmc_power_off(host);
 		mmc_release_host(host);
+#endif
 	}
 }
 
@@ -1153,6 +1179,19 @@ static int mmc_sd_resume(struct mmc_host *host)
 		err = mmc_sd_init_card(host, host->ocr, host->card);
 
 		if (err) {
+// LGE_UPDATE_S 20121130 kh.tak temporarily power off
+#if defined (CONFIG_MACH_MSM8X25_V7)
+			printk(KERN_ERR "%s: Re-init card rc = %d (retries = %d)\n",
+			       mmc_hostname(host), err, retries);
+			retries--;
+			g_sd_power_dircect_ctrl = 1;
+			mmc_power_off(host);
+			usleep_range(5000+((4-retries)*5000), 5500+((4-retries)*5000));
+			mmc_power_up(host);
+			mmc_select_voltage(host, host->ocr);
+			g_sd_power_dircect_ctrl = 0;
+			continue;
+#else
 			printk(KERN_ERR "%s: Re-init card rc = %d (retries = %d)\n",
 			       mmc_hostname(host), err, retries);
 			retries--;
@@ -1161,6 +1200,8 @@ static int mmc_sd_resume(struct mmc_host *host)
 			mmc_power_up(host);
 			mmc_select_voltage(host, host->ocr);
 			continue;
+#endif
+// LGE_UPDATE_E 20121130
 		}
 		break;
 	}
@@ -1290,12 +1331,25 @@ int mmc_attach_sd(struct mmc_host *host)
 	while (retries) {
 		err = mmc_sd_init_card(host, host->ocr, NULL);
 		if (err) {
+// LGE_UPDATE_S 20121130 kh.tak temporarily power off
+#if defined (CONFIG_MACH_MSM8X25_V7)
+			g_sd_power_dircect_ctrl = 1;
+			retries--;
+			mmc_power_off(host);
+			usleep_range(5000+((4-retries)*5000), 5500+((4-retries)*5000));
+			mmc_power_up(host);
+			mmc_select_voltage(host, host->ocr);
+			g_sd_power_dircect_ctrl = 0;
+			continue;
+#else
 			retries--;
 			mmc_power_off(host);
 			usleep_range(5000, 5500);
 			mmc_power_up(host);
 			mmc_select_voltage(host, host->ocr);
 			continue;
+#endif
+// LGE_UPDATE_S 20121130
 		}
 		break;
 	}

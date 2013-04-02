@@ -409,7 +409,16 @@ int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
 	if (index == EXT_CSD_BKOPS_START)
 		return 0;
 
+// LGE_CHANGE_S 20121207 kh.tak Stability of eMMC
+/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121217:Adding arch specific macro*/
+#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM7X27A_U0)
 	mmc_delay(1);
+#else
+	mmc_delay(3);
+#endif
+/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121217*/
+// LGE_CHANGE_E 20121207
+
 	/* Must check status to be sure of no errors */
 	do {
 		err = mmc_send_status(card, &status);
@@ -583,8 +592,9 @@ int mmc_send_hpi_cmd(struct mmc_card *card, u32 *status)
 
 	cmd.opcode = opcode;
 	cmd.arg = card->rca << 16 | 1;
+#if !defined(CONFIG_MMC_ISSUE_HPI_CMD_ON_PRG_STATE)
 	cmd.cmd_timeout_ms = card->ext_csd.out_of_int_time;
-
+#endif
 	err = mmc_wait_for_cmd(card->host, &cmd, 0);
 	if (err) {
 		pr_warn("%s: error %d interrupting operation. "

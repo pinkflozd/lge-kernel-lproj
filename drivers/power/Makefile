@@ -58,3 +58,6 @@ obj-$(CONFIG_PM8921_BMS)	+= pm8921-bms.o
 obj-$(CONFIG_PM8921_CHARGER)	+= pm8921-charger.o
 obj-$(CONFIG_LTC4088_CHARGER)	+= ltc4088-charger.o
 obj-$(CONFIG_CHARGER_SMB347)	+= smb347-charger.o
+# LGE_CHANGE_S, narasimha.chikka@lge.com, Add lge pm device
+obj-$(CONFIG_MACH_LGE)	+= lge_pm_sysfs.o
+# LGE_CHANGE_E, narasimha.chikka@lge.com, Add lge pm device

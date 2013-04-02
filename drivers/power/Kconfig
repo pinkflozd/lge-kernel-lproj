@@ -434,4 +434,41 @@ config AB8500_BATTERY_THERM_ON_BATCTRL
 	help
 	  Say Y to enable battery temperature measurements using
 	  thermistor connected on BATCTRL ADC.
+
+# LGE_CHANGE_S,narasimha.chikka@lge.com, Add Vbatt temp
+config LGE_BATTERY_TEMP
+	bool "Battery Temperature reading"
+	depends on MACH_LGE
+	default n
+	help
+	  Say Y to enable battery temperature reading from modem
+# LGE_CHANGE_E,narasimha.chikka@lge.com, Add Vbatt temp	  
+
+# LGE_CHANGE_S,narasimha.chikka@lge.com, Add SPG
+config LGE_FUEL_GAUGE
+	bool "SOC update from modem SPG to apps"
+	depends on MACH_LGE
+	default y
+	help
+	  Say Y to enable Battery SOC update from modem to apps
+# LGE_CHANGE_E,narasimha.chikka@lge.com, Add SPG
+
+# LGE_CHANGE_S,narasimha.chikka@lge.com, Add ChargerType detection
+config LGE_CHARGER_TYPE_DETECTION
+	bool "Detects Chargertype for Linux builds"
+	depends on MACH_LGE
+	default n
+	help
+	  Say Y to enable Chargertype detection
+# LGE_CHANGE_E,narasimha.chikka@lge.com, Add ChargerType detection
+
+# LGE_CHANGE_S,narasimha.chikka@lge.com, Add Low Voltage Battery Check
+config LGE_LOW_VOLTAGE_BATTERY_CHECK
+	bool "Low Battery Voltage check"
+	depends on MACH_LGE
+	default n
+	help
+	  Say Y to PowerOff the device when Vbat Voltage goes below min Voltage
+# LGE_CHANGE_E,narasimha.chikka@lge.com, Add Low Voltage Battery Check
+
 endif # POWER_SUPPLY

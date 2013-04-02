@@ -360,6 +360,34 @@ config BACKLIGHT_PANDORA
 	help
 	  If you have a Pandora console, say Y to enable the
 	  backlight driver.
+#LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
+config BACKLIGHT_LM3528
+	tristate "LM3528 Backlight Driver"
+	depends on BACKLIGHT_CLASS_DEVICE && MACH_LGE
+	default n
+	help
+	  If you have a National Semiconductor LM3528, say Y to enable the backlight driver
+
+config BACKLIGHT_LM3530
+	tristate "LM3530 Backlight Driver"
+	depends on BACKLIGHT_CLASS_DEVICE && MACH_LGE
+	default n
+	help
+	  If you have a National Semiconductor LM3530, say Y to enable the backlight driver
+
+config BACKLIGHT_BU61800
+	tristate "BU61800 Backlight Driver "
+	depends on BACKLIGHT_CLASS_DEVICE
+	default n
+	help
+	  If you have a Rohm BU61800, say y to enable the backlight driver	  
+	  
+config BACKLIGHT_RT9396
+	tristate "RT9396 Backlight Driver "
+	depends on BACKLIGHT_CLASS_DEVICE
+	default n
+	help
+	  If you have a Rohm RT9396, say y to enable the backlight driver
 
 endif # BACKLIGHT_CLASS_DEVICE
 

@@ -25,6 +25,7 @@
 #endif
 #define pr_fmt(fmt) "%s: " fmt, __func__
 
+
 /*
  * This component encapsulates the ALSA devices for USB audio gadget
  */
@@ -114,28 +115,31 @@ static int _snd_pcm_hw_param_set(struct snd_pcm_hw_params *params,
 	return changed;
 }
 /*-------------------------------------------------------------------------*/
-
 static inline
 struct snd_interval *param_to_interval(struct snd_pcm_hw_params *p, int n)
 {
 	return &(p->intervals[n - SNDRV_PCM_HW_PARAM_FIRST_INTERVAL]);
 }
-
 int pcm_buffer_size(struct snd_pcm_hw_params *params)
 {
 	struct snd_interval *i =
-		param_to_interval(params, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
+			param_to_interval(params, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
+
 	pr_debug("buffer_bytes = (%d,%d) omin=%d omax=%d int=%d empty=%d\n",
-		i->min, i->max, i->openmin, i->openmax, i->integer, i->empty);
+			i->min, i->max, i->openmin, i->openmax, i->integer, i->empty);
+
 	return i->min;
 }
 
 int pcm_period_size(struct snd_pcm_hw_params *params)
 {
 	struct snd_interval *i =
-		param_to_interval(params, SNDRV_PCM_HW_PARAM_PERIOD_BYTES);
+			param_to_interval(params, SNDRV_PCM_HW_PARAM_PERIOD_BYTES);
+
 	return i->min;
+
 }
+
 
 /**
  * Set default hardware params
@@ -171,22 +175,23 @@ static int playback_prepare_params(struct gaudio_snd_dev *snd)
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_RATE,
 			snd->rate, 0);
 
+
 	result = snd_pcm_kernel_ioctl(substream, SNDRV_PCM_IOCTL_DROP, NULL);
+
 	if (result < 0)
 		pr_err("SNDRV_PCM_IOCTL_DROP failed: %d\n", (int)result);
 
 	result = snd_pcm_kernel_ioctl(substream,
-			SNDRV_PCM_IOCTL_HW_PARAMS, params);
+				SNDRV_PCM_IOCTL_HW_PARAMS, params);
+
 	if (result < 0) {
 		pr_err("SNDRV_PCM_IOCTL_HW_PARAMS failed: %d\n", (int)result);
 		kfree(params);
 		return result;
 	}
-
 	result = snd_pcm_kernel_ioctl(substream, SNDRV_PCM_IOCTL_PREPARE, NULL);
 	if (result < 0)
 		pr_err("Preparing playback failed: %d\n", (int)result);
-
 
 	/* Store the hardware parameters */
 	snd->access = params_access(params);
@@ -197,114 +202,118 @@ static int playback_prepare_params(struct gaudio_snd_dev *snd)
 	kfree(params);
 
 	pr_debug("playback params: access %x, format %x, channels %d, rate %d\n",
-		snd->access, snd->format, snd->channels, snd->rate);
+			snd->access, snd->format, snd->channels, snd->rate);
 
 	return 0;
 }
-
 static int capture_prepare_params(struct gaudio_snd_dev *snd)
 {
-	struct snd_pcm_substream *substream = snd->substream;
-	struct snd_pcm_runtime   *runtime = substream->runtime;
-	struct snd_pcm_hw_params *params;
-	struct snd_pcm_sw_params *swparams;
-	unsigned long period_size;
-	unsigned long buffer_size;
-	snd_pcm_sframes_t result = 0;
 
-	/*
-	 * SNDRV_PCM_ACCESS_RW_INTERLEAVED,
-	 * SNDRV_PCM_FORMAT_S16_LE
-	 * CHANNELS: 1
-	 * RATE: 8000
-	 */
-	snd->access = SNDRV_PCM_ACCESS_RW_INTERLEAVED;
-	snd->format = SNDRV_PCM_FORMAT_S16_LE;
-	snd->channels = 1;
-	snd->rate = 8000;
+		struct snd_pcm_substream *substream = snd->substream;
+		struct snd_pcm_runtime   *runtime = substream->runtime;
+		struct snd_pcm_hw_params *params;
+		struct snd_pcm_sw_params *swparams;
+		unsigned long period_size;
+		unsigned long buffer_size;
+		snd_pcm_sframes_t result = 0;
 
-	params = kzalloc(sizeof(*params), GFP_KERNEL);
-	if (!params) {
-		pr_err("Failed to allocate hw params");
-		return -ENOMEM;
-	}
+		/*
+		   * SNDRV_PCM_ACCESS_RW_INTERLEAVED,
+		   * SNDRV_PCM_FORMAT_S16_LE
+		   * CHANNELS: 1
+		   * RATE: 8000
+		*/
+		snd->access = SNDRV_PCM_ACCESS_RW_INTERLEAVED;
+		snd->format = SNDRV_PCM_FORMAT_S16_LE;
+		snd->channels = 1;
+		snd->rate = 8000;
 
-	_snd_pcm_hw_params_any(params);
-	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_ACCESS,
-			snd->access, 0);
-	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_FORMAT,
-			snd->format, 0);
-	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_CHANNELS,
-			snd->channels, 0);
-	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_RATE,
-			snd->rate, 0);
+		params = kzalloc(sizeof(*params), GFP_KERNEL);
 
-	result = snd_pcm_kernel_ioctl(substream, SNDRV_PCM_IOCTL_DROP, NULL);
-	if (result < 0)
-		pr_err("SNDRV_PCM_IOCTL_DROP failed: %d\n", (int)result);
+		if (!params) {
+			pr_err("Failed to allocate hw params");
+			return -ENOMEM;
 
-	result = snd_pcm_kernel_ioctl(substream,
-			SNDRV_PCM_IOCTL_HW_PARAMS, params);
-	if (result < 0) {
-		pr_err("SNDRV_PCM_IOCTL_HW_PARAMS failed: %d\n", (int)result);
+		}
+
+		_snd_pcm_hw_params_any(params);
+		_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_ACCESS,
+							snd->access, 0);
+		_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_FORMAT,
+							snd->format, 0);
+		_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_CHANNELS,
+							snd->channels, 0);
+		_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_RATE,
+							snd->rate, 0);
+
+		result = snd_pcm_kernel_ioctl(substream, SNDRV_PCM_IOCTL_DROP, NULL);
+
+		if (result < 0)
+			pr_err("SNDRV_PCM_IOCTL_DROP failed: %d\n", (int)result);
+
+		result = snd_pcm_kernel_ioctl(substream,
+					SNDRV_PCM_IOCTL_HW_PARAMS, params);
+
+		if (result < 0) {
+			pr_err("SNDRV_PCM_IOCTL_HW_PARAMS failed: %d\n", (int)result);
+			kfree(params);
+			return result;
+		}
+
+		result = snd_pcm_kernel_ioctl(substream, SNDRV_PCM_IOCTL_PREPARE,
+										NULL);
+		if (result < 0)
+			pr_err("Preparing capture failed: %d\n", (int)result);
+
+		/* Store the hardware parameters */
+		snd->access = params_access(params);
+		snd->format = params_format(params);
+		snd->channels = params_channels(params);
+		snd->rate = params_rate(params);
+
+		runtime->frame_bits = snd_pcm_format_physical_width(runtime->format);
+
 		kfree(params);
+
+		swparams = kzalloc(sizeof(*swparams), GFP_KERNEL);
+		if (!swparams) {
+				pr_err("Failed to allocate sw params");
+				return -ENOMEM;
+		}
+
+		buffer_size = pcm_buffer_size(params);
+		period_size = pcm_period_size(params);
+		swparams->avail_min = period_size/2;
+		swparams->xfer_align = period_size/2;
+
+		swparams->tstamp_mode = SNDRV_PCM_TSTAMP_NONE;
+		swparams->period_step = 1;
+		swparams->start_threshold = 1;
+		swparams->stop_threshold = INT_MAX;
+		swparams->silence_size = 0;
+		swparams->silence_threshold = 0;
+
+		result = snd_pcm_kernel_ioctl(substream,
+						SNDRV_PCM_IOCTL_SW_PARAMS, swparams);
+
+		if (result < 0)
+			pr_err("SNDRV_PCM_IOCTL_SW_PARAMS failed: %d\n", (int)result);
+
+		kfree(swparams);
+
+		pr_debug("capture params: access %x, format %x, channels %d, rate %d\n",
+				snd->access, snd->format, snd->channels, snd->rate);
+
 		return result;
-	}
 
-	result = snd_pcm_kernel_ioctl(substream, SNDRV_PCM_IOCTL_PREPARE,
-					NULL);
-	if (result < 0)
-		pr_err("Preparing capture failed: %d\n", (int)result);
-
-	/* Store the hardware parameters */
-	snd->access = params_access(params);
-	snd->format = params_format(params);
-	snd->channels = params_channels(params);
-	snd->rate = params_rate(params);
-
-	runtime->frame_bits = snd_pcm_format_physical_width(runtime->format);
-
-	kfree(params);
-
-	swparams = kzalloc(sizeof(*swparams), GFP_KERNEL);
-	if (!swparams) {
-		pr_err("Failed to allocate sw params");
-		return -ENOMEM;
-	}
-
-	buffer_size = pcm_buffer_size(params);
-	period_size = pcm_period_size(params);
-	swparams->avail_min = period_size/2;
-	swparams->xfer_align = period_size/2;
-
-	swparams->tstamp_mode = SNDRV_PCM_TSTAMP_NONE;
-	swparams->period_step = 1;
-	swparams->start_threshold = 1;
-	swparams->stop_threshold = INT_MAX;
-	swparams->silence_size = 0;
-	swparams->silence_threshold = 0;
-
-	result = snd_pcm_kernel_ioctl(substream,
-			SNDRV_PCM_IOCTL_SW_PARAMS, swparams);
-	if (result < 0)
-		pr_err("SNDRV_PCM_IOCTL_SW_PARAMS failed: %d\n", (int)result);
-
-	kfree(swparams);
-
-	pr_debug("capture params: access %x, format %x, channels %d, rate %d\n",
-		snd->access, snd->format, snd->channels, snd->rate);
-
-	return result;
 }
-
 /**
  * Set default hardware params
  */
 static int playback_default_hw_params(struct gaudio_snd_dev *snd)
 {
 	struct snd_pcm_hw_params *params;
-
-       /*
+	/*
 	* SNDRV_PCM_ACCESS_RW_INTERLEAVED,
 	* SNDRV_PCM_FORMAT_S16_LE
 	* CHANNELS: 2
@@ -321,13 +330,14 @@ static int playback_default_hw_params(struct gaudio_snd_dev *snd)
 
 	_snd_pcm_hw_params_any(params);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_ACCESS,
-			snd->access, 0);
+						snd->access, 0);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_FORMAT,
-			snd->format, 0);
+						snd->format, 0);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_CHANNELS,
-			snd->channels, 0);
+						snd->channels, 0);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_RATE,
-			snd->rate, 0);
+						snd->rate, 0);
+
 
 	/* Store the hardware parameters */
 	snd->access = params_access(params);
@@ -338,11 +348,12 @@ static int playback_default_hw_params(struct gaudio_snd_dev *snd)
 	kfree(params);
 
 	pr_debug("playback params: access %x, format %x, channels %d, rate %d\n",
-		snd->access, snd->format, snd->channels, snd->rate);
+			snd->access, snd->format, snd->channels, snd->rate);
 
 	return 0;
-}
 
+
+}
 static int capture_default_hw_params(struct gaudio_snd_dev *snd)
 {
 	struct snd_pcm_hw_params *params;
@@ -352,25 +363,26 @@ static int capture_default_hw_params(struct gaudio_snd_dev *snd)
 	 * SNDRV_PCM_FORMAT_S16_LE
 	 * CHANNELS: 1
 	 * RATE: 8000
-	 */
+	*/
 	snd->access = SNDRV_PCM_ACCESS_RW_INTERLEAVED;
 	snd->format = SNDRV_PCM_FORMAT_S16_LE;
 	snd->channels = 1;
 	snd->rate = 8000;
 
 	params = kzalloc(sizeof(*params), GFP_KERNEL);
+
 	if (!params)
 		return -ENOMEM;
 
 	_snd_pcm_hw_params_any(params);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_ACCESS,
-			snd->access, 0);
+						snd->access, 0);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_FORMAT,
-			snd->format, 0);
+						snd->format, 0);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_CHANNELS,
-			snd->channels, 0);
+						snd->channels, 0);
 	_snd_pcm_hw_param_set(params, SNDRV_PCM_HW_PARAM_RATE,
-			snd->rate, 0);
+						snd->rate, 0);
 
 	/* Store the hardware parameters */
 	snd->access = params_access(params);
@@ -384,26 +396,27 @@ static int capture_default_hw_params(struct gaudio_snd_dev *snd)
 		snd->access, snd->format, snd->channels, snd->rate);
 
 	return 0;
-}
 
+
+}
 static int gaudio_open_streams(void)
 {
 	struct gaudio_snd_dev *snd;
 	int res = 0;
-
 	if (!the_card) {
 		pr_err("%s: Card is NULL", __func__);
 		return -ENODEV;
+
 	}
 
 	pr_debug("Initialize hw params");
-
 	/* Open PCM playback device and setup substream */
 	snd = &the_card->playback;
 	res = playback_prepare_params(snd);
 	if (res) {
-		pr_err("Setting playback params failed: err %d", res);
-		return res;
+			pr_err("Setting playback params failed: err %d", res);
+			return res;
+
 	}
 
 	pr_debug("Initialized playback params");
@@ -417,13 +430,14 @@ static int gaudio_open_streams(void)
 	}
 
 	pr_info("Initialized capture params");
-
 	return 0;
-}
 
+
+}
 void u_audio_clear(void)
 {
 	audio_reinit = false;
+
 }
 
 /**
@@ -445,18 +459,18 @@ static size_t u_audio_playback(struct gaudio *card, void *buf, size_t count)
 	}
 
 	if (!audio_reinit) {
-		err = gaudio_open_streams();
-		if (err) {
-			pr_err("Failed to init audio streams");
-			return 0;
-		}
-		audio_reinit = 1;
+			err = gaudio_open_streams();
+			if (err) {
+				pr_err("Failed to init audio streams");
+				return 0;
+			}
+			audio_reinit = 1;
 	}
 
 try_again:
 	if (runtime->status->state == SNDRV_PCM_STATE_XRUN ||
 		runtime->status->state == SNDRV_PCM_STATE_SUSPENDED ||
-		runtime->status->state == SNDRV_PCM_STATE_SETUP) {
+			runtime->status->state == SNDRV_PCM_STATE_SETUP) {
 		result = snd_pcm_kernel_ioctl(substream,
 				SNDRV_PCM_IOCTL_PREPARE, NULL);
 		if (result < 0) {
@@ -469,11 +483,13 @@ try_again:
 	if (!runtime->frame_bits) {
 		pr_err("SND failure - runtime->frame_bits == 0");
 		return 0;
+
 	}
+
 
 	frames = bytes_to_frames(runtime, count);
 	pr_debug("runtime->frame_bits = %d, count = %d, frames = %d",
-		runtime->frame_bits, (int)count, (int)frames);
+			runtime->frame_bits, (int)count, (int)frames);
 
 	old_fs = get_fs();
 	set_fs(KERNEL_DS);
@@ -489,7 +505,6 @@ try_again:
 
 	return 0;
 }
-
 static size_t u_audio_capture(struct gaudio *card, void *buf, size_t count)
 {
 	ssize_t result;
@@ -502,25 +517,27 @@ static size_t u_audio_capture(struct gaudio *card, void *buf, size_t count)
 	struct snd_pcm_runtime   *runtime = substream->runtime;
 
 	if (!audio_reinit) {
-		err = gaudio_open_streams();
-		if (err) {
-			pr_err("Failed to init audio streams: err %d", err);
-			return 0;
-		}
-		audio_reinit = 1;
+			err = gaudio_open_streams();
+			if (err) {
+				pr_err("Failed to init audio streams: err %d", err);
+				return 0;
+			}
+			audio_reinit = 1;
 	}
 
 try_again:
-	if (runtime->status->state == SNDRV_PCM_STATE_XRUN ||
-		runtime->status->state == SNDRV_PCM_STATE_SUSPENDED ||
-		runtime->status->state == SNDRV_PCM_STATE_SETUP) {
-		result = snd_pcm_kernel_ioctl(substream,
-				SNDRV_PCM_IOCTL_PREPARE, NULL);
-		if (result < 0) {
-			pr_err("Preparing capture failed: %d\n",
-					(int)result);
-			return result;
-		}
+		if (runtime->status->state == SNDRV_PCM_STATE_XRUN ||
+			runtime->status->state == SNDRV_PCM_STATE_SUSPENDED ||
+			runtime->status->state == SNDRV_PCM_STATE_SETUP) {
+			result = snd_pcm_kernel_ioctl(substream,
+							SNDRV_PCM_IOCTL_PREPARE, NULL);
+
+			if (result < 0) {
+					pr_err("Preparing capture failed: %d\n",
+						(int)result);
+
+					return result;
+			}
 	}
 
 	frames = bytes_to_frames(runtime, count);
@@ -535,11 +552,12 @@ try_again:
 		pr_err("Capture error: %d\n", (int)result);
 		set_fs(old_fs);
 		goto try_again;
-	}
 
+	}
 	set_fs(old_fs);
 
 	return 0;
+
 }
 
 static int u_audio_get_playback_channels(struct gaudio *card)
@@ -553,17 +571,17 @@ static int u_audio_get_playback_rate(struct gaudio *card)
 	pr_debug("Return %d", card->playback.rate);
 	return card->playback.rate;
 }
-
 static int u_audio_get_capture_channels(struct gaudio *card)
 {
 	pr_debug("Return %d", card->capture.channels);
 	return card->capture.channels;
-}
 
+}
 static int u_audio_get_capture_rate(struct gaudio *card)
 {
 	pr_debug("Return %d", card->capture.rate);
 	return card->capture.rate;
+
 }
 
 
@@ -581,6 +599,7 @@ static int gaudio_open_snd_dev(struct gaudio *card)
 		pr_err("%s: Card is NULL", __func__);
 		return -ENODEV;
 	}
+
 	/* Open control device */
 	snd = &card->control;
 	snd->filp = filp_open(fn_cntl, O_RDWR, 0);
@@ -608,8 +627,8 @@ static int gaudio_open_snd_dev(struct gaudio *card)
 	snd->card = card;
 	res = playback_default_hw_params(snd);
 	if (res) {
-		pr_err("Setting playback HW params failed: err %d", res);
-		return res;
+			pr_err("Setting playback HW params failed: err %d", res);
+			return res;
 	}
 
 	/* Open PCM capture device and setup substream */
@@ -622,6 +641,7 @@ static int gaudio_open_snd_dev(struct gaudio *card)
 		snd->filp = NULL;
 		return -EINVAL;
 	}
+
 
 	pcm_file = snd->filp->private_data;
 	snd->substream = pcm_file->substream;
@@ -660,7 +680,6 @@ static int gaudio_close_snd_dev(struct gaudio *gau)
 	return 0;
 }
 
-
 /**
  * gaudio_setup - setup ALSA interface and preparing for USB transfer
  *
@@ -679,6 +698,7 @@ int gaudio_setup(struct gaudio *card)
 		the_card = card;
 
 	return ret;
+
 }
 
 /**

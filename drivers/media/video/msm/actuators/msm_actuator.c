@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -12,6 +12,10 @@
 
 #include <linux/module.h>
 #include "msm_actuator.h"
+
+#ifdef CONFIG_IMX111_ACT  
+#include "imx111_actuator.h"  /* LGE_CHANGED, modification qct's af calibration routines, 2012-08-07, donghyun.kwon@lge.com */
+#endif
 
 static struct msm_actuator_ctrl_t msm_actuator_t;
 
@@ -237,6 +241,11 @@ int32_t msm_actuator_move_focus(
 		dir,
 		num_steps);
 
+/* LGE_CHANGE_S : 2012-12-29 sungmin.cho@lge.com exception handling */
+	if(dest_step_pos > a_ctrl->total_steps - 1)
+		dest_step_pos = a_ctrl->total_steps - 1;
+/* LGE_CHANGE_E : 2012-12-29 sungmin.cho@lge.com exception handling */
+
 	if (dest_step_pos == a_ctrl->curr_step_pos)
 		return rc;
 
@@ -302,8 +311,15 @@ int32_t msm_actuator_move_focus(
 	return rc;
 }
 
+#ifdef SUPPORT_AF_CALIBRATION
+/* QCT_CHANGED_S, add AF calibration parameters, 2012-08-06, kwangilc@qualcomm.com */
+int32_t msm_actuator_init_default_step_table(struct msm_actuator_ctrl_t *a_ctrl,
+	struct msm_actuator_set_info_t *set_info)
+/* QCT_CHANGED_E, add AF calibration parameters, 2012-08-06, kwangilc@qualcomm.com */
+#else
 int32_t msm_actuator_init_step_table(struct msm_actuator_ctrl_t *a_ctrl,
 	struct msm_actuator_set_info_t *set_info)
+#endif
 {
 	int16_t code_per_step = 0;
 	int32_t rc = 0;
@@ -360,6 +376,142 @@ int32_t msm_actuator_init_step_table(struct msm_actuator_ctrl_t *a_ctrl,
 
 	return rc;
 }
+
+
+#ifdef SUPPORT_AF_CALIBRATION
+/* QCT_CHANGED_S, add AF calibration parameters , 2012-08-06, kwangilc@qualcomm.com */
+int32_t msm_actuator_i2c_read_b_eeprom(struct msm_camera_i2c_client *dev_client, 
+            unsigned char saddr, unsigned char *rxdata)
+{
+            int32_t rc = 0;
+                        
+            struct i2c_msg msgs[] = {
+                        {
+                                    .addr  = saddr << 1,
+                                    .flags = 0,
+                                    .len   = 1,
+                                    .buf   = rxdata,
+                        },
+                        {
+                                    .addr  = saddr << 1,
+                                    .flags = I2C_M_RD,
+                                    .len   = 1,
+                                    .buf   = rxdata,
+                        },
+            };
+            rc = i2c_transfer(dev_client->client->adapter, msgs, 2);
+            if (rc < 0)
+                        printk("msm_actuator_i2c_read_b_eeprom failed 0x%x\n", saddr);
+            return rc;
+}
+
+int32_t msm_actuator_init_step_table(struct msm_actuator_ctrl_t *a_ctrl,
+            struct msm_actuator_set_info_t *set_info)
+{
+            int32_t rc = 0;
+            int16_t cur_code = 0;
+            int16_t step_index = 0;
+            uint32_t max_code_size = 1;
+            uint16_t data_size = set_info->actuator_params.data_size;
+
+            uint16_t act_start = 0, act_macro = 0, move_range = 0;
+            unsigned char buf;
+
+            printk("[QCTK_EEPROM] %s called\n", __func__);
+
+            // read from eeprom     
+            buf = ACTUATOR_START_ADDR;
+            rc = msm_actuator_i2c_read_b_eeprom(&a_ctrl->i2c_client, 
+                                ACTUATOR_EEPROM_SADDR, &buf);
+            if (rc < 0)
+                        goto act_cal_fail;
+            
+            act_start = (buf << 8) & 0xFF00;
+            
+            buf = ACTUATOR_START_ADDR + 1;
+            rc = msm_actuator_i2c_read_b_eeprom(&a_ctrl->i2c_client, 
+                        ACTUATOR_EEPROM_SADDR, &buf);
+            
+            if (rc < 0)
+            goto act_cal_fail;
+            
+            act_start |= buf & 0xFF;
+            printk("[QCTK_EEPROM] act_start = 0x%4x\n", act_start);
+
+            buf = ACTUATOR_MACRO_ADDR;
+            rc = msm_actuator_i2c_read_b_eeprom(&a_ctrl->i2c_client, 
+                        ACTUATOR_EEPROM_SADDR, &buf);
+
+            if (rc < 0)
+                        goto act_cal_fail;
+
+            act_macro = (buf << 8) & 0xFF00;
+
+            buf = ACTUATOR_MACRO_ADDR + 1;
+            rc = msm_actuator_i2c_read_b_eeprom(&a_ctrl->i2c_client, 
+                        ACTUATOR_EEPROM_SADDR, &buf);
+
+            if (rc < 0)
+                        goto act_cal_fail;
+
+            act_macro |= buf & 0xFF;
+            printk("[QCTK_EEPROM] act_macro = 0x%4x\n", act_macro);
+
+
+            for (; data_size > 0; data_size--)
+                        max_code_size *= 2;
+
+            kfree(a_ctrl->step_position_table);
+            a_ctrl->step_position_table = NULL;
+
+            /* Fill step position table */
+            a_ctrl->step_position_table =
+                        kmalloc(sizeof(uint16_t) *
+                        (set_info->af_tuning_params.total_steps + 1), GFP_KERNEL);
+
+            if (a_ctrl->step_position_table == NULL)
+                        return -EFAULT;
+
+            //intial code
+            cur_code = set_info->af_tuning_params.initial_code;
+            a_ctrl->step_position_table[0] = a_ctrl->initial_code;
+
+            // start code - by calibration data
+            if (act_start > ACTUATOR_MARGIN)
+                        a_ctrl->step_position_table[1] = act_start - ACTUATOR_MARGIN;
+            else
+                        a_ctrl->step_position_table[1] = act_start;
+
+            move_range = act_macro - a_ctrl->step_position_table[1];
+            printk("[QCTK_EEPROM] move_range = %d\n", move_range);
+
+            if (move_range < ACTUATOR_MIN_MOVE_RANGE)
+                        goto act_cal_fail;
+                
+            for (step_index = 2;step_index < set_info->af_tuning_params.total_steps;step_index++) {
+                        a_ctrl->step_position_table[step_index] 
+                                    = ((step_index - 1) * move_range + ((set_info->af_tuning_params.total_steps - 1) >> 1))
+                                    / (set_info->af_tuning_params.total_steps - 1) + a_ctrl->step_position_table[1];
+            }
+
+#if 0  /* if you want see the calibration table, enable this routines */ 
+            printk("Actuator Calibration table: start(%d),macro(%d) ==============\n", act_start, act_macro);
+            for (step_index = 0; step_index < set_info->af_tuning_params.total_steps; step_index++)
+                printk("[QCTK_EEPROM] step_position_table[%d]= %d\n",step_index,
+                       a_ctrl->step_position_table[step_index]);
+#endif			
+            a_ctrl->curr_step_pos = 0;
+            a_ctrl->curr_region_index = 0;
+
+            return rc;             
+
+act_cal_fail:
+            pr_err("[QCTK_EEPROM] act_cal_fail, call default_step_table\n");
+            rc = msm_actuator_init_default_step_table(a_ctrl, set_info);
+            return rc;
+}
+/* QCT_CHANGED_E, add AF calibration parameters , 2012-08-06, kwangilc@qualcomm.com */
+#endif
 
 int32_t msm_actuator_set_default_focus(
 	struct msm_actuator_ctrl_t *a_ctrl,

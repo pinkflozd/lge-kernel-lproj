@@ -1,4 +1,4 @@
-/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -41,6 +41,8 @@ static void pm_mpp_led_set(struct led_classdev *led_cdev,
 		dev_err(led->cdev.dev, "Invalid brightness value");
 		return;
 	}
+
+	printk(KERN_INFO "%s :value = %d \n",__func__,value);
 
 	ret = pmic_secure_mpp_config_i_sink(led->mpp, led->curr,
 			value ? PM_MPP__I_SINK__SWITCH_ENA :

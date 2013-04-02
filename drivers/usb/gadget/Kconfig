@@ -1132,4 +1132,50 @@ config USB_ANDROID_RMNET_CTRL_SMD
 	 transfers. This option enables only control interface.
 	 Data interface used is BAM.
 
+#LGE_CHANGE_S, LGE composite USB driver
+config LGE_USB_GADGET_DRIVER
+	boolean "Android Gadget for LGE United Driver"
+	depends on USB_GADGET
+	default y
+	help
+	  Provides android gadget codes for LGE United Driver.	 
+#LGE_CHANGE_E, LGE composite USB driver
+
+#[LGE_CHANGE_S], LGE AutoRun function
+config LGE_USB_AUTORUN_DRIVER
+	boolean "Android Gadget for LGE Autorun Driver"
+	depends on USB_GADGET
+	default y
+	help
+	  Provides android gadget codes for LGE Autorun Driver.
+
+#[LGE_CHANGE_E], LGE AutoRun function
+
+# LGE_CHANGE_S,narasimha.chikka@lge.com,Add PMIC Cable detection
+config LGE_PMIC_CABLE_DETECTION
+	boolean "Cable type detection from PMIC"
+	depends on USB_GADGET
+	default n
+	help
+	  Detects Cable type from PMIC Adc.
+# LGE_CHANGE_E,narasimha.chikka@lge.com,Add PMIC Cable detection
+
+config LGE_USB_ANDROID_CDROM_MAC_SUPPORT
+	boolean "USB CDROM support patch of LGE Android on Mac OS-X"
+	depends on USB_GADGET
+	default y
+	help
+	  This feature is based on Roger Quadros' patch as following;
+	  - usb:gadget:storage: Make CD-ROM emulation work with Mac OS-X
+	  - usb:gadget:f_mass_storage: Make CD-ROM emulation work with Mac OS-X
+	  ref: https://lkml.org/lkml/2011/4/5/190
+	  Mac OS-X expects CD-ROM TOC in raw format (i.e. format:2). It also
+	  sends the READ_TOC CDB in old style SFF8020i format. i.e. 2 format bits
+	  are encoded in MSBs of CDB byte 9.
+	  The first patch introduces a fsg_get_toc() helper which builds the
+	  Table of Contents (TOC) that can be used for the READ_TOC command.
+	  The remaining two patches simply make file_storage gadget and mass_storage
+	  gadget use the new helper function.
+	  Say y if this feature must be used.
+
 endif # USB_GADGET

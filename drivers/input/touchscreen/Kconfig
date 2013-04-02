@@ -352,6 +352,28 @@ config TOUCHSCREEN_MCS5000
 	  To compile this driver as a module, choose M here: the
 	  module will be called mcs5000_ts.
 
+#LGE_CHANGE_S : byungyong.hwang@lge.com Synaptics touch porting
+config LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4
+	tristate "Synaptics i2c touchscreen using RMI4 interface"
+	depends on I2C
+	help
+	  This enables support for Synaptics 3200 series over I2C based touchscreens.	  
+
+#LGE_CHANGE_E : byungyong.hwang@lge.com Synaptics touch porting
+#LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
+config TOUCHSCREEN_MELFAS_MMS136
+	tristate "Melfas MMS136 i2c touchscreen"
+	depends on I2C
+	help
+	  This enables support for Melfas MMS136 over I2C based touchscreens.	  
+
+config TOUCHSCREEN_MELFAS_MMS128S
+	tristate "Melfas MMS128s i2c touchscreen"
+	depends on I2C
+	help
+	  This enables support for Melfas MMS128s over I2C based touchscreens.		  
+#LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting
+
 config TOUCHSCREEN_MTOUCH
 	tristate "MicroTouch serial touchscreens"
 	select SERIO
@@ -364,6 +386,18 @@ config TOUCHSCREEN_MTOUCH
 	  To compile this driver as a module, choose M here: the
 	  module will be called mtouch.
 
+config TOUCHSCREEN_MELFAS_TS
+	tristate "MELFAS (MMS-128) touchscreen"
+	depends on I2C
+	help
+	  Say Y here if you have the MELFAS MCS-8000 touchscreen controller
+	  chip in your system.
+
+	  If unsure, say N.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called mcs5000_ts.
+	  
 config TOUCHSCREEN_INEXIO
 	tristate "iNexio serial touchscreens"
 	select SERIO

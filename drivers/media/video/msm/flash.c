@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -30,6 +30,12 @@ enum msm_cam_flash_stat{
 	MSM_CAM_FLASH_OFF,
 	MSM_CAM_FLASH_ON,
 };
+
+/* LGE_CHANGE_S : 2012-09-15 sungmin.cho@lge.com flash led porting */
+#ifdef CONFIG_LEDS_AS364X
+extern int as3647_flash_set_led_state(int state);
+#endif
+/* LGE_CHANGE_E : 2012-09-15 sungmin.cho@lge.com flash led porting */
 
 static struct i2c_client *sc628a_client;
 
@@ -188,6 +194,33 @@ static int config_flash_gpio_table(enum msm_cam_flash_stat stat,
 	return rc;
 }
 
+/* LGE_CHANGE_S : 2012-09-15 sungmin.cho@lge.com flash led porting */
+#ifdef CONFIG_LEDS_AS364X
+int msm_camera_flash_as3647(unsigned led_state)
+{
+	int rc = 0;
+
+	switch (led_state) {
+	case MSM_CAMERA_LED_OFF:
+	case MSM_CAMERA_LED_LOW:
+	case MSM_CAMERA_LED_HIGH:
+	/* LGE_CHANGE_S : 2012-11-14 hyungtae.lee@lge.com flash off when camera is off by back key */
+	case MSM_CAMERA_LED_INIT:
+	case MSM_CAMERA_LED_RELEASE:
+	/* LGE_CHANGE_E : 2012-11-14 hyungtae.lee@lge.com flash off when camera is off by back key */
+		rc = as3647_flash_set_led_state(led_state);
+		break;
+	default:
+		rc = -EFAULT;
+		break;
+	}
+
+	CDBG("%s: led_state = %d, return %d\n", __func__, led_state, rc);
+	return rc;
+}
+#endif
+/* LGE_CHANGE_E : 2012-09-15 sungmin.cho@lge.com flash led porting */
+
 int msm_camera_flash_current_driver(
 	struct msm_camera_sensor_flash_current_driver *current_driver,
 	unsigned led_state)
@@ -253,6 +286,11 @@ int msm_camera_flash_current_driver(
 	}
 	CDBG("msm_camera_flash_led_pmic8058: return %d\n", rc);
 #endif /* CONFIG_LEDS_PMIC8058 */
+/* LGE_CHANGE_S : 2012-09-15 sungmin.cho@lge.com flash led porting */
+#ifdef CONFIG_LEDS_AS364X
+	rc = msm_camera_flash_as3647(led_state);
+#endif
+/* LGE_CHANGE_E : 2012-09-15 sungmin.cho@lge.com flash led porting */
 	return rc;
 }
 

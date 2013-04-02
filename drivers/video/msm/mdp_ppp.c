@@ -1,7 +1,7 @@
 /* drivers/video/msm/src/drv/mdp/mdp_ppp.c
  *
  * Copyright (C) 2007 Google Incorporated
- * Copyright (c) 2008-2009, 2012 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2008-2009, 2012 Code Aurora Forum. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -1057,6 +1057,18 @@ struct mdp_blit_req *req, struct file *p_src_file, struct file *p_dst_file)
 		if (iBuf->mdpImg.mdpOp & MDPOP_ROT90) {
 			ppp_operation_reg |= PPP_OP_ROT_90;
 		}
+//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><START>		
+        #if (!defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X25A_V3_DS) && !defined(CONFIG_MACH_MSM7X25A_V3BR_REV_B) && !defined(CONFIG_MACH_MSM7X25A_V3BR_REV_C))
+		if((iBuf->mdpImg.mdpOp&MDPOP_ROTATION) == (MDPOP_LR|MDPOP_ROT90))
+		{
+            ppp_operation_reg |= PPP_OP_FLIP_LR;
+		}
+		else if (iBuf->mdpImg.mdpOp & MDPOP_ROT180) { // YOONSOO_TEMP 20111202
+   //         printk("<6>""drivers/video/msm/mdp_ppp.c : Rotate LCD for vee7 series\n");
+            ppp_operation_reg |= PPP_OP_FLIP_LR|PPP_OP_FLIP_UD;
+        }
+        #endif
+//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><END>		
 		if (iBuf->mdpImg.mdpOp & MDPOP_LR) {
 			ppp_operation_reg |= PPP_OP_FLIP_LR;
 		}
@@ -1401,9 +1413,6 @@ static int mdp_ppp_blit_addr(struct fb_info *info, struct mdp_blit_req *req,
 
 	iBuf.mdpImg.mdpOp = MDPOP_NOP;
 
-	if (req->flags & MDP_IS_FG)
-		iBuf.mdpImg.mdpOp |= MDPOP_LAYER_IS_FG;
-
 	/* blending check */
 	if (req->transp_mask != MDP_TRANSP_NOP) {
 		iBuf.mdpImg.mdpOp |= MDPOP_TRANSP;
@@ -1428,6 +1437,19 @@ static int mdp_ppp_blit_addr(struct fb_info *info, struct mdp_blit_req *req,
 		iBuf.mdpImg.mdpOp |= MDPOP_UD;
 	if (req->flags & MDP_ROT_90)
 		iBuf.mdpImg.mdpOp |= MDPOP_ROT90;
+//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><START>
+//LGE_S, jungrock.oh@lge.com 12-12-03, add U0 feature 	
+    #if defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X27A_U0) 
+	if ((req->flags&(MDP_ROT_90|MDP_FLIP_UD|MDP_FLIP_LR)) == (MDP_FLIP_UD|MDPOP_ROT90)) // front camera preview
+	{
+		iBuf.mdpImg.mdpOp &= ~MDPOP_ROTATION; // reset rot flag
+		iBuf.mdpImg.mdpOp |= (MDPOP_LR|MDPOP_ROT90);
+	}
+	else if (req->flags & MDPOP_ROT180) /* YOONSOO_TEMP 20111202 */
+		iBuf.mdpImg.mdpOp |= MDPOP_ROT180;
+    #endif
+//LGE_E, jungrock.oh@lge.com 12-12-03, add U0 feature
+//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><END>		
 	if (req->flags & MDP_DITHER)
 		iBuf.mdpImg.mdpOp |= MDPOP_DITHER;
 

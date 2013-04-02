@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -918,9 +918,12 @@ static int msm_mctl_dev_open(struct file *f)
 	}
 
 	D("%s active %d\n", __func__, pcam->mctl_node.active);
-	msm_setup_v4l2_event_queue(&pcam_inst->eventHandle,
-			pcam->mctl_node.pvdev);
-
+	rc = msm_setup_v4l2_event_queue(&pcam_inst->eventHandle,
+					pcam->mctl_node.pvdev);
+	if (rc < 0) {
+		mutex_unlock(&pcam->mctl_node.dev_lock);
+		return rc;
+	}
 	pcam_inst->vbqueue_initialized = 0;
 	kref_get(&pmctl->refcount);
 	f->private_data = &pcam_inst->eventHandle;
@@ -1003,7 +1006,8 @@ static int msm_mctl_dev_close(struct file *f)
 		vb2_queue_release(&pcam_inst->vid_bufq);
 	D("%s Closing down instance %p ", __func__, pcam_inst);
 	pcam->mctl_node.dev_inst[pcam_inst->my_index] = NULL;
-	msm_destroy_v4l2_event_queue(&pcam_inst->eventHandle);
+	v4l2_fh_del(&pcam_inst->eventHandle);
+	v4l2_fh_exit(&pcam_inst->eventHandle);
 	mutex_destroy(&pcam_inst->inst_lock);
 
 	kfree(pcam_inst);
