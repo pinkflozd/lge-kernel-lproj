@@ -204,6 +204,13 @@ config PM_ADVANCED_DEBUG
 	fields of device objects from user space.  If you are not a kernel
 	developer interested in debugging/testing Power Management, say "no".
 
+config DEBUG_SCHED_SHOW_TASK
+    depends on !MACH_MSM7X27A_U0
+	default y
+    bool "DEBUG_SCHED_SHOW_TASK"
+    help
+        Support for Dumping task info.
+
 config PM_TEST_SUSPEND
 	bool "Test suspend/resume and wakealarm during bootup"
 	depends on SUSPEND && PM_DEBUG && RTC_CLASS=y

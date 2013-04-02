@@ -22,6 +22,10 @@
 
 #include "power.h"
 
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+#include <mach/lge/lge_blocking_monitor.h>
+#endif
+
 enum {
 	DEBUG_USER_STATE = 1U << 0,
 	DEBUG_SUSPEND = 1U << 2,
@@ -30,6 +34,10 @@ enum {
 static int debug_mask = DEBUG_USER_STATE;
 module_param_named(debug_mask, debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP);
 
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+static int early_suspend_monitor_id;
+static int late_resume_monitor_id;
+#endif
 static DEFINE_MUTEX(early_suspend_lock);
 static LIST_HEAD(early_suspend_handlers);
 static void early_suspend(struct work_struct *work);
@@ -76,6 +84,11 @@ static void early_suspend(struct work_struct *work)
 	unsigned long irqflags;
 	int abort = 0;
 
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+	start_monitor_blocking(early_suspend_monitor_id,
+		jiffies + usecs_to_jiffies(5000000));
+#endif
+
 	mutex_lock(&early_suspend_lock);
 	spin_lock_irqsave(&state_lock, irqflags);
 	if (state == SUSPEND_REQUESTED)
@@ -108,6 +121,10 @@ abort:
 	if (state == SUSPEND_REQUESTED_AND_SUSPENDED)
 		wake_unlock(&main_wake_lock);
 	spin_unlock_irqrestore(&state_lock, irqflags);
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+	end_monitor_blocking(early_suspend_monitor_id);
+#endif
+
 }
 
 static void late_resume(struct work_struct *work)
@@ -115,6 +132,11 @@ static void late_resume(struct work_struct *work)
 	struct early_suspend *pos;
 	unsigned long irqflags;
 	int abort = 0;
+
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+	start_monitor_blocking(late_resume_monitor_id,
+		jiffies + usecs_to_jiffies(5000000));
+#endif
 
 	mutex_lock(&early_suspend_lock);
 	spin_lock_irqsave(&state_lock, irqflags);
@@ -143,6 +165,10 @@ static void late_resume(struct work_struct *work)
 		pr_info("late_resume: done\n");
 abort:
 	mutex_unlock(&early_suspend_lock);
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+	end_monitor_blocking(late_resume_monitor_id);
+#endif
+
 }
 
 void request_suspend_state(suspend_state_t new_state)
@@ -181,3 +207,38 @@ suspend_state_t get_suspend_state(void)
 {
 	return requested_suspend_state;
 }
+
+// LGE_CHANGE_S,narasimha.chikka@lge.com,Add pm suspend state check
+int  check_suspend_state(void)
+{
+	int supend_state = 0;
+	unsigned long irqflags;
+	
+	spin_lock_irqsave(&state_lock, irqflags);
+	supend_state = ((state & SUSPENDED) == SUSPENDED)?1:0;
+	spin_unlock_irqrestore(&state_lock, irqflags);
+	
+	return  supend_state;
+}
+// LGE_CHANGE_E,narasimha.chikka@lge.com,Add pm suspend state check
+
+// LGE_CHANGE_S,narasimha.chikka@lge.com,Add Blocking Monitor
+#ifdef CONFIG_LGE_BLOCKING_MONITOR
+static int __init earlysuspend_blocking_monitor_init(void)
+{
+	early_suspend_monitor_id = create_blocking_monitor("early_suspend");
+
+	if (early_suspend_monitor_id < 0)
+		return early_suspend_monitor_id;
+
+	late_resume_monitor_id = create_blocking_monitor("late_resume");
+
+	if (late_resume_monitor_id < 0)
+		return late_resume_monitor_id;
+
+	return 0;
+}
+
+late_initcall(earlysuspend_blocking_monitor_init);
+#endif
+// LGE_CHANGE_S,narasimha.chikka@lge.com,Add Blocking Monitor

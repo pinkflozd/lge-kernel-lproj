@@ -37,9 +37,9 @@ static int pause_on_oops_flag;
 static DEFINE_SPINLOCK(pause_on_oops_lock);
 
 #ifndef CONFIG_PANIC_TIMEOUT
-#define CONFIG_PANIC_TIMEOUT 0
+#define CONFIG_PANIC_TIMEOUT 1
 #endif
-int panic_timeout = CONFIG_PANIC_TIMEOUT;
+int panic_timeout = 1; //CONFIG_PANIC_TIMEOUT;
 EXPORT_SYMBOL_GPL(panic_timeout);
 
 ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
@@ -106,7 +106,26 @@ void panic(const char *fmt, ...)
 	va_start(args, fmt);
 	vsnprintf(buf, sizeof(buf), fmt, args);
 	va_end(args);
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+#if 1 //ndef CONFIG_MACH_MSM7X25A_V3
+	set_crash_store_enable();
+#endif
+// LGE_CHANGE_S,narasimha.chikka@lge.com,Add last Sysfs info for debugging 
+#ifdef CONFIG_LGE_LAST_SYSFS_FILE_INFO
+	sysfs_printk_last_file();
+#endif
+// LGE_CHANGE_E,narasimha.chikka@lge.com,Add last Sysfs info for debugging
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 	printk(KERN_EMERG "Kernel panic - not syncing: %s\n",buf);
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+#if 1//ndef CONFIG_MACH_MSM7X25A_V3
+	set_crash_store_disable();
+#endif
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 #ifdef CONFIG_DEBUG_BUGVERBOSE
 	/*
 	 * Avoid nested stack-dumping if a panic occurs during oops processing

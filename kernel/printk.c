@@ -48,6 +48,13 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/printk.h>
 
+/* LGE_CHANGE_S, [20120612][youngbae.choi@lge.com]
+*  for debugging, kernel log KST time is added */
+#ifdef CONFIG_LGE_KERNELLOG_KSTTIME
+#include <linux/rtc.h>
+#endif
+/* LGE_CHANGE_E, [20120609][youngbae.choi@lge.com] */
+
 /*
  * Architectures can override it:
  */
@@ -939,7 +946,11 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 
 
 	p = printk_buf;
-
+/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+#ifdef CONFIG_LGE_HANDLE_PANIC
+	store_crash_log(p);
+#endif
+/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
 	/* Read log level and handle special printk prefix */
 	plen = log_prefix(p, &current_log_level, &special);
 	if (plen) {
@@ -984,16 +995,62 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 
 			if (printk_time) {
 				/* Add the current time stamp */
+/* LGE_CHANGE_S, [20120612][youngbae.choi@lge.com]
+*  for debugging, kernel log KST time is added */
+#ifdef CONFIG_LGE_KERNELLOG_KSTTIME
+				char tbuf[100], *tp;
+#else /*original*/
 				char tbuf[50], *tp;
+#endif
+/* LGE_CHANGE_E, [20120612][youngbae.choi@lge.com] */
 				unsigned tlen;
 				unsigned long long t;
 				unsigned long nanosec_rem;
-
+/* LGE_CHANGE_S, [20120612][youngbae.choi@lge.com]
+*  for debugging, kernel log KST time is added */
+#ifdef CONFIG_LGE_KERNELLOG_KSTTIME
+				struct timespec ts;
+				struct rtc_time tm;				
+#endif
+/* LGE_CHANGE_E, [20120612][youngbae.choi@lge.com] */
 				t = cpu_clock(printk_cpu);
 				nanosec_rem = do_div(t, 1000000000);
+
+/* LGE_CHANGE_S, [20120612][youngbae.choi@lge.com]
+*  for debugging, kernel log KST time is added */
+#ifdef CONFIG_LGE_KERNELLOG_KSTTIME				
+				if(t > 10){
+					getnstimeofday(&ts);
+					rtc_time_to_tm(ts.tv_sec + 32400, &tm);
+					if(tm.tm_year < 90) // when CS network is disable.
+						rtc_time_to_tm(ts.tv_sec, &tm);
+					
+				}
+#endif
+/* LGE_CHANGE_E, [20120612][youngbae.choi@lge.com] */
+
+
+/* LGE_CHANGE_S, [20120612][youngbae.choi@lge.com]
+*  for debugging, kernel log KST time is added */
+#ifdef CONFIG_LGE_KERNELLOG_KSTTIME
+				if(t > 10){
+					tlen = sprintf(tbuf, "[%d-%02d-%02d %02d:%02d:%02d KST][%5lu.%06lu] ",
+						tm.tm_year + 1900, 
+						tm.tm_mon + 1, tm.tm_mday,
+						tm.tm_hour, tm.tm_min, tm.tm_sec,(unsigned long) t,
+						nanosec_rem / 1000);
+				}
+				else{
+					tlen = sprintf(tbuf, "[-----------------------][%5lu.%06lu] ",
+						(unsigned long) t,
+						nanosec_rem / 1000);
+				}
+#else /*original*/
 				tlen = sprintf(tbuf, "[%5lu.%06lu] ",
 						(unsigned long) t,
 						nanosec_rem / 1000);
+#endif
+/* LGE_CHANGE_E, [20120612][youngbae.choi@lge.com] */
 
 				for (tp = tbuf; tp < tbuf + tlen; tp++)
 					emit_log_char(*tp);
