@@ -209,7 +209,16 @@ repeat:
 		if (!new_transaction)
 			goto alloc_transaction;
 		write_lock(&journal->j_state_lock);
+/* LGE_UPDATE_S kh.tak 20121215 Fix assertion failure in jbd2_journal_flush from google
+* http://www.spinics.net/lists/linux-ext4/msg35543.html
+*/
+#if 0
 		if (!journal->j_running_transaction) {
+#else
+		if (!journal->j_running_transaction &&
+			!journal->j_barrier_count) {
+#endif
+/* LGE_UPDATE_E kh.tak 20121215 */
 			jbd2_get_transaction(journal, new_transaction);
 			new_transaction = NULL;
 		}
