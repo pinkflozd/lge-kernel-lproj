@@ -1,6 +1,6 @@
 /* linux/arch/arm/mach-msm/rpc_hsusb.c
  *
- * Copyright (c) 2008-2012, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2008-2012, The Linux Foundation. All rights reserved.
  *
  * All source code in this file is licensed under the following license except
  * where indicated.
@@ -600,13 +600,6 @@ EXPORT_SYMBOL(msm_hsusb_disable_pmic_ulpidata0);
 int usb_diag_update_pid_and_serial_num(uint32_t pid, const char *snum)
 {
 	int ret;
-
-#ifdef CONFIG_LGE_USB_GADGET_DRIVER
-	if (pid == 0 || snum == NULL || snum[0] == '\0') {
-		pr_info(" *** skip update_pid_and_serial_num()\n");
-		return 0;
-	}
-#endif
 
 	ret = msm_hsusb_send_productID(pid);
 	if (ret)

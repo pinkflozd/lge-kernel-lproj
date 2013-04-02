@@ -258,18 +258,6 @@ core-y				+= arch/arm/perfmon/
 
 libs-y				:= arch/arm/lib/ $(libs-y)
 
-#[jinseok.choi@lge.com]2012-11-22 U0 emmc access via kernel [START]
-ifeq ($(CONFIG_MACH_MSM7X27A_U0),y)
-	core-y			+= lge/
-endif
-#U0 emmc access via kernel [END]
-
-#LGE Diag Testmode porting [START]
-ifeq ($(CONFIG_LGE_DIAGTEST),y)
-	core-y			+= lge/
-endif
-#LGE Diag Testmode porting [END]
-
 # Default target when executing plain make
 ifeq ($(CONFIG_XIP_KERNEL),y)
 KBUILD_IMAGE := xipImage

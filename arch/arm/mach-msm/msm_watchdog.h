@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -67,7 +67,7 @@ struct msm_watchdog_dump {
 
 void msm_wdog_fiq_setup(void *stack);
 extern unsigned int msm_wdog_fiq_length, msm_wdog_fiq_start;
-extern unsigned int msm_7k_fiq_start, msm_7k_fiq_length;
+extern unsigned int msm7k_fiq_start, msm7k_fiq_length;
 
 #ifdef CONFIG_MSM_WATCHDOG
 void pet_watchdog(void);

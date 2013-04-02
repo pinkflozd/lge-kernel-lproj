@@ -3,7 +3,7 @@
  * MSM Power Management Routines
  *
  * Copyright (C) 2007 Google, Inc.
- * Copyright (c) 2008-2012 Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2008-2012 The Linux Foundation. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -1654,24 +1654,6 @@ static int __init msm_pm_init(void)
 	msm_pm_pc_pgd = virt_to_phys(pc_pgd);
 	clean_caches((unsigned long)&msm_pm_pc_pgd, sizeof(msm_pm_pc_pgd),
 		     virt_to_phys(&msm_pm_pc_pgd));
-#endif
-
-#ifdef CONFIG_LGE_WAIT_FOR_EFS_SYNC_COMPLETE
-/*LGE_CHANGE_S: seven.kim@lge.com  21/03/2012*/
-/*Wait for EFS sync comeplete while power off/ reset*/
-	pm_rmt_wait = kzalloc(sizeof(struct pm_rmt_clnt_wait_info), GFP_KERNEL);
-	if (!pm_rmt_wait) {
-		pr_err("%s: Unable to allocate memory for RMT Client Wait \n", __func__);
-	}
-	else
-	{
-		init_waitqueue_head(&pm_rmt_wait->pm_event_q);
-		atomic_set(&pm_rmt_wait->wait_for_RPC_close, 0);
-		atomic_set(&pm_rmt_wait->waiting_for_rmt, 0);
-		printk("Rmt Wait Info Success \n");
-	}
-/*Wait for EFS sync comeplete while power off/ reset*/
-/*LGE_CHANGE_E: seven.kim@lge.com  21/03/2012*/
 #endif
 
 	msm_pm_smem_data = smem_alloc(SMEM_APPS_DEM_SLAVE_DATA,
