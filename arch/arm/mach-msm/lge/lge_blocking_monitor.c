@@ -20,7 +20,7 @@
 
 #include <mach/lge/lge_blocking_monitor.h>
 
-#define MAX_BLOCKING_MONITOR_NUMBER	10
+#define MAX_BLOCKING_MONITOR_NUMBER	4
 
 struct blocking_monitor {
 	int id;

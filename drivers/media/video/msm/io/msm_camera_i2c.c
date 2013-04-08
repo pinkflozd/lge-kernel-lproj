@@ -464,3 +464,29 @@ int32_t msm_sensor_write_all_conf_array(struct msm_camera_i2c_client *client,
 	return rc;
 }
 
+#if 1//def CONFIG_MT9E013_LGIT
+int32_t msm_camera_i2c_rxdata_manual(struct i2c_adapter *adapter, uint16_t saddr,
+	unsigned char *rxdata, int data_length)
+{
+	int32_t rc = 0;
+	//uint16_t saddr = dev_client->client->addr >> 1;
+	struct i2c_msg msgs[] = {
+		{
+			.addr  = saddr,
+			.flags = 0,
+			.len   = data_length, //dev_client->addr_type,
+			.buf   = rxdata,
+		},
+		{
+			.addr  = saddr,
+			.flags = I2C_M_RD,
+			.len   = data_length,
+			.buf   = rxdata,
+		},
+	};
+	rc = i2c_transfer(adapter, msgs, 2);
+	if (rc < 0)
+		S_I2C_DBG("msm_camera_i2c_rxdata failed 0x%x\n", saddr);
+	return rc;
+}
+#endif

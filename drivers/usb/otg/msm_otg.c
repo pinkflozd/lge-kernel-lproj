@@ -2032,6 +2032,9 @@ static void msm_otg_init_sm(struct msm_otg *motg)
 	}
 }
 
+#ifdef CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 //to know usb state on touch driver
+extern void trigger_baseline_state_machine(int plug_in, int type);
+#endif
 static void msm_otg_sm_work(struct work_struct *w)
 {
 	struct msm_otg *motg = container_of(w, struct msm_otg, sm_work);
@@ -2059,6 +2062,9 @@ static void msm_otg_sm_work(struct work_struct *w)
 		if ((!test_bit(ID, &motg->inputs) ||
 				test_bit(ID_A, &motg->inputs)) && otg->host) {
 			pr_debug("!id || id_A\n");
+#ifdef CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 //to know usb state on touch driver
+			                trigger_baseline_state_machine(1,2);
+#endif
 			clear_bit(B_BUS_REQ, &motg->inputs);
 			set_bit(A_BUS_REQ, &motg->inputs);
 			otg->phy->state = OTG_STATE_A_IDLE;
@@ -2072,6 +2078,9 @@ static void msm_otg_sm_work(struct work_struct *w)
 			case USB_CHG_STATE_DETECTED:
 				switch (motg->chg_type) {
 				case USB_DCP_CHARGER:
+#ifdef CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 //to know usb state on touch driver
+                    trigger_baseline_state_machine(1,0);
+#endif
 					/* Enable VDP_SRC */
 					ulpi_write(otg->phy, 0x2, 0x85);
 					/* fall through */
@@ -2095,6 +2104,9 @@ static void msm_otg_sm_work(struct work_struct *w)
 					msm_otg_start_peripheral(otg, 1);
 					otg->phy->state =
 						OTG_STATE_B_PERIPHERAL;
+#ifdef CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 //to know usb state on touch driver
+                    trigger_baseline_state_machine(1,2);
+#endif
 					break;
 				case USB_ACA_C_CHARGER:
 					msm_otg_notify_charger(motg,
@@ -2104,6 +2116,9 @@ static void msm_otg_sm_work(struct work_struct *w)
 						OTG_STATE_B_PERIPHERAL;
 					break;
 				case USB_SDP_CHARGER:
+#ifdef CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 //to know usb state on touch driver
+                    trigger_baseline_state_machine(1,1);
+#endif
 					msm_otg_start_peripheral(otg, 1);
 					otg->phy->state =
 						OTG_STATE_B_PERIPHERAL;
@@ -2130,6 +2145,9 @@ static void msm_otg_sm_work(struct work_struct *w)
 			cancel_delayed_work_sync(&motg->chg_work);
 			motg->chg_state = USB_CHG_STATE_UNDEFINED;
 			motg->chg_type = USB_INVALID_CHARGER;
+#ifdef CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 //to know usb state on touch driver
+            trigger_baseline_state_machine(0,-1);
+#endif
 			msm_otg_notify_charger(motg, 0);
 			msm_otg_reset(otg->phy);
 			pm_runtime_put_noidle(otg->phy->dev);

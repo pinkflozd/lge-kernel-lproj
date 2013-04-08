@@ -139,7 +139,7 @@ static void ResetTS(void);
 
 /* 2012-11-29 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s f/w version */
 #define MELFAS_HW_VERSION								0x02	/* HW Version mms-128s*/
-#define MELFAS_FW_VERSION								0x17	/* FW Version mms-128s*/
+#define MELFAS_FW_VERSION								0x19 	/* FW Version mms-128s*/
 
 /* 2012-11-19 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s f/w version */
 #define MELFAS_HW_VERSION_SINGLE								0x01	/* HW Version mms-128s*/
@@ -566,7 +566,7 @@ static int firmware_update(struct mcs8000_ts_device *ts)
 		printk(KERN_INFO "Firmware ver : [%d],HW ver : [%d] \n", fw_ver, hw_ver);
 
 		/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */
-		#if defined(CONFIG_MACH_MSM7X25A_V3_DS)  
+		#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
 	    if (((fw_ver < MELFAS_FW_VERSION)&&(comp_ver == 2))||(fw_ver == 0x0)||(fw_ver == 0xFF)||(comp_ver == 0)) 
 	    {
 			printk(KERN_INFO ".......MFS_ISC_update......... \n");
@@ -1184,7 +1184,7 @@ static void mcs8000_work(struct work_struct *work)
 				#endif
 				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
 
-				#if defined(CONFIG_MACH_MSM7X25A_V3_DS)
+				#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
 				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
 				switch(keyID)
 				{
@@ -2004,7 +2004,7 @@ static int __devinit mcs8000_ts_init(void)
 	#else
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_BACK)] |= BIT_MASK(KEY_BACK);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_MENU)] |= BIT_MASK(KEY_MENU);
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS)    
+#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_HOMEPAGE)] |= BIT_MASK(KEY_HOMEPAGE);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_SIM_SWITCH)] |= BIT_MASK(KEY_SIM_SWITCH);
 #endif

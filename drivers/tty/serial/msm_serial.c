@@ -486,6 +486,10 @@ static void msm_reset(struct uart_port *port)
 	msm_write(port, UART_CR_CMD_SET_RFR, UART_CR);
 }
 
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+static int clk_balance = 0;
+#endif
+
 static void msm_init_clock(struct uart_port *port)
 {
 	int ret;
@@ -529,11 +533,20 @@ static void msm_init_clock(struct uart_port *port)
 		msm_write(port, 0x0F, UART_DREG);
 		msm_write(port, 0x0A, UART_MNDREG);
 	}
+
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+	clk_balance++;
+#endif
 }
 
 static void msm_deinit_clock(struct uart_port *port)
 {
 	struct msm_port *msm_port = UART_TO_MSM(port);
+
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+	if (!clk_balance)
+		return	;
+#endif
 
 #ifdef CONFIG_SERIAL_MSM_CLOCK_CONTROL
 	if (msm_port->clk_state != MSM_CLK_OFF)
@@ -543,7 +556,11 @@ static void msm_deinit_clock(struct uart_port *port)
 	clk_disable_unprepare(msm_port->clk);
 #endif
 
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+	clk_balance--;
+#endif
 }
+
 static int msm_startup(struct uart_port *port)
 {
 	struct msm_port *msm_port = UART_TO_MSM(port);
@@ -1115,8 +1132,12 @@ static int msm_serial_suspend(struct device *dev)
 
 	if (port) {
 		uart_suspend_port(&msm_uart_driver, port);
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+		msm_deinit_clock(port);
+#else
 		if (is_console(port))
 			msm_deinit_clock(port);
+#endif
 	}
 
 	return 0;
@@ -1129,8 +1150,12 @@ static int msm_serial_resume(struct device *dev)
 	port = get_port_from_line(pdev->id);
 
 	if (port) {
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+		msm_init_clock(port);
+#else
 		if (is_console(port))
 			msm_init_clock(port);
+#endif
 		uart_resume_port(&msm_uart_driver, port);
 	}
 

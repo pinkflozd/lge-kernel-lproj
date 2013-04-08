@@ -50,9 +50,19 @@ enum {
 /*LGE_START: Kiran.kanneganti@lge.com 05-03-2012*/
 /*In case of ESD no delays required in power off*/
 /*Change Interrupt enable & panel on timings to avoid display corruption*/
+/* LGE_CHANGE_S jungrock.oh@lge.com 2013-02-02 reduce lcd off->on delay time*/
+#if !defined(CONFIG_MACH_MSM7X27A_U0)
 #define ESD_HANDLE_DELAY (3*HZ)
+#else
+#define ESD_HANDLE_DELAY msecs_to_jiffies(0) 
+#endif
 #define ESD_INT_EN_DELAY (3*HZ)
+#if !defined(CONFIG_MACH_MSM7X27A_U0)
 #define ESD_PANEL_ON_DELAY msecs_to_jiffies(4000)
+#else
+#define ESD_PANEL_ON_DELAY msecs_to_jiffies(1000)
+#endif
+/* LGE_CHANGE_E jungrock.oh@lge.com 2013-02-02 reduce lcd off->on delay time*/
 /*LGE_END: Kiran.kanneganti@lge.com*/
 struct lcd_esd_detect {
  const char *name;

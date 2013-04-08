@@ -220,26 +220,31 @@ void pn544_factory_standby_set(void)
     dprintk("%s Go To I2c write\n", __func__);
 
     ret = __pn544_kwrite(pn544_dev, pn544_standby_set_val1, 6);
-
-    if(ret)
-    {
-        printk("%s: standby write fail\n", __func__);
+    if (ret == 0) {
+    	printk("%s: standby write val1 success\n", __func__);
+    	ret = __pn544_kread(pn544_dev, 4);
+    } else {
+    	printk("%s: standby write val1 fail\n", __func__);
+    	return;
     }
-    ret = __pn544_kread(pn544_dev, 4);
 
     ret = __pn544_kwrite(pn544_dev, pn544_standby_set_val2, 6);
-    if(ret)
-    {
-        printk("%s: standby write fail\n", __func__);
+    if (ret == 0) {
+    	printk("%s: standby write val2 success\n", __func__);
+    	ret = __pn544_kread(pn544_dev, 6);
+    } else {
+    	printk("%s: standby write val2 fail\n", __func__);
+    	return;
     }
-    ret = __pn544_kread(pn544_dev, 6);
-
+	
     ret = __pn544_kwrite(pn544_dev, pn544_standby_set_val3, 10);
-    if(ret)
-    {
-        printk("%s: standby write fail\n", __func__);
+    if (ret == 0) {
+    	printk("%s: standby write val3 success\n", __func__);
+        ret = __pn544_kread(pn544_dev, 7);
+    } else {
+    	printk("%s: standby write val3 fail\n", __func__);
+    	return;
     }
-    ret = __pn544_kread(pn544_dev, 7);
           
     // 4. power off
     dprintk(PN544_DRV_NAME ":%s power off\n", __func__);
@@ -417,13 +422,18 @@ static long pn544_dev_unlocked_ioctl(struct file *filp, unsigned int cmd, unsign
 			gpio_set_value(pn544_dev->firm_gpio, 0);
 			gpio_set_value(pn544_dev->ven_gpio, 1);
 			msleep(10);
+			// enable irq.
+			irq_set_irq_wake(pn544_dev->client->irq,1);
+			dprintk(PN544_DRV_NAME ":%s enable IRQ\n", __func__);
 		} else  if (arg == 0) {
 			/* power off */
 			dprintk(PN544_DRV_NAME ":%s power off\n", __func__);
 			gpio_set_value(pn544_dev->firm_gpio, 0);
 			gpio_set_value(pn544_dev->ven_gpio, 0);
 			msleep(10);
-
+			// disable irq.
+			irq_set_irq_wake(pn544_dev->client->irq,0);
+			dprintk(PN544_DRV_NAME ":%s disable IRQ\n", __func__);
 #ifdef LGE_NFC_READ_IRQ_MODIFY
 		} else if (arg == 3) {//DY_TEST
 			dprintk("%s Read Cancle\n", __func__);
@@ -471,6 +481,7 @@ static const struct file_operations pn544_dev_fops = {
 	.unlocked_ioctl = pn544_dev_unlocked_ioctl,
 };
 
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_M4)
 static int pn544_probe(struct i2c_client *client,
 		const struct i2c_device_id *id)
 {
@@ -607,6 +618,148 @@ err_exit:
 
 	return ret;
 }
+#else
+static int pn544_probe(struct i2c_client *client,
+		const struct i2c_device_id *id)
+{
+	int ret;
+	struct pn544_i2c_platform_data *platform_data;
+	struct pn544_dev *pn544_dev = NULL;
+
+	dprintk(PN544_DRV_NAME ": pn544_probe() start\n");
+
+	pn544_client = client;
+	platform_data = client->dev.platform_data;
+
+	if (platform_data == NULL) {
+		pr_err("%s : nfc probe fail\n", __func__);
+		return  -ENODEV;
+	}
+
+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+		pr_err("%s : need I2C_FUNC_I2C\n", __func__);
+		return  -ENODEV;
+	}
+
+	ret = gpio_request(platform_data->irq_gpio, "nfc_int");
+	if (ret) {
+		dprintk(PN544_DRV_NAME ":pn544_probe() : nfc_int request failed!\n");
+		return  -ENODEV;
+	}
+	ret = gpio_request(platform_data->ven_gpio, "nfc_ven");
+	if (ret) {
+		dprintk(PN544_DRV_NAME ":pn544_probe() : nfc_ven request failed!\n");
+		goto err_ven;
+	}
+	ret = gpio_request(platform_data->firm_gpio, "nfc_firm");
+	if (ret) {
+		dprintk(PN544_DRV_NAME ":pn544_probe() : nfc_firm request failed!\n");
+		goto err_firm;
+	}
+
+	pn544_dev = kzalloc(sizeof(*pn544_dev), GFP_KERNEL);
+	if (pn544_dev == NULL) {
+		dev_err(&client->dev,
+				"failed to allocate memory for module data\n");
+		ret = -ENOMEM;
+		goto err_exit;
+	}
+
+	pn544_dev->irq_gpio = platform_data->irq_gpio;
+	pn544_dev->ven_gpio  = platform_data->ven_gpio;
+	pn544_dev->firm_gpio  = platform_data->firm_gpio;
+	pn544_dev->client   = client;
+	dprintk(PN544_DRV_NAME ":IRQ : %d\nVEN : %d\nFIRM : %d\n",
+			pn544_dev->irq_gpio, pn544_dev->ven_gpio, pn544_dev->firm_gpio);
+
+	pn544_gpio_enable(pn544_dev);
+
+	ret = gpio_direction_output(platform_data->ven_gpio,1);
+	ret = gpio_direction_output(platform_data->firm_gpio,0);
+	ret = gpio_direction_input(platform_data->irq_gpio);
+
+	/* init mutex and queues */
+	init_waitqueue_head(&pn544_dev->read_wq);
+	mutex_init(&pn544_dev->read_mutex);
+	spin_lock_init(&pn544_dev->irq_enabled_lock);
+
+	pn544_dev->pn544_device.minor = MISC_DYNAMIC_MINOR;
+	pn544_dev->pn544_device.name = PN544_DRV_NAME;
+	pn544_dev->pn544_device.fops = &pn544_dev_fops;
+
+	ret = misc_register(&pn544_dev->pn544_device);
+	if (ret) {
+		pr_err("%s : misc_register failed\n", __FILE__);
+		goto err_misc_register;
+	}
+
+	/* request irq.  the irq is set whenever the chip has data available
+	 * for reading.  it is cleared when all data has been read.
+	 */
+	pr_info("%s : requesting IRQ %d\n", __func__, client->irq);
+	ret = request_irq(pn544_gpio_to_irq(pn544_dev), pn544_dev_irq_handler,
+			  IRQF_TRIGGER_HIGH, client->name, pn544_dev);
+	if (ret) {
+		dev_err(&client->dev, "request_irq failed\n");
+		goto err_request_irq_failed;
+	}
+	pr_info("%s : Before enable IRQ wake \n", __func__);
+#if !defined(LGE_NFC_HW_QCT_MSM8660)&&!defined(CONFIG_LGE_NFC_HW_QCT_MSM8255)
+	enable_irq_wake(pn544_get_irq_pin(pn544_dev));
+#endif
+	pr_info("%s : After enable IRQ wake \n", __func__);
+	pn544_dev->irq_enabled = true;
+	pr_info("%s : irq_enabled change true \n", __func__);
+	pn544_disable_irq(pn544_dev);
+	pr_info("%s : disable irq called \n", __func__);
+	i2c_set_clientdata(client, pn544_dev);
+	dprintk(PN544_DRV_NAME ": pn544_probe() end\n");
+/* LGE_CHANGE_S
+ * 
+ * do device driver initialization
+ * using multithread during booting,
+ * in order to reduce booting time.
+ * 
+ * byungchul.park@lge.com 20120328
+ */
+#ifdef CONFIG_LGE_NFC_MULTICORE_FASTBOOT
+	{
+		struct task_struct *th;
+		th = kthread_create(pn544_factory_standby_set_thread, NULL, "pn544_factory_standby");
+		if (IS_ERR(th)) {
+			ret = PTR_ERR(th);
+			goto err_request_irq_failed;
+		}
+		wake_up_process(th);
+	}
+#else
+	pn544_factory_standby_set();
+#endif
+/* LGE_CHANGE_E */
+	return 0;
+
+err_request_irq_failed:
+	misc_deregister(&pn544_dev->pn544_device);
+
+err_misc_register:
+	mutex_destroy(&pn544_dev->read_mutex);
+	kfree(pn544_dev);
+
+err_firm:
+	gpio_free(pn544_dev->firm_gpio);
+
+err_ven:
+	gpio_free(pn544_dev->ven_gpio);
+
+//Start	cih1234@lge.com		WBT issue modify.
+err_exit:
+	pr_err(PN544_DRV_NAME ": pn544_dev is null\n");
+
+	pr_err(PN544_DRV_NAME ": pn544_probe() end with error!\n");
+
+	return ret;
+}
+#endif
 
 static int pn544_remove(struct i2c_client *client)
 {

@@ -17,7 +17,7 @@
 #ifdef CONFIG_LGE_DLOAD_SRD
 #include <userDataBackUpDiag.h>
 #include <userDataBackUpTypeDef.h> 
-#include <../../arch/arm/mach-msm/smd_private.h>
+#include <../../kernel/arch/arm/mach-msm/smd_private.h>
 #include <linux/slab.h>
 #endif 
 
@@ -77,6 +77,7 @@ extern void LGF_SendKey(word keycode);
 #endif
 
 extern int boot_info;
+extern int boot_info_nfc;
 
 extern void remote_rpc_srd_cmmand(void * pReq, void * pRsp );
 extern void *smem_alloc(unsigned id, unsigned size);
@@ -670,7 +671,11 @@ void* LGF_TestModeKeyData(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type *
 
 void* LGF_TestModeLED(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
-
+// LGE_CHANGE_S, jinyoung3592.bae@lge.com, 2013.02.19 V1 model doesn't support any LEDs.
+#if defined(CONFIG_MACH_MSM7X25A_V1)
+	pRsp->ret_stat_code = TEST_NOT_SUPPORTED_S;
+	return pRsp;
+#else
     char *src = (void *)0;
     int fd;
 	DIAG_TEST_MODE_F_req_type req_ptr;
@@ -742,6 +747,7 @@ file_fail:
     sys_unlink((const char __user *)LED_BUTTON_BACKLIGHT);
 	
     return pRsp;
+#endif
 }
 
 /* 2011.07.22 woochang.chun@lge.com, to ignore key, touch event on sleep mode (250-42-0) */
@@ -963,11 +969,31 @@ void* LGF_TestModeFBoot(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * p
     switch( pReq->fboot)
     {
         case FIRST_BOOTING_COMPLETE_CHECK:
-            if (boot_info)
-                pRsp->ret_stat_code = TEST_OK_S;
-            else
-                pRsp->ret_stat_code = TEST_FAIL_S;
-            break;
+/*ys.seong 2013.1.21 NFC leackage current [start] */
+#ifdef CONFIG_LGE_NFC //NFC leackcurrent avoid
+    if ((boot_info==1) && (boot_info_nfc==1))
+    {
+        pRsp->ret_stat_code = TEST_OK_S;
+    }
+    else
+    {
+        pRsp->ret_stat_code = TEST_FAIL_S;
+    }
+    printk("\n[%s] FIRST_BOOTING_COMPLETE_CHECK result : %d \n", __func__, pRsp->ret_stat_code );
+break;
+#else
+/*ys.seong 2013.1.21 NFC leackage current [end] */
+    if (boot_info)
+    {
+        pRsp->ret_stat_code = TEST_OK_S;
+    }
+    else
+    {
+        pRsp->ret_stat_code = TEST_FAIL_S;
+    }
+    printk("\n[%s] FIRST_BOOTING_COMPLETE_CHECK result : %d \n", __func__, pRsp->ret_stat_code );
+    break;
+#endif
 
 #if 0
         case FIRST_BOOTING_CHG_MODE_CHECK:
@@ -1815,13 +1841,26 @@ void* LGF_TestModeProximity(
 
 	char buf;
 #ifdef CONFIG_MACH_LGE
-/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-V3&V7 same sensor sysfs. but changed sysfs.
-*/
 	int p_cal;
+	/* LGE_CHANGE : 2013-02-08 (woden.lee@lge.com) Sensor sysfs for diag
+	M4 same sensor sysfs. but changed sysfs.
+	*/ 
+#ifdef CONFIG_MACH_MSM7X25A_M4
+	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/enable";
+	const char* prox_show= "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/show";
+	const char* prox_calibration ="/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/run_calibration";
+#elif defined(CONFIG_MACH_MSM7X25A_V1) //jinseok.choi 2013-03-05 V1 Proxy Sensor Test
+	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/enable";
+	const char* prox_show= "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/show";
+	const char* prox_calibration ="/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/run_calibration";
+#else
+	/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
+	V3&V7 same sensor sysfs. but changed sysfs.
+	*/
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/show";
 	const char* prox_calibration ="/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/run_calibration";
+#endif	
 #else
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0044/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0044/show";
@@ -1950,11 +1989,22 @@ void* LGF_TestModeProximityMFT(
 
 	char buf;
 #ifdef CONFIG_MACH_LGE
+/*LGE_CHANGE : 2013-02-08 (woden.lee@lge.com) Sensor sysfs for diag
+M4 same sensor sysfs. but changed sysfs
+*/
+#ifdef CONFIG_MACH_MSM7X25A_M4
+	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/enable";
+	const char* prox_show = "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/show";
+#elif defined(CONFIG_MACH_MSM7X25A_V1) //jinseok.choi 2013-03-05 V1 Proxy Sensor Test
+	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/enable";
+	const char* prox_show= "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/show";
+#else 
 /*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
 V3&V7 same sensor sysfs. but changed sysfs.
 */
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/show";
+#endif	
 #else
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0044/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0044/show";
@@ -2010,6 +2060,19 @@ void* LGF_TestModeAccelCal(
 
 	char buf_enable,buf_mode,buf_result;
 #ifdef CONFIG_MACH_LGE
+
+/*LGE_CHANGE : 2013-02-08 (woden.lee@lge.com) Sensor sysfs for diag
+M4 same sensor sysfs. but changed sysfs.
+*/
+#ifdef CONFIG_MACH_MSM7X25A_M4
+	const char* fast_x =  "/sys/class/input/input3/fast_calibration_x";
+	const char* fast_y =  "/sys/class/input/input3/fast_calibration_y";
+	const char* fast_z =  "/sys/class/input/input3/fast_calibration_z";
+	const char* eeprom_writing =  "/sys/class/input/input3/eeprom_writing";
+	const char* sensor_enable =  "/sys/class/input/input3/enable";
+	const char* sensor_mode =  "/sys/class/input/input3/mode";
+	const char* cal_result =  "/sys/class/input/input3/cal_result";
+#else
 /*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
 V3&V7 same sensor sysfs. but changed sysfs.
 */
@@ -2020,6 +2083,7 @@ V3&V7 same sensor sysfs. but changed sysfs.
 	const char* sensor_enable =  "/sys/class/input/input2/enable";
 	const char* sensor_mode =  "/sys/class/input/input2/mode";
 	const char* cal_result =  "/sys/class/input/input2/cal_result";
+#endif	
 #else
 	const char* fast_x =  "/sys/class/input/input4/fast_calibration_x";
 	const char* fast_y =  "/sys/class/input/input4/fast_calibration_y";
@@ -2854,6 +2918,11 @@ static int lg_diag_nfc_result_file_read(int i_testcode ,int *ptrRenCode, char *s
 	
 	mm_segment_t oldfs;	
 
+	test_mode_rsp_type nfc_read_rsp_type;
+
+	memset(&nfc_read_rsp_type, 0x00, sizeof(test_mode_rsp_type));
+	pRsp->test_mode_rsp = nfc_read_rsp_type;
+
 	oldfs = get_fs();
 	set_fs(KERNEL_DS);
 	printk("[NFC] HELLO START FILE READ");
@@ -2934,8 +3003,13 @@ void* LGF_TestModeNFC(
 	int nfc_result = 0;
 	
 	char szExtraData[64] = {0,};
+	test_mode_rsp_type nfc_rsp_type;
+
 //	char szExtra
 	printk(KERN_ERR "ADDY.KIM@lge.com : [_NFC_] [%s:%d] SubCmd=<%d>\n", __func__, __LINE__, pReq->nfc);
+
+	memset(&nfc_rsp_type, 0x00, sizeof(test_mode_rsp_type));
+	pRsp->test_mode_rsp = nfc_rsp_type;
 
 	if (diagpdev != NULL){ 
 		update_diagcmd_state(diagpdev, "NFC_TEST_MODE", pReq->nfc);

@@ -20,19 +20,19 @@ static struct msm_camera_i2c_reg_conf hi351_stop_settings[] = {
 static struct msm_camera_i2c_reg_conf hi351_prev_settings[] = {
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x01, 0xf1, MSM_CAMERA_I2C_BYTE_DATA}, //Sleep on
-													   
-	{0x03, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, //DMA&Adaptive Off 				 
-	{0x36, 0xa3, MSM_CAMERA_I2C_BYTE_DATA},									   
-	
+
+	{0x03, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, //DMA&Adaptive Off
+	{0x36, 0xa3, MSM_CAMERA_I2C_BYTE_DATA},
+
 	{0x03, 0xc4, MSM_CAMERA_I2C_BYTE_DATA}, //AE off
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #else
 	{0x10, 0x60, MSM_CAMERA_I2C_BYTE_DATA},
 #endif
 	{0x03, 0xc5, MSM_CAMERA_I2C_BYTE_DATA}, //AWB off
 	{0x10, 0x30, MSM_CAMERA_I2C_BYTE_DATA},
-	
+
 	{0x03, 0x19, MSM_CAMERA_I2C_BYTE_DATA}, //Scaler Setting
 	{0x10, 0x87, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
@@ -41,7 +41,7 @@ static struct msm_camera_i2c_reg_conf hi351_prev_settings[] = {
 	{0x14, 0x70, MSM_CAMERA_I2C_BYTE_DATA}, // for Pre2mode
 	{0x03, 0xFE, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xFE, 0x0A, MSM_CAMERA_I2C_BYTE_DATA}, //Delay STEVE DV2 MUST WAIT 10msec
-	
+
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x20, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x21, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, //preview row start set.
@@ -51,41 +51,41 @@ static struct msm_camera_i2c_reg_conf hi351_prev_settings[] = {
 	{0x21, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x22, 0x03, MSM_CAMERA_I2C_BYTE_DATA},  //Shading Height 768
 	{0x23, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
-	
+
 	{0x03, 0x48, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0x1C, MSM_CAMERA_I2C_BYTE_DATA}, //MIPI On
 	{0x16, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x30, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //640 * 2
 	{0x31, 0x08, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE for 1024x768 5-)8
-	
+
 	{0x03, 0x30, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x36, 0x28, MSM_CAMERA_I2C_BYTE_DATA}, //Preview set
-	
+
 	{0x03, 0xFE, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xFE, 0x0A, MSM_CAMERA_I2C_BYTE_DATA}, //Delay 10ms
-	
+
 	{0x03, 0x11, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xf0, 0x0d, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE Dark mode for Sawtooth
-	
+
 	{0x03, 0xc4, MSM_CAMERA_I2C_BYTE_DATA}, //AE en
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1, MSM_CAMERA_I2C_BYTE_DATA},
 #endif
-	
+
 	{0x03, 0xFE, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xFE, 0x0A, MSM_CAMERA_I2C_BYTE_DATA}, //Delay 10ms
-	
+
 	{0x03, 0xc5, MSM_CAMERA_I2C_BYTE_DATA}, //AWB en
 	{0x10, 0xb1, MSM_CAMERA_I2C_BYTE_DATA},
-	
+
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x01, 0xf0, MSM_CAMERA_I2C_BYTE_DATA}, //sleep off
-	
-	{0x03, 0xcf, MSM_CAMERA_I2C_BYTE_DATA}, //Adaptive On						   
-	{0x10, 0xaf, MSM_CAMERA_I2C_BYTE_DATA},                                       
-	{0x03, 0xc0, MSM_CAMERA_I2C_BYTE_DATA}, 
+
+	{0x03, 0xcf, MSM_CAMERA_I2C_BYTE_DATA}, //Adaptive On
+	{0x10, 0xaf, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x03, 0xc0, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x33, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x32, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, //DMA On
 
@@ -97,13 +97,13 @@ static struct msm_camera_i2c_reg_conf hi351_snap_settings[] = {
 
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x01, 0xf1, MSM_CAMERA_I2C_BYTE_DATA}, //Sleep on
-	
-	{0x03, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, //DMA&Adaptive Off					 
-	{0x36, 0xa3, MSM_CAMERA_I2C_BYTE_DATA},										 
-	
+
+	{0x03, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, //DMA&Adaptive Off
+	{0x36, 0xa3, MSM_CAMERA_I2C_BYTE_DATA},
+
 	{0x03, 0xc4, MSM_CAMERA_I2C_BYTE_DATA}, //AE off
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69, MSM_CAMERA_I2C_BYTE_DATA},  // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68, MSM_CAMERA_I2C_BYTE_DATA},  // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #else
 	{0x10, 0x60, MSM_CAMERA_I2C_BYTE_DATA},
 #endif
@@ -116,7 +116,7 @@ static struct msm_camera_i2c_reg_conf hi351_snap_settings[] = {
 	{0x14, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, // for Full mode
 	{0x10, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //Full
 	{0x03, 0xFE, MSM_CAMERA_I2C_BYTE_DATA},
-	{0xFE, 0x0A, MSM_CAMERA_I2C_BYTE_DATA}, //Delay STEVE DV2 MUST WAIT 10msec - change to 8ms in code which measured actual 10 ms delay 
+	{0xFE, 0x0A, MSM_CAMERA_I2C_BYTE_DATA}, //Delay STEVE DV2 MUST WAIT 10msec - change to 8ms in code which measured actual 10 ms delay
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x20, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x21, 0x03, MSM_CAMERA_I2C_BYTE_DATA}, //preview row start set.
@@ -135,19 +135,19 @@ static struct msm_camera_i2c_reg_conf hi351_snap_settings[] = {
 	{0x16, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x30, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //2048 * 2
 	{0x31, 0x10, MSM_CAMERA_I2C_BYTE_DATA},
-	
+
 	{0x03, 0x30, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x36, 0x29, MSM_CAMERA_I2C_BYTE_DATA}, //Capture
 	{0x03, 0xFE, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xFE, 0x14, MSM_CAMERA_I2C_BYTE_DATA}, //Delay 20ms	16 ms delay but actual delay in measurement is 20 ms
-	
+
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x01, 0xf0, MSM_CAMERA_I2C_BYTE_DATA}, //sleep off
 
-	{0x03, 0xcf, MSM_CAMERA_I2C_BYTE_DATA}, //Adaptive On						 
-	{0x10, 0xaf, MSM_CAMERA_I2C_BYTE_DATA},                                       
-	
-	{0x03, 0xc0, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x03, 0xcf, MSM_CAMERA_I2C_BYTE_DATA}, //Adaptive On
+	{0x10, 0xaf, MSM_CAMERA_I2C_BYTE_DATA},
+
+	{0x03, 0xc0, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x33, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x32, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, //DMA On
 
@@ -211,7 +211,7 @@ static struct msm_camera_i2c_reg_conf hi351_special_effect[][4] = {
 		{0x03, 0x10},
 		{0x12, 0x13}, //constant ON
 		{0x44, 0x60}, //cb_constant
-		{0x45, 0xA3}, //cr_constant},	
+		{0x45, 0xA3}, //cr_constant},
 	},/*for sepia*/
 	{
 		{-1, -1, -1, -1, -1},
@@ -236,7 +236,7 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xaf, 0x81},//aInRgTgtOfs_a05_n00
 		{0xb0, 0x84},//aInRgTgtOfs_a06_n00
 		{0xb1, 0x85},//aInRgTgtOfs_a07_n00
-					
+
 		//AWB target BG angle
 		{0xb2, 0xa8},//aInBgTgtOfs_a00_n00
 		{0xb3, 0x9e},//aInBgTgtOfs_a01_n00
@@ -245,46 +245,46 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xb6, 0x00},//aInBgTgtOfs_a04_n00
 		{0xb7, 0x01},//aInBgTgtOfs_a05_n00
 		{0xb8, 0x04},//aInBgTgtOfs_a06_n00
-		{0xb9, 0x05},//aInBgTgtOfs_a07_n00			                                           
+		{0xb9, 0x05},//aInBgTgtOfs_a07_n00
 
-		{0x03, 0xc6},                                                     
-		{0x18, 0x40},//bInRgainMin_a00_n00                                
-		{0x19, 0xf0},//bInRgainMax_a00_n00                                
-		{0x1a, 0x40},//bInBgainMin_a00_n00                                
-		{0x1b, 0xf0},//bInBgainMax_a00_n00  
-					                              
-		{0xb9, 0x58},//bOutRgainMin_a00_n00	                              
-		{0xba, 0xf0},//bOutRgainMax_a00_n00	                              
-		{0xbb, 0x40},//bOutBgainMin_a00_n00	                              
-		{0xbc, 0x90},//bOutBgainMax_a00_n00	                              
-					
-		{0x03, 0xc5},                                                     
-		{0x10, 0xb1},//AWB On                                             
+		{0x03, 0xc6},
+		{0x18, 0x40},//bInRgainMin_a00_n00
+		{0x19, 0xf0},//bInRgainMax_a00_n00
+		{0x1a, 0x40},//bInBgainMin_a00_n00
+		{0x1b, 0xf0},//bInBgainMax_a00_n00
+
+		{0xb9, 0x58},//bOutRgainMin_a00_n00
+		{0xba, 0xf0},//bOutRgainMax_a00_n00
+		{0xbb, 0x40},//bOutBgainMin_a00_n00
+		{0xbc, 0x90},//bOutBgainMax_a00_n00
+
+		{0x03, 0xc5},
+		{0x10, 0xb1},//AWB On
 
 		///////////////////////////////////////////
 		// D1 Page Adaptive R/B saturation
 		///////////////////////////////////////////
-		{0x03, 0xd1},//Page d1  
+		{0x03, 0xd1},//Page d1
 
 		//Cb
-		{0x2b, 0x88}, //SATB_00 STEVE for Low Light 
-		{0x2c, 0x88}, //SATB_01 STEVE for Low Light 
-		{0x2d, 0x88}, //SATB_02 STEVE for Low Light 
-		{0x2e, 0x98}, //SATB_03  
-		{0x2f, 0x98}, //SATB_04  
+		{0x2b, 0x88}, //SATB_00 STEVE for Low Light
+		{0x2c, 0x88}, //SATB_01 STEVE for Low Light
+		{0x2d, 0x88}, //SATB_02 STEVE for Low Light
+		{0x2e, 0x98}, //SATB_03
+		{0x2f, 0x98}, //SATB_04
 		{0x30, 0x98}, //SATB_05
 		{0x31, 0xa0}, //SATB_06
 		{0x32, 0xa0}, //SATB_07
 		{0x33, 0xa0}, //SATB_08
 		{0x34, 0xa8}, //SATB_09
 		{0x35, 0xa8}, //SATB_10
-		{0x36, 0xa8}, //SATB_11 
-		        
-		//Cr		  
-		        
-		{0x37, 0x88},//SATR_00 STEVE for Low Light 
-		{0x38, 0x88},//SATR_01 STEVE for Low Light 
-		{0x39, 0x90},//SATR_02 STEVE for Low Light 
+		{0x36, 0xa8}, //SATB_11
+
+		//Cr
+
+		{0x37, 0x88},//SATR_00 STEVE for Low Light
+		{0x38, 0x88},//SATR_01 STEVE for Low Light
+		{0x39, 0x90},//SATR_02 STEVE for Low Light
 		{0x3a, 0x98},//SATR_03
 		{0x3b, 0x98},//SATR_04
 		{0x3c, 0x98},//SATR_05
@@ -293,12 +293,12 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0x3f, 0xa0},//SATR_08
 		{0x40, 0xa8},//SATR_09
 		{0x41, 0xa8},//SATR_10
-		{0x42, 0xa8},//SATR_11   
+		{0x42, 0xa8},//SATR_11
 	}, /*WHITEBALNACE AUTO*/
 	{
-		// case CAM_WB_INCANDESCENCE:																   
-		{0x03, 0xc5}, 													
-		{0x10, 0x30},//AWB Off  
+		// case CAM_WB_INCANDESCENCE:
+		{0x03, 0xc5},
+		{0x10, 0x30},//AWB Off
 
 		//AWB target RG angle
 		{0xaa, 0x00},//aInRgTgtOfs_a00_n00
@@ -319,45 +319,45 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xb7, 0x00},//aInBgTgtOfs_a05_n00
 		{0xb8, 0x00},//aInBgTgtOfs_a06_n00
 		{0xb9, 0x00},//aInBgTgtOfs_a07_n00
-						 
-		{0x03, 0xc6}, 													
-		{0x18, 0x3C},//bInRgainMin_a00_n00								
-		{0x19, 0x59},//bInRgainMax_a00_n00																																	  
-		{0x1a, 0x88},//bInBgainMin_a00_n00								
-		{0x1b, 0xA0},//bInBgainMax_a00_n00								
-						   
-		{0xb9, 0x3C},//bOutRgainMin_a00_n00								
-		{0xba, 0x59},//bOutRgainMax_a00_n00																								  
-		{0xbb, 0x88},//bOutBgainMin_a00_n00								
+
+		{0x03, 0xc6},
+		{0x18, 0x3C},//bInRgainMin_a00_n00
+		{0x19, 0x59},//bInRgainMax_a00_n00
+		{0x1a, 0x88},//bInBgainMin_a00_n00
+		{0x1b, 0xA0},//bInBgainMax_a00_n00
+
+		{0xb9, 0x3C},//bOutRgainMin_a00_n00
+		{0xba, 0x59},//bOutRgainMax_a00_n00
+		{0xbb, 0x88},//bOutBgainMin_a00_n00
 		{0xbc, 0xA0},//bOutBgainMax_a00_n00
-						 
-		{0x03, 0xc5}, 													
-		{0x10, 0xb1},//AWB On 				
+
+		{0x03, 0xc5},
+		{0x10, 0xb1},//AWB On
 
 		///////////////////////////////////////////
 		// D1 Page Adaptive R/B saturation
 		///////////////////////////////////////////
-		{0x03, 0xd1},//Page d1	
+		{0x03, 0xd1},//Page d1
 
 		//Cb
-		{0x2b, 0x88}, //SATB_00 STEVE for Low Light 
-		{0x2c, 0x88}, //SATB_01 STEVE for Low Light 
-		{0x2d, 0x88}, //SATB_02 STEVE for Low Light 
-		{0x2e, 0xd0}, //SATB_03  
-		{0x2f, 0xd0}, //SATB_04  
+		{0x2b, 0x88}, //SATB_00 STEVE for Low Light
+		{0x2c, 0x88}, //SATB_01 STEVE for Low Light
+		{0x2d, 0x88}, //SATB_02 STEVE for Low Light
+		{0x2e, 0xd0}, //SATB_03
+		{0x2f, 0xd0}, //SATB_04
 		{0x30, 0xd0}, //SATB_05
 		{0x31, 0xd0}, //SATB_06
 		{0x32, 0xd0}, //SATB_07
 		{0x33, 0xd0}, //SATB_08
 		{0x34, 0xd0}, //SATB_09
 		{0x35, 0xd0}, //SATB_10
-		{0x36, 0xd0}, //SATB_11 
-				
-		//Cr		  
-				
-		{0x37, 0x88},//SATR_00 STEVE for Low Light 
-		{0x38, 0x88},//SATR_01 STEVE for Low Light 
-		{0x39, 0x90},//SATR_02 STEVE for Low Light 
+		{0x36, 0xd0}, //SATB_11
+
+		//Cr
+
+		{0x37, 0x88},//SATR_00 STEVE for Low Light
+		{0x38, 0x88},//SATR_01 STEVE for Low Light
+		{0x39, 0x90},//SATR_02 STEVE for Low Light
 		{0x3a, 0xb0},//SATR_03
 		{0x3b, 0xb0},//SATR_04
 		{0x3c, 0xb0},//SATR_05
@@ -366,14 +366,14 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0x3f, 0xb0},//SATR_08
 		{0x40, 0xb8},//SATR_09
 		{0x41, 0xb8},//SATR_10
-		{0x42, 0xb8},//SATR_11	 
+		{0x42, 0xb8},//SATR_11
 
 	},	/*INCANDISCENT*/
 	{
 		//	DISP_NAME = " Florecent(tl84)"
-		// case CAM_WB_FLUORESCENT:                                                                    
-		{0x03, 0xc5},                                                     
-		{0x10, 0x30},//AWB Off      
+		// case CAM_WB_FLUORESCENT:
+		{0x03, 0xc5},
+		{0x10, 0x30},//AWB Off
 
 		//AWB target RG angle
 		{0xaa, 0x28},//aInRgTgtOfs_a00_n00
@@ -384,7 +384,7 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xaf, 0x81},//aInRgTgtOfs_a05_n00
 		{0xb0, 0x84},//aInRgTgtOfs_a06_n00
 		{0xb1, 0x85},//aInRgTgtOfs_a07_n00
-					
+
 		//AWB target BG angle
 		{0xb2, 0xa8},//aInBgTgtOfs_a00_n00
 		{0xb3, 0x9e},//aInBgTgtOfs_a01_n00
@@ -394,45 +394,45 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xb7, 0x01},//aInBgTgtOfs_a05_n00
 		{0xb8, 0x04},//aInBgTgtOfs_a06_n00
 		{0xb9, 0x05},//aInBgTgtOfs_a07_n00
-								 
-		{0x03, 0xc6},                                                     
-		{0x18, 0x43},//bInRgainMin_a00_n00                                
-		{0x19, 0x60},//bInRgainMax_a00_n00                                                                                                                          
-		{0x1a, 0x69},//bInBgainMin_a00_n00                                
-		{0x1b, 0x90},//bInBgainMax_a00_n00                                
-						  
-		{0xb9, 0x43},//bOutRgainMin_a00_n00                               
-		{0xba, 0x60},//bOutRgainMax_a00_n00                               
-		{0xbb, 0x69},//bOutBgainMin_a00_n00                               
-		{0xbc, 0x90},//bOutBgainMax_a00_n00  
-					    
-		{0x03, 0xc5},                                                     
-		{0x10, 0xb1},//AWB On    
-		  
+
+		{0x03, 0xc6},
+		{0x18, 0x43},//bInRgainMin_a00_n00
+		{0x19, 0x60},//bInRgainMax_a00_n00
+		{0x1a, 0x69},//bInBgainMin_a00_n00
+		{0x1b, 0x90},//bInBgainMax_a00_n00
+
+		{0xb9, 0x43},//bOutRgainMin_a00_n00
+		{0xba, 0x60},//bOutRgainMax_a00_n00
+		{0xbb, 0x69},//bOutBgainMin_a00_n00
+		{0xbc, 0x90},//bOutBgainMax_a00_n00
+
+		{0x03, 0xc5},
+		{0x10, 0xb1},//AWB On
+
 		///////////////////////////////////////////
 		// D1 Page Adaptive R/B saturation
 		///////////////////////////////////////////
-		{0x03, 0xd1},//Page d1  
+		{0x03, 0xd1},//Page d1
 
 		//Cb
-		{0x2b, 0x88}, //SATB_00 STEVE for Low Light 
-		{0x2c, 0x88}, //SATB_01 STEVE for Low Light 
-		{0x2d, 0x88}, //SATB_02 STEVE for Low Light 
-		{0x2e, 0x98}, //SATB_03  
-		{0x2f, 0x98}, //SATB_04  
+		{0x2b, 0x88}, //SATB_00 STEVE for Low Light
+		{0x2c, 0x88}, //SATB_01 STEVE for Low Light
+		{0x2d, 0x88}, //SATB_02 STEVE for Low Light
+		{0x2e, 0x98}, //SATB_03
+		{0x2f, 0x98}, //SATB_04
 		{0x30, 0x98}, //SATB_05
 		{0x31, 0xa0}, //SATB_06
 		{0x32, 0xa0}, //SATB_07
 		{0x33, 0xa0}, //SATB_08
 		{0x34, 0xa8}, //SATB_09
 		{0x35, 0xa8}, //SATB_10
-		{0x36, 0xa8}, //SATB_11 
-		        
-		//Cr		  
-		        
-		{0x37, 0x88},//SATR_00 STEVE for Low Light 
-		{0x38, 0x88},//SATR_01 STEVE for Low Light 
-		{0x39, 0x90},//SATR_02 STEVE for Low Light 
+		{0x36, 0xa8}, //SATB_11
+
+		//Cr
+
+		{0x37, 0x88},//SATR_00 STEVE for Low Light
+		{0x38, 0x88},//SATR_01 STEVE for Low Light
+		{0x39, 0x90},//SATR_02 STEVE for Low Light
 		{0x3a, 0x98},//SATR_03
 		{0x3b, 0x98},//SATR_04
 		{0x3c, 0x98},//SATR_05
@@ -441,11 +441,11 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0x3f, 0xa0},//SATR_08
 		{0x40, 0xa8},//SATR_09
 		{0x41, 0xa8},//SATR_10
-		{0x42, 0xa8},//SATR_11   
+		{0x42, 0xa8},//SATR_11
 	},	/*FLOURESECT */
 	{
-		{0x03, 0xc5},                                                     
-		{0x10, 0x30},//AWB Off     
+		{0x03, 0xc5},
+		{0x10, 0x30},//AWB Off
 
 		//AWB target RG angle
 		{0xaa, 0x28},//aInRgTgtOfs_a00_n00
@@ -456,7 +456,7 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xaf, 0x81},//aInRgTgtOfs_a05_n00
 		{0xb0, 0x84},//aInRgTgtOfs_a06_n00
 		{0xb1, 0x85},//aInRgTgtOfs_a07_n00
-					
+
 		//AWB target BG angle
 		{0xb2, 0xa8},//aInBgTgtOfs_a00_n00
 		{0xb3, 0x9e},//aInBgTgtOfs_a01_n00
@@ -466,45 +466,45 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0xb7, 0x01},//aInBgTgtOfs_a05_n00
 		{0xb8, 0x04},//aInBgTgtOfs_a06_n00
 		{0xb9, 0x05},//aInBgTgtOfs_a07_n00
-								                                       
-		{0x03, 0xc6},                                                     
-		{0x18, 0x4B},//bInRgainMin_a00_n00                                
-		{0x19, 0x6A},//bInRgainMax_a00_n00                                 								                                                                          
-		{0x1a, 0x5d},//bInBgainMin_a00_n00                                
-		{0x1b, 0x78},//bInBgainMax_a00_n00                                
-		                                                                             
-		{0xb9, 0x4B},//bOutRgainMin_a00_n00                               
-		{0xba, 0x6A},//bOutRgainMax_a00_n00                               
-		{0xbb, 0x5d},//bOutBgainMin_a00_n00                               
-		{0xbc, 0x78},//bOutBgainMax_a00_n00 
-		                              
-		{0x03, 0xc5},                                                     
-		{0x10, 0xb1},//AWB On                    
+
+		{0x03, 0xc6},
+		{0x18, 0x4B},//bInRgainMin_a00_n00
+		{0x19, 0x6A},//bInRgainMax_a00_n00
+		{0x1a, 0x5d},//bInBgainMin_a00_n00
+		{0x1b, 0x78},//bInBgainMax_a00_n00
+
+		{0xb9, 0x4B},//bOutRgainMin_a00_n00
+		{0xba, 0x6A},//bOutRgainMax_a00_n00
+		{0xbb, 0x5d},//bOutBgainMin_a00_n00
+		{0xbc, 0x78},//bOutBgainMax_a00_n00
+
+		{0x03, 0xc5},
+		{0x10, 0xb1},//AWB On
 
 		///////////////////////////////////////////
 		// D1 Page Adaptive R/B saturation
 		///////////////////////////////////////////
-		{0x03, 0xd1},//Page d1  
+		{0x03, 0xd1},//Page d1
 
 		//Cb
-		{0x2b, 0x88}, //SATB_00 STEVE for Low Light 
-		{0x2c, 0x88}, //SATB_01 STEVE for Low Light 
-		{0x2d, 0x88}, //SATB_02 STEVE for Low Light 
-		{0x2e, 0x98}, //SATB_03  
-		{0x2f, 0x98}, //SATB_04  
+		{0x2b, 0x88}, //SATB_00 STEVE for Low Light
+		{0x2c, 0x88}, //SATB_01 STEVE for Low Light
+		{0x2d, 0x88}, //SATB_02 STEVE for Low Light
+		{0x2e, 0x98}, //SATB_03
+		{0x2f, 0x98}, //SATB_04
 		{0x30, 0x98}, //SATB_05
 		{0x31, 0xa0}, //SATB_06
 		{0x32, 0xa0}, //SATB_07
 		{0x33, 0xa0}, //SATB_08
 		{0x34, 0xa8}, //SATB_09
 		{0x35, 0xa8}, //SATB_10
-		{0x36, 0xa8}, //SATB_11 
-		        
-		//Cr		  
-		        
-		{0x37, 0x88},//SATR_00 STEVE for Low Light 
-		{0x38, 0x88},//SATR_01 STEVE for Low Light 
-		{0x39, 0x90},//SATR_02 STEVE for Low Light 
+		{0x36, 0xa8}, //SATB_11
+
+		//Cr
+
+		{0x37, 0x88},//SATR_00 STEVE for Low Light
+		{0x38, 0x88},//SATR_01 STEVE for Low Light
+		{0x39, 0x90},//SATR_02 STEVE for Low Light
 		{0x3a, 0x98},//SATR_03
 		{0x3b, 0x98},//SATR_04
 		{0x3c, 0x98},//SATR_05
@@ -513,70 +513,70 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0x3f, 0xa0},//SATR_08
 		{0x40, 0xa8},//SATR_09
 		{0x41, 0xa8},//SATR_10
-		{0x42, 0xa8},//SATR_11   
+		{0x42, 0xa8},//SATR_11
 	},	/*DAYLIGHT*/
 	{
-		{0x03, 0xc5},                           																									                          
-		{0x10, 0x30}, 																									
-																														
-		//AWB target RG angle																									
-		{0xaa, 0x28},//aInRgTgtOfs_a00_n00																									
-		{0xab, 0x1e},//aInRgTgtOfs_a01_n00																									
-		{0xac, 0x14},//aInRgTgtOfs_a02_n00																									
-		{0xad, 0x0a},//aInRgTgtOfs_a03_n00																									
-		{0xae, 0x00},//aInRgTgtOfs_a04_n00																									
-		{0xaf, 0x81},//aInRgTgtOfs_a05_n00																									
-		{0xb0, 0x84},//aInRgTgtOfs_a06_n00																									
-		{0xb1, 0x85},//aInRgTgtOfs_a07_n00																									
-																														
-		//AWB target BG angle																									
-		{0xb2, 0xa8},//aInBgTgtOfs_a00_n00																									
-		{0xb3, 0x9e},//aInBgTgtOfs_a01_n00																									
-		{0xb4, 0x94},//aInBgTgtOfs_a02_n00																									
-		{0xb5, 0x8a},//aInBgTgtOfs_a03_n00																									
-		{0xb6, 0x00},//aInBgTgtOfs_a04_n00																									
-		{0xb7, 0x01},//aInBgTgtOfs_a05_n00																									
-		{0xb8, 0x04},//aInBgTgtOfs_a06_n00																									
-		{0xb9, 0x05},//aInBgTgtOfs_a07_n00																									
-								                                      																									              
-		{0x03, 0xc6},                           																									                          
-		{0x18, 0x75},//bInRgainMin_a00_n00      																									                          
-		{0x19, 0x8F},//bInRgainMax_a00_n00      																									                          								                                                                          
-		{0x1a, 0x40},//bInBgainMin_a00_n00      																									                          
-		{0x1b, 0x56},//bInBgainMax_a00_n00      																									                          
-						                                          																									                                              
-		{0xb9, 0x75},//bOutRgainMin_a00_n00     																									                          
-		{0xba, 0x8F},//bOutRgainMax_a00_n00     																									                          						                                                                                    
-		{0xbb, 0x40},//bOutBgainMin_a00_n00     																									                          
-		{0xbc, 0x56},//bOutBgainMax_a00_n00     																									                          
-					     																									
-		{0x03, 0xc5},                           																									                          
-		{0x10, 0xb1},              																									
+		{0x03, 0xc5},
+		{0x10, 0x30},
+
+		//AWB target RG angle
+		{0xaa, 0x28},//aInRgTgtOfs_a00_n00
+		{0xab, 0x1e},//aInRgTgtOfs_a01_n00
+		{0xac, 0x14},//aInRgTgtOfs_a02_n00
+		{0xad, 0x0a},//aInRgTgtOfs_a03_n00
+		{0xae, 0x00},//aInRgTgtOfs_a04_n00
+		{0xaf, 0x81},//aInRgTgtOfs_a05_n00
+		{0xb0, 0x84},//aInRgTgtOfs_a06_n00
+		{0xb1, 0x85},//aInRgTgtOfs_a07_n00
+
+		//AWB target BG angle
+		{0xb2, 0xa8},//aInBgTgtOfs_a00_n00
+		{0xb3, 0x9e},//aInBgTgtOfs_a01_n00
+		{0xb4, 0x94},//aInBgTgtOfs_a02_n00
+		{0xb5, 0x8a},//aInBgTgtOfs_a03_n00
+		{0xb6, 0x00},//aInBgTgtOfs_a04_n00
+		{0xb7, 0x01},//aInBgTgtOfs_a05_n00
+		{0xb8, 0x04},//aInBgTgtOfs_a06_n00
+		{0xb9, 0x05},//aInBgTgtOfs_a07_n00
+
+		{0x03, 0xc6},
+		{0x18, 0x75},//bInRgainMin_a00_n00
+		{0x19, 0x8F},//bInRgainMax_a00_n00
+		{0x1a, 0x40},//bInBgainMin_a00_n00
+		{0x1b, 0x56},//bInBgainMax_a00_n00
+
+		{0xb9, 0x75},//bOutRgainMin_a00_n00
+		{0xba, 0x8F},//bOutRgainMax_a00_n00
+		{0xbb, 0x40},//bOutBgainMin_a00_n00
+		{0xbc, 0x56},//bOutBgainMax_a00_n00
+
+		{0x03, 0xc5},
+		{0x10, 0xb1},
 
 		///////////////////////////////////////////
 		// D1 Page Adaptive R/B saturation
 		///////////////////////////////////////////
-		{0x03, 0xd1},//Page d1  
+		{0x03, 0xd1},//Page d1
 
 		//Cb
-		{0x2b, 0x88}, //SATB_00 STEVE for Low Light 
-		{0x2c, 0x88}, //SATB_01 STEVE for Low Light 
-		{0x2d, 0x88}, //SATB_02 STEVE for Low Light 
-		{0x2e, 0x98}, //SATB_03  
-		{0x2f, 0x98}, //SATB_04  
+		{0x2b, 0x88}, //SATB_00 STEVE for Low Light
+		{0x2c, 0x88}, //SATB_01 STEVE for Low Light
+		{0x2d, 0x88}, //SATB_02 STEVE for Low Light
+		{0x2e, 0x98}, //SATB_03
+		{0x2f, 0x98}, //SATB_04
 		{0x30, 0x98}, //SATB_05
 		{0x31, 0xa0}, //SATB_06
 		{0x32, 0xa0}, //SATB_07
 		{0x33, 0xa0}, //SATB_08
 		{0x34, 0xa8}, //SATB_09
 		{0x35, 0xa8}, //SATB_10
-		{0x36, 0xa8}, //SATB_11 
-		        
-		//Cr		  
-		        
-		{0x37, 0x88},//SATR_00 STEVE for Low Light 
-		{0x38, 0x88},//SATR_01 STEVE for Low Light 
-		{0x39, 0x90},//SATR_02 STEVE for Low Light 
+		{0x36, 0xa8}, //SATB_11
+
+		//Cr
+
+		{0x37, 0x88},//SATR_00 STEVE for Low Light
+		{0x38, 0x88},//SATR_01 STEVE for Low Light
+		{0x39, 0x90},//SATR_02 STEVE for Low Light
 		{0x3a, 0x98},//SATR_03
 		{0x3b, 0x98},//SATR_04
 		{0x3c, 0x98},//SATR_05
@@ -585,13 +585,13 @@ static struct msm_camera_i2c_reg_conf hi351_wb_oem[][54] = {
 		{0x3f, 0xa0},//SATR_08
 		{0x40, 0xa8},//SATR_09
 		{0x41, 0xa8},//SATR_10
-		{0x42, 0xa8},//SATR_11  
+		{0x42, 0xa8},//SATR_11
 	},	/*CLOUDY*/
 };
 
 static struct msm_camera_i2c_reg_conf hi351_iso[][2] = {
 	{
-		{0x03, 0xD5},				  
+		{0x03, 0xD5},
 		{0x10, 0x06}, // ISO Mode Select B[6:4] 000 Auto,001 ISO1,010 ISO2,011 ISO3,100 ISO4,101 ISO5,110 ISO6
 	},   /*ISO_AUTO*/
 	{
@@ -599,22 +599,22 @@ static struct msm_camera_i2c_reg_conf hi351_iso[][2] = {
 		{-1, -1, -1, -1, -1},
 	},   /*ISO_DEBLUR*/
 	{
-		{0x03, 0xD5},				  
-		{0x10, 0x16}, // ISO 1 control 
+		{0x03, 0xD5},
+		{0x10, 0x16}, // ISO 1 control
 	},   /*ISO_100*/
 	{
-		{0x03, 0xD5},				  	
-		{0x10, 0x26}, // ISO 2 control 
+		{0x03, 0xD5},
+		{0x10, 0x26}, // ISO 2 control
 	},   /*ISO_200*/
 	{
-		{0x03, 0xD5},				  
-		{0x10, 0x36}, // ISO 3 control 
+		{0x03, 0xD5},
+		{0x10, 0x36}, // ISO 3 control
 	},   /*ISO_400*/
 	{
-		{0x03, 0xD5}, 			  
-		{0x10, 0x46}, // ISO 4 control 
+		{0x03, 0xD5},
+		{0x10, 0x46}, // ISO 4 control
 	},   /*ISO_800*/
-	
+
 };
 
 
@@ -623,19 +623,19 @@ static struct msm_camera_i2c_reg_conf hi351_auto_fps_settings0[] = {
 	//30~8fps
 	{0x03, 0x00},
 	{0x01, 0xf1}, //Sleep on
-													   
-	{0x03, 0x30}, //DMA&Adaptive Off					 
-	{0x36, 0xa3},									   
+
+	{0x03, 0x30}, //DMA&Adaptive Off
+	{0x36, 0xa3},
 
 	{0x03, 0xc4}, //AE off
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68},  // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #else
 	{0x10, 0x60},
 #endif
 	{0x03, 0xc5}, //AWB off
 	{0x10, 0x30},
-	
+
 	{0x03, 0xe3}, // For Camera Spatial LPF design parameters
   	{0xae, 0x03}, //14 page
 	{0xaf, 0x14},
@@ -663,34 +663,34 @@ static struct msm_camera_i2c_reg_conf hi351_auto_fps_settings0[] = {
 	{0xc5, 0x33},
 	{0xc6, 0x20}, //Dark2 0x1420
 	{0xc7, 0x80},
-	
+
 	{0x03, 0x20}, //Page 20
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x24, 0x00}, //EXP Max 8.33 fps (STEVE FOR 50Hz)
-	{0x25, 0x41}, 
-	{0x26, 0xe4}, 
-	{0x27, 0x40}, 
+	{0x25, 0x41},
+	{0x26, 0xe4},
+	{0x27, 0x40},
 #else
-	{0x24, 0x00}, //EXP Max 8.00 fps 
-	{0x25, 0x44}, 
-	{0x26, 0xa3}, 
-	{0x27, 0x18}, 
+	{0x24, 0x00}, //EXP Max 8.00 fps
+	{0x25, 0x44},
+	{0x26, 0xa3},
+	{0x27, 0x18},
 #endif
 	{0x28, 0x00}, //EXPMin 25210.08 fps
-	{0x29, 0x0b}, 
-	{0x2a, 0x28}, 
-	{0x30, 0x05}, //EXP100 
-	{0x31, 0x7d}, 
-	{0x32, 0xb0}, 
-	{0x33, 0x04}, //EXP120 
-	{0x34, 0x93}, 
-	{0x35, 0x68}, 
-	{0x36, 0x00}, //EXP Unit 
-	{0x37, 0x05}, 
-	{0x38, 0x94}, 
+	{0x29, 0x0b},
+	{0x2a, 0x28},
+	{0x30, 0x05}, //EXP100
+	{0x31, 0x7d},
+	{0x32, 0xb0},
+	{0x33, 0x04}, //EXP120
+	{0x34, 0x93},
+	{0x35, 0x68},
+	{0x36, 0x00}, //EXP Unit
+	{0x37, 0x05},
+	{0x38, 0x94},
 
 	{0x03, 0x30},
-	{0x36, 0x28}, //preview function 
+	{0x36, 0x28}, //preview function
 
 };
 
@@ -698,23 +698,23 @@ static struct msm_camera_i2c_reg_conf hi351_auto_fps_settings1[] = {
 
 //	{0x03, 0xFE},
 //	{0xFE, 0x0A}, //Delay 10ms
-	
+
 	{0x03, 0x00},
-	{0x10, 0x13},  // scale 
-	{0x11, 0x83}, // 
-	
-	{0x03, 0x18}, //Page 18 
-	{0xC4, 0x7e}, //FLK200 
-	{0xC5, 0x69}, //FLK240  
-	
+	{0x10, 0x13},  // scale
+	{0x11, 0x83}, //
+
+	{0x03, 0x18}, //Page 18
+	{0xC4, 0x7e}, //FLK200
+	{0xC5, 0x69}, //FLK240
+
 	{0x03, 0x00}, //PAGE 0
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x90, 0x0c}, //BLC_TIME_TH_ON  // STEVE for 50Hz
 	{0x91, 0x0c}, //BLC_TIME_TH_OFF // STEVE for 50Hz
 	{0x92, 0xe8}, //BLC_AG_TH_ON    //// STEVE fixed AGC 0xD0
 	{0x93, 0xe0}, //BLC_AG_TH_OFF   //// STEVE fixed AGC 0xD0
-	
-	//DCDC 
+
+	//DCDC
 	{0x03, 0x02}, //PAGE 2
 	{0xd4, 0x0c}, //DCDC_TIME_TH_ON  // STEVE for 50Hz
 	{0xd5, 0x0c}, //DCDC_TIME_TH_OFF // STEVE for 50Hz
@@ -723,23 +723,27 @@ static struct msm_camera_i2c_reg_conf hi351_auto_fps_settings1[] = {
 	{0x91, 0x0f}, //BLC_TIME_TH_OFF // STEVE fixed
 	{0x92, 0xe8}, //BLC_AG_TH_ON    //// STEVE fixed AGC 0xD0
 	{0x93, 0xe0}, //BLC_AG_TH_OFF   //// STEVE fixed AGC 0xD0
-	
-	//DCDC 
+
+	//DCDC
 	{0x03, 0x02}, //PAGE 2
 	{0xd4, 0x0f}, //DCDC_TIME_TH_ON
-	{0xd5, 0x0f}, //DCDC_TIME_TH_OFF 
+	{0xd5, 0x0f}, //DCDC_TIME_TH_OFF
 #endif
 	{0xd6, 0xe8}, //DCDC_AG_TH_ON
 	{0xd7, 0xe0}, //DCDC_AG_TH_OFF
-	
+
 	{0x03, 0xcf}, // STEVE : EV max -> 94 b6 b4 [fixed frame : not enough int. time]
-	{0x13, 0x02}, //Y_LUM_MAX 8fps, AG 0xF0   
-	{0x14, 0x60}, 
-	{0x15, 0x00},                              
-	{0x16, 0x00},   
+	{0x13, 0x02}, //Y_LUM_MAX 8fps, AG 0xF0
+	{0x14, 0x60},
+	{0x15, 0x00},
+	{0x16, 0x00},
 
 	{0x03, 0xc4},
-	{0x10, 0xe1}, // STEVE AE ON
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
+#else
+	{0x10, 0xe1}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
+#endif
 
 };
 
@@ -753,35 +757,35 @@ static struct msm_camera_i2c_reg_conf hi351_auto_fps_settings2[] = {
 	{0x03, 0x00},
 	{0x01, 0xf0}, //sleep off
 
-	{0x03, 0xcf}, //Adaptive On						   
-	{0x10, 0xaf},  // STEVE all on   
-	                                  
-	{0x03, 0xc0}, 
+	{0x03, 0xcf}, //Adaptive On
+	{0x10, 0xaf},  // STEVE all on
+
+	{0x03, 0xc0},
 	{0x33, 0x00},
-	{0x32, 0x01}, //DMA On   	 
+	{0x32, 0x01}, //DMA On
 
 };
 
 static struct msm_camera_i2c_reg_conf hi351_fixed_fps_settings0[] = {
-// CAMCODER MODE : 30 ~ 22FPS	
+// CAMCODER MODE : 30 ~ 22FPS
 	{0x03, 0x00},
 	{0x01, 0xf1}, //Sleep on
-												   
-	{0x03, 0x30}, //DMA&Adaptive Off					 
-	{0x36, 0xa3},									   
+
+	{0x03, 0x30}, //DMA&Adaptive Off
+	{0x36, 0xa3},
 
 	{0x03, 0xc4}, //AE off
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68},  // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #else
 	{0x10, 0x60},
 #endif
 	{0x03, 0xc5}, //AWB off
 	{0x10, 0x30},
-	
+
 	{0x03, 0xe3}, //  For Camcording Spatial LPF design parameters
 	{0xae, 0x03}, // dark2
-	{0xaf, 0x14}, 
+	{0xaf, 0x14},
 	{0xb0, 0x10},
 	{0xb1, 0x27},
 	{0xb2, 0x11},
@@ -808,25 +812,25 @@ static struct msm_camera_i2c_reg_conf hi351_fixed_fps_settings0[] = {
 	{0xc7, 0x80},
 
 	{0x03, 0x20}, //Page 20
-	{0x24, 0x00}, //EXP Max 24.00 fps 
-	{0x25, 0x16}, 
-	{0x26, 0xE1}, 
-	{0x27, 0x08}, 
+	{0x24, 0x00}, //EXP Max 24.00 fps
+	{0x25, 0x16},
+	{0x26, 0xE1},
+	{0x27, 0x08},
 	{0x28, 0x00}, //EXPMin 25210.08 fps
-	{0x29, 0x0b}, 
-	{0x2a, 0x28}, 
-	{0x30, 0x05}, //EXP100 
-	{0x31, 0x7d}, 
-	{0x32, 0xb0}, 
-	{0x33, 0x04}, //EXP120 
-	{0x34, 0x93}, 
-	{0x35, 0x68}, 
-	{0x36, 0x00}, //EXP Unit 
-	{0x37, 0x05}, 
-	{0x38, 0x94}, 
-	
+	{0x29, 0x0b},
+	{0x2a, 0x28},
+	{0x30, 0x05}, //EXP100
+	{0x31, 0x7d},
+	{0x32, 0xb0},
+	{0x33, 0x04}, //EXP120
+	{0x34, 0x93},
+	{0x35, 0x68},
+	{0x36, 0x00}, //EXP Unit
+	{0x37, 0x05},
+	{0x38, 0x94},
+
 	{0x03, 0x30},
-	{0x36, 0x28}, //preview function 
+	{0x36, 0x28}, //preview function
 
 };
 
@@ -834,48 +838,48 @@ static struct msm_camera_i2c_reg_conf hi351_fixed_fps_settings1[] = {
 
 //	{0x03, 0xFE},
 //	{0xFE, 0x0A}, //Delay 10ms
-	
+
 	{0x03, 0x00},
-	{0x10, 0x13}, // scale 
-	{0x11, 0x83}, // 
-	
-	{0x03, 0x18}, //Page 18 
-	{0xC4, 0x7e}, //FLK200 
-	{0xC5, 0x69}, //FLK240 
-	
+	{0x10, 0x13}, // scale
+	{0x11, 0x83}, //
+
+	{0x03, 0x18}, //Page 18
+	{0xC4, 0x7e}, //FLK200
+	{0xC5, 0x69}, //FLK240
+
 	{0x03, 0x00}, //PAGE 0
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x90, 0x04}, //BLC_TIME_TH_ON  // STEVE for 50hz
-	{0x91, 0x04}, //BLC_TIME_TH_OFF // STEVE for 50hz 
+	{0x91, 0x04}, //BLC_TIME_TH_OFF // STEVE for 50hz
 	{0x92, 0xe8}, //BLC_AG_TH_ON  //STEVE AGC OxD0
 	{0x93, 0xe0}, //BLC_AG_TH_OFF //STEVE AGC OxD0
-	
-	//DCDC 
+
+	//DCDC
 	{0x03, 0x02}, //PAGE 2
 	{0xd4, 0x04}, //DCDC_TIME_TH_ON  // STEVE for 50hz
 	{0xd5, 0x04}, //DCDC_TIME_TH_OFF // STEVE for 50hz
 #else
 	{0x90, 0x05}, //BLC_TIME_TH_ON
-	{0x91, 0x05}, //BLC_TIME_TH_OFF 
+	{0x91, 0x05}, //BLC_TIME_TH_OFF
 	{0x92, 0xe8}, //BLC_AG_TH_ON  //STEVE AGC OxD0
 	{0x93, 0xe0}, //BLC_AG_TH_OFF //STEVE AGC OxD0
-	
-	//DCDC 
+
+	//DCDC
 	{0x03, 0x02}, //PAGE 2
 	{0xd4, 0x05}, //DCDC_TIME_TH_ON
-	{0xd5, 0x05}, //DCDC_TIME_TH_OFF 
+	{0xd5, 0x05}, //DCDC_TIME_TH_OFF
 #endif
 	{0xd6, 0xe8}, //DCDC_AG_TH_ON
 	{0xd7, 0xe0}, //DCDC_AG_TH_OFF
 
 	{0x03, 0xcf}, // STEVE : EV max -> 94 b6 b4 [fixed frame : not enough int. time]
-	{0x13, 0x00}, //Y_LUM_MAX 10fps, AG 0xA0   
-	{0x14, 0xB0}, 
-	{0x15, 0x00},                              
-	{0x16, 0x00},                              
+	{0x13, 0x00}, //Y_LUM_MAX 10fps, AG 0xA0
+	{0x14, 0xB0},
+	{0x15, 0x00},
+	{0x16, 0x00},
 
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1}, // STEVE AE en
@@ -885,35 +889,35 @@ static struct msm_camera_i2c_reg_conf hi351_fixed_fps_settings1[] = {
 
 static struct msm_camera_i2c_reg_conf hi351_fixed_fps_settings2[] = {
 
-	
+
 //	{0x03, 0xFE},
 //	{0xFE, 0x0A}, //Delay 10ms
-	
+
 	{0x03, 0xc5}, //AWB en
 	{0x10, 0xb1},
-	
+
 	{0x03, 0x00},
 	{0x01, 0xf0}, //sleep off
 
-	{0x03, 0xcf}, //Adaptive On						   
+	{0x03, 0xcf}, //Adaptive On
 	{0x10, 0xaf},
-	                                       
-	{0x03, 0xc0}, 
+
+	{0x03, 0xc0},
 	{0x33, 0x00},
-	{0x32, 0x01}, //DMA On	
+	{0x32, 0x01}, //DMA On
 };
 
 static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings0[] = {
 
 	{0x03, 0x00},
 	{0x01, 0xf1}, //Sleep on
-													 
-	{0x03, 0x30}, //DMA&Adaptive Off 				   
-	{0x36, 0xa3},										 
+
+	{0x03, 0x30}, //DMA&Adaptive Off
+	{0x36, 0xa3},
 
 	{0x03, 0xc4}, //AE off
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68},  // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #else
 	{0x10, 0x60},
 #endif
@@ -922,7 +926,7 @@ static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings0[] = {
 
 	{0x03, 0xe3}, //  For Camcording Spatial LPF design parameters
 	{0xae, 0x03}, // dark2
-	{0xaf, 0x14}, 
+	{0xaf, 0x14},
 	{0xb0, 0x10},
 	{0xb1, 0x27},
 	{0xb2, 0x11},
@@ -947,44 +951,44 @@ static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings0[] = {
 	{0xc5, 0x30},
 	{0xc6, 0x20},
 	{0xc7, 0x80},
-	
+
 	{0x03, 0x20}, //Page 20
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x20, 0x00}, //EXP Normal 33.33 fps (STEVE for 50Hz)
-	{0x21, 0x10}, 
-	{0x22, 0x79}, 
-	{0x23, 0x10}, 
+	{0x21, 0x10},
+	{0x22, 0x79},
+	{0x23, 0x10},
 	{0x24, 0x00}, //EXP Max 33.33 fps (STEVE for 50Hz)
-	{0x25, 0x10}, 
-	{0x26, 0x79}, 
+	{0x25, 0x10},
+	{0x26, 0x79},
 	{0x27, 0x10},
 #else
-	{0x20, 0x00}, //EXP Normal 30.00 fps  
-	{0x21, 0x12}, 
-	{0x22, 0x4d}, 
-	{0x23, 0xa0}, 
-	{0x24, 0x00}, //EXP Max 30.00 fps 
-	{0x25, 0x12}, 
-	{0x26, 0x4d}, 
-	{0x27, 0xa0}, 
+	{0x20, 0x00}, //EXP Normal 30.00 fps
+	{0x21, 0x12},
+	{0x22, 0x4d},
+	{0x23, 0xa0},
+	{0x24, 0x00}, //EXP Max 30.00 fps
+	{0x25, 0x12},
+	{0x26, 0x4d},
+	{0x27, 0xa0},
 #endif
 	{0x28, 0x00}, //EXPMin 25210.08 fps
-	{0x29, 0x0b}, 
-	{0x2a, 0x28},  
-	{0x30, 0x05}, //EXP100 
-	{0x31, 0x7d}, 
-	{0x32, 0xb0}, 
-	{0x33, 0x04}, //EXP120 
-	{0x34, 0x93}, 
-	{0x35, 0x68}, 
+	{0x29, 0x0b},
+	{0x2a, 0x28},
+	{0x30, 0x05}, //EXP100
+	{0x31, 0x7d},
+	{0x32, 0xb0},
+	{0x33, 0x04}, //EXP120
+	{0x34, 0x93},
+	{0x35, 0x68},
 	{0x3c, 0x00}, //EXP Fix 15.01 fps
-	{0x3d, 0x24}, 
-	{0x3e, 0x9b}, 
-	{0x3f, 0x40}, 
-	{0x36, 0x00}, //EXP Unit 
-	{0x37, 0x05}, 
-	{0x38, 0x94}, 
-	
+	{0x3d, 0x24},
+	{0x3e, 0x9b},
+	{0x3f, 0x40},
+	{0x36, 0x00}, //EXP Unit
+	{0x37, 0x05},
+	{0x38, 0x94},
+
 	{0x03, 0x30},
 	{0x36, 0x28}, //preview function
 };
@@ -992,49 +996,49 @@ static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings0[] = {
 static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings1[] = {
 
 //	{0x03, 0xFE},
-//	{0xFE, 0x0A}, //Delay 10ms 		  
+//	{0xFE, 0x0A}, //Delay 10ms
 
 	{0x03, 0x00},
-	{0x10, 0x13}, // scale 
-	{0x11, 0x87}, //bit2 on 
-	
-	{0x03, 0x18}, //Page 18 
-	{0xC4, 0x7e}, //FLK200 
-	{0xC5, 0x69}, //FLK240 
-	
-	{0x03, 0x00}, //PAGE 0                              
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x90, 0x03}, //BLC_TIME_TH_ON  //STEVE for 50hz           
-	{0x91, 0x03}, //BLC_TIME_TH_OFF //STEVE for 50hz           
+	{0x10, 0x13}, // scale
+	{0x11, 0x87}, //bit2 on
+
+	{0x03, 0x18}, //Page 18
+	{0xC4, 0x7e}, //FLK200
+	{0xC5, 0x69}, //FLK240
+
+	{0x03, 0x00}, //PAGE 0
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x90, 0x03}, //BLC_TIME_TH_ON  //STEVE for 50hz
+	{0x91, 0x03}, //BLC_TIME_TH_OFF //STEVE for 50hz
 	{0x92, 0xe8}, //BLC_AG_TH_ON    STEVE fixed AGC 0xD0
 	{0x93, 0xe0}, //BLC_AG_TH_OFF   STEVE fixed AGC 0xD0
-	
-	//DCDC 
+
+	//DCDC
 	{0x03, 0x02}, //PAGE 2
 	{0xd4, 0x03}, //DCDC_TIME_TH_ON  //STEVE for 50hz
 	{0xd5, 0x03}, //DCDC_TIME_TH_OFF //STEVE for 50hz
 #else
-	{0x90, 0x04}, //BLC_TIME_TH_ON  STEVE fixed           
-	{0x91, 0x04}, //BLC_TIME_TH_OFF STEVE fixed           
+	{0x90, 0x04}, //BLC_TIME_TH_ON  STEVE fixed
+	{0x91, 0x04}, //BLC_TIME_TH_OFF STEVE fixed
 	{0x92, 0xe8}, //BLC_AG_TH_ON    STEVE fixed AGC 0xD0
 	{0x93, 0xe0}, //BLC_AG_TH_OFF   STEVE fixed AGC 0xD0
-	
-	//DCDC 
+
+	//DCDC
 	{0x03, 0x02}, //PAGE 2
 	{0xd4, 0x04}, //DCDC_TIME_TH_ON
-	{0xd5, 0x04}, //DCDC_TIME_TH_OFF 
+	{0xd5, 0x04}, //DCDC_TIME_TH_OFF
 #endif
 	{0xd6, 0xe8}, //DCDC_AG_TH_ON
 	{0xd7, 0xe0}, //DCDC_AG_TH_OFF
-	
+
 	{0x03, 0xcf}, // STEVE : EV max -> 76f890 [fixed frame : not enough int. time]
-	{0x13, 0x00}, //Y_LUM_MAX 10fps, AG 0xA0   
-	{0x14, 0x88}, 
-	{0x15, 0x00},                              
-	{0x16, 0x00},                              
+	{0x13, 0x00}, //Y_LUM_MAX 10fps, AG 0xA0
+	{0x14, 0x88},
+	{0x15, 0x00},
+	{0x16, 0x00},
 
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1}, // STEVE AE ON
@@ -1043,22 +1047,22 @@ static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings1[] = {
 };
 
 static struct msm_camera_i2c_reg_conf hi351_attached_fps_settings2[] = {
-	
+
 //	{0x03, 0xFE},
 //	{0xFE, 0x0A}, //Delay 10ms
-	
+
 	{0x03, 0xc5}, //AWB en
 	{0x10, 0xb1},
-	
+
 	{0x03, 0x00},
 	{0x01, 0xf0}, //sleep off
 
-	{0x03, 0xcf}, //Adaptive On						 
-	{0x10, 0xaf},                                       
-	
-	{0x03, 0xc0}, 
+	{0x03, 0xcf}, //Adaptive On
+	{0x10, 0xaf},
+
+	{0x03, 0xc0},
 	{0x33, 0x00},
-	{0x32, 0x01}, //DMA On	 
+	{0x32, 0x01}, //DMA On
 
 };
 
@@ -1073,34 +1077,34 @@ static struct msm_camera_i2c_reg_conf hi351_scene_active_settings[] = {
 
 static struct msm_camera_i2c_reg_conf hi351_scene_normal_settings[] = {
 
-		
+
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Auto
-	{0x03, 0x20}, 
+	{0x03, 0x20},
 	{0x24, 0x00}, //EXP Max 8.33 fps (STEVE FOR 50Hz)
-	{0x25, 0x41}, 
-	{0x26, 0xe4}, 
-	{0x27, 0x40}, 
+	{0x25, 0x41},
+	{0x26, 0xe4},
+	{0x27, 0x40},
 #else
-	{0x10, 0x60},
+	{0x10, 0x60}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Auto
-	{0x03, 0x20}, 
-	{0x24, 0x00}, //EXP Max 8.00 fps 
-	{0x25, 0x44}, 
-	{0x26, 0xa3}, 
-	{0x27, 0x18}, 
+	{0x03, 0x20},
+	{0x24, 0x00}, //EXP Max 8.00 fps
+	{0x25, 0x44},
+	{0x26, 0xa3},
+	{0x27, 0x18},
 #endif
 
 	//Meteriyng - Center
@@ -1163,13 +1167,13 @@ static struct msm_camera_i2c_reg_conf hi351_scene_normal_settings[] = {
 
 	//WB Auto
 	{0x03, 0xc5}, //Page 0xc5
-	{0x10, 0xb1}, //STEVE AWB on 
+	{0x10, 0xb1}, //STEVE AWB on
 
 	{0x03, 0xc6},
-	{0x18, 0x40}, //bInRgainMin_a00_n00 
-	{0x19, 0xf0}, //bInRgainMax_a00_n00 
-	{0x1a, 0x40}, //bInBgainMin_a00_n00 
-	{0x1b, 0xf0}, //bInBgainMax_a00_n00 
+	{0x18, 0x40}, //bInRgainMin_a00_n00
+	{0x19, 0xf0}, //bInRgainMax_a00_n00
+	{0x1a, 0x40}, //bInBgainMin_a00_n00
+	{0x1b, 0xf0}, //bInBgainMax_a00_n00
 
 	{0xb9, 0x58}, //STEVE bOutRgainMin_a00_n00
 	{0xba, 0xf0}, //bOutRgainMax_a00_n00
@@ -1180,23 +1184,23 @@ static struct msm_camera_i2c_reg_conf hi351_scene_normal_settings[] = {
 	//Saturation 0
 	{0x03, 0xd1}, //page D1(Adaptive)
   // Cb
-	{0x2b, 0x98}, //SATB_00 STEVE for Low Light 
-	{0x2c, 0x98}, //SATB_01 STEVE for Low Light 
-	{0x2d, 0x98}, //SATB_02 STEVE for Low Light 
-	{0x2e, 0x98}, //SATB_03  
-	{0x2f, 0x98}, //SATB_04  
+	{0x2b, 0x98}, //SATB_00 STEVE for Low Light
+	{0x2c, 0x98}, //SATB_01 STEVE for Low Light
+	{0x2d, 0x98}, //SATB_02 STEVE for Low Light
+	{0x2e, 0x98}, //SATB_03
+	{0x2f, 0x98}, //SATB_04
 	{0x30, 0x98}, //SATB_05
 	{0x31, 0xa0}, //SATB_06
 	{0x32, 0xa0}, //SATB_07
 	{0x33, 0xa0}, //SATB_08
 	{0x34, 0xa8}, //SATB_09
 	{0x35, 0xa8}, //SATB_10
-	{0x36, 0xa8}, //SATB_11 
-	
+	{0x36, 0xa8}, //SATB_11
+
 	// Cr
-	{0x37, 0x98}, //SATR_00 STEVE for Low Light 
-	{0x38, 0x98}, //SATR_01 STEVE for Low Light 
-	{0x39, 0xa0}, //SATR_02 STEVE for Low Light 
+	{0x37, 0x98}, //SATR_00 STEVE for Low Light
+	{0x38, 0x98}, //SATR_01 STEVE for Low Light
+	{0x39, 0xa0}, //SATR_02 STEVE for Low Light
 	{0x3a, 0x98}, //SATR_03
 	{0x3b, 0x98}, //SATR_04
 	{0x3c, 0x98}, //SATR_05
@@ -1208,7 +1212,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_normal_settings[] = {
 	{0x42, 0xa8}, //SATR_11
 	{0x42, 0x98}, //SATR_11
 
-	// STEVE Sharpness 0 
+	// STEVE Sharpness 0
 	{0x03, 0xda},
 	{0x1d, 0x20}, //outdoor
 
@@ -1224,7 +1228,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_normal_settings[] = {
 
 	//AE On
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1},
@@ -1238,10 +1242,10 @@ static struct msm_camera_i2c_reg_conf hi351_scene_normal_settings[] = {
 
 static struct msm_camera_i2c_reg_conf hi351_scene_portrait_settings[] = {
 
-		
+
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
@@ -1250,22 +1254,22 @@ static struct msm_camera_i2c_reg_conf hi351_scene_portrait_settings[] = {
 	//FPS Auto
 	{0x03, 0x20}, //Page 20
 	{0x24, 0x00}, //EXP Max 8.33 fps (STEVE FOR 50Hz)
-	{0x25, 0x41}, 
-	{0x26, 0xe4}, 
-	{0x27, 0x40}, 
+	{0x25, 0x41},
+	{0x26, 0xe4},
+	{0x27, 0x40},
 #else
-	{0x10, 0x60},
+	{0x10, 0x60}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Auto
-	{0x03, 0x20}, 
-	{0x24, 0x00}, //EXP Max 8.00 fps 
-	{0x25, 0x44}, 
-	{0x26, 0xa3}, 
-	{0x27, 0x18}, 
+	{0x03, 0x20},
+	{0x24, 0x00}, //EXP Max 8.00 fps
+	{0x25, 0x44},
+	{0x26, 0xa3},
+	{0x27, 0x18},
 #endif
 
 	//Metering - Center
@@ -1329,13 +1333,13 @@ static struct msm_camera_i2c_reg_conf hi351_scene_portrait_settings[] = {
 
 	//WB Auto
 	{0x03, 0xc5}, //Page 0xc5
-	{0x10, 0xb1}, //STEVE AWB on 
+	{0x10, 0xb1}, //STEVE AWB on
 
 	{0x03, 0xc6},
-	{0x18, 0x40}, //bInRgainMin_a00_n00 
-	{0x19, 0xf0}, //bInRgainMax_a00_n00 
-	{0x1a, 0x40}, //bInBgainMin_a00_n00 
-	{0x1b, 0xf0}, //bInBgainMax_a00_n00 
+	{0x18, 0x40}, //bInRgainMin_a00_n00
+	{0x19, 0xf0}, //bInRgainMax_a00_n00
+	{0x1a, 0x40}, //bInBgainMin_a00_n00
+	{0x1b, 0xf0}, //bInBgainMax_a00_n00
 
 	{0xb9, 0x58}, //bOutRgainMin_a00_n00
 	{0xba, 0xf0}, //bOutRgainMax_a00_n00
@@ -1346,7 +1350,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_portrait_settings[] = {
 	//Saturation 0
 	{0x03, 0xd1}, //page D1(Adaptive)
 
-	// STEVE SATB 
+	// STEVE SATB
 	{0x2b, 0x78},//SATB_00"
 	{0x2c, 0x78},//SATB_01"
 	{0x2d, 0x78},//SATB_02"
@@ -1360,7 +1364,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_portrait_settings[] = {
 	{0x35, 0x88},//SATB_10"
 	{0x36, 0x88},//SATB_11"
 
-	// STEVE SATR 
+	// STEVE SATR
 	{0x37, 0x78},//SATR_00"
 	{0x38, 0x78},//SATR_01"
 	{0x39, 0x78},//SATR_02"
@@ -1390,7 +1394,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_portrait_settings[] = {
 
 	//AE On
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1},
@@ -1404,8 +1408,8 @@ static struct msm_camera_i2c_reg_conf hi351_scene_landscape_settings[] = {
 
 
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
@@ -1414,22 +1418,22 @@ static struct msm_camera_i2c_reg_conf hi351_scene_landscape_settings[] = {
 	//FPS Auto
 	{0x03, 0x20}, //Page 20
 	{0x24, 0x00}, //EXP Max 8.33 fps (STEVE FOR 50Hz)
-	{0x25, 0x41}, 
-	{0x26, 0xe4}, 
-	{0x27, 0x40}, 
+	{0x25, 0x41},
+	{0x26, 0xe4},
+	{0x27, 0x40},
 #else
-	{0x10, 0x60},
+	{0x10, 0x60}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Auto
-	{0x03, 0x20}, 
-	{0x24, 0x00}, //EXP Max 8.00 fps 
-	{0x25, 0x44}, 
-	{0x26, 0xa3}, 
-	{0x27, 0x18}, 
+	{0x03, 0x20},
+	{0x24, 0x00}, //EXP Max 8.00 fps
+	{0x25, 0x44},
+	{0x26, 0xa3},
+	{0x27, 0x18},
 #endif
 
 	//Metering - Matrix
@@ -1492,13 +1496,13 @@ static struct msm_camera_i2c_reg_conf hi351_scene_landscape_settings[] = {
 
 	//WB Auto
 	{0x03, 0xc5}, //Page 0xc5
-	{0x10, 0xb1}, //STEVE AWB on 
+	{0x10, 0xb1}, //STEVE AWB on
 
 	{0x03, 0xc6},
-	{0x18, 0x40}, //bInRgainMin_a00_n00 
-	{0x19, 0xf0}, //bInRgainMax_a00_n00 
-	{0x1a, 0x40}, //bInBgainMin_a00_n00 
-	{0x1b, 0xf0}, //bInBgainMax_a00_n00 
+	{0x18, 0x40}, //bInRgainMin_a00_n00
+	{0x19, 0xf0}, //bInRgainMax_a00_n00
+	{0x1a, 0x40}, //bInBgainMin_a00_n00
+	{0x1b, 0xf0}, //bInBgainMax_a00_n00
 
 	{0xb9, 0x58}, //bOutRgainMin_a00_n00
 	{0xba, 0xf0}, //bOutRgainMax_a00_n00
@@ -1509,7 +1513,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_landscape_settings[] = {
 	//Saturation 1
 	{0x03, 0xd1}, //page D1(Adaptive)
 
-	//SATB 
+	//SATB
 	{0x2b, 0x80},//SATB_00"
 	{0x2c, 0x80},//SATB_01"
 	{0x2d, 0x80},//SATB_02"
@@ -1523,7 +1527,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_landscape_settings[] = {
 	{0x35, 0xa8},//SATB_10"
 	{0x36, 0xa8},//SATB_11"
 
-	//SATR 
+	//SATR
 	{0x37, 0x80},//SATR_00"
 	{0x38, 0x80},//SATR_01"
 	{0x39, 0x80},//SATR_02"
@@ -1553,7 +1557,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_landscape_settings[] = {
 
 	//AE On
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1},
@@ -1567,32 +1571,32 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 
 
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Sports
-	{0x03, 0x20}, 
-	{0x24, 0x00}, //EXP Max 30.00 fps 
-	{0x25, 0x15}, 
-	{0x26, 0xf6}, 
-	{0x27, 0xc0}, 
+	{0x03, 0x20},
+	{0x24, 0x00}, //EXP Max 30.00 fps
+	{0x25, 0x15},
+	{0x26, 0xf6},
+	{0x27, 0xc0},
 #else
-	{0x10, 0x60},
+	{0x10, 0x60}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Sports
-	{0x03, 0x20}, 
-	{0x24, 0x00}, //EXP Max 30.00 fps 
-	{0x25, 0x16}, 
-	{0x26, 0xE1}, 
-	{0x27, 0x08}, 
+	{0x03, 0x20},
+	{0x24, 0x00}, //EXP Max 30.00 fps
+	{0x25, 0x16},
+	{0x26, 0xE1},
+	{0x27, 0x08},
 #endif
 
 	//Metering - Center
@@ -1655,14 +1659,14 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 
 	//WB Auto
 	{0x03, 0xc5}, //Page 0xc5
-	{0x10, 0xb1}, //STEVE AWB on 
+	{0x10, 0xb1}, //STEVE AWB on
 
 	{0x03, 0xc6},
-	{0x18, 0x40}, //bInRgainMin_a00_n00 
-	{0x19, 0xf0}, //bInRgainMax_a00_n00 
-	{0x1a, 0x40}, //bInBgainMin_a00_n00 
-	{0x1b, 0xf0}, //bInBgainMax_a00_n00 
-	
+	{0x18, 0x40}, //bInRgainMin_a00_n00
+	{0x19, 0xf0}, //bInRgainMax_a00_n00
+	{0x1a, 0x40}, //bInBgainMin_a00_n00
+	{0x1b, 0xf0}, //bInBgainMax_a00_n00
+
 	{0xb9, 0x58}, //bOutRgainMin_a00_n00
 	{0xba, 0xf0}, //bOutRgainMax_a00_n00
 	{0xbb, 0x40}, //bOutBgainMin_a00_n00
@@ -1672,7 +1676,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 	//Saturation 0
 	{0x03, 0xd1}, //page D1(Adaptive)
 
-	// STEVE SATB 
+	// STEVE SATB
 	{0x2b, 0x70},//SATB_00"
 	{0x2c, 0x70},//SATB_01"
 	{0x2d, 0x70},//SATB_02"
@@ -1686,7 +1690,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 	{0x35, 0x88},//SATB_10"
 	{0x36, 0x88},//SATB_11"
 
-	// STEVE SATR 
+	// STEVE SATR
 	{0x37, 0x70},//SATR_00"
 	{0x38, 0x70},//SATR_01"
 	{0x39, 0x70},//SATR_02"
@@ -1700,7 +1704,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 	{0x41, 0x88},//SATR_10"
 	{0x42, 0x88},//SATR_11"
 
-	// STEVE Sharpness 0 
+	// STEVE Sharpness 0
 	{0x03, 0xda},
 	{0x1d, 0x20},//outdoor
 
@@ -1716,7 +1720,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 
 	//AE On
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1},
@@ -1729,32 +1733,32 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sport_settings[] = {
 static struct msm_camera_i2c_reg_conf hi351_scene_sunset_settings[] = {
 
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Auto
-	{0x03, 0x20}, 
+	{0x03, 0x20},
 	{0x24, 0x00}, //EXP Max 8.33 fps (STEVE FOR 50Hz)
-	{0x25, 0x41}, 
-	{0x26, 0xe4}, 
-	{0x27, 0x40}, 
+	{0x25, 0x41},
+	{0x26, 0xe4},
+	{0x27, 0x40},
 #else
-	{0x10, 0x60},
+	{0x10, 0x60}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 
 	//AWB OFF
 	{0x03, 0xc5},
 	{0x10, 0x30},
 
 	//FPS Auto
-	{0x03, 0x20}, 
-	{0x24, 0x00}, //EXP Max 8.00 fps 
-	{0x25, 0x44}, 
-	{0x26, 0xa3}, 
-	{0x27, 0x18}, 
+	{0x03, 0x20},
+	{0x24, 0x00}, //EXP Max 8.00 fps
+	{0x25, 0x44},
+	{0x26, 0xa3},
+	{0x27, 0x18},
 #endif
 
 	//Metering - Center
@@ -1817,14 +1821,14 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sunset_settings[] = {
 
 	//WB Daylight
 	{0x03, 0xc5},
-	{0x10, 0xb1}, //STEVE AWB on 
+	{0x10, 0xb1}, //STEVE AWB on
 
 	{0x03, 0xc6},
-  {0x18, 0x59}, //bInRgainMin 
-  {0x19, 0x61}, //bInRgainMax 
-  {0x1a, 0x66}, //bInBgainMin 
-  {0x1b, 0x6e}, //bInBgainMax 
-  
+  {0x18, 0x59}, //bInRgainMin
+  {0x19, 0x61}, //bInRgainMax
+  {0x1a, 0x66}, //bInBgainMin
+  {0x1b, 0x6e}, //bInBgainMax
+
   {0xb9, 0x59}, //bOutRgainMin
   {0xba, 0x61}, //bOutRgainMax
   {0xbb, 0x66}, //bOutBgainMin
@@ -1834,23 +1838,23 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sunset_settings[] = {
 	//Saturation 0
 	{0x03, 0xd1}, //page D1(Adaptive)
   // Cb
-	{0x2b, 0x98}, //SATB_00 STEVE for Low Light 
-	{0x2c, 0x98}, //SATB_01 STEVE for Low Light 
-	{0x2d, 0x98}, //SATB_02 STEVE for Low Light 
-	{0x2e, 0x98}, //SATB_03  
-	{0x2f, 0x98}, //SATB_04  
+	{0x2b, 0x98}, //SATB_00 STEVE for Low Light
+	{0x2c, 0x98}, //SATB_01 STEVE for Low Light
+	{0x2d, 0x98}, //SATB_02 STEVE for Low Light
+	{0x2e, 0x98}, //SATB_03
+	{0x2f, 0x98}, //SATB_04
 	{0x30, 0x98}, //SATB_05
 	{0x31, 0xa0}, //SATB_06
 	{0x32, 0xa0}, //SATB_07
 	{0x33, 0xa0}, //SATB_08
 	{0x34, 0xa8}, //SATB_09
 	{0x35, 0xa8}, //SATB_10
-	{0x36, 0xa8}, //SATB_11 
-	
+	{0x36, 0xa8}, //SATB_11
+
 	// Cr
-	{0x37, 0x98}, //SATR_00 STEVE for Low Light 
-	{0x38, 0x98}, //SATR_01 STEVE for Low Light 
-	{0x39, 0xa0}, //SATR_02 STEVE for Low Light 
+	{0x37, 0x98}, //SATR_00 STEVE for Low Light
+	{0x38, 0x98}, //SATR_01 STEVE for Low Light
+	{0x39, 0xa0}, //SATR_02 STEVE for Low Light
 	{0x3a, 0x98}, //SATR_03
 	{0x3b, 0x98}, //SATR_04
 	{0x3c, 0x98}, //SATR_05
@@ -1862,7 +1866,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sunset_settings[] = {
 	{0x42, 0xa8}, //SATR_11
 	{0x42, 0x98}, //SATR_11
 
-	// STEVE Sharpness 0 
+	// STEVE Sharpness 0
 	{0x03, 0xda},
 	{0x1d, 0x20}, //outdoor
 
@@ -1878,7 +1882,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sunset_settings[] = {
 
 	//AE On
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1},
@@ -1893,10 +1897,10 @@ static struct msm_camera_i2c_reg_conf hi351_scene_sunset_settings[] = {
 static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
-	{0x10, 0x69}, // STEVE AE OFF   (50Hz : 0x69, 60hz : 0x61)
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+	{0x10, 0x68}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #else
-	{0x10, 0x60},
+	{0x10, 0x60}, // STEVE AE OFF   (50Hz : 0x68, 60hz : 0x60)
 #endif
 
 	//AWB OFF
@@ -1905,10 +1909,10 @@ static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 
 	//FPS NIGHT
 	{0x03, 0x20},
-	{0x24, 0x00}, //EXP Max 5.00 fps 
-	{0x25, 0x6d}, 
-	{0x26, 0xd1}, 
-	{0x27, 0xc0}, 
+	{0x24, 0x00}, //EXP Max 5.00 fps
+	{0x25, 0x6d},
+	{0x26, 0xd1},
+	{0x27, 0xc0},
 
 	//Metering - Center
 	{0x03, 0xc3},
@@ -1970,13 +1974,13 @@ static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 
 	//WB Auto
 	{0x03, 0xc5}, //Page 0xc5
-	{0x10, 0xb1}, //STEVE AWB on 
+	{0x10, 0xb1}, //STEVE AWB on
 
 	{0x03, 0xc6},
-	{0x18, 0x40}, //bInRgainMin_a00_n00 
-	{0x19, 0xf0}, //bInRgainMax_a00_n00 
-	{0x1a, 0x40}, //bInBgainMin_a00_n00 
-	{0x1b, 0xf0}, //bInBgainMax_a00_n00 
+	{0x18, 0x40}, //bInRgainMin_a00_n00
+	{0x19, 0xf0}, //bInRgainMax_a00_n00
+	{0x1a, 0x40}, //bInBgainMin_a00_n00
+	{0x1b, 0xf0}, //bInBgainMax_a00_n00
 
 	{0xb9, 0x58}, //bOutRgainMin_a00_n00
 	{0xba, 0xf0}, //bOutRgainMax_a00_n00
@@ -1987,7 +1991,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 	//Saturation 0
 	{0x03, 0xd1}, //page D1(Adaptive)
 
-	// STEVE SATB 
+	// STEVE SATB
 	{0x2b, 0x70},//SATB_00"
 	{0x2c, 0x70},//SATB_01"
 	{0x2d, 0x70},//SATB_02"
@@ -2001,7 +2005,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 	{0x35, 0x88},//SATB_10"
 	{0x36, 0x88},//SATB_11"
 
-	// STEVE SATR 
+	// STEVE SATR
 	{0x37, 0x70},//SATR_00"
 	{0x38, 0x70},//SATR_01"
 	{0x39, 0x70},//SATR_02"
@@ -2015,7 +2019,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 	{0x41, 0x88},//SATR_10"
 	{0x42, 0x88},//SATR_11"
 
-	// STEVE Sharpness 0 
+	// STEVE Sharpness 0
 	{0x03, 0xda},
 	{0x1d, 0x20},//outdoor
 
@@ -2031,7 +2035,7 @@ static struct msm_camera_i2c_reg_conf hi351_scene_night_settings[] = {
 
 	//AE On
 	{0x03, 0xc4},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
 #else
 	{0x10, 0xe1},
@@ -2072,13 +2076,13 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	///////////////////////////////////////////
 	// 20 Page OTP/ROM LSC download select setting
 	///////////////////////////////////////////
-	{0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA},  
-	{0x3a, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x3b, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x3c, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x3a, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x3b, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x3c, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 
 
-	
+
 	///////////////////////////////////////////
 	// 30 Page MCU reset, enable setting
 	///////////////////////////////////////////
@@ -2096,17 +2100,17 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 
 	///////////////////////////////////////////
 	// 7 Page OTP/ROM color ratio download select setting
-	/////////////////////////////////////////// 
+	///////////////////////////////////////////
 	{0x03, 0x07, MSM_CAMERA_I2C_BYTE_DATA},
-	{0x12, 0x07, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x40, 0x0E, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x47, 0x03, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x2e, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 				
-	{0x2f, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x30, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 	
-	{0x31, 0xD6, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x32, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x33, 0xFF, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x12, 0x07, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x40, 0x0E, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x47, 0x03, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x2e, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x2f, 0x20, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x30, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x31, 0xD6, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x32, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x33, 0xFF, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0x02, MSM_CAMERA_I2C_BYTE_DATA},
 
 	{0x03, 0x07, MSM_CAMERA_I2C_BYTE_DATA}, //delay
@@ -2130,16 +2134,16 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x03, 0x07, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x03, 0x07, MSM_CAMERA_I2C_BYTE_DATA},
 
-	{0x12, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x98, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x97, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, 
-	 
+	{0x12, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x98, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x97, 0x01, MSM_CAMERA_I2C_BYTE_DATA},
+
 	{0x8C, 0x08, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x8F, 0x20, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x92, 0x4C, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x93, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, // Set OTP Offset
 	{0x94, 0xF0, MSM_CAMERA_I2C_BYTE_DATA},
-	{0x95, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, // Full Size normal XY-flip 	
+	{0x95, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, // Full Size normal XY-flip
 	///////////////////////////////////////////
 	// 30 Page MCU reset, enable setting
 	///////////////////////////////////////////
@@ -2147,7 +2151,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x10, 0x09, MSM_CAMERA_I2C_BYTE_DATA}, // mcu reset low  = mcu start!!
 
 	///////////////////////////////////////////
-	// 0 Page 
+	// 0 Page
 	///////////////////////////////////////////
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x0B, 0x02, MSM_CAMERA_I2C_BYTE_DATA}, //PLL lock time
@@ -2168,7 +2172,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x27, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x50, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, // HBLANK 1140 + 288 = 1428
 	{0x51, 0x20, MSM_CAMERA_I2C_BYTE_DATA},
-	
+
 	{0x52, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //VBLANK = 50
 	{0x53, 0x32, MSM_CAMERA_I2C_BYTE_DATA},
 	//BLC
@@ -2186,12 +2190,12 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8b, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8e, 0x80, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x8f, 0x0f, MSM_CAMERA_I2C_BYTE_DATA},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x90, 0x0c, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_TIME_TH_ON // STEVE for 50Hz
-	{0x91, 0x0c, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_TIME_TH_OFF // STEVE for 50Hz 
+	{0x91, 0x0c, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_TIME_TH_OFF // STEVE for 50Hz
 #else
 	{0x90, 0x0f, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_TIME_TH_ON
-	{0x91, 0x0f, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_TIME_TH_OFF 
+	{0x91, 0x0f, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_TIME_TH_OFF
 #endif
 	{0x92, 0xe8, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_AG_TH_ON  // STEVE AGC 0xd0
 	{0x93, 0xe0, MSM_CAMERA_I2C_BYTE_DATA}, //BLC_AG_TH_OFF // STEVE AGC 0xd0
@@ -2201,19 +2205,19 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 
 
 
-	{0xa0, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //odd_adj_normal		 
+	{0xa0, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //odd_adj_normal
 	{0xa1, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //out r
 	{0xa2, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //in
 	{0xa3, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //dark	MR Low Light Tuning
-	{0xa4, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //even_adj_normal		  
-	{0xa5, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //out b 
+	{0xa4, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //even_adj_normal
+	{0xa5, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //out b
 	{0xa6, 0x85, MSM_CAMERA_I2C_BURST_DATA}, //in
 	{0xa7, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //dark	 MR Low Light Tuning
 
 
-	{0xbb, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0xbb, 0x20, MSM_CAMERA_I2C_BYTE_DATA},
 	///////////////////////////////////////////
-	// 2 Page								   
+	// 2 Page
 	///////////////////////////////////////////
 
 	{0x03, 0x02, MSM_CAMERA_I2C_BYTE_DATA},
@@ -2238,13 +2242,13 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x30, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x31, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x32, 0x22, MSM_CAMERA_I2C_BURST_DATA},
-	{0x33, 0x42, MSM_CAMERA_I2C_BURST_DATA}, // STEVE01 0x02 -)0x42 DV3 fix 
+	{0x33, 0x42, MSM_CAMERA_I2C_BURST_DATA}, // STEVE01 0x02 -)0x42 DV3 fix
 	{0x34, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x35, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x36, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x37, 0x40, MSM_CAMERA_I2C_BURST_DATA}, // STEVE01 0x20 -) 0x40 DV3 fix
 	{0x38, 0x14, MSM_CAMERA_I2C_BURST_DATA},
-	{0x39, 0x02, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x39, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 
 	{0x3d, 0x70, MSM_CAMERA_I2C_BYTE_DATA},
@@ -2267,7 +2271,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4f, 0x38, MSM_CAMERA_I2C_BURST_DATA},
 	{0x50, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	{0x52, 0x70, MSM_CAMERA_I2C_BURST_DATA},  
+	{0x52, 0x70, MSM_CAMERA_I2C_BURST_DATA},
 	{0x53, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x54, 0xc0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x55, 0x40, MSM_CAMERA_I2C_BURST_DATA},
@@ -2363,7 +2367,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xd1, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd2, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd3, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0xd4, 0x0c, MSM_CAMERA_I2C_BURST_DATA},//DCDC_TIME_TH_ON  // STEVE for 50hz
 	{0xd5, 0x0c, MSM_CAMERA_I2C_BURST_DATA},//DCDC_TIME_TH_OFF // STEVE for 50hz
 #else
@@ -2429,7 +2433,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x25, 0x97, MSM_CAMERA_I2C_BURST_DATA},
 	{0x26, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x27, 0xe3, MSM_CAMERA_I2C_BURST_DATA}, //cds 2 off time  sunspot
-	           
+
 	{0x28, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x29, 0x97, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -2614,7 +2618,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xed, 0xdd, MSM_CAMERA_I2C_BURST_DATA},
 	{0xee, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xef, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xf0, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf1, 0x34, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf2, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -2623,7 +2627,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	// 10 Page
 	///////////////////////////////////////////
 	{0x03, 0x10, MSM_CAMERA_I2C_BYTE_DATA},
-	{0xe0, 0xff, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0xe0, 0xff, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xe1, 0x3f, MSM_CAMERA_I2C_BYTE_DATA}, // don't touch update
 	{0xe2, 0xff, MSM_CAMERA_I2C_BYTE_DATA}, // don't touch update
 	{0xe3, 0xff, MSM_CAMERA_I2C_BYTE_DATA}, // don't touch update
@@ -2649,8 +2653,8 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x60, 0x03, MSM_CAMERA_I2C_BYTE_DATA}, //Sat, Trans Enb
 	{0x61, 0x80, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x62, 0x80, MSM_CAMERA_I2C_BYTE_DATA},
-	//Desat - Chroma 
-	// STEVE for achromatic color   
+	//Desat - Chroma
+	// STEVE for achromatic color
 //LGE_CHANGE_S MR LOW Light Tuning
 	{0x03, 0x10, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x70, 0x08, MSM_CAMERA_I2C_BURST_DATA},
@@ -2672,7 +2676,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 
 	///////////////////////////////////////////
 	// 11 page D-LPF
-	///////////////////////////////////////////  
+	///////////////////////////////////////////
 	//DLPF
 	{0x03, 0x11, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xf0, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -2695,8 +2699,8 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 
 	///////////////////////////////////////////
 	// 12 page DPC / GBGR /LensDebulr
-	/////////////////////////////////////////// 			
-	{0x03, 0x12, MSM_CAMERA_I2C_BYTE_DATA}, 					 
+	///////////////////////////////////////////
+	{0x03, 0x12, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0x57, MSM_CAMERA_I2C_BURST_DATA},
 	{0x11, 0x29, MSM_CAMERA_I2C_BURST_DATA},
 	{0x12, 0x08, MSM_CAMERA_I2C_BURST_DATA},
@@ -2705,7 +2709,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x15, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x17, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x18, 0xc8, MSM_CAMERA_I2C_BURST_DATA},
 	{0x19, 0x7d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1a, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -2714,7 +2718,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1d, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1f, 0x28, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x20, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0x21, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x22, 0x0f, MSM_CAMERA_I2C_BURST_DATA},
@@ -2723,7 +2727,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x25, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0x26, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x27, 0x3c, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x28, 0x78, MSM_CAMERA_I2C_BURST_DATA},
 	{0x29, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2a, 0xb4, MSM_CAMERA_I2C_BURST_DATA},
@@ -2732,17 +2736,17 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x2d, 0x08, MSM_CAMERA_I2C_BURST_DATA},//DPC threshold
 	{0x2e, 0x06, MSM_CAMERA_I2C_BURST_DATA},//DPC threshold
 	{0x2f, 0x64, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x30, 0x64, MSM_CAMERA_I2C_BURST_DATA},
 	{0x31, 0x64, MSM_CAMERA_I2C_BURST_DATA},
-	{0x32, 0x64, MSM_CAMERA_I2C_BURST_DATA},  
-	//GBGR			
+	{0x32, 0x64, MSM_CAMERA_I2C_BURST_DATA},
+	//GBGR
 	{0x33, 0xaa, MSM_CAMERA_I2C_BURST_DATA},
 	{0x34, 0x96, MSM_CAMERA_I2C_BURST_DATA},
 	{0x35, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x36, 0x0e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x37, 0x0c, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x38, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x39, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3a, 0x03, MSM_CAMERA_I2C_BURST_DATA},
@@ -3863,7 +3867,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xF1, 0x40, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xF2, 0x40, MSM_CAMERA_I2C_BYTE_DATA},
 	{0xF3, 0x40, MSM_CAMERA_I2C_BYTE_DATA},
-	{0xF4, 0x40, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0xF4, 0x40, MSM_CAMERA_I2C_BYTE_DATA},
 //LGE_CHANGE_E
 	///////////////////////////////////////////
 	// 17 Page Gamma
@@ -3882,23 +3886,23 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 
 	///////////////////////////////////////////
 	// 20 Page AE
-	/////////////////////////////////////////// 			
+	///////////////////////////////////////////
 	{0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA},
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0x9f, MSM_CAMERA_I2C_BYTE_DATA},// STEVE Mananual 50Hz flicker (50Hz: 9f, 60hz: 8f)
 	{0x12, 0x6d, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE Dgain ON for Low Light Spec. (2d -) 6d)  MR
 	{0x17, 0xa0, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x1f, 0x1f, MSM_CAMERA_I2C_BYTE_DATA},
 
 	{0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, //Page 20
-	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Normal 30.00 fps 
-	{0x21, 0x10, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x22, 0x79, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x23, 0x10, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x24, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Max 8.00 fps 
-	{0x25, 0x41, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x26, 0xe4, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x27, 0x40, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Normal 30.00 fps
+	{0x21, 0x10, MSM_CAMERA_I2C_BURST_DATA},
+	{0x22, 0x79, MSM_CAMERA_I2C_BURST_DATA},
+	{0x23, 0x10, MSM_CAMERA_I2C_BURST_DATA},
+	{0x24, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Max 8.00 fps
+	{0x25, 0x41, MSM_CAMERA_I2C_BURST_DATA},
+	{0x26, 0xe4, MSM_CAMERA_I2C_BURST_DATA},
+	{0x27, 0x40, MSM_CAMERA_I2C_BURST_DATA},
 #else
 	{0x10, 0x8f, MSM_CAMERA_I2C_BYTE_DATA},//auto flicker auto 60hz select
 	{0x12, 0x6d, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE Dgain ON for Low Light Spec. (2d -) 6d)  MR
@@ -3906,36 +3910,42 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1f, 0x1f, MSM_CAMERA_I2C_BYTE_DATA},
 
 	{0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, //Page 20
-	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Normal 30.00 fps 
-	{0x21, 0x12, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x22, 0x4d, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x23, 0xa0, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x24, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Max 8.00 fps 
-	{0x25, 0x44, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x26, 0xa3, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x27, 0x18, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Normal 30.00 fps
+	{0x21, 0x12, MSM_CAMERA_I2C_BURST_DATA},
+	{0x22, 0x4d, MSM_CAMERA_I2C_BURST_DATA},
+	{0x23, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
+	{0x24, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Max 8.00 fps
+	{0x25, 0x44, MSM_CAMERA_I2C_BURST_DATA},
+	{0x26, 0xa3, MSM_CAMERA_I2C_BURST_DATA},
+	{0x27, 0x18, MSM_CAMERA_I2C_BURST_DATA},
 #endif
 
 	{0x28, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXPMin 25210.08 fps
-	{0x29, 0x0b, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x2a, 0x28, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x29, 0x0b, MSM_CAMERA_I2C_BURST_DATA},
+	{0x2a, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 
-	{0x30, 0x05, MSM_CAMERA_I2C_BYTE_DATA}, //EXP100 
-	{0x31, 0x7d, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x32, 0xb0, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x30, 0x05, MSM_CAMERA_I2C_BYTE_DATA}, //EXP100
+	{0x31, 0x7d, MSM_CAMERA_I2C_BURST_DATA},
+	{0x32, 0xb0, MSM_CAMERA_I2C_BURST_DATA},
 
-	{0x33, 0x04, MSM_CAMERA_I2C_BURST_DATA}, //EXP120 
-	{0x34, 0x93, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x35, 0x68, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x36, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Unit 
-	{0x37, 0x05, MSM_CAMERA_I2C_BURST_DATA}, 
-	{0x38, 0x94, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x33, 0x04, MSM_CAMERA_I2C_BURST_DATA}, //EXP120
+	{0x34, 0x93, MSM_CAMERA_I2C_BURST_DATA},
+	{0x35, 0x68, MSM_CAMERA_I2C_BURST_DATA},
+	
+	{0x36, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //EXP Unit
+	{0x37, 0x05, MSM_CAMERA_I2C_BURST_DATA},
+	{0x38, 0x94, MSM_CAMERA_I2C_BURST_DATA},
 
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x40, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //exp 12000
-	{0x41, 0x04, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x42, 0x93, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x43, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
-
+	{0x41, 0x05, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x42, 0x7d, MSM_CAMERA_I2C_BYTE_DATA},
+#else
+	{0x40, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //exp 12000
+	{0x41, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x42, 0x93, MSM_CAMERA_I2C_BYTE_DATA},
+#endif
+  {0x43, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x51, 0xF0, MSM_CAMERA_I2C_BYTE_DATA}, //pga_max_total A0 -) D0 STEVE MR
 	{0x52, 0x28, MSM_CAMERA_I2C_BYTE_DATA}, //pga_min_total
 
@@ -3961,32 +3971,32 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x22, 0x03, MSM_CAMERA_I2C_BYTE_DATA},  //Shading Height 768
 	{0x23, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 
-	{0x03, 0x19, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x10, 0x87, MSM_CAMERA_I2C_BYTE_DATA},//MODE_ZOOM			 
-	{0x11, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//MODE_ZOOM2 		 
-	{0x12, 0x06, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_CONFIG		 
-	{0x13, 0x01, MSM_CAMERA_I2C_BYTE_DATA},//Test Setting		 
-  
+	{0x03, 0x19, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x10, 0x87, MSM_CAMERA_I2C_BYTE_DATA},//MODE_ZOOM
+	{0x11, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//MODE_ZOOM2
+	{0x12, 0x06, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_CONFIG
+	{0x13, 0x01, MSM_CAMERA_I2C_BYTE_DATA},//Test Setting
+
   //Steve for 1024x768
-	{0x20, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_WIDTH_H	 
-	{0x21, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_WIDTH_L	 
-	{0x22, 0x03, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_HEIGHT_H	 
-	{0x23, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_HEIGHT_L	 
-	{0x24, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STX_H 	 
+	{0x20, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_WIDTH_H
+	{0x21, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_WIDTH_L
+	{0x22, 0x03, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_HEIGHT_H
+	{0x23, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_DST_HEIGHT_L
+	{0x24, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STX_H
 	{0x25, 0x03, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STX_L
-	{0x26, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STY_H 	 
-	{0x27, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STY_L 	 
-	{0x28, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENX_H 	 
+	{0x26, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STY_H
+	{0x27, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_STY_L
+	{0x28, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENX_H
 	{0x29, 0x03, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENX_L
-	{0x2a, 0x03, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENY_H 	 
-	{0x2b, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENY_L 	 
-	{0x2c, 0x08, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_VER_STEP_H	 
-	{0x2d, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_VER_STEP_L	 
-	{0x2e, 0x08, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_HOR_STEP_H	 
-	{0x2f, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_HOR_STEP_L	 
-	{0x30, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_FIFO_DELAY	 
-	{0x30, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_FIFO_DELAY	
-	
+	{0x2a, 0x03, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENY_H
+	{0x2b, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_WIN_ENY_L
+	{0x2c, 0x08, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_VER_STEP_H
+	{0x2d, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_VER_STEP_L
+	{0x2e, 0x08, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_HOR_STEP_H
+	{0x2f, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_HOR_STEP_L
+	{0x30, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_FIFO_DELAY
+	{0x30, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//ZOOM_FIFO_DELAY
+
 	///////////////////////////////////////////
 	// 30 Page DMA address set
 	///////////////////////////////////////////
@@ -3996,27 +4006,27 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7e, 0x2c, MSM_CAMERA_I2C_BYTE_DATA}, //Extra end
 	{0x7f, 0xd1, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x80, 0x24, MSM_CAMERA_I2C_BYTE_DATA}, //Outdoor str
-	{0x81, 0x70, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x82, 0x24, MSM_CAMERA_I2C_BYTE_DATA}, //Outdoor end 
-	{0x83, 0x73, MSM_CAMERA_I2C_BYTE_DATA},  
-	{0x84, 0x21, MSM_CAMERA_I2C_BYTE_DATA}, //Indoor str 
-	{0x85, 0xa6, MSM_CAMERA_I2C_BYTE_DATA},  
-	{0x86, 0x21, MSM_CAMERA_I2C_BYTE_DATA}, //Indoor end 
-	{0x87, 0xa9, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x81, 0x70, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x82, 0x24, MSM_CAMERA_I2C_BYTE_DATA}, //Outdoor end
+	{0x83, 0x73, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x84, 0x21, MSM_CAMERA_I2C_BYTE_DATA}, //Indoor str
+	{0x85, 0xa6, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x86, 0x21, MSM_CAMERA_I2C_BYTE_DATA}, //Indoor end
+	{0x87, 0xa9, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x88, 0x27, MSM_CAMERA_I2C_BYTE_DATA}, //Dark1 str
-	{0x89, 0x3a, MSM_CAMERA_I2C_BYTE_DATA},  
-	{0x8a, 0x27, MSM_CAMERA_I2C_BYTE_DATA}, //Dark1 end  
-	{0x8b, 0x3d, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x8c, 0x2a, MSM_CAMERA_I2C_BYTE_DATA}, //Dark2 str 
-	{0x8d, 0x04, MSM_CAMERA_I2C_BYTE_DATA},  
-	{0x8e, 0x2a, MSM_CAMERA_I2C_BYTE_DATA}, //Dark2 end 
+	{0x89, 0x3a, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x8a, 0x27, MSM_CAMERA_I2C_BYTE_DATA}, //Dark1 end
+	{0x8b, 0x3d, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x8c, 0x2a, MSM_CAMERA_I2C_BYTE_DATA}, //Dark2 str
+	{0x8d, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x8e, 0x2a, MSM_CAMERA_I2C_BYTE_DATA}, //Dark2 end
 	{0x8f, 0x07, MSM_CAMERA_I2C_BYTE_DATA},
-		   
+
 	{0x03, 0xC0, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x2F, 0xf0, MSM_CAMERA_I2C_BYTE_DATA}, //DMA busy flag check
 	{0x31, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, //Delay before DMA write
 	{0x33, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, //DMA full stuck mode
-	{0x32, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, //DMA on first 
+	{0x32, 0x01, MSM_CAMERA_I2C_BYTE_DATA}, //DMA on first
 
 	{0x03, 0xC0, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x2F, 0xf0, MSM_CAMERA_I2C_BYTE_DATA}, //DMA busy flag check
@@ -4081,17 +4091,17 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	// C4 Page MCU AE
 	///////////////////////////////////////////
 	{0x03, 0xc4, MSM_CAMERA_I2C_BYTE_DATA},
-	{0x11, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, // ae speed B[7:6] 0 (SLOW) ~ 3 (FAST), 0x70 - 0x30   
-	{0x12, 0x10, MSM_CAMERA_I2C_BYTE_DATA}, 		
+	{0x11, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, // ae speed B[7:6] 0 (SLOW) ~ 3 (FAST), 0x70 - 0x30
+	{0x12, 0x10, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x19, 0x3C, MSM_CAMERA_I2C_BURST_DATA}, // band0 3/120
 	{0x1a, 0x5C, MSM_CAMERA_I2C_BURST_DATA}, // band1 gain 6/120
 	{0x1b, 0x5c, MSM_CAMERA_I2C_BURST_DATA}, // band2 gain 15/120
 	{0x1c, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1d, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x00, MSM_CAMERA_I2C_BURST_DATA}, // band1 min exposure time	1/40s // correction point
-	{0x1f, 0x0d, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x1f, 0x0d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x20, 0xbb, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x21, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x22, 0x00, MSM_CAMERA_I2C_BURST_DATA}, // band2 min exposure time	1/20s
 	{0x23, 0x1b, MSM_CAMERA_I2C_BURST_DATA},
@@ -4100,7 +4110,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x26, 0x00, MSM_CAMERA_I2C_BURST_DATA},// band3 min exposure time  1/12s
 	{0x27, 0x2d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x28, 0xc6, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x29, 0xc0, MSM_CAMERA_I2C_BURST_DATA},
 
 	{0x36, 0x22, MSM_CAMERA_I2C_BYTE_DATA}, // AE Yth º¯°æ
@@ -4115,7 +4125,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x10, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x38, 0xFE, MSM_CAMERA_I2C_BURST_DATA},
 	{0x39, 0x79, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x3A, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3B, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3C, 0x11, MSM_CAMERA_I2C_BURST_DATA},
@@ -4124,7 +4134,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x3F, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x40, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x41, 0x11, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x42, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x43, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x44, 0x11, MSM_CAMERA_I2C_BURST_DATA},
@@ -4133,7 +4143,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x47, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x48, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x49, 0x11, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x4A, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4B, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4C, 0x11, MSM_CAMERA_I2C_BURST_DATA},
@@ -4142,7 +4152,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4F, 0x77, MSM_CAMERA_I2C_BURST_DATA},
 	{0x50, 0x13, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0x11, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x52, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x53, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x54, 0x77, MSM_CAMERA_I2C_BURST_DATA},
@@ -4151,7 +4161,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x57, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x58, 0x21, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x66, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x5A, 0x76, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5B, 0x67, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5C, 0x66, MSM_CAMERA_I2C_BURST_DATA},
@@ -4160,7 +4170,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5F, 0x66, MSM_CAMERA_I2C_BURST_DATA},
 	{0x60, 0x76, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0x67, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x62, 0x66, MSM_CAMERA_I2C_BURST_DATA},
 	{0x63, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0x64, 0x21, MSM_CAMERA_I2C_BURST_DATA},
@@ -4169,16 +4179,16 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x67, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x68, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x69, 0x12, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x6A, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6B, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6C, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6D, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6E, 0x11, MSM_CAMERA_I2C_BURST_DATA},
-	{0x6F, 0x11, MSM_CAMERA_I2C_BURST_DATA}, 			
+	{0x6F, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x70, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x71, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x72, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x74, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4187,7 +4197,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x77, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x78, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x79, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x7A, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7B, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7C, 0x11, MSM_CAMERA_I2C_BURST_DATA},
@@ -4196,7 +4206,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7F, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x80, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x81, 0x11, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x82, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x83, 0x71, MSM_CAMERA_I2C_BURST_DATA},
 	{0x84, 0x77, MSM_CAMERA_I2C_BURST_DATA},
@@ -4205,7 +4215,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x87, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x88, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x89, 0x22, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x8A, 0x86, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8B, 0x68, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8C, 0x22, MSM_CAMERA_I2C_BURST_DATA},
@@ -4214,7 +4224,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8F, 0x65, MSM_CAMERA_I2C_BURST_DATA},
 	{0x90, 0x77, MSM_CAMERA_I2C_BURST_DATA},
 	{0x91, 0x77, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x92, 0x56, MSM_CAMERA_I2C_BURST_DATA},
 	{0x93, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0x94, 0x21, MSM_CAMERA_I2C_BURST_DATA},
@@ -4223,7 +4233,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x97, 0x66, MSM_CAMERA_I2C_BURST_DATA},
 	{0x98, 0x66, MSM_CAMERA_I2C_BURST_DATA},
 	{0x99, 0x12, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0x9A, 0x21, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9B, 0x52, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9C, 0x55, MSM_CAMERA_I2C_BURST_DATA},
@@ -4232,22 +4242,22 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9F, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0xA0, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0xA1, 0x11, MSM_CAMERA_I2C_BURST_DATA},
-		       
+
 	{0xA2, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0xA3, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0xA4, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0xA5, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 
 	{0x03, 0xc3, MSM_CAMERA_I2C_BYTE_DATA},
-	{0xe1, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, //STEVE OUT AG MAX 
+	{0xe1, 0x30, MSM_CAMERA_I2C_BYTE_DATA}, //STEVE OUT AG MAX
 	{0xe2, 0x03, MSM_CAMERA_I2C_BYTE_DATA}, //flicker option
 
 	///////////////////////////////////////////
 	// Capture Setting
 	///////////////////////////////////////////
-				
+
 	{0x03, 0xd5, MSM_CAMERA_I2C_BYTE_DATA},
-	{0x11, 0xb1, MSM_CAMERA_I2C_BYTE_DATA}, //manual sleep onoff STEVE Y correnctio OFF 20120220 Dgain Lowlight	
+	{0x11, 0xb1, MSM_CAMERA_I2C_BYTE_DATA}, //manual sleep onoff STEVE Y correnctio OFF 20120220 Dgain Lowlight
 	{0x14, 0xfd, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE EXPMIN x2
 	{0x1e, 0x02, MSM_CAMERA_I2C_BYTE_DATA}, //capture clock set
 	{0x86, 0x02, MSM_CAMERA_I2C_BYTE_DATA}, //preview clock set
@@ -4255,18 +4265,18 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	//{0x20, 0x40, MSM_CAMERA_I2C_BYTE_DATA}, // Capture Hblank 320
 
 	// STEVE When capture process, decrease Green
-	{0x1f, 0x01, MSM_CAMERA_I2C_BYTE_DATA},                      
-	{0x20, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE Capture Hblank 288 -) 2180 + 288 one line 2468 
+	{0x1f, 0x01, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x20, 0x20, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE Capture Hblank 288 -) 2180 + 288 one line 2468
 
 	{0x21, 0x09, MSM_CAMERA_I2C_BYTE_DATA},
-	{0x22, 0xA4, MSM_CAMERA_I2C_BYTE_DATA}, // C4 -) A4 Capture Line unit 2468          
+	{0x22, 0xA4, MSM_CAMERA_I2C_BYTE_DATA}, // C4 -) A4 Capture Line unit 2468
 
 	///////////////////////////////////////////
 	// Capture Mode option D6
-	///////////////////////////////////////////   
-	{0x03, 0xd6, MSM_CAMERA_I2C_BYTE_DATA}, 	 
+	///////////////////////////////////////////
+	{0x03, 0xd6, MSM_CAMERA_I2C_BYTE_DATA},
 
-	{0x03, 0xd6, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x03, 0xd6, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0x28, MSM_CAMERA_I2C_BYTE_DATA}, // ISO 100
 	{0x11, 0x38, MSM_CAMERA_I2C_BYTE_DATA}, // ISO 200
 	{0x12, 0x78, MSM_CAMERA_I2C_BYTE_DATA}, // ISO 400
@@ -4283,7 +4293,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	// C5 Page AWB
 	///////////////////////////////////////////
 
-	{0x03, 0xc5, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x03, 0xc5, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0xb0, MSM_CAMERA_I2C_BURST_DATA}, //bCtl1_a00_n00
 	{0x11, 0xa1, MSM_CAMERA_I2C_BURST_DATA}, // Steve [4] bit must 0 for MWB
 	{0x12, 0x17, MSM_CAMERA_I2C_BURST_DATA}, // STEVE 97 -> 9f YNorm -> 1f -> 17 near pt chek, Ynorm OFF
@@ -4292,7 +4302,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x15, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x17, 0x14, MSM_CAMERA_I2C_BURST_DATA}, //bBlkPtBndWdhTh_a00_n00
-	           
+
 	{0x18, 0x28, MSM_CAMERA_I2C_BURST_DATA}, //bBlkPtBndCntTh_a00_n00
 	{0x19, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1a, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//awb max ylvl
@@ -4301,13 +4311,13 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1d, 0x40, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1f, 0xfe, MSM_CAMERA_I2C_BURST_DATA},//sky limit
-	           
+
 	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, // out2 Angle MIN
 	{0x21, 0x96, MSM_CAMERA_I2C_BURST_DATA}, // out2 Angle MIN steve outdoor awb angle min (for tree) 160
 	{0x22, 0x01, MSM_CAMERA_I2C_BURST_DATA}, // out2 Anble Max
 	{0x23, 0x02, MSM_CAMERA_I2C_BURST_DATA}, // out2 Anble Max              sky limit
 	{0x24, 0x00, MSM_CAMERA_I2C_BURST_DATA}, // out1 Angle MIN
-	{0x25, 0x8e, MSM_CAMERA_I2C_BURST_DATA}, // out1 Angle MIN //steve 
+	{0x25, 0x8e, MSM_CAMERA_I2C_BURST_DATA}, // out1 Angle MIN //steve
 	{0x26, 0x00, MSM_CAMERA_I2C_BURST_DATA}, // out1 Anble Max //iInAglMaxLmt_a00_n00
 	{0x27, 0xf2, MSM_CAMERA_I2C_BURST_DATA}, // out1 Anble Max //iInAglMaxLmt_a00_n01
 
@@ -4319,7 +4329,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x2d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //iDakAglMinLmt_a00_n01
 	{0x2e, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x30, 0x4e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x31, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x32, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4328,7 +4338,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x35, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x36, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x37, 0x02, MSM_CAMERA_I2C_BURST_DATA}, //dwOut1LmtTh_a00_n01
-	           
+
 	{0x38, 0xbf, MSM_CAMERA_I2C_BURST_DATA},
 	{0x39, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4337,7 +4347,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x3d, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //dwOut1StrLmtTh_a00_n03
 	{0x3e, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3f, 0xb7, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x40, 0x1b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x41, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x42, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4346,16 +4356,16 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x45, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x46, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x47, 0x03, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x48, 0x0d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x49, 0x40, MSM_CAMERA_I2C_BURST_DATA},
-	{0x4a, 0x00, MSM_CAMERA_I2C_BURST_DATA},  // steve H outdoor -> indoor(EV) 
+	{0x4a, 0x00, MSM_CAMERA_I2C_BURST_DATA},  // steve H outdoor -> indoor(EV)
 	{0x4b, 0x04, MSM_CAMERA_I2C_BURST_DATA},  // steve M1 outdoor -> indoor(EV)
 	{0x4c, 0x93, MSM_CAMERA_I2C_BURST_DATA},  // steve M2 outdoor -> indoor(EV)
-	{0x4d, 0xe0, MSM_CAMERA_I2C_BURST_DATA},  // steve L outdoor -) indoor(EV) 
+	{0x4d, 0xe0, MSM_CAMERA_I2C_BURST_DATA},  // steve L outdoor -) indoor(EV)
 	{0x4e, 0x00, MSM_CAMERA_I2C_BURST_DATA},  // white region shift X
 	{0x4f, 0x00, MSM_CAMERA_I2C_BURST_DATA},  // white region shift Y
-	           
+
 	{0x50, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x52, 0x55, MSM_CAMERA_I2C_BURST_DATA},
@@ -4364,7 +4374,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x55, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x56, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x57, 0x55, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x58, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x55, MSM_CAMERA_I2C_BURST_DATA},
@@ -4373,7 +4383,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5d, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0x55, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x60, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x62, 0x55, MSM_CAMERA_I2C_BURST_DATA},
@@ -4382,7 +4392,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x65, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x66, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x67, 0x55, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x68, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x69, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6a, 0x55, MSM_CAMERA_I2C_BURST_DATA},
@@ -4450,28 +4460,28 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xa7, 0x6e, MSM_CAMERA_I2C_BURST_DATA}, //aInTgtAngle_a05_n00
 	{0xa8, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //aInTgtAngle_a06_n00
 	{0xa9, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //aInTgtAngle_a07_n00
-	
-	//AWB target RG angle                           
-	{0xaa, 0x28, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a00_n00    
-	{0xab, 0x1e, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a01_n00    
-	{0xac, 0x14, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a02_n00    
-	{0xad, 0x0a, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a03_n00    
-	{0xae, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a04_n00    
-	{0xaf, 0x81, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a05_n00    
-	{0xb0, 0x84, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a06_n00    
-	{0xb1, 0x85, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a07_n00    
-				                                          
-	//AWB target BG angle                           
-	{0xb2, 0xa8, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a00_n00    
-	{0xb3, 0x9e, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a01_n00    
-	{0xb4, 0x94, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a02_n00    
-	{0xb5, 0x8a, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a03_n00    
-	{0xb6, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a04_n00    
-	{0xb7, 0x01, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a05_n00    
-	{0xb8, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a06_n00    
-	{0xb9, 0x05, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a07_n00		
 
-         
+	//AWB target RG angle
+	{0xaa, 0x28, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a00_n00
+	{0xab, 0x1e, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a01_n00
+	{0xac, 0x14, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a02_n00
+	{0xad, 0x0a, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a03_n00
+	{0xae, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a04_n00
+	{0xaf, 0x81, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a05_n00
+	{0xb0, 0x84, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a06_n00
+	{0xb1, 0x85, MSM_CAMERA_I2C_BYTE_DATA},//aInRgTgtOfs_a07_n00
+
+	//AWB target BG angle
+	{0xb2, 0xa8, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a00_n00
+	{0xb3, 0x9e, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a01_n00
+	{0xb4, 0x94, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a02_n00
+	{0xb5, 0x8a, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a03_n00
+	{0xb6, 0x00, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a04_n00
+	{0xb7, 0x01, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a05_n00
+	{0xb8, 0x04, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a06_n00
+	{0xb9, 0x05, MSM_CAMERA_I2C_BYTE_DATA},//aInBgTgtOfs_a07_n00
+
+
 //AWB left target offset
 	{0xba, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbb, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4479,7 +4489,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xbd, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbe, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbf, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xc0, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc1, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 //AWB right target offset
@@ -4489,7 +4499,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xc5, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc6, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc7, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xc8, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc9, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xca, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4498,7 +4508,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xcd, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xce, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xcf, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xd0, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd1, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 // Y wgt
@@ -4507,8 +4517,8 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xd4, 0x05, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd5, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd6, 0x0E, MSM_CAMERA_I2C_BURST_DATA},
-	{0xd7, 0x20, MSM_CAMERA_I2C_BURST_DATA},        
-	           
+	{0xd7, 0x20, MSM_CAMERA_I2C_BURST_DATA},
+
 	{0xd8, 0x2C, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd9, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0xda, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -4525,7 +4535,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xe5, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe6, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe7, 0x24, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xe8, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe9, 0x1c, MSM_CAMERA_I2C_BURST_DATA},
 	{0xea, 0x18, MSM_CAMERA_I2C_BURST_DATA},
@@ -4534,7 +4544,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xed, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xee, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xef, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xf0, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf1, 0x09, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf2, 0x08, MSM_CAMERA_I2C_BURST_DATA},
@@ -4543,7 +4553,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xf5, 0x06, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf6, 0x06, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf7, 0x05, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xf8, 0x64, MSM_CAMERA_I2C_BURST_DATA}, //aInHiTmpWgtRatio_a00_n00
 	{0xf9, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //bInDyAglDiffMin_a00_n00
 	{0xfa, 0xc0, MSM_CAMERA_I2C_BURST_DATA}, //bInDyAglDiffMax_a00_n00
@@ -4553,7 +4563,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	//{0xfe, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, // STEVE delete
 	//{0xff, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //pt core STEVE delete
 
-	{0x03, 0xc6, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x03, 0xc6, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0x14, MSM_CAMERA_I2C_BURST_DATA}, //bInSplTmpBpCntTh_a00_n00
 	{0x11, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //bInSplTmpPtCorWgt_a00_n00
 	{0x12, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //bInSplTmpPtWgtRatio_a00_n00
@@ -4562,12 +4572,12 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x15, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x17, 0xf8, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x18, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //bInRgainMin_a00_n00
 	{0x19, 0xf0, MSM_CAMERA_I2C_BURST_DATA}, //bInRgainMax_a00_n00
 	{0x1a, 0x40, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1b, 0xf0, MSM_CAMERA_I2C_BURST_DATA}, //bInBgainMax_a00_n00
-	
+
 	{0x1c, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1d, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //aOutWhtRgnBg_a00_n00
@@ -4628,7 +4638,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x55, 0x46, MSM_CAMERA_I2C_BURST_DATA}, //aOutTgtAngle_a00_n00
 	{0x56, 0x4b, MSM_CAMERA_I2C_BURST_DATA}, //aOutTgtAngle_a01_n00
 	{0x57, 0x50, MSM_CAMERA_I2C_BURST_DATA}, //aOutTgtAngle_a02_n00
-	           
+
 	{0x58, 0x66, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x69, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x6e, MSM_CAMERA_I2C_BURST_DATA},
@@ -4655,7 +4665,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x6d, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6e, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x70, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x71, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x72, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4664,7 +4674,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x75, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x76, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x77, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x78, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x79, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4673,7 +4683,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7d, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7e, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x80, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x81, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x82, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4681,7 +4691,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x84, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x85, 0x01, MSM_CAMERA_I2C_BURST_DATA}, // STEVE 20120626
 	{0x86, 0x03, MSM_CAMERA_I2C_BURST_DATA},
-	{0x87, 0x05, MSM_CAMERA_I2C_BURST_DATA},        
+	{0x87, 0x05, MSM_CAMERA_I2C_BURST_DATA},
 	{0x88, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x89, 0x0E, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8a, 0x20, MSM_CAMERA_I2C_BURST_DATA},
@@ -4689,7 +4699,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8c, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8d, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8e, 0x30, MSM_CAMERA_I2C_BURST_DATA},
-	{0x8f, 0x2E, MSM_CAMERA_I2C_BURST_DATA},    
+	{0x8f, 0x2E, MSM_CAMERA_I2C_BURST_DATA},
 	{0x90, 0x2c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x91, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x92, 0x20, MSM_CAMERA_I2C_BURST_DATA},
@@ -4706,7 +4716,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9d, 0x27, MSM_CAMERA_I2C_BURST_DATA}, //08
 	{0x9e, 0x28, MSM_CAMERA_I2C_BURST_DATA}, //09
 	{0x9f, 0x29, MSM_CAMERA_I2C_BURST_DATA}, //10
-	           
+
 	{0xa0, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //aOutHiTmpWgtLoLmt_a00_n00
 	{0xa1, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //01
 	{0xa2, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //02
@@ -4723,21 +4733,21 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xad, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0xae, 0x19, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaf, 0x64, MSM_CAMERA_I2C_BURST_DATA},//kjh out limit 64 -> 76 sky
-	           
+
 	{0xb0, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb1, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
-	{0xb2, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //50 -> 20 sky outdoor 
+	{0xb2, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //50 -> 20 sky outdoor
 	{0xb3, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //1e -> 32(50%)
 	{0xb4, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb5, 0x3c, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb6, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
-	{0xb7, 0x08, MSM_CAMERA_I2C_BURST_DATA},	           
+	{0xb7, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb8, 0xd2, MSM_CAMERA_I2C_BURST_DATA},
 
-	{0xb9, 0x58, MSM_CAMERA_I2C_BURST_DATA}, // steve OutRgainMin	
-	{0xba, 0xf0, MSM_CAMERA_I2C_BURST_DATA}, // steve OutRgainMax	
-	{0xbb, 0x40, MSM_CAMERA_I2C_BURST_DATA}, // steve OutBgainMin	
-	{0xbc, 0x90, MSM_CAMERA_I2C_BURST_DATA}, // steve OutBgainMax	
+	{0xb9, 0x58, MSM_CAMERA_I2C_BURST_DATA}, // steve OutRgainMin
+	{0xba, 0xf0, MSM_CAMERA_I2C_BURST_DATA}, // steve OutRgainMax
+	{0xbb, 0x40, MSM_CAMERA_I2C_BURST_DATA}, // steve OutBgainMin
+	{0xbc, 0x90, MSM_CAMERA_I2C_BURST_DATA}, // steve OutBgainMax
 
 	{0xbd, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbe, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4758,98 +4768,98 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x10, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x11, 0x84, MSM_CAMERA_I2C_BURST_DATA}, // STEVE 04 -> 84  //cmc + - , adaptive lsc
 	{0x12, 0x01, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x13, 0x02, MSM_CAMERA_I2C_BURST_DATA}, //STEVE //Y_LUM_MAX 10fps, DG : 0xd0, AG:0xf0 MAX
 	{0x14, 0x60, MSM_CAMERA_I2C_BURST_DATA},
 	{0x15, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
-	{0x17, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM middle 1 //72mhz 14.58fps, AG 0x4c 
-	{0x18, 0x3d, MSM_CAMERA_I2C_BURST_DATA},  
-	{0x19, 0x39, MSM_CAMERA_I2C_BURST_DATA},  
-	{0x1a, 0xd4, MSM_CAMERA_I2C_BURST_DATA},  
-	           
+
+	{0x17, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM middle 1 //72mhz 14.58fps, AG 0x4c
+	{0x18, 0x3d, MSM_CAMERA_I2C_BURST_DATA},
+	{0x19, 0x39, MSM_CAMERA_I2C_BURST_DATA},
+	{0x1a, 0xd4, MSM_CAMERA_I2C_BURST_DATA},
+
 	{0x1b, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM middle 2 //72mhz 120fps, AG 0x30	 0.5(0x10) x 1(0x80) = 10,000(0x0186a0)
-	{0x1c, 0x06, MSM_CAMERA_I2C_BURST_DATA},  
-	{0x1d, 0xdd, MSM_CAMERA_I2C_BURST_DATA},  
-	{0x1e, 0xd0, MSM_CAMERA_I2C_BURST_DATA},  
-	           
-	{0x1f, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM min //72mhz 6000fps,AG 0x30	
+	{0x1c, 0x06, MSM_CAMERA_I2C_BURST_DATA},
+	{0x1d, 0xdd, MSM_CAMERA_I2C_BURST_DATA},
+	{0x1e, 0xd0, MSM_CAMERA_I2C_BURST_DATA},
+
+	{0x1f, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM min //72mhz 6000fps,AG 0x30
 	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x21, 0x1d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x22, 0x4c, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x23, 0x9a, MSM_CAMERA_I2C_BURST_DATA},  //CTEM high
 	{0x24, 0x50, MSM_CAMERA_I2C_BURST_DATA},  //ctemp middler
-	{0x25, 0x3e, MSM_CAMERA_I2C_BURST_DATA},  //CTEM low 
-	           
-	{0x26, 0x30, MSM_CAMERA_I2C_BURST_DATA},  //YCON high  
+	{0x25, 0x3e, MSM_CAMERA_I2C_BURST_DATA},  //CTEM low
+
+	{0x26, 0x30, MSM_CAMERA_I2C_BURST_DATA},  //YCON high
 	{0x27, 0x18, MSM_CAMERA_I2C_BURST_DATA},  //YCON middle
-	{0x28, 0x08, MSM_CAMERA_I2C_BURST_DATA},  //YCON low   
-	           
-	{0x29, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //Y_LUM max_TH 
+	{0x28, 0x08, MSM_CAMERA_I2C_BURST_DATA},  //YCON low
+
+	{0x29, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //Y_LUM max_TH
 	{0x2a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2b, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2c, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x2d, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM middle1_TH
 	{0x2e, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x30, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x31, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //Y_LUM middle_TH
 	{0x32, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x33, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x34, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x35, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //Y_LUM min_TH
 	{0x36, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x37, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x38, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
-	{0x39, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //CTEM high_TH  
+
+	{0x39, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //CTEM high_TH
 	{0x3a, 0x00, MSM_CAMERA_I2C_BURST_DATA},  //CTEM middle_TH
 	{0x3b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //CTEM low_TH
-	           
+
 	{0x3c, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //YCON high_TH
 	{0x3d, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //YCON middle_TH
 	{0x3e, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //YCON low_TH
-	           
+
 	/////////////MSM_CAMERA_I2C_BURST_DATA///////////////////////
 	// CF Page Adaptive Y Target
 	/////////////MSM_CAMERA_I2C_BURST_DATA//////////////////////
-	           
+
 	{0x3f, 0x30, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_00
 	{0x40, 0x30, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_01
 	{0x41, 0x30, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_02
 	{0x42, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_03
 	{0x43, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_04
 	{0x44, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_05
-	{0x45, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_06	 
-	{0x46, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_07	 
-	{0x47, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_08	 
-	{0x48, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_09	 
-	{0x49, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_10	 
+	{0x45, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_06
+	{0x46, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_07
+	{0x47, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_08
+	{0x48, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_09
+	{0x49, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //YLVL_10
 	{0x4a, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //36 YLVL_11
-	           
+
 	{0x4b, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //YCON_00
 	{0x4c, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //YCON_01
 	{0x4d, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //YCON_02
-	{0x4e, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 3 
-	{0x4f, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 4 
-	{0x50, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 5 
-	{0x51, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 6 
-	{0x52, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 7 
-	{0x53, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 8 
-	{0x54, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 9 
+	{0x4e, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 3
+	{0x4f, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 4
+	{0x50, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 5
+	{0x51, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 6
+	{0x52, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 7
+	{0x53, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 8
+	{0x54, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 9
 	{0x55, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 10
 	{0x56, 0x80, MSM_CAMERA_I2C_BURST_DATA},  //Contrast 11
-	           
+
 	/////////////MSM_CAMERA_I2C_BURST_DATA//////////////////////
 	// CF Page AdMSM_CAMERA_I2C_BURST_DATA OFFSET
 	/////////////MSM_CAMERA_I2C_BURST_DATA//////////////////////
-	           
-	{0x57, 0x08, MSM_CAMERA_I2C_BURST_DATA}, // dark offset for noise 
+
+	{0x57, 0x08, MSM_CAMERA_I2C_BURST_DATA}, // dark offset for noise
 	{0x58, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -4858,15 +4868,15 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5d, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x60, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	{0x62, 0x00, MSM_CAMERA_I2C_BURST_DATA},  
+	{0x62, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	/////////////MSM_CAMERA_I2C_BURST_DATA//////////////////////
 	// CF~D0~D1 PMSM_CAMERA_I2C_BURST_DATAtive GAMMA
 	/////////////MSM_CAMERA_I2C_BURST_DATA//////////////////////
-//LGE_CHANGE_S MR LOW Light Tuning	           
-	           
+//LGE_CHANGE_S MR LOW Light Tuning
+
 	{0x63, 0x00, MSM_CAMERA_I2C_BURST_DATA},//GMA00
 	{0x64, 0x07, MSM_CAMERA_I2C_BURST_DATA},
 	{0x65, 0x0F, MSM_CAMERA_I2C_BURST_DATA},
@@ -4901,7 +4911,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x82, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
 	{0x83, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
 	{0x84, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x85, 0x00, MSM_CAMERA_I2C_BURST_DATA},//GMA01
 	{0x86, 0x07, MSM_CAMERA_I2C_BURST_DATA},
 	{0x87, 0x0F, MSM_CAMERA_I2C_BURST_DATA},
@@ -4936,7 +4946,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xa4, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa5, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa6, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xa7, 0x00, MSM_CAMERA_I2C_BURST_DATA},//GMA02
 	{0xa8, 0x07, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa9, 0x0F, MSM_CAMERA_I2C_BURST_DATA},
@@ -4971,7 +4981,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xc6, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc7, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc8, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
   {0xc9, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA03
   {0xca, 0x02, MSM_CAMERA_I2C_BURST_DATA},
   {0xcb, 0x04, MSM_CAMERA_I2C_BURST_DATA},
@@ -5006,7 +5016,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0xe8, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0xe9, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0xea, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0xeb, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA04
   {0xec, 0x02, MSM_CAMERA_I2C_BURST_DATA},
   {0xed, 0x04, MSM_CAMERA_I2C_BURST_DATA},
@@ -5042,7 +5052,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x1c, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0x1d, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0x1e, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x1f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA05
   {0x20, 0x03, MSM_CAMERA_I2C_BURST_DATA},
   {0x21, 0x08, MSM_CAMERA_I2C_BURST_DATA},
@@ -5077,7 +5087,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x3e, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0x3f, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0x40, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x41, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA06
   {0x42, 0x02, MSM_CAMERA_I2C_BURST_DATA},
   {0x43, 0x04, MSM_CAMERA_I2C_BURST_DATA},
@@ -5112,7 +5122,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x60, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0x61, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0x62, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x63, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA07
   {0x64, 0x02, MSM_CAMERA_I2C_BURST_DATA},
   {0x65, 0x04, MSM_CAMERA_I2C_BURST_DATA},
@@ -5147,7 +5157,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x82, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0x83, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0x84, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x85, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA08
   {0x86, 0x03, MSM_CAMERA_I2C_BURST_DATA},
   {0x87, 0x08, MSM_CAMERA_I2C_BURST_DATA},
@@ -5182,7 +5192,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0xa4, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0xa5, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0xa6, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0xa7, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA09
   {0xa8, 0x02, MSM_CAMERA_I2C_BURST_DATA},
   {0xa9, 0x04, MSM_CAMERA_I2C_BURST_DATA},
@@ -5217,7 +5227,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0xc6, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0xc7, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0xc8, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0xc9, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA10
   {0xca, 0x02, MSM_CAMERA_I2C_BURST_DATA},
   {0xcb, 0x04, MSM_CAMERA_I2C_BURST_DATA},
@@ -5252,7 +5262,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0xe8, 0xF7, MSM_CAMERA_I2C_BURST_DATA},
   {0xe9, 0xFB, MSM_CAMERA_I2C_BURST_DATA},
   {0xea, 0xFF, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0xeb, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GMA11
   {0xec, 0x03, MSM_CAMERA_I2C_BURST_DATA},
   {0xed, 0x08, MSM_CAMERA_I2C_BURST_DATA},
@@ -5292,7 +5302,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	///////////////////////////////////////////
 	// D1 Page Adaptive Y Target delta
 	///////////////////////////////////////////
-	{0x1f, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Y target delta 0 
+	{0x1f, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Y target delta 0
 	{0x20, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Y target delta 1
 	{0x21, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Y target delta 2
 	{0x22, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Y target delta 3
@@ -5307,24 +5317,24 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	///////////////////////////////////////////
 	// D1 Page Adaptive R/B saturation
 	///////////////////////////////////////////
-	{0x2b, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATB_00 STEVE for Low Light 
-	{0x2c, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATB_01 STEVE for Low Light 
-	{0x2d, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATB_02 STEVE for Low Light 
-	{0x2e, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATB_03  
-	{0x2f, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATB_04  
+	{0x2b, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATB_00 STEVE for Low Light
+	{0x2c, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATB_01 STEVE for Low Light
+	{0x2d, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATB_02 STEVE for Low Light
+	{0x2e, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATB_03
+	{0x2f, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATB_04
 	{0x30, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATB_05
 	{0x31, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//SATB_06
 	{0x32, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//SATB_07
 	{0x33, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//SATB_08
 	{0x34, 0xa8, MSM_CAMERA_I2C_BURST_DATA},//SATB_09
 	{0x35, 0xa8, MSM_CAMERA_I2C_BURST_DATA},//SATB_10
-	{0x36, 0xa8, MSM_CAMERA_I2C_BURST_DATA},//SATB_11 
-	
-	//Cr		
+	{0x36, 0xa8, MSM_CAMERA_I2C_BURST_DATA},//SATB_11
 
-	{0x37, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATR_00 STEVE for Low Light 
-	{0x38, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATR_01 STEVE for Low Light 
-	{0x39, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATR_02 STEVE for Low Light 
+	//Cr
+
+	{0x37, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATR_00 STEVE for Low Light
+	{0x38, 0x90, MSM_CAMERA_I2C_BURST_DATA},//SATR_01 STEVE for Low Light
+	{0x39, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATR_02 STEVE for Low Light
 	{0x3a, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATR_03
 	{0x3b, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATR_04
 	{0x3c, 0x98, MSM_CAMERA_I2C_BURST_DATA},//SATR_05
@@ -5350,7 +5360,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4a, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4b, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4c, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x4d, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_01
 	{0x4e, 0x64, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4f, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
@@ -5361,7 +5371,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x54, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x55, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x56, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x57, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_02
 	{0x58, 0x64, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
@@ -5372,7 +5382,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5e, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x60, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x61, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_03
 	{0x62, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x63, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5383,7 +5393,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x68, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x69, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6a, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x6b, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_04
 	{0x6c, 0x65, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6d, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
@@ -5394,7 +5404,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x72, 0x09, MSM_CAMERA_I2C_BURST_DATA},
 	{0x73, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x74, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x75, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_05
 	{0x76, 0x65, MSM_CAMERA_I2C_BURST_DATA},
 	{0x77, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
@@ -5405,7 +5415,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7c, 0x09, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7d, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7e, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x7f, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_06
 	{0x80, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x81, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5416,7 +5426,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x86, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x87, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x88, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x89, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_07
 	{0x8a, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8b, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5427,7 +5437,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x90, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x91, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x92, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x93, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_08
 	{0x94, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x95, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5438,7 +5448,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9a, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9b, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9c, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x9d, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_09
 	{0x9e, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9f, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5449,7 +5459,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xa4, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa5, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa6, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xa7, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_10
 	{0xa8, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa9, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5460,7 +5470,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xae, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaf, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb0, 0x73, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xb1, 0x2f, MSM_CAMERA_I2C_BURST_DATA},//CMC_11
 	{0xb2, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb3, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -5473,93 +5483,93 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xba, 0x73, MSM_CAMERA_I2C_BURST_DATA},
 	///////////////////////////////////////////
 	// D1~D2~D3 Page Adaptive Multi-CMC
-	/////////////////////////////////////////// 		  
+	///////////////////////////////////////////
 //LGE_CHANGE_S MR LOW Light Tuning
 	//MCMC_00
 	{0xbb, 0x80, MSM_CAMERA_I2C_BURST_DATA},//GLB_GAIN
-	{0xbc, 0x00, MSM_CAMERA_I2C_BURST_DATA},//GLB_HUE 
-	{0xbd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN   
-	{0xbe, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE	  
+	{0xbc, 0x00, MSM_CAMERA_I2C_BURST_DATA},//GLB_HUE
+	{0xbd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
+	{0xbe, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0xbf, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
-	{0xc0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA  
-	{0xc1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN   
-	{0xc2, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	  
-	{0xc3, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER 
-	{0xc4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA  
-	{0xc5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN   
-	{0xc6, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE	  
-	{0xc7, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER 
-	{0xc8, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA 
-	{0xc9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN   
-	{0xca, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	  
+	{0xc0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
+	{0xc1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xc2, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
+	{0xc3, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
+	{0xc4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
+	{0xc5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
+	{0xc6, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
+	{0xc7, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
+	{0xc8, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
+	{0xc9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
+	{0xca, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0xcb, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
-	{0xcc, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA 
+	{0xcc, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
 	{0xcd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
-	{0xce, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE	  
+	{0xce, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0xcf, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
 	{0xd0, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //4_DELTA
-	{0xd1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN   
-	{0xd2, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE	  
+	{0xd1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN
+	{0xd2, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0xd3, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
-	{0xd4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA  
-	//MCMC_01  
+	{0xd4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
+	//MCMC_01
 	{0xd5, 0x80, MSM_CAMERA_I2C_BURST_DATA},//GLB_GAIN
 	{0xd6, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
-	{0xd7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN  
+	{0xd7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
 	{0xd8, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0xd9, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
 	{0xda, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
-	{0xdb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN  
-	{0xdc, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	 
+	{0xdb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xdc, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
 	{0xdd, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
 	{0xde, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
-	{0xdf, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN  
-	{0xe0, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE	 
+	{0xdf, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
+	{0xe0, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
 	{0xe1, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
 	{0xe2, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
-	{0xe3, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN  
-	{0xe4, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	 
+	{0xe3, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
+	{0xe4, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0xe5, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
 	{0xe6, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
-	{0xe7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN 	   
-	{0xe8, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE	 
+	{0xe7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
+	{0xe8, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0xe9, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
 	{0xea, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //4_DELTA
-	{0xeb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN  
-	{0xec, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE	 
+	{0xeb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN
+	{0xec, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0xed, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0xee, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	//MCMC_02  
+	//MCMC_02
 	{0xef, 0x80, MSM_CAMERA_I2C_BURST_DATA},//GLB_GAIN
-	{0xf0, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE    
-	{0xf1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN     
-	{0xf2, 0x06, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE      
-	{0xf3, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER   
-	{0xf4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA    
-	{0xf5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN     
-	{0xf6, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	     
-	{0xf7, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER   
-	{0xf8, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA    
-	{0xf9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN     
-	{0xfa, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE	     
-	{0xfb, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER   
-	{0xfc, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA    
-	{0xfd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN     
-                             
+	{0xf0, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
+	{0xf1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
+	{0xf2, 0x06, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
+	{0xf3, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
+	{0xf4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
+	{0xf5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xf6, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
+	{0xf7, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
+	{0xf8, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
+	{0xf9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
+	{0xfa, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
+	{0xfb, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
+	{0xfc, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
+	{0xfd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
+
 	{0x03, 0xd2, MSM_CAMERA_I2C_BYTE_DATA},//Page d2
-	{0x10, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	     
-	{0x11, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER   
-	{0x12, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA    
-	{0x13, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN     
-	{0x14, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE	     
-	{0x15, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER   
-	{0x16, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //4_DELTA    
-	{0x17, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN     
-	{0x18, 0x09, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE	     
+	{0x10, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
+	{0x11, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
+	{0x12, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
+	{0x13, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
+	{0x14, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
+	{0x15, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
+	{0x16, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //4_DELTA
+	{0x17, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN
+	{0x18, 0x09, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x19, 0x22, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x1a, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_03  
+
+	//MCMC_03
 	{0x1b, 0x80, MSM_CAMERA_I2C_BURST_DATA},//GLB_GAIN
 	{0x1c, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0x1d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
@@ -5586,8 +5596,8 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x32, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x33, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x34, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_04  
+
+	//MCMC_04
 	{0x35, 0x80, MSM_CAMERA_I2C_BURST_DATA},//GLB_GAIN
 	{0x36, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0x37, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
@@ -5614,8 +5624,8 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4c, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x4d, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x4e, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_05     
+
+	//MCMC_05
 	{0x4f, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
 	{0x50, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0x51, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
@@ -5642,26 +5652,26 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x66, 0x09, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x67, 0x22, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x68, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_06     
+
+	//MCMC_06
 	{0x69, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
 	{0x6a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0x6b, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
 	{0x6c, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0x6d, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
 	{0x6e, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
-	{0x6f, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN   
-	{0x70, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	  
-	{0x71, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER 
-	{0x72, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA			 
+	{0x6f, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0x70, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
+	{0x71, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
+	{0x72, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
 	{0x73, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
 	{0x74, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
 	{0x75, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
 	{0x76, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
 	{0x77, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
-	{0x78, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	  
+	{0x78, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0x79, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
-	{0x7a, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA  
+	{0x7a, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
 	{0x7b, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
 	{0x7c, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0x7d, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
@@ -5670,26 +5680,26 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x80, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x81, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x82, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_07     
+
+	//MCMC_07
 	{0x83, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
 	{0x84, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0x85, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
 	{0x86, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0x87, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
 	{0x88, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
-	{0x89, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN  
-	{0x8a, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	 
+	{0x89, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0x8a, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
 	{0x8b, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
-	{0x8c, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA 
+	{0x8c, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
 	{0x8d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
 	{0x8e, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
 	{0x8f, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
 	{0x90, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
 	{0x91, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
-	{0x92, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	 
+	{0x92, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0x93, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
-	{0x94, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA 
+	{0x94, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
 	{0x95, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
 	{0x96, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0x97, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
@@ -5698,26 +5708,26 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9a, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x9b, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x9c, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_08     
+
+	//MCMC_08
 	{0x9d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
 	{0x9e, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0x9f, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
 	{0xa0, 0x06, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0xa1, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
 	{0xa2, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
-	{0xa3, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN  
-	{0xa4, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	 
+	{0xa3, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xa4, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
 	{0xa5, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
-	{0xa6, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA 
+	{0xa6, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
 	{0xa7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
 	{0xa8, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
 	{0xa9, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
 	{0xaa, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
 	{0xab, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
-	{0xac, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	 
+	{0xac, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0xad, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
-	{0xae, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA 
+	{0xae, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
 	{0xaf, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
 	{0xb0, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0xb1, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
@@ -5726,26 +5736,26 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xb4, 0x09, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0xb5, 0x22, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0xb6, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_09     
+
+	//MCMC_09
 	{0xb7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
 	{0xb8, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0xb9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
 	{0xba, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0xbb, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
 	{0xbc, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
-	{0xbd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN   
-	{0xbe, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	  
-	{0xbf, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER 
-	{0xc0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA  
+	{0xbd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xbe, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
+	{0xbf, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
+	{0xc0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
 	{0xc1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
 	{0xc2, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
 	{0xc3, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
 	{0xc4, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
 	{0xc5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
-	{0xc6, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	  
+	{0xc6, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0xc7, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
-	{0xc8, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA  
+	{0xc8, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
 	{0xc9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
 	{0xca, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0xcb, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
@@ -5754,26 +5764,26 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xce, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0xcf, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0xd0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_10     
+
+	//MCMC_10
 	{0xd1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
 	{0xd2, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
 	{0xd3, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
 	{0xd4, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
 	{0xd5, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
 	{0xd6, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
-	{0xd7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN  
-	{0xd8, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	 
+	{0xd7, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xd8, 0x87, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
 	{0xd9, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
-	{0xda, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA 
+	{0xda, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
 	{0xdb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
 	{0xdc, 0x07, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
 	{0xdd, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
 	{0xde, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
 	{0xdf, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
-	{0xe0, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	 
+	{0xe0, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
 	{0xe1, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
-	{0xe2, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA 
+	{0xe2, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
 	{0xe3, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
 	{0xe4, 0x84, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
 	{0xe5, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
@@ -5782,36 +5792,36 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xe8, 0x19, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0xe9, 0x1b, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0xea, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
-	
-	//MCMC_11     
-	{0xeb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN   
-	{0xec, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE    
-	{0xed, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN     
-	{0xee, 0x06, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE      
-	{0xef, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER   
-	{0xf0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA    
-	{0xf1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN     
-	{0xf2, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE	     
-	{0xf3, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER   
-	{0xf4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA    
-	{0xf5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN     
-	{0xf6, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE      
-	{0xf7, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER   
-	{0xf8, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA    
-	{0xf9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN     
-	{0xfa, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE	     
-	{0xfb, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER   
-	{0xfc, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA    
-	{0xfd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN     
-                             
+
+	//MCMC_11
+	{0xeb, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //GLB_GAIN
+	{0xec, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //GLB_HUE
+	{0xed, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //0_GAIN
+	{0xee, 0x06, MSM_CAMERA_I2C_BURST_DATA}, //0_HUE
+	{0xef, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //0_CENTER
+	{0xf0, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //0_DELTA
+	{0xf1, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //1_GAIN
+	{0xf2, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //1_HUE
+	{0xf3, 0x4c, MSM_CAMERA_I2C_BURST_DATA}, //1_CENTER
+	{0xf4, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //1_DELTA
+	{0xf5, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //2_GAIN
+	{0xf6, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, //2_HUE
+	{0xf7, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //2_CENTER
+	{0xf8, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //2_DELTA
+	{0xf9, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //3_GAIN
+	{0xfa, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //3_HUE
+	{0xfb, 0x8f, MSM_CAMERA_I2C_BURST_DATA}, //3_CENTER
+	{0xfc, 0x0e, MSM_CAMERA_I2C_BURST_DATA}, //3_DELTA
+	{0xfd, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //4_GAIN
+
 
 	{0x03, 0xd3, MSM_CAMERA_I2C_BYTE_DATA},//Page d3
 
-	{0x10, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE      
-	{0x11, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER   
-	{0x12, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //4_DELTA    
-	{0x13, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN     
-	{0x14, 0x09, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE      
+	{0x10, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //4_HUE
+	{0x11, 0xa5, MSM_CAMERA_I2C_BURST_DATA}, //4_CENTER
+	{0x12, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //4_DELTA
+	{0x13, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //5_GAIN
+	{0x14, 0x09, MSM_CAMERA_I2C_BURST_DATA}, //5_HUE
 	{0x15, 0x22, MSM_CAMERA_I2C_BURST_DATA}, //5_CENTER
 	{0x16, 0x13, MSM_CAMERA_I2C_BURST_DATA}, //5_DELTA
 
@@ -5823,109 +5833,109 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x18, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 ofs B
 	{0x19, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 ofs R
 	{0x1a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 ofs GR
-	           
+
 	{0x1b, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 Gain GB
-	{0x1c, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 Gain B 
+	{0x1c, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 Gain B
 	{0x1d, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 Gain R
 	{0x1e, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 00 Gain GR
 
-	{0x1f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs GB 
-	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs B	
-	{0x21, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs R	
-	{0x22, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs GR 
+	{0x1f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs GB
+	{0x20, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs B
+	{0x21, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs R
+	{0x22, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 ofs GR
 	{0x23, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 Gain GB
-	{0x24, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 Gain B 
-	{0x25, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 Gain R 
+	{0x24, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 Gain B
+	{0x25, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 Gain R
 	{0x26, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 01 Gain GR
 
-	{0x27, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs GB 
-	{0x28, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs B	
-	{0x29, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs R	
-	{0x2a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs GR 
+	{0x27, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs GB
+	{0x28, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs B
+	{0x29, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs R
+	{0x2a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 ofs GR
 	{0x2b, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 Gain GB
-	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 Gain B 
-	{0x2d, 0x48, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 Gain R 
+	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 Gain B
+	{0x2d, 0x48, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 Gain R
 	{0x2e, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //LSC 02 Gain GR
-	           
-	{0x2f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs GB 
-	{0x30, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs B	
-	{0x31, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs R	
-	{0x32, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs GR 
+
+	{0x2f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs GB
+	{0x30, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs B
+	{0x31, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs R
+	{0x32, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 ofs GR
 	{0x33, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 Gain GB
-	{0x34, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 Gain B 
-	{0x35, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 Gain R 
+	{0x34, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 Gain B
+	{0x35, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 Gain R
 	{0x36, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 03 Gain GR
-	           
-	{0x37, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs GB 
-	{0x38, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs B	
-	{0x39, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs R	
-	{0x3a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs GR 
+
+	{0x37, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs GB
+	{0x38, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs B
+	{0x39, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs R
+	{0x3a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 ofs GR
 	{0x3b, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 Gain GB
-	{0x3c, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 Gain B 
-	{0x3d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 Gain R 
+	{0x3c, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 Gain B
+	{0x3d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 Gain R
 	{0x3e, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //LSC 04 Gain GR
-	           
-	{0x3f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs GB 
-	{0x40, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs B	
-	{0x41, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs R	
-	{0x42, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs GR 
+
+	{0x3f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs GB
+	{0x40, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs B
+	{0x41, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs R
+	{0x42, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 ofs GR
 	{0x43, 0x80, MSM_CAMERA_I2C_BURST_DATA},//LSC 05 Gain GB
-	{0x44, 0x78, MSM_CAMERA_I2C_BURST_DATA},//LSC 05 Gain B 
-	{0x45, 0xA0, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 Gain R 
+	{0x44, 0x78, MSM_CAMERA_I2C_BURST_DATA},//LSC 05 Gain B
+	{0x45, 0xA0, MSM_CAMERA_I2C_BURST_DATA}, //LSC 05 Gain R
 	{0x46, 0x80, MSM_CAMERA_I2C_BURST_DATA},//LSC 05 Gain GR
-	           
-	{0x47, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs GB 
-	{0x48, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs B	
-	{0x49, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs R	
-	{0x4a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs GR 
+
+	{0x47, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs GB
+	{0x48, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs B
+	{0x49, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs R
+	{0x4a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 06 ofs GR
 	{0x4b, 0x80, MSM_CAMERA_I2C_BURST_DATA},//78 LSC 06 Gain GB
-	{0x4c, 0x80, MSM_CAMERA_I2C_BURST_DATA},//7c LSC 06 Gain B 
-	{0x4d, 0x80, MSM_CAMERA_I2C_BURST_DATA},//80 LSC 06 Gain R 
+	{0x4c, 0x80, MSM_CAMERA_I2C_BURST_DATA},//7c LSC 06 Gain B
+	{0x4d, 0x80, MSM_CAMERA_I2C_BURST_DATA},//80 LSC 06 Gain R
 	{0x4e, 0x80, MSM_CAMERA_I2C_BURST_DATA},//78 LSC 06 Gain GR
-	           
-	{0x4f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs GB 
-	{0x50, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs B	
-	{0x51, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs R	
-	{0x52, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs GR 
-	{0x53, 0x80, MSM_CAMERA_I2C_BURST_DATA},//78 LSC 07 Gain GB 
-	{0x54, 0x80, MSM_CAMERA_I2C_BURST_DATA},//7c LSC 07 Gain B  
-	{0x55, 0x80, MSM_CAMERA_I2C_BURST_DATA},//80 LSC 07 Gain R  
-	{0x56, 0x80, MSM_CAMERA_I2C_BURST_DATA},//78 LSC 07 Gain GR 
-	           
-	{0x57, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs GB 
-	{0x58, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs B	
-	{0x59, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs R	
-	{0x5a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs GR 
+
+	{0x4f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs GB
+	{0x50, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs B
+	{0x51, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs R
+	{0x52, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 07 ofs GR
+	{0x53, 0x80, MSM_CAMERA_I2C_BURST_DATA},//78 LSC 07 Gain GB
+	{0x54, 0x80, MSM_CAMERA_I2C_BURST_DATA},//7c LSC 07 Gain B
+	{0x55, 0x80, MSM_CAMERA_I2C_BURST_DATA},//80 LSC 07 Gain R
+	{0x56, 0x80, MSM_CAMERA_I2C_BURST_DATA},//78 LSC 07 Gain GR
+
+	{0x57, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs GB
+	{0x58, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs B
+	{0x59, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs R
+	{0x5a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 08 ofs GR
 	{0x5b, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 08 Gain GB
-	{0x5c, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 08 Gain B 
-	{0x5d, 0xA0, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 08 Gain R 
+	{0x5c, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 08 Gain B
+	{0x5d, 0xA0, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 08 Gain R
 	{0x5e, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 08 Gain GR
-	           
-	{0x5f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs GB 
-	{0x60, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs B	
-	{0x61, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs R	
-	{0x62, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs GR 
+
+	{0x5f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs GB
+	{0x60, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs B
+	{0x61, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs R
+	{0x62, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 09 ofs GR
 	{0x63, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 09 Gain GB
-	{0x64, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 09 Gain B 
-	{0x65, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 09 Gain R 
+	{0x64, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 09 Gain B
+	{0x65, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 09 Gain R
 	{0x66, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 09 Gain GR
-	           
-	{0x67, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs GB 
-	{0x68, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs B	
-	{0x69, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs R	
-	{0x6a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs GR 
+
+	{0x67, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs GB
+	{0x68, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs B
+	{0x69, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs R
+	{0x6a, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 10 ofs GR
 	{0x6b, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 10 Gain GB
-	{0x6c, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 10 Gain B 
-	{0x6d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 10 Gain R 
+	{0x6c, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 10 Gain B
+	{0x6d, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 10 Gain R
 	{0x6e, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 10 Gain GR
-	           
-	{0x6f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs GB 
-	{0x70, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs B	
-	{0x71, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs R	
-	{0x72, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs GR 
+
+	{0x6f, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs GB
+	{0x70, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs B
+	{0x71, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs R
+	{0x72, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC 11 ofs GR
 	{0x73, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 11 Gain GB
-	{0x74, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 11 Gain B 
-	{0x75, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 11 Gain R 
+	{0x74, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //7c LSC 11 Gain B
+	{0x75, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //80 LSC 11 Gain R
 	{0x76, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //78 LSC 11 Gain GR
 
 //LGE_CHANGE_E
@@ -5944,7 +5954,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7d, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7e, 0x07, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7f, 0xf1, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x80, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC EV min
 	{0x81, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x82, 0x07, MSM_CAMERA_I2C_BURST_DATA},
@@ -5953,7 +5963,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x85, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //CTEM min
 	{0x86, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //Y STD max
 	{0x87, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //Y STD min
-	           
+
 	{0x88, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //LSC offset
 	{0x89, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8a, 0x00, MSM_CAMERA_I2C_BURST_DATA},
@@ -5962,7 +5972,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8d, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8e, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8f, 0x80, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x90, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //DNP CB
 	{0x91, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //DNP CR
 
@@ -5980,7 +5990,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x15, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x40, MSM_CAMERA_I2C_BURST_DATA},
 	{0x17, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x18, 0x48, MSM_CAMERA_I2C_BURST_DATA},
 	{0x19, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1a, 0x03, MSM_CAMERA_I2C_BURST_DATA},//Page 16
@@ -5989,7 +5999,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1d, 0x7f, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x31, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1f, 0x42, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x21, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA},
@@ -5997,7 +6007,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA},
 	{0x25, 0x7b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA},
-	{0x27, 0x19, MSM_CAMERA_I2C_BURST_DATA},           
+	{0x27, 0x19, MSM_CAMERA_I2C_BURST_DATA},
 	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA},
 	{0x29, 0x01, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA},
@@ -6006,7 +6016,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x2d, 0x84, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2e, 0x70, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2f, 0x80, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x30, 0x71, MSM_CAMERA_I2C_BURST_DATA},
 	{0x31, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x32, 0x72, MSM_CAMERA_I2C_BURST_DATA},
@@ -6015,7 +6025,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x35, 0x05, MSM_CAMERA_I2C_BURST_DATA},
 	{0x36, 0x74, MSM_CAMERA_I2C_BURST_DATA},
 	{0x37, 0x34, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x38, 0x75, MSM_CAMERA_I2C_BURST_DATA},
 	{0x39, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3a, 0x76, MSM_CAMERA_I2C_BURST_DATA},
@@ -6024,7 +6034,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x3d, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3e, 0x78, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3f, 0x69, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x40, 0x79, MSM_CAMERA_I2C_BURST_DATA},
 	{0x41, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x42, 0x7a, MSM_CAMERA_I2C_BURST_DATA},
@@ -6033,7 +6043,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x45, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x46, 0x7c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x47, 0xad, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x48, 0x7d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x49, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4a, 0x7e, MSM_CAMERA_I2C_BURST_DATA},
@@ -6042,7 +6052,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4d, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4e, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4f, 0x51, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x50, 0x81, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x52, 0x82, MSM_CAMERA_I2C_BURST_DATA},
@@ -6051,7 +6061,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x55, 0x0c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x56, 0x84, MSM_CAMERA_I2C_BURST_DATA},
 	{0x57, 0x23, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x58, 0x85, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x86, MSM_CAMERA_I2C_BURST_DATA},
@@ -6060,7 +6070,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5d, 0x8a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x88, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0x52, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x60, 0x89, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0x1e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x62, 0x03, MSM_CAMERA_I2C_BURST_DATA},//Page 17 Gamma
@@ -6069,7 +6079,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x65, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0x66, 0x21, MSM_CAMERA_I2C_BURST_DATA},
 	{0x67, 0x02, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x68, 0x22, MSM_CAMERA_I2C_BURST_DATA},
 	{0x69, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6a, 0x23, MSM_CAMERA_I2C_BURST_DATA},
@@ -6078,7 +6088,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x6d, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6e, 0x25, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6f, 0x23, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x70, 0x26, MSM_CAMERA_I2C_BURST_DATA},
 	{0x71, 0x37, MSM_CAMERA_I2C_BURST_DATA},
 	{0x72, 0x27, MSM_CAMERA_I2C_BURST_DATA},
@@ -6087,7 +6097,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x75, 0x57, MSM_CAMERA_I2C_BURST_DATA},
 	{0x76, 0x29, MSM_CAMERA_I2C_BURST_DATA},
 	{0x77, 0x61, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x78, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x79, 0x6b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7a, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6096,7 +6106,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7d, 0x76, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7e, 0x2d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7f, 0x7a, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x80, 0x2e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x81, 0x7f, MSM_CAMERA_I2C_BURST_DATA},
 	{0x82, 0x2f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6105,7 +6115,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x85, 0x88, MSM_CAMERA_I2C_BURST_DATA},
 	{0x86, 0x31, MSM_CAMERA_I2C_BURST_DATA},
 	{0x87, 0x8c, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x88, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x89, 0x91, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8a, 0x33, MSM_CAMERA_I2C_BURST_DATA},
@@ -6114,7 +6124,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8d, 0x98, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8e, 0x35, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8f, 0x9f, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x90, 0x36, MSM_CAMERA_I2C_BURST_DATA},
 	{0x91, 0xa6, MSM_CAMERA_I2C_BURST_DATA},
 	{0x92, 0x37, MSM_CAMERA_I2C_BURST_DATA},
@@ -6123,7 +6133,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x95, 0xbb, MSM_CAMERA_I2C_BURST_DATA},
 	{0x96, 0x39, MSM_CAMERA_I2C_BURST_DATA},
 	{0x97, 0xc9, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x98, 0x3a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x99, 0xd3, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9a, 0x3b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6132,7 +6142,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9d, 0xe2, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9e, 0x3d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9f, 0xe8, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xa0, 0x3e, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa1, 0xed, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa2, 0x3f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6141,7 +6151,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xa5, 0xfa, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa6, 0x41, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa7, 0xff, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xa8, 0x03, MSM_CAMERA_I2C_BURST_DATA},//page 20 AE
 	{0xa9, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaa, 0x39, MSM_CAMERA_I2C_BURST_DATA},
@@ -6150,7 +6160,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xad, 0x15, MSM_CAMERA_I2C_BURST_DATA},
 	{0xae, 0x24, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaf, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xb0, 0x25, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb1, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb2, 0x26, MSM_CAMERA_I2C_BURST_DATA},
@@ -6159,7 +6169,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xb5, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb6, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb7, 0x80, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xb8, 0x29, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb9, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0xba, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
@@ -6181,7 +6191,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x15, 0x25, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0x17, 0x22, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x18, 0x13, MSM_CAMERA_I2C_BURST_DATA},
 	{0x19, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1a, 0x14, MSM_CAMERA_I2C_BURST_DATA},
@@ -6190,24 +6200,24 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1d, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x31, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1f, 0x20, MSM_CAMERA_I2C_BURST_DATA},
-					
-	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1132 //STEVE Lum. Level. in DLPF 
-	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, //52                                         
-	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1133                             
-	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA}, //3b                                         
-	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1134                             
-	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA}, //1d                                         
-	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1135                             
-	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA},	//21                                         				
-	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1136                             
-	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //1b                                         
-	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1137                             
-	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //21                                         
-	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1138                             
-	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA}, //18                                         
+
+	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1132 //STEVE Lum. Level. in DLPF
+	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, //52
+	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1133
+	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA}, //3b
+	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1134
+	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA}, //1d
+	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1135
+	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA},	//21
+	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1136
+	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //1b
+	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1137
+	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //21
+	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1138
+	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA}, //18
 
 	{0x2e, 0x39, MSM_CAMERA_I2C_BURST_DATA},
-	{0x2f, 0x28, MSM_CAMERA_I2C_BURST_DATA},				
+	{0x2f, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x30, 0x3a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x31, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x32, 0x3b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6216,7 +6226,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x35, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x36, 0x3d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x37, 0x28, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x38, 0x3e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x39, 0x34, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3a, 0x3f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6225,7 +6235,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x3d, 0x3c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3e, 0x41, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3f, 0x28, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x40, 0x42, MSM_CAMERA_I2C_BURST_DATA},
 	{0x41, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x42, 0x43, MSM_CAMERA_I2C_BURST_DATA},
@@ -6234,7 +6244,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x45, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x46, 0x45, MSM_CAMERA_I2C_BURST_DATA},
 	{0x47, 0x28, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x48, 0x46, MSM_CAMERA_I2C_BURST_DATA},
 	{0x49, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4a, 0x47, MSM_CAMERA_I2C_BURST_DATA},
@@ -6243,7 +6253,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4d, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4e, 0x49, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4f, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x50, 0x4a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x52, 0x4b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6252,7 +6262,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x55, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x56, 0x4d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x57, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x58, 0x4e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x4f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6261,7 +6271,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5d, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x51, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x60, 0x52, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x62, 0x53, MSM_CAMERA_I2C_BURST_DATA},
@@ -6270,7 +6280,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x65, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x66, 0x55, MSM_CAMERA_I2C_BURST_DATA},
 	{0x67, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x68, 0x56, MSM_CAMERA_I2C_BURST_DATA},
 	{0x69, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6a, 0x57, MSM_CAMERA_I2C_BURST_DATA},
@@ -6279,7 +6289,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x6d, 0xe0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6e, 0x59, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6f, 0xfc, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x70, 0x5a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x71, 0xf8, MSM_CAMERA_I2C_BURST_DATA},
 	{0x72, 0x5b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6288,7 +6298,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x75, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x76, 0x5d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x77, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x78, 0x5e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x79, 0xec, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7a, 0x5f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6297,7 +6307,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7d, 0xe4, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7e, 0x61, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7f, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x80, 0x62, MSM_CAMERA_I2C_BURST_DATA},
 	{0x81, 0xfc, MSM_CAMERA_I2C_BURST_DATA},
 	{0x82, 0x63, MSM_CAMERA_I2C_BURST_DATA},
@@ -6306,7 +6316,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x85, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x86, 0x65, MSM_CAMERA_I2C_BURST_DATA},
 	{0x87, 0x30, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x88, 0x66, MSM_CAMERA_I2C_BURST_DATA},
 	{0x89, 0x24, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8a, 0x67, MSM_CAMERA_I2C_BURST_DATA},
@@ -6315,7 +6325,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8d, 0x5a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8e, 0x69, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8f, 0x24, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x90, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x91, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x92, 0x6b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6324,7 +6334,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x95, 0x1a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x96, 0x6d, MSM_CAMERA_I2C_BURST_DATA},
 	{0x97, 0x5c, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x98, 0x6e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x99, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9a, 0x6f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6333,7 +6343,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9d, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9e, 0x71, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9f, 0x20, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xa0, 0x72, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa1, 0x5c, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa2, 0x73, MSM_CAMERA_I2C_BURST_DATA},
@@ -6342,7 +6352,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xa5, 0x64, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa6, 0x75, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa7, 0x60, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xa8, 0x76, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa9, 0x42, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaa, 0x77, MSM_CAMERA_I2C_BURST_DATA},
@@ -6351,7 +6361,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xad, 0x26, MSM_CAMERA_I2C_BURST_DATA},
 	{0xae, 0x79, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaf, 0x88, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xb0, 0x7a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb1, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb2, 0x7b, MSM_CAMERA_I2C_BURST_DATA},
@@ -6360,7 +6370,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xb5, 0x38, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb6, 0x7d, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb7, 0x1c, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xb8, 0x7e, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb9, 0x38, MSM_CAMERA_I2C_BURST_DATA},
 	{0xba, 0x7f, MSM_CAMERA_I2C_BURST_DATA},
@@ -6369,7 +6379,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xbd, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbe, 0x81, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbf, 0x32, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xc0, 0x82, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc1, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc2, 0x83, MSM_CAMERA_I2C_BURST_DATA},
@@ -6378,7 +6388,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xc5, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc6, 0x85, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc7, 0x10, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xc8, 0x86, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc9, 0x1c, MSM_CAMERA_I2C_BURST_DATA},
 	{0xca, 0x87, MSM_CAMERA_I2C_BURST_DATA},
@@ -6387,7 +6397,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xcd, 0x38, MSM_CAMERA_I2C_BURST_DATA},
 	{0xce, 0x89, MSM_CAMERA_I2C_BURST_DATA},
 	{0xcf, 0x34, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xd0, 0x8a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd1, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd2, 0x90, MSM_CAMERA_I2C_BURST_DATA},
@@ -6396,7 +6406,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xd5, 0x48, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd6, 0x92, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd7, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xd8, 0x93, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd9, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0xda, 0x94, MSM_CAMERA_I2C_BURST_DATA},
@@ -6405,7 +6415,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xdd, 0x64, MSM_CAMERA_I2C_BURST_DATA},
 	{0xde, 0x96, MSM_CAMERA_I2C_BURST_DATA},
 	{0xdf, 0x14, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xe0, 0x97, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe1, 0x90, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe2, 0xb0, MSM_CAMERA_I2C_BURST_DATA},
@@ -6414,7 +6424,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xe5, 0x90, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe6, 0xb2, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe7, 0x10, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xe8, 0xb3, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe9, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0xea, 0xb4, MSM_CAMERA_I2C_BURST_DATA},
@@ -6423,7 +6433,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xed, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0xee, 0x10, MSM_CAMERA_I2C_BURST_DATA},
   {0xef, 0x57, MSM_CAMERA_I2C_BURST_DATA}, //steve 1210 57
-					
+
 	{0xf0, 0x11, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf1, 0x29, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf2, 0x12, MSM_CAMERA_I2C_BURST_DATA},
@@ -6432,7 +6442,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xf5, 0x33, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf6, 0x41, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf7, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xf8, 0x42, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf9, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xfa, 0x43, MSM_CAMERA_I2C_BURST_DATA},
@@ -6442,9 +6452,9 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	//{0xfe, 0x45, MSM_CAMERA_I2C_BURST_DATA}, // STEVE deleted
 	//{0xff, 0x0a, MSM_CAMERA_I2C_BURST_DATA}, // STEVE deleted
 
-	// Page 0xdb		  
+	// Page 0xdb
 	{0x03, 0xdb, MSM_CAMERA_I2C_BYTE_DATA},
-					
+
 	{0x10, 0x45, MSM_CAMERA_I2C_BURST_DATA},
 	{0x11, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x12, 0x46, MSM_CAMERA_I2C_BURST_DATA},
@@ -6453,7 +6463,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x15, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x61, MSM_CAMERA_I2C_BURST_DATA},
 	{0x17, 0x04, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x18, 0x62, MSM_CAMERA_I2C_BURST_DATA},
 	{0x19, 0x4b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1a, 0x63, MSM_CAMERA_I2C_BURST_DATA},
@@ -6462,7 +6472,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1d, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x65, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x20, 0x68, MSM_CAMERA_I2C_BURST_DATA},
 	{0x21, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x22, 0x69, MSM_CAMERA_I2C_BURST_DATA},
@@ -6471,7 +6481,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x25, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x26, 0x6b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x27, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x28, 0x6c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x29, 0x24, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2a, 0x6d, MSM_CAMERA_I2C_BURST_DATA},
@@ -6480,7 +6490,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x2d, 0x29, MSM_CAMERA_I2C_BURST_DATA}, //1270 29
   {0x2e, 0x71, MSM_CAMERA_I2C_BURST_DATA},
   {0x2f, 0x7f, MSM_CAMERA_I2C_BURST_DATA}, //1271 7f
-  
+
   {0x30, 0x80, MSM_CAMERA_I2C_BURST_DATA},
   {0x31, 0x30, MSM_CAMERA_I2C_BURST_DATA},
   {0x32, 0x81, MSM_CAMERA_I2C_BURST_DATA},
@@ -6489,7 +6499,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x35, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
   {0x36, 0x83, MSM_CAMERA_I2C_BURST_DATA},
   {0x37, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x38, 0x84, MSM_CAMERA_I2C_BURST_DATA},
   {0x39, 0x30, MSM_CAMERA_I2C_BURST_DATA},
   {0x3a, 0x85, MSM_CAMERA_I2C_BURST_DATA},
@@ -6498,7 +6508,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x3d, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
   {0x3e, 0x87, MSM_CAMERA_I2C_BURST_DATA},
   {0x3f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x40, 0x88, MSM_CAMERA_I2C_BURST_DATA},
   {0x41, 0x30, MSM_CAMERA_I2C_BURST_DATA},
   {0x42, 0x89, MSM_CAMERA_I2C_BURST_DATA},
@@ -6507,7 +6517,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x45, 0xb0, MSM_CAMERA_I2C_BURST_DATA},
   {0x46, 0x8b, MSM_CAMERA_I2C_BURST_DATA},
   {0x47, 0x08, MSM_CAMERA_I2C_BURST_DATA},
-  
+
   {0x48, 0x8c, MSM_CAMERA_I2C_BURST_DATA},
   {0x49, 0x05, MSM_CAMERA_I2C_BURST_DATA},
   {0x4a, 0x8d, MSM_CAMERA_I2C_BURST_DATA},
@@ -6516,7 +6526,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4d, 0xff, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4e, 0xe7, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4f, 0x18, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x50, 0xe8, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x52, 0xe9, MSM_CAMERA_I2C_BURST_DATA},
@@ -6525,7 +6535,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x55, 0x13, MSM_CAMERA_I2C_BURST_DATA},//13 page
 	{0x56, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x57, 0x3f, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x58, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x21, MSM_CAMERA_I2C_BURST_DATA},
@@ -6534,7 +6544,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5d, 0x36, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x23, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0x6a, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x60, 0x24, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x62, 0x25, MSM_CAMERA_I2C_BURST_DATA},
@@ -6543,7 +6553,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x65, 0xe0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x66, 0x27, MSM_CAMERA_I2C_BURST_DATA},
 	{0x67, 0x02, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x68, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x69, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6a, 0x29, MSM_CAMERA_I2C_BURST_DATA},
@@ -6552,7 +6562,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x6d, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6e, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x6f, 0x03, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x70, 0x2c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x71, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x72, 0x2d, MSM_CAMERA_I2C_BURST_DATA},
@@ -6561,7 +6571,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x75, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x76, 0x2f, MSM_CAMERA_I2C_BURST_DATA},
 	{0x77, 0x04, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x78, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0x79, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7a, 0x31, MSM_CAMERA_I2C_BURST_DATA},
@@ -6570,7 +6580,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x7d, 0x01, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7e, 0x33, MSM_CAMERA_I2C_BURST_DATA},
 	{0x7f, 0x40, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x80, 0x34, MSM_CAMERA_I2C_BURST_DATA},
 	{0x81, 0x80, MSM_CAMERA_I2C_BURST_DATA},
 	{0x82, 0x35, MSM_CAMERA_I2C_BURST_DATA},
@@ -6579,7 +6589,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x85, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x86, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x87, 0x07, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x88, 0xa8, MSM_CAMERA_I2C_BURST_DATA},
 	{0x89, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8a, 0xa9, MSM_CAMERA_I2C_BURST_DATA},
@@ -6588,7 +6598,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x8d, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8e, 0xab, MSM_CAMERA_I2C_BURST_DATA},
 	{0x8f, 0x02, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x90, 0xc0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x91, 0x27, MSM_CAMERA_I2C_BURST_DATA},
 	{0x92, 0xc2, MSM_CAMERA_I2C_BURST_DATA},
@@ -6597,7 +6607,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x95, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0x96, 0xc4, MSM_CAMERA_I2C_BURST_DATA},
 	{0x97, 0x46, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x98, 0xc5, MSM_CAMERA_I2C_BURST_DATA},
 	{0x99, 0x78, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9a, 0xc6, MSM_CAMERA_I2C_BURST_DATA},
@@ -6606,7 +6616,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x9d, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9e, 0xc8, MSM_CAMERA_I2C_BURST_DATA},
 	{0x9f, 0x44, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xa0, 0xc9, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa1, 0x87, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa2, 0xca, MSM_CAMERA_I2C_BURST_DATA},
@@ -6615,7 +6625,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xa5, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa6, 0xcc, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa7, 0x61, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xa8, 0xcd, MSM_CAMERA_I2C_BURST_DATA},
 	{0xa9, 0x87, MSM_CAMERA_I2C_BURST_DATA},
 	{0xaa, 0xce, MSM_CAMERA_I2C_BURST_DATA},
@@ -6624,7 +6634,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xad, 0xa5, MSM_CAMERA_I2C_BURST_DATA},
 	{0xae, 0x03, MSM_CAMERA_I2C_BURST_DATA},//14 page
 	{0xaf, 0x14, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xb0, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb1, 0x27, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb2, 0x11, MSM_CAMERA_I2C_BURST_DATA},
@@ -6632,7 +6642,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xb4, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb5, 0x50, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb6, 0x13, MSM_CAMERA_I2C_BURST_DATA},
-	{0xb7, 0x88, MSM_CAMERA_I2C_BURST_DATA},				
+	{0xb7, 0x88, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb8, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0xb9, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0xba, 0x15, MSM_CAMERA_I2C_BURST_DATA},
@@ -6640,7 +6650,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xbc, 0x16, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbd, 0x30, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbe, 0x17, MSM_CAMERA_I2C_BURST_DATA},
-	{0xbf, 0x2d, MSM_CAMERA_I2C_BURST_DATA},				
+	{0xbf, 0x2d, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc0, 0x18, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc1, 0x60, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc2, 0x19, MSM_CAMERA_I2C_BURST_DATA},
@@ -6648,7 +6658,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xc4, 0x1a, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc5, 0x62, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc6, 0x20, MSM_CAMERA_I2C_BURST_DATA},
-	{0xc7, 0x82, MSM_CAMERA_I2C_BURST_DATA},			
+	{0xc7, 0x82, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc8, 0x21, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc9, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0xca, 0x22, MSM_CAMERA_I2C_BURST_DATA},
@@ -6656,7 +6666,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xcc, 0x23, MSM_CAMERA_I2C_BURST_DATA},
 	{0xcd, 0x06, MSM_CAMERA_I2C_BURST_DATA},
 	{0xce, 0x24, MSM_CAMERA_I2C_BURST_DATA},
-	{0xcf, 0x08, MSM_CAMERA_I2C_BURST_DATA},		
+	{0xcf, 0x08, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd0, 0x25, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd1, 0x38, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd2, 0x26, MSM_CAMERA_I2C_BURST_DATA},
@@ -6664,7 +6674,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xd4, 0x27, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd5, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd6, 0x28, MSM_CAMERA_I2C_BURST_DATA},
-	{0xd7, 0x10, MSM_CAMERA_I2C_BURST_DATA},	
+	{0xd7, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd8, 0x29, MSM_CAMERA_I2C_BURST_DATA},
 	{0xd9, 0x00, MSM_CAMERA_I2C_BURST_DATA},
 	{0xda, 0x2a, MSM_CAMERA_I2C_BURST_DATA},
@@ -6672,7 +6682,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xdc, 0x2b, MSM_CAMERA_I2C_BURST_DATA},
 	{0xdd, 0x16, MSM_CAMERA_I2C_BURST_DATA},
 	{0xde, 0x2c, MSM_CAMERA_I2C_BURST_DATA},
-	{0xdf, 0x16, MSM_CAMERA_I2C_BURST_DATA},	
+	{0xdf, 0x16, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe0, 0x2d, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe1, 0x4c, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe2, 0x2e, MSM_CAMERA_I2C_BURST_DATA},
@@ -6680,7 +6690,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xe4, 0x2f, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe5, 0x50, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe6, 0x30, MSM_CAMERA_I2C_BURST_DATA},
-	{0xe7, 0x82, MSM_CAMERA_I2C_BURST_DATA},	
+	{0xe7, 0x82, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe8, 0x31, MSM_CAMERA_I2C_BURST_DATA},
 	{0xe9, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0xea, 0x32, MSM_CAMERA_I2C_BURST_DATA},
@@ -6689,7 +6699,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xed, 0x04, MSM_CAMERA_I2C_BURST_DATA},
 	{0xee, 0x34, MSM_CAMERA_I2C_BURST_DATA},
 	{0xef, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0xf0, 0x35, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf1, 0x46, MSM_CAMERA_I2C_BURST_DATA},
 	{0xf2, 0x36, MSM_CAMERA_I2C_BURST_DATA},
@@ -6706,7 +6716,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xfd, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	//{0xfe, 0x3c, MSM_CAMERA_I2C_BURST_DATA}, // STEVE deleted
 	//{0xff, 0x28, MSM_CAMERA_I2C_BURST_DATA}, // STEVE deleted
-		   
+
 	{0x03, 0xdc, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x10, 0x3c, MSM_CAMERA_I2C_BURST_DATA},
 	{0x11, 0x28, MSM_CAMERA_I2C_BURST_DATA},
@@ -6715,7 +6725,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x14, 0x3e, MSM_CAMERA_I2C_BURST_DATA},
 	{0x15, 0x22, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x3f, MSM_CAMERA_I2C_BURST_DATA},
-	{0x17, 0x20, MSM_CAMERA_I2C_BURST_DATA},					
+	{0x17, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x18, 0x40, MSM_CAMERA_I2C_BURST_DATA},
 	{0x19, 0x84, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1a, 0x41, MSM_CAMERA_I2C_BURST_DATA},
@@ -6723,7 +6733,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1c, 0x42, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1d, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x43, MSM_CAMERA_I2C_BURST_DATA},
-	{0x1f, 0x28, MSM_CAMERA_I2C_BURST_DATA},					
+	{0x1f, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	{0x20, 0x44, MSM_CAMERA_I2C_BURST_DATA},
 	{0x21, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x22, 0x45, MSM_CAMERA_I2C_BURST_DATA},
@@ -6731,7 +6741,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x24, 0x46, MSM_CAMERA_I2C_BURST_DATA},
 	{0x25, 0x1a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x26, 0x47, MSM_CAMERA_I2C_BURST_DATA},
-	{0x27, 0x0a, MSM_CAMERA_I2C_BURST_DATA},					
+	{0x27, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x28, 0x48, MSM_CAMERA_I2C_BURST_DATA},
 	{0x29, 0x0a, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2a, 0x49, MSM_CAMERA_I2C_BURST_DATA},
@@ -6739,7 +6749,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x2c, 0x50, MSM_CAMERA_I2C_BURST_DATA},
   {0x2d, 0x84, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2e, 0x51, MSM_CAMERA_I2C_BURST_DATA},
-	{0x2f, 0x34, MSM_CAMERA_I2C_BURST_DATA},					
+	{0x2f, 0x34, MSM_CAMERA_I2C_BURST_DATA},
 	{0x30, 0x52, MSM_CAMERA_I2C_BURST_DATA},
 	{0x31, 0x50, MSM_CAMERA_I2C_BURST_DATA},
 	{0x32, 0x53, MSM_CAMERA_I2C_BURST_DATA},
@@ -6747,7 +6757,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x34, 0x54, MSM_CAMERA_I2C_BURST_DATA},
 	{0x35, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x36, 0x55, MSM_CAMERA_I2C_BURST_DATA},
-	{0x37, 0x32, MSM_CAMERA_I2C_BURST_DATA},					
+	{0x37, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x38, 0x56, MSM_CAMERA_I2C_BURST_DATA},
 	{0x39, 0x32, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3a, 0x57, MSM_CAMERA_I2C_BURST_DATA},
@@ -6755,7 +6765,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x3c, 0x58, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3d, 0x14, MSM_CAMERA_I2C_BURST_DATA},
 	{0x3e, 0x59, MSM_CAMERA_I2C_BURST_DATA},
-	{0x3f, 0x12, MSM_CAMERA_I2C_BURST_DATA},					
+	{0x3f, 0x12, MSM_CAMERA_I2C_BURST_DATA},
 	{0x40, 0x60, MSM_CAMERA_I2C_BURST_DATA},
 	{0x41, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x42, 0x61, MSM_CAMERA_I2C_BURST_DATA},
@@ -6764,7 +6774,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x45, 0x98, MSM_CAMERA_I2C_BURST_DATA},
 	{0x46, 0x63, MSM_CAMERA_I2C_BURST_DATA},
 	{0x47, 0xe4, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x48, 0x64, MSM_CAMERA_I2C_BURST_DATA},
 	{0x49, 0xa4, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4a, 0x65, MSM_CAMERA_I2C_BURST_DATA},
@@ -6773,7 +6783,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x4d, 0x4b, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4e, 0x70, MSM_CAMERA_I2C_BURST_DATA},
 	{0x4f, 0x10, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0x50, 0x71, MSM_CAMERA_I2C_BURST_DATA},
 	{0x51, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x52, 0x72, MSM_CAMERA_I2C_BURST_DATA},
@@ -6782,7 +6792,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x55, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x56, 0x74, MSM_CAMERA_I2C_BURST_DATA},
 	{0x57, 0x10, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x58, 0x75, MSM_CAMERA_I2C_BURST_DATA},
 	{0x59, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5a, 0x76, MSM_CAMERA_I2C_BURST_DATA},
@@ -6791,7 +6801,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x5d, 0x58, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x78, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5f, 0x5a, MSM_CAMERA_I2C_BURST_DATA},
-					
+
 	{0x60, 0x79, MSM_CAMERA_I2C_BURST_DATA},
 	{0x61, 0x60, MSM_CAMERA_I2C_BURST_DATA},
 	{0x62, 0x7a, MSM_CAMERA_I2C_BURST_DATA},
@@ -6800,25 +6810,25 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x65, 0x50, MSM_CAMERA_I2C_BURST_DATA},
 
 	// STEVE Saturation control
-	// CB/CR vs sat 
+	// CB/CR vs sat
 //LGE_CHANGE_S ADD INTO MR ver. for low light condition
-	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10                
-	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //                      
-	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1070          
-	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1071          
-	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //              
-	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1072          
-	{0x6d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //             
-	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1073          
-	{0x6f, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1074          
-	{0x71, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //              
-	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1075          
-	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //                 
-	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1076          
-	{0x75, 0x2e, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1077          
+	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10
+	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1070
+	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1071
+	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1072
+	{0x6d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1073
+	{0x6f, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1074
+	{0x71, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1075
+	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1076
+	{0x75, 0x2e, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1077
 	{0x77, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x78, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x1078
 	{0x79, 0xc2, MSM_CAMERA_I2C_BURST_DATA}, //
@@ -6837,11 +6847,11 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x86, 0x7f, MSM_CAMERA_I2C_BURST_DATA}, //outdoor 0x107f
 	{0x87, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //
 
-	// Lum Vs Sat	
+	// Lum Vs Sat
 	{0x88, 0x03, MSM_CAMERA_I2C_BURST_DATA}, // page 16
-	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8A, 0x8a, MSM_CAMERA_I2C_BURST_DATA}, // outdoor 0x168a
-	{0x8B, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x8B, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8C, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, // outdoor 0x168b
 	{0x8D, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8E, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, // outdoor 0x168c
@@ -6897,22 +6907,22 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1e, 0x31, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1131
 	{0x1f, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 
-	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1132 //STEVE Lum. Level. in DLPF                    
-	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, //52                                                          
-	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1133                                               
-	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA}, //3b                                                          
-	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1134                                               
-	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA}, //1d                                                          
-	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1135                                               
-	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA}, //21                                                          
-	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1136                                               
-	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //1b                                                          
-	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1137                                               
-	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //21                                                          
-	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1138                                               
-	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA}, //18                                                          
+	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1132 //STEVE Lum. Level. in DLPF
+	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, //52
+	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1133
+	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA}, //3b
+	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1134
+	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA}, //1d
+	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1135
+	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA}, //21
+	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1136
+	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //1b
+	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1137
+	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //21
+	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //Indoor 0x1138
+	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA}, //18
 
-	{0x2e, 0x39, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1139 gain 1           
+	{0x2e, 0x39, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1139 gain 1
 	{0x2f, 0x34, MSM_CAMERA_I2C_BURST_DATA},    //r2 1
 	{0x30, 0x3a, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x113a
 	{0x31, 0x38, MSM_CAMERA_I2C_BURST_DATA},
@@ -6957,7 +6967,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x58, 0x4e, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x114e
 	{0x59, 0xf0, MSM_CAMERA_I2C_BURST_DATA},   //Lv 6 h_clip
 	{0x5a, 0x4f, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x114f
-	{0x5b, 0xf0, MSM_CAMERA_I2C_BURST_DATA},   //Lv 7 h_clip 
+	{0x5b, 0xf0, MSM_CAMERA_I2C_BURST_DATA},   //Lv 7 h_clip
 	{0x5c, 0x50, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1150 clip 8
 	{0x5d, 0xf0, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x51, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1151
@@ -7055,7 +7065,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xba, 0x7f, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x117f	//Imp Lv6 Middle Gain
 	{0xbb, 0x44, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbc, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1180	//Imp Lv6 Low Gain
-	{0xbd, 0x44, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0xbd, 0x44, MSM_CAMERA_I2C_BURST_DATA},
 	{0xbe, 0x81, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1181
 	{0xbf, 0x62, MSM_CAMERA_I2C_BURST_DATA},
 	{0xc0, 0x82, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1182
@@ -7155,19 +7165,19 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
   {0x2e, 0x71, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1271
   {0x2f, 0x7f, MSM_CAMERA_I2C_BURST_DATA},
   {0x30, 0x80, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1280
-  {0x31, 0x30, MSM_CAMERA_I2C_BURST_DATA},//88 			
+  {0x31, 0x30, MSM_CAMERA_I2C_BURST_DATA},//88
   {0x32, 0x81, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1281
-  {0x33, 0xa0, MSM_CAMERA_I2C_BURST_DATA}, //05			
+  {0x33, 0xa0, MSM_CAMERA_I2C_BURST_DATA}, //05
   {0x34, 0x82, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1282
-  {0x35, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//13 			
+  {0x35, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//13
   {0x36, 0x83, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1283
-  {0x37, 0x00, MSM_CAMERA_I2C_BURST_DATA},//40 			
+  {0x37, 0x00, MSM_CAMERA_I2C_BURST_DATA},//40
   {0x38, 0x84, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1284
   {0x39, 0x30, MSM_CAMERA_I2C_BURST_DATA},
   {0x3a, 0x85, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1285
   {0x3b, 0xa0, MSM_CAMERA_I2C_BURST_DATA},
   {0x3c, 0x86, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1286
-  {0x3d, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//15 			
+  {0x3d, 0xa0, MSM_CAMERA_I2C_BURST_DATA},//15
   {0x3e, 0x87, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1287
   {0x3f, 0x00, MSM_CAMERA_I2C_BURST_DATA},
   {0x40, 0x88, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1288
@@ -7436,39 +7446,39 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x57, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x58, 0x75, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1475
 	{0x59, 0x10, MSM_CAMERA_I2C_BURST_DATA},
-	{0x5a, 0x76, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1476	  //green sharp pos High		  
-	{0x5b, 0x10, MSM_CAMERA_I2C_BURST_DATA}, 												   
-	{0x5c, 0x77, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1477	  //green sharp pos Middle		  
-	{0x5d, 0x20, MSM_CAMERA_I2C_BURST_DATA}, 												   
-	{0x5e, 0x78, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1478	  //green sharp pos Low 		  
-	{0x5f, 0x18, MSM_CAMERA_I2C_BURST_DATA}, 												   
-	{0x60, 0x79, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1479	   //green sharp nega High		  
-	{0x61, 0x60, MSM_CAMERA_I2C_BURST_DATA}, 												   
-	{0x62, 0x7a, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x147a	   //green sharp nega Middle	  
-	{0x63, 0x60, MSM_CAMERA_I2C_BURST_DATA}, 												   
-	{0x64, 0x7b, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x147b	   //green sharp nega Low		  
+	{0x5a, 0x76, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1476	  //green sharp pos High
+	{0x5b, 0x10, MSM_CAMERA_I2C_BURST_DATA},
+	{0x5c, 0x77, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1477	  //green sharp pos Middle
+	{0x5d, 0x20, MSM_CAMERA_I2C_BURST_DATA},
+	{0x5e, 0x78, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1478	  //green sharp pos Low
+	{0x5f, 0x18, MSM_CAMERA_I2C_BURST_DATA},
+	{0x60, 0x79, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x1479	   //green sharp nega High
+	{0x61, 0x60, MSM_CAMERA_I2C_BURST_DATA},
+	{0x62, 0x7a, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x147a	   //green sharp nega Middle
+	{0x63, 0x60, MSM_CAMERA_I2C_BURST_DATA},
+	{0x64, 0x7b, MSM_CAMERA_I2C_BURST_DATA},//Indoor 0x147b	   //green sharp nega Low
 	{0x65, 0x60, MSM_CAMERA_I2C_BURST_DATA},
 
 	// STEVE Saturation control
-	// CB/CR vs sat 
+	// CB/CR vs sat
 //LGE_CHANGE_S ADD INTO MR ver. for low light condition
-	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10                
-	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //                      
-	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1070          
-	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1071          
-	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //              
-	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1072          
-	{0x6d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //             
-	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1073          
-	{0x6f, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1074          
-	{0x71, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //              
-	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1075          
-	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //                 
-	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1076          
-	{0x75, 0x2e, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1077          
+	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10
+	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1070
+	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1071
+	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1072
+	{0x6d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1073
+	{0x6f, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1074
+	{0x71, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1075
+	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1076
+	{0x75, 0x2e, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1077
 	{0x77, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x78, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x1078
 	{0x79, 0xc2, MSM_CAMERA_I2C_BURST_DATA}, //
@@ -7487,11 +7497,11 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x86, 0x7f, MSM_CAMERA_I2C_BURST_DATA}, //indoor 0x107f
 	{0x87, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //
 
-	// Lum Vs Sat	
+	// Lum Vs Sat
 	{0x88, 0x03, MSM_CAMERA_I2C_BURST_DATA}, // page 16
-	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8A, 0x8a, MSM_CAMERA_I2C_BURST_DATA}, // indoor 0x168a
-	{0x8B, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x8B, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8C, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, // indoor 0x168b
 	{0x8D, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8E, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, // indoor 0x168c
@@ -7535,7 +7545,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x10, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0x11, 0x11, MSM_CAMERA_I2C_BURST_DATA}, //11 page
 	{0x12, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1110
-	{0x13, 0x1f, MSM_CAMERA_I2C_BURST_DATA}, 
+	{0x13, 0x1f, MSM_CAMERA_I2C_BURST_DATA},
 	{0x14, 0x11, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1111
 	{0x15, 0x3f, MSM_CAMERA_I2C_BURST_DATA},
 	{0x16, 0x12, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1112
@@ -7550,20 +7560,20 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1f, 0x24, MSM_CAMERA_I2C_BURST_DATA}, //20
 
 	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1132 //STEVE Lum. Level. in DLPF
-	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, //52                                      
-	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1133                            
-	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA}, //3b                                      
-	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1134                            
-	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA}, //1d                                      
-	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1135                            
-	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA}, //21                                      
-	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1136                            
-	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //1b                                      
-	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1137                            
-	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //21                                      
-	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1138                            
-	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA}, //18                                      
-	                                        
+	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, //52
+	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1133
+	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA}, //3b
+	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1134
+	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA}, //1d
+	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1135
+	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA}, //21
+	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1136
+	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA}, //1b
+	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1137
+	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA}, //21
+	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1138
+	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA}, //18
+
 	{0x2e, 0x39, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1139
 	{0x2f, 0x84, MSM_CAMERA_I2C_BURST_DATA},
 	{0x30, 0x3a, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x113a
@@ -7754,7 +7764,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0xe9, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0xea, 0xb4, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x11b4
 	{0xeb, 0x03, MSM_CAMERA_I2C_BURST_DATA},
-	           
+
 	{0xec, 0x03, MSM_CAMERA_I2C_BURST_DATA},
 	{0xed, 0x12, MSM_CAMERA_I2C_BURST_DATA},//12 page
 	{0xee, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1210
@@ -8102,26 +8112,26 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x64, 0x7b, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x147b
 	{0x65, 0x28, MSM_CAMERA_I2C_BURST_DATA},
 	// STEVE Saturation control
-	// CB/CR vs sat 
+	// CB/CR vs sat
 //LGE_CHANGE_S ADD INTO MR ver. for low light condition
 
-	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10                
-	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //                      
-	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1070          
-	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1071          
-	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //              
-	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1072          
-	{0x6d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //             
-	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1073          
-	{0x6f, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1074          
-	{0x71, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //              
-	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1075          
-	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //                 
-	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1076          
-	{0x75, 0x2e, MSM_CAMERA_I2C_BURST_DATA}, //               
-	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1077          
+	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10
+	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1070
+	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1071
+	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1072
+	{0x6d, 0x62, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1073
+	{0x6f, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1074
+	{0x71, 0x36, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1075
+	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1076
+	{0x75, 0x2e, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1077
 	{0x77, 0x35, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x78, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x1078
 	{0x79, 0xc2, MSM_CAMERA_I2C_BURST_DATA}, //
@@ -8140,11 +8150,11 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x86, 0x7f, MSM_CAMERA_I2C_BURST_DATA}, //Dark1 0x107f
 	{0x87, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //
 
-	// Lum Vs Sat	
+	// Lum Vs Sat
 	{0x88, 0x03, MSM_CAMERA_I2C_BURST_DATA}, // page 16
-	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8A, 0x8a, MSM_CAMERA_I2C_BURST_DATA}, // Dark1 0x168a
-	{0x8B, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x8B, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8C, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, // Dark1 0x168b
 	{0x8D, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8E, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, // Dark1 0x168c
@@ -8201,22 +8211,22 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x1d, 0x20, MSM_CAMERA_I2C_BURST_DATA},
 	{0x1e, 0x31, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x1131
 	{0x1f, 0x20, MSM_CAMERA_I2C_BURST_DATA},
-	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1132 //STEVE Lum. Level. in DLPF               
-	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA},  //52                    82                               
-	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1133                                           
-	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA},  //3b                    5d                               
-	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1134                                           
-	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA},  //1d                    37                               
-	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1135                                           
-	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA},  //21                    30                               
-	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1136                                           
-	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA},  //1b                    18                               
-	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1137                                           
-	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA},  //21                    24                               
-	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1138                                           
-	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA},  //18                    18                               
+	{0x20, 0x32, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1132 //STEVE Lum. Level. in DLPF
+	{0x21, 0x8b, MSM_CAMERA_I2C_BURST_DATA},  //52                    82
+	{0x22, 0x33, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1133
+	{0x23, 0x54, MSM_CAMERA_I2C_BURST_DATA},  //3b                    5d
+	{0x24, 0x34, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1134
+	{0x25, 0x2c, MSM_CAMERA_I2C_BURST_DATA},  //1d                    37
+	{0x26, 0x35, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1135
+	{0x27, 0x29, MSM_CAMERA_I2C_BURST_DATA},  //21                    30
+	{0x28, 0x36, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1136
+	{0x29, 0x18, MSM_CAMERA_I2C_BURST_DATA},  //1b                    18
+	{0x2a, 0x37, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1137
+	{0x2b, 0x1e, MSM_CAMERA_I2C_BURST_DATA},  //21                    24
+	{0x2c, 0x38, MSM_CAMERA_I2C_BURST_DATA},  //Dark2 0x1138
+	{0x2d, 0x17, MSM_CAMERA_I2C_BURST_DATA},  //18                    18
 	{0x2e, 0x39, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x1139 gain 1
-	           
+
 	{0x2f, 0x80, MSM_CAMERA_I2C_BURST_DATA},    //r2 1
 	{0x30, 0x3a, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x113a
 	{0x31, 0x82, MSM_CAMERA_I2C_BURST_DATA},
@@ -8261,7 +8271,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x58, 0x4e, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x114e
 	{0x59, 0x10, MSM_CAMERA_I2C_BURST_DATA},   //Lv 6 h_clip
 	{0x5a, 0x4f, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x114f
-	{0x5b, 0x10, MSM_CAMERA_I2C_BURST_DATA},   //Lv 7 h_clip 
+	{0x5b, 0x10, MSM_CAMERA_I2C_BURST_DATA},   //Lv 7 h_clip
 	{0x5c, 0x50, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x1150 clip 8
 	{0x5d, 0x10, MSM_CAMERA_I2C_BURST_DATA},
 	{0x5e, 0x51, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x1151
@@ -8317,7 +8327,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x90, 0x6a, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x116a
 	{0x91, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0x92, 0x6b, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x116b
-	{0x93, 0x02, MSM_CAMERA_I2C_BURST_DATA},        
+	{0x93, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0x94, 0x6c, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x116c
 	{0x95, 0x02, MSM_CAMERA_I2C_BURST_DATA},
 	{0x96, 0x6d, MSM_CAMERA_I2C_BURST_DATA},//Dark2 0x116d
@@ -8457,7 +8467,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x2a, 0x6d, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x126d
 	{0x2b, 0x01, MSM_CAMERA_I2C_BURST_DATA},
 	{0x2c, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1270
-  {0x2d, 0x29, MSM_CAMERA_I2C_BURST_DATA}, 
+  {0x2d, 0x29, MSM_CAMERA_I2C_BURST_DATA},
   {0x2e, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1271
   {0x2f, 0x7f, MSM_CAMERA_I2C_BURST_DATA},
   {0x30, 0x80, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1280
@@ -8761,46 +8771,46 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	// CB/CR vs sat
 //LGE_CHANGE_S ADD INTO MR ver. for low light condition
 
-	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10                
-	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //                      
-	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1070          
-	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //                     
-	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1071          
-	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //                     
-	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1072          
-	{0x6d, 0xbe, MSM_CAMERA_I2C_BURST_DATA}, //                     
-	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1073          
-	{0x6f, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //                     
-	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1074          
-	{0x71, 0x51, MSM_CAMERA_I2C_BURST_DATA}, //                     
-	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1075          
-	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //                       
-	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1076          
-	{0x75, 0x23, MSM_CAMERA_I2C_BURST_DATA}, //                     
-	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1077          
-	{0x77, 0x31, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x66, 0x03, MSM_CAMERA_I2C_BURST_DATA}, //page 10
+	{0x67, 0x10, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x68, 0x70, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1070
+	{0x69, 0x08, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6a, 0x71, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1071
+	{0x6b, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6c, 0x72, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1072
+	{0x6d, 0xbe, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x6e, 0x73, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1073
+	{0x6f, 0x88, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x70, 0x74, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1074
+	{0x71, 0x51, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x72, 0x75, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1075
+	{0x73, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x74, 0x76, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1076
+	{0x75, 0x23, MSM_CAMERA_I2C_BURST_DATA}, //
+	{0x76, 0x77, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1077
+	{0x77, 0x31, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x78, 0x78, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1078
-	{0x79, 0xeb, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x79, 0xeb, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x7a, 0x79, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x1079
-	{0x7b, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //   
+	{0x7b, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x7c, 0x7a, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x107a
-	{0x7d, 0x51, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x7d, 0x51, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x7e, 0x7b, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x107b
-	{0x7f, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x7f, 0x40, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x80, 0x7c, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x107c
-	{0x81, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x81, 0x00, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x82, 0x7d, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x107d
-	{0x83, 0x14, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x83, 0x14, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x84, 0x7e, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x107e
-	{0x85, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //    
+	{0x85, 0x20, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x86, 0x7f, MSM_CAMERA_I2C_BURST_DATA}, //Dark2 0x107f
 	{0x87, 0x38, MSM_CAMERA_I2C_BURST_DATA}, //
 
-	// Lum Vs Sat	
+	// Lum Vs Sat
 	{0x88, 0x03, MSM_CAMERA_I2C_BURST_DATA}, // page 16
-	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x89, 0x16, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8A, 0x8a, MSM_CAMERA_I2C_BURST_DATA}, // Dark2 0x168a
-	{0x8B, 0x51, MSM_CAMERA_I2C_BURST_DATA}, // 
+	{0x8B, 0x51, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8C, 0x8b, MSM_CAMERA_I2C_BURST_DATA}, // Dark2 0x168b
 	{0x8D, 0x5a, MSM_CAMERA_I2C_BURST_DATA}, //
 	{0x8E, 0x8c, MSM_CAMERA_I2C_BURST_DATA}, // Dark2 0x168c
@@ -8860,10 +8870,10 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	///////////////////////////////////////////
 	{0x03, 0x1f, MSM_CAMERA_I2C_BYTE_DATA}, //1F page
 	{0x11, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //bit[5:4]: debug mode
-	{0x12, 0x60, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x13, 0x14, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x14, 0x10, MSM_CAMERA_I2C_BYTE_DATA}, 
-	{0x15, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x12, 0x60, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x13, 0x14, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x14, 0x10, MSM_CAMERA_I2C_BYTE_DATA},
+	{0x15, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x20, 0x18, MSM_CAMERA_I2C_BYTE_DATA}, //ssd_x_start_pos
 	{0x21, 0x14, MSM_CAMERA_I2C_BYTE_DATA}, //ssd_y_start_pos
 	{0x22, 0x8C, MSM_CAMERA_I2C_BYTE_DATA}, //ssd_blk_width
@@ -8875,10 +8885,12 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x10, 0x19, MSM_CAMERA_I2C_BYTE_DATA}, //SSD enable
 
 	{0x03, 0xc4, MSM_CAMERA_I2C_BYTE_DATA}, //AE en
-#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
+#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
 	{0x10, 0xe9, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE AE ON    (50hz : 0xe9, 60hz : 0xe1)
+
 #else
 	{0x10, 0xe1, MSM_CAMERA_I2C_BYTE_DATA},
+
 #endif
 
 	{0x03, 0xc3, MSM_CAMERA_I2C_BYTE_DATA}, //AE Static en
@@ -8942,7 +8954,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 	{0x10, 0x1C, MSM_CAMERA_I2C_BYTE_DATA}, //MIPI ON
 	{0x11, 0x00, MSM_CAMERA_I2C_BYTE_DATA}, //Normal Mode
 	{0x14, 0x50, MSM_CAMERA_I2C_BYTE_DATA}, //Skew
-	{0x16, 0x04, MSM_CAMERA_I2C_BYTE_DATA}, 
+	{0x16, 0x04, MSM_CAMERA_I2C_BYTE_DATA},
 
 	{0x1a, 0x11, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x1b, 0x0d, MSM_CAMERA_I2C_BYTE_DATA}, //Short Packet
@@ -8965,7 +8977,7 @@ static struct msm_camera_i2c_reg_conf hi351_recommend_settings[] = {
 
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x11, 0x83, MSM_CAMERA_I2C_BYTE_DATA}, // STEVE 0 skip Fix Frame Off, XY Flip
-	
+
 	{0x03, 0x00, MSM_CAMERA_I2C_BYTE_DATA},
 	{0x01, 0xf0, MSM_CAMERA_I2C_BYTE_DATA}, //sleep off
 

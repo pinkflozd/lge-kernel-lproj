@@ -18,6 +18,9 @@
 #include <linux/platform_device.h>
 #include <linux/input.h>
 #include <linux/switch.h>
+#if defined(CONFIG_MACH_LGE)
+#include <../../../kernel/power/power.h>
+#endif
 
 #include <asm/mach-types.h>
 
@@ -322,6 +325,33 @@ static void report_hs_key(uint32_t key_code, uint32_t key_parm)
 	}
 	input_sync(hs->ipdev);
 }
+
+/*LGE_CHANGE_S,Wakeup apps proc for battery notification */
+#ifdef CONFIG_MACH_LGE
+void report_power_key(void)
+{
+int state = 0;
+		
+#ifdef CONFIG_EARLYSUSPEND
+
+	if(NULL != hs && NULL != hs->ipdev){
+
+		state = check_suspend_state();
+
+		if (state == 1){
+			input_report_key(hs->ipdev, KEY_POWER,
+						1);
+			input_report_key(hs->ipdev, KEY_POWER,
+						0);
+			input_sync(hs->ipdev);
+		}
+	}
+
+#endif
+}
+EXPORT_SYMBOL(report_power_key);
+#endif
+/*LGE_CHANGE_E,Wakeup apps proc for battery notification */
 
 static int handle_hs_rpc_call(struct msm_rpc_server *server,
 			   struct rpc_request_hdr *req, unsigned len)

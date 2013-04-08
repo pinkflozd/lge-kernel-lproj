@@ -106,7 +106,9 @@ static int mipi_dsi_off(struct platform_device *pdev)
 
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
-#if defined(CONFIG_MACH_MSM8X25_V7)
+/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
+#if defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X27A_U0)
+/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
 	if(lglogo_firstboot){
 #ifdef CONFIG_FB_MSM_MIPI_DSI_HX8379A //LGE_CHANGE, sohyun.nam@lge.com, 12-12-27, using HX8379A
 	if( maker_id == 1 )
@@ -123,7 +125,9 @@ static int mipi_dsi_off(struct platform_device *pdev)
 	 */
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
-#if defined(CONFIG_MACH_MSM8X25_V7)
+/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
+#if defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X27A_U0)
+/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
 	if(!lglogo_firstboot)
 		mipi_dsi_clk_cfg(1);
 #endif
@@ -170,12 +174,16 @@ static int mipi_dsi_off(struct platform_device *pdev)
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 #if defined(CONFIG_MACH_MSM8X25_V7)
+/*LGE_CHANGE_S, youngbae.choi@lge.com, 13-01-14, when sleep, LCD RESET PIN HIGH [ non active ]*/
+#if 0
 	if(!lglogo_firstboot){
 #ifdef CONFIG_FB_MSM_MIPI_DSI_HX8379A //LGE_CHANGE, sohyun.nam@lge.com, 12-12-27, using HX8379A
 	if( maker_id == 1 )
 #endif		
 		mipi_ldp_lcd_panel_poweroff();
 	}
+#endif
+/*LGE_CHANGE_E, youngbae.choi@lge.com, 13-01-14, when sleep, LCD RESET PIN HIGH [ non active ]*/
 #else
 	mipi_ldp_lcd_panel_poweroff();
 #endif
@@ -189,7 +197,9 @@ static int mipi_dsi_off(struct platform_device *pdev)
 
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
-#if defined(CONFIG_MACH_MSM8X25_V7)
+/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
+#if defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X27A_U0)
+/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
 	if(!lglogo_firstboot)
 		mipi_dsi_unprepare_clocks();
 		lglogo_firstboot=false;
@@ -235,7 +245,9 @@ static int mipi_dsi_on(struct platform_device *pdev)
 	/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com]: reset mipi register for first display on, since mipi registers were initialized at modem side*/
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B	
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
-#if !defined(CONFIG_MACH_MSM8X25_V7)
+/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
+#if !defined(CONFIG_MACH_MSM8X25_V7) && !defined(CONFIG_MACH_MSM7X27A_U0)
+/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
 	if(lglogo_firstboot){
 		mipi_dsi_sw_reset();
 		usleep(100);

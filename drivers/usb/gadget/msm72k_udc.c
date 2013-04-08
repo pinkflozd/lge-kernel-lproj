@@ -259,7 +259,7 @@ static void flush_endpoint(struct msm_endpoint *ept);
 static void usb_reset(struct usb_info *ui);
 static int usb_ept_set_halt(struct usb_ep *_ep, int value);
 
-#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION)||defined (CONFIG_MACH_MSM7X25A_V3)
+#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined (CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
 extern void update_power_supply(int chg_type);
 #endif
 static void msm_hsusb_set_speed(struct usb_info *ui)
@@ -477,7 +477,7 @@ static void usb_chg_stop(struct work_struct *w)
 		usb_phy_set_power(ui->xceiv, 0);
 }
 
-#if defined(CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined(CONFIG_MACH_MSM7X25A_V3)
+#if defined(CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined(CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM7X25A_V1)
 int get_charger_type(void)
 {
 	int chg_type = 0;
@@ -1427,6 +1427,19 @@ static irqreturn_t usb_interrupt(int irq, void *data)
 	unsigned n;
 	unsigned long flags;
 
+/* LGE_CHANGE_S : bohyun.jung@lge.com QCT_PATCH for SR 01087402
+ *
+ *  USB: msm72k_udc: Don't handle asynchronous interrupt
+ *  The UDC interrupt handler is accessing USB registers before clocks are turned on. 
+ *  Avoid unclocked access by ignoring the asynchronous interrupt.
+ */
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+	struct msm_otg *dev = to_msm_otg(ui->xceiv);
+
+	if (atomic_read(&dev->in_lpm))
+		return IRQ_NONE;
+#endif
+
 	n = readl(USB_USBSTS);
 	writel(n, USB_USBSTS);
 
@@ -1811,6 +1824,28 @@ static void usb_do_work(struct work_struct *w)
 				usb_phy_set_power(ui->xceiv, 0);
 
 				if (ui->irq) {
+
+/* LGE_CHANGE_S : bohyun.jung@lge.com QCT_PATCH for SR 01087402
+ *
+ * USB: msm72k_udc: Disable all usb interrupts & acknowledge them
+ * Disable and acknowledge all device specific interrupts in UDC driver before freeing the IRQ.
+ */
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+					/* Disable and acknowledge all
+					 * USB interrupts before freeing
+					 * irq, so that no USB spurious
+					 * interrupt occurs during USB cable
+					 * disconnect which may lead to
+					 * IRQ nobody cared error.
+					 */
+					writel_relaxed(0, USB_USBINTR);
+					writel_relaxed(readl_relaxed(USB_USBSTS)
+								, USB_USBSTS);
+					/* Ensure that above STOREs are
+					 * completed before enabling
+					 * interrupts */
+					wmb();
+#endif
 					free_irq(ui->irq, ui);
 					ui->irq = 0;
 				}
@@ -1820,10 +1855,18 @@ static void usb_do_work(struct work_struct *w)
 
 				ui->state = USB_STATE_OFFLINE;
 				usb_do_work_check_vbus(ui);
+
+				/* QCT SR # 2013-02-07 lbh.lee@lge.com for did not send Uevent  */
+				if (ui->pdata && ui->pdata->is_phy_status_timer_on){
+						del_timer_sync(&phy_status_timer);
+						cancel_work_sync(&ui->phy_status_check);
+				}
+
 				pm_runtime_put_noidle(&ui->pdev->dev);
 				pm_runtime_suspend(&ui->pdev->dev);
 				wake_unlock(&ui->wlock);
-#ifndef CONFIG_MACH_MSM7X25A_V3
+// LGE_CHANGE jongjin7.park 20130207 move to msm_hsusb_set_vbus_state()
+#if !defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X27A_U0) && !defined(CONFIG_MACH_MSM8X25_V7) && !defined(CONFIG_MACH_MSM7X25A_V1)
 /*Work around for system wakeup when TA insert*/
 /*Hold wake lock for 2 secs. Let system be in wakeup state So that
 events can reach framework with out delay.*/	
@@ -1970,16 +2013,29 @@ void msm_hsusb_set_vbus_state(int online)
 #endif
 		ui->proprietary_chg = false;
 		// 2012-11-29 ByungHo-Lee(lbh.lee@lge.com)[td:na] for USB debuging
-#ifdef CONFIG_MACH_MSM7X25A_V3 
-		update_power_supply(USB_CHG_TYPE__INVALID);//remove usb/chg cable powesupply chaged to battery, updating supply changed event  to frame work to make screen on 
+/* LGE_CHANGE_S jongjin7.park 20130207 fixed issue.- sometimes wake lately */
+#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+		update_power_supply(USB_CHG_TYPE__INVALID);//remove usb/chg cable powesupply chaged to battery, updating supply changed event  to frame work to make screen on
 		wake_lock_timeout(&ui->TA_wlock,2 * HZ);
-#endif//CONFIG_MACH_MSM7X25A_V3		
+#elif defined(CONFIG_MACH_MSM7X27A_U0)
+		wake_lock_timeout(&ui->TA_wlock,2 * HZ);
+#endif//CONFIG_MACH_MSM7X25A_V3
+/* LGE_CHANGE_E jongjin7.park 20130207 fixed issue.- sometimes wake lately */
 		pr_info("%s USB Disconnection\n", __func__);
 	}
 	if (in_interrupt()) {
+// LGE_CHANGE_S - bohyun.jung@lge.com - unlock irq before schedule_work.
+#if defined (CONFIG_MACH_MSM7X27A_U0)
+		spin_unlock_irqrestore(&ui->lock, flags);
+		pr_info("%s irq conunt is true\n", __func__);
 		schedule_work(&ui->work);
+		return;			
+#else
+		schedule_work(&ui->work);
+#endif
 	} else {
 		spin_unlock_irqrestore(&ui->lock, flags);
+		pr_info("%s irq conunt is false\n", __func__);		// bohyun.jung@lge.com - put logs.	
 		usb_do_work(&ui->work);
 		return;
 	}

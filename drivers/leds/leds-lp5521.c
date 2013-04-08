@@ -34,11 +34,31 @@
 #include <linux/leds-lp5521.h>
 #include <linux/workqueue.h>
 #include <linux/slab.h>
+
 //[2012-12-21][junghoon79.kim@lge.com] sleep current issue in cal&auto test[START]
 #ifdef CONFIG_LGE_SUPPORT_MINIOS
 #include <mach/lge/lge_proc_comm.h>
 #endif
 //[2012-12-21][junghoon79.kim@lge.com] sleep current issue in cal&auto test[START]
+
+/*[LGE_BSP_START] yunmo.yang@lge.com*/
+#if defined(CONFIG_MACH_MSM8X25_V7)
+#define LP5521_MAX_LED_CURRENT 217
+#define LP5521_R_INDEX 7
+#define LP5521_G_INDEX 4
+#define LP5521_B_INDEX 8
+#elif defined(CONFIG_MACH_MSM7X25A_V3)
+#define LP5521_MAX_LED_CURRENT 255
+#define LP5521_R_INDEX 20
+#define LP5521_G_INDEX 0
+#define LP5521_B_INDEX 2
+#else
+#define LP5521_MAX_LED_CURRENT 255
+#define LP5521_R_INDEX 1
+#define LP5521_G_INDEX 1
+#define LP5521_B_INDEX 1
+#endif
+/*[LGE_BSP_END] yunmo.yang@lge.com*/
 
 #define LP5521_PROGRAM_LENGTH		32	/* in bytes */
 
@@ -97,12 +117,12 @@
 /* default R channel current register value */
 #define LP5521_REG_R_CURR_DEFAULT	0xAF
 
+/* Current index max step */
+#define PATTERN_CURRENT_INDEX_STEP_HAL 255
+
 /* Pattern Mode */
 #define PATTERN_OFF	0
 #define PATTERN_BLINK_ON	-1
-
-/*GV DCM Felica Pattern Mode*/
-#define PATTERN_FELICA_ON 101
 
 /*GK Favorite MissedNoit Pattern Mode*/
 #define PATTERN_FAVORITE_MISSED_NOTI 14
@@ -124,6 +144,14 @@ enum lp5521_wait_type {
 	LP5521_CYCLE_982ms,
 	LP5521_CYCLE_MAX,
 };
+
+/*[LGE_BSP_START] yunmo.yang@lge.com*/
+enum lp5521_rgb {
+	LP5521_R = 0,
+	LP5521_G,
+	LP5521_B,
+};
+/*[LGE_BSP_END] yunmo.yang@lge.com*/
 
 struct lp5521_engine {
 	int		id;
@@ -152,6 +180,7 @@ struct lp5521_chip {
 	u8			num_channels;
 	u8			num_leds;
 	int id_pattern_play;
+	u8 current_index;
 };
 
 struct lp5521_pattern_cmd {
@@ -704,6 +733,11 @@ static void lp5521_run_led_pattern(int mode, struct lp5521_chip *chip)
 	}
 }
 
+static u8 get_led_current_value(u8 current_index)
+{
+	return current_index_mapped_value[current_index];
+}
+
 static ssize_t show_led_pattern(struct device *dev,
 			    struct device_attribute *attr,
 			    char *buf)
@@ -731,6 +765,97 @@ static ssize_t store_led_pattern(struct device *dev,
 	lp5521_run_led_pattern(val, chip);
 	led->pattern_id = val;
 
+	return len;
+}
+static ssize_t show_led_current_index(struct device *dev,
+			    struct device_attribute *attr,
+			    char *buf)
+{
+	struct lp5521_chip *chip = i2c_get_clientdata(to_i2c_client(dev));
+	if (!chip)
+		return 0;
+
+	return sprintf(buf, "%d\n", chip->current_index);
+}
+
+static ssize_t store_led_current_index(struct device *dev,
+				struct device_attribute *attr,
+				const char *buf, size_t len)
+{
+	struct lp5521_chip *chip = i2c_get_clientdata(to_i2c_client(dev));
+	unsigned long val;
+	int ret, i;
+	u8 max_current, modify_current;
+
+	printk(KERN_INFO"[%s] current index (0~255) : %s", __func__, buf);
+
+	ret = strict_strtoul(buf, 10, &val);
+	if (ret)
+		return ret;
+
+	if (val > PATTERN_CURRENT_INDEX_STEP_HAL || val < 0)
+		return -EINVAL;
+
+	if (!chip)
+		return 0;
+
+	chip->current_index = val;
+	mutex_lock(&chip->lock);
+	for (i = 0; i < LP5521_MAX_LEDS ; i++) {
+		max_current = chip->leds[i].max_current;
+		modify_current = get_led_current_value(val);
+		if (modify_current > LP5521_MAX_LED_CURRENT)
+			modify_current = LP5521_MAX_LED_CURRENT;
+		/*[LGE_BSP_START]yunmo.yang@lge.com*/
+      #if defined(CONFIG_MACH_MSM8X25_V7)
+		switch(i)
+		{
+			case LP5521_R:/*Red*/
+				ret = lp5521_set_led_current(chip, i, modify_current);
+				printk(KERN_INFO"[%s][R] modify_current : %d", __func__,  modify_current);
+				break;
+			case LP5521_G:/*Green*/
+				modify_current = (modify_current/LP5521_R_INDEX)*LP5521_G_INDEX;
+				ret = lp5521_set_led_current(chip, i, modify_current);
+				printk(KERN_INFO"[%s][G] modify_current : %d", __func__,  modify_current);
+				break;
+			case LP5521_B:/*Blue*/
+				modify_current = (modify_current/LP5521_R_INDEX)*LP5521_B_INDEX;
+				ret = lp5521_set_led_current(chip, i, modify_current);
+				printk(KERN_INFO"[%s][B] modify_current : %d", __func__,  modify_current);
+				break;
+			default:
+				printk(KERN_INFO"[%s] This message should not print : %d", __func__, modify_current);
+				break;
+		}
+      #elif defined(CONFIG_MACH_MSM7X25A_V3)
+      switch(i)
+		{
+			case LP5521_R:/*Red*/
+				//printk(KERN_INFO"[%s][R] modify_current : %d", __func__,  modify_current + LP5521_R_INDEX);
+				ret = lp5521_set_led_current(chip, i, modify_current + LP5521_R_INDEX);
+				break;
+			case LP5521_G:/*Green*/
+				//printk(KERN_INFO"[%s][G] modify_current : %d", __func__,  modify_current + LP5521_G_INDEX);
+				ret = lp5521_set_led_current(chip, i, modify_current + LP5521_G_INDEX);
+				break;
+			case LP5521_B:/*Blue*/
+				//printk(KERN_INFO"[%s][B] modify_current : %d", __func__,  modify_current + LP5521_B_INDEX);
+				ret = lp5521_set_led_current(chip, i, modify_current + LP5521_B_INDEX);
+				break;
+			default:
+				printk(KERN_INFO"[%s] This message should not print : %d", __func__, modify_current);
+				break;
+		}
+      #endif
+		/*[LGE_BSP_ENDz]yunmo.yang@lge.com*/
+		
+		if (ret)
+			return ret;
+		chip->leds[i].led_current = modify_current;
+	}
+	mutex_unlock(&chip->lock);
+	
 	return len;
 }
 
@@ -881,6 +1006,7 @@ static DEVICE_ATTR(engine3_load, S_IWUSR, NULL, store_engine3_load);
 static DEVICE_ATTR(selftest, S_IRUGO, lp5521_selftest, NULL);
 static DEVICE_ATTR(led_pattern, S_IRUGO | S_IWUSR, show_led_pattern, store_led_pattern);
 static DEVICE_ATTR(led_blink, S_IRUGO | S_IWUSR, NULL, store_led_blink);
+static DEVICE_ATTR(led_current_index, S_IRUGO | S_IWUSR, show_led_current_index, store_led_current_index);
 
 static struct attribute *lp5521_attributes[] = {
 	&dev_attr_engine1_mode.attr,
@@ -892,6 +1018,7 @@ static struct attribute *lp5521_attributes[] = {
 	&dev_attr_engine3_load.attr,
 	&dev_attr_led_pattern.attr,
 	&dev_attr_led_blink.attr,
+	&dev_attr_led_current_index.attr,
 	NULL
 };
 
@@ -917,6 +1044,7 @@ static void lp5521_unregister_sysfs(struct i2c_client *client)
 		sysfs_remove_group(&chip->leds[i].cdev.dev->kobj,
 				&lp5521_led_attribute_group);
 }
+
 
 static int __devinit lp5521_init_led(struct lp5521_led *led,
 				struct i2c_client *client,
@@ -974,7 +1102,7 @@ static int __devinit lp5521_probe(struct i2c_client *client,
 	struct lp5521_platform_data	*pdata;
 	int ret, i, led;
 	u8 buf = 0;
-
+	
 	printk(KERN_INFO"LP5521: probe start");
 
 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
@@ -1071,6 +1199,11 @@ static int __devinit lp5521_probe(struct i2c_client *client,
 
 		led++;
 	}
+
+/*[LGE_BSP_START]yunmo.yang@lge.com */
+	/* Initialize current index for auto brightness (max step) */
+	chip->current_index = chip->leds[0].led_current;
+/*[LGE_BSP_END]yunmo.yang@lge.com */	
 
 	ret = lp5521_register_sysfs(client);
 	if (ret) {
@@ -1193,6 +1326,7 @@ static int lp5521_resume(struct i2c_client *client)
 		usleep_range(1000, 2000); /* Keep enable down at least 1ms */
 		chip->pdata->enable(1);
 		usleep_range(1000, 2000); /* 500us abs min. */
+	    lp5521_run_led_pattern(0, chip);
 
 #if 0
 		lp5521_write(client, LP5521_REG_RESET, 0xff);

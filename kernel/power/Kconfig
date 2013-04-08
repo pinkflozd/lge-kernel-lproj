@@ -205,7 +205,7 @@ config PM_ADVANCED_DEBUG
 	developer interested in debugging/testing Power Management, say "no".
 
 config DEBUG_SCHED_SHOW_TASK
-    depends on !MACH_MSM7X27A_U0
+    depends on !MACH_LGE_NO_DEBUG_INFO
 	default y
     bool "DEBUG_SCHED_SHOW_TASK"
     help

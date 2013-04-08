@@ -29,6 +29,10 @@
 //#define PAGE_MAX_NUM					4			/* number of page register */
 #define PAGE_MAX_NUM					4			/* number of page register */
 
+#ifndef CUST_G_TOUCH
+#define CUST_G_TOUCH
+#endif
+
 struct function_descriptor {
 	u8 	query_base;
 	u8 	command_base;
@@ -56,9 +60,6 @@ struct cur_touch_data {
 	u8	device_status_reg;		/* DEVICE_STATUS_REG */
 	u8	interrupt_status_reg;
 	u8	button_data_reg;
-/*LGE_CHANGE_S : byungyong.hwang@lge.com touch - Synaptics s3203 panel need to check stylus pen is enabled*/
-	u8	stylus_pen_reg;
-/*LGE_CHANGE_E : byungyong.hwang@lge.com touch - Synaptics s3203 panel need to check stylus pen is enabled*/
 	struct finger_data	finger;
 	struct button_data	button;
 };
@@ -75,6 +76,14 @@ struct synaptics_ts_fw_info
 	unsigned char	*fw_start;
 	unsigned long	fw_size;
 };
+#ifdef CUST_G_TOUCH
+struct interrupt_bit_mask {
+	u8 flash;
+	u8 status;
+	u8 abs;
+	u8 button;
+};
+#endif
 
 struct synaptics_ts_data {
 	u8	is_probed;
@@ -89,6 +98,10 @@ struct synaptics_ts_data {
 	struct ts_ic_function	flash_fc;
 	struct cur_touch_data	ts_data;
 	struct synaptics_ts_fw_info	fw_info;
+#ifdef CUST_G_TOUCH
+	struct interrupt_bit_mask	interrupt_mask;
+	u8	ic_panel_type;
+#endif
 };
 
 /* extern function */
