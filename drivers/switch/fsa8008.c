@@ -67,8 +67,7 @@
 
 /* Total key press threshold time : FSA8008_KEY_PRESS_TH_CNT X  FSA8008_KEY_PRESS_DLY_MS = 120 ms */
 #define FSA8008_KEY_PRESS_TH_CNT 3
-#define FSA8008_KEY_PRESS_DLY_MS (200 /* milli */ * HZ / 1000) /* convert milli to jiffies */
-#define FSA8008_KEY_RELEASE_DLY_MS (200 /* milli */ * HZ / 1000)
+#define FSA8008_KEY_PRESS_DLY_MS (40 /* milli */ * HZ / 1000) /* convert milli to jiffies */
 #define FSA8008_DETECT_DELAY_MS	(20 /* milli */ * HZ / 1000) /* convert milli to jiffies */
 #endif
 
@@ -113,8 +112,7 @@ struct hsd_info {
 	void (*set_headset_mic_bias)(int enable); /* callback function which is initialized while probing */
 
 	unsigned int latency_for_detection;
-	unsigned int latency_for_press_key;
-	unsigned int latency_for_release_key;
+	unsigned int latency_for_key;
 
 	unsigned int key_code;
 
@@ -164,11 +162,6 @@ enum {
 };
 #endif
 
-/* LGE_CHANGE : bohyun.jung@lge.com */
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-static bool s_bInitialized = false;
-#endif
-
 static ssize_t lge_hsd_print_name(struct switch_dev *sdev, char *buf)
 {
 	switch (switch_get_state(sdev)) {
@@ -197,12 +190,11 @@ static void button_pressed(struct work_struct *work)
 {
 	struct delayed_work *dwork = container_of(work, struct delayed_work, work);
 	struct hsd_info *hi = container_of(dwork, struct hsd_info, work_for_key_pressed);
-/*
+
 	if (gpio_get_value_cansleep(hi->gpio_key) != BUTTON_PRESSED) {
 		HSD_ERR("button_pressed but actually Fake pressed state!!\n");
 		return;
 	}
-*/
 	if (gpio_get_value_cansleep(hi->gpio_detect) == EARJACK_REMOVED
 		|| (switch_get_state(&hi->sdev) != LGE_HEADSET)) {
 		HSD_ERR("button_pressed but ear jack is plugged out already! just ignore the event.\n");
@@ -212,13 +204,13 @@ static void button_pressed(struct work_struct *work)
 		HSD_ERR("button_pressed but already pressed state!!\n");
 		return;
 	}
-/*
+
 	hi->gpio_key_cnt += 1;
 	if(hi->gpio_key_cnt < FSA8008_KEY_PRESS_TH_CNT) {
-		queue_delayed_work(local_fsa8008_workqueue, &(hi->work_for_key_pressed), hi->latency_for_press_key );
+		queue_delayed_work(local_fsa8008_workqueue, &(hi->work_for_key_pressed), hi->latency_for_key );
 		return;
 	}
-*/
+
 	HSD_DBG("button_pressed [%d] \n", hi->gpio_key_cnt);
 
 	atomic_set(&hi->btn_state, 1);
@@ -231,12 +223,10 @@ static void button_released(struct work_struct *work)
 	struct delayed_work *dwork = container_of(work, struct delayed_work, work);
 	struct hsd_info *hi = container_of(dwork, struct hsd_info, work_for_key_released);
 
-/*
 	if (gpio_get_value_cansleep(hi->gpio_key) != BUTTON_RELEASED) {
 		HSD_ERR("button_released but actually Fake released state!!\n");
 		return;
 	}
-*/
 	if (gpio_get_value_cansleep(hi->gpio_detect) == EARJACK_REMOVED
 		|| (switch_get_state(&hi->sdev) != LGE_HEADSET)) {
 		HSD_ERR("button_released but ear jack is plugged out already! just ignore the event.\n");
@@ -277,28 +267,12 @@ static void button_enable(struct work_struct *work)
 
 static void insert_headset(struct work_struct *work)
 {
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	struct delayed_work *dwork 		= NULL;
-	struct hsd_info 	*hi 		= NULL; 
-	int 				earjack_type= 0;
-	int 				value 		= 0;
-
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * prevent kernel panic in case that remove isr comes before probe is done. */
-	if (!s_bInitialized)
-	{
-		HSD_ERR("insert_headset but lge_hsd_probe() is not finished. !!\n");
-		return;
-	}
-	dwork 	= container_of(work, struct delayed_work, work);
-	hi 		= container_of(dwork, struct hsd_info, work_for_insert);
-	value 	= gpio_get_value_cansleep(hi->gpio_detect);
-#else
 	struct delayed_work *dwork = container_of(work, struct delayed_work, work);
 	struct hsd_info *hi = container_of(dwork, struct hsd_info, work_for_insert);
+
 	int earjack_type;
+
 	int value = gpio_get_value_cansleep(hi->gpio_detect);
-#endif
 
 	if(value != EARJACK_INSERTED) {
 		HSD_ERR("insert_headset but actually Fake inserted state!!\n");
@@ -358,31 +332,11 @@ static void insert_headset(struct work_struct *work)
 
 static void remove_headset(struct work_struct *work)
 {
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	struct delayed_work *dwork 	= NULL; 
-	struct hsd_info 	*hi 	= NULL;  
-	int 				has_mic = 0;
-	int 				value 	= 0;
-
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * prevent kernel panic in case that remove isr comes before probe is done. */
-	if (!s_bInitialized)
-	{
-		HSD_ERR("remove_headset but lge_hsd_probe() is not finished. !!\n");
-		return;
-	}
-
-	dwork 	= container_of(work, struct delayed_work, work);
-	hi		= container_of(dwork, struct hsd_info, work_for_remove);
-	has_mic = switch_get_state(&hi->sdev);
-	value 	= gpio_get_value_cansleep(hi->gpio_detect);
-#else
 	struct delayed_work *dwork = container_of(work, struct delayed_work, work);
 	struct hsd_info *hi = container_of(dwork, struct hsd_info, work_for_remove);
 	int has_mic = switch_get_state(&hi->sdev);
 
 	int value = gpio_get_value_cansleep(hi->gpio_detect);
-#endif
 
 	if(value != EARJACK_REMOVED) {
 		HSD_ERR("remove_headset but actually Fake removed state!!\n");
@@ -478,13 +432,13 @@ static irqreturn_t button_irq_handler(int irq, void *dev_id)
 
 	if (value == BUTTON_PRESSED) {
 		hi->gpio_key_cnt = 0;
-//		cancel_delayed_work_sync(&(hi->work_for_key_pressed));
-		queue_delayed_work(local_fsa8008_workqueue, &(hi->work_for_key_pressed), hi->latency_for_press_key );
+		cancel_delayed_work_sync(&(hi->work_for_key_pressed));
+		queue_delayed_work(local_fsa8008_workqueue, &(hi->work_for_key_pressed), hi->latency_for_key );
 	}
 	else {
-//		cancel_delayed_work_sync(&(hi->work_for_key_pressed));
-//		cancel_delayed_work_sync(&(hi->work_for_key_released));
-		queue_delayed_work(local_fsa8008_workqueue, &(hi->work_for_key_released), hi->latency_for_release_key );
+		cancel_delayed_work_sync(&(hi->work_for_key_pressed));
+		cancel_delayed_work_sync(&(hi->work_for_key_released));
+		queue_delayed_work(local_fsa8008_workqueue, &(hi->work_for_key_released), hi->latency_for_key );
 	}
 
 	return IRQ_HANDLED;
@@ -778,8 +732,7 @@ static int lge_hsd_probe(struct platform_device *pdev)
 
 	hi->latency_for_detection = pdata->latency_for_detection;
 #ifdef CONFIG_LGE_AUDIO_FSA8008_MODIFY
-	hi->latency_for_press_key = FSA8008_KEY_PRESS_DLY_MS;
-	hi->latency_for_release_key = FSA8008_KEY_RELEASE_DLY_MS;
+	hi->latency_for_key = FSA8008_KEY_PRESS_DLY_MS;
 	hi->gpio_key_cnt = 0;
 	INIT_DELAYED_WORK(&hi->work_for_insert, insert_headset);
 	INIT_DELAYED_WORK(&hi->work_for_remove, remove_headset);
@@ -954,13 +907,6 @@ static int lge_hsd_probe(struct platform_device *pdev)
 
 #ifdef AT_TEST_GPKD
 	err = device_create_file(&pdev->dev, &dev_attr_hookkeylog);
-#endif
-
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * prevent kernel panic in case that remove isr comes before probe is done. */
-	HSD_DBG("lge_hsd_probe is done.");
-	s_bInitialized = true;
 #endif
 
 	return ret;

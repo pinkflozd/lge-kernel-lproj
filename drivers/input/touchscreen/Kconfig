@@ -374,18 +374,6 @@ config TOUCHSCREEN_MELFAS_MMS128S
 	  This enables support for Melfas MMS128s over I2C based touchscreens.		  
 #LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting
 
-config TOUCHSCREEN_MELFAS_MMS128S_V1
-	tristate "Melfas MMS100s i2c touchscreen"
-	depends on I2C
-	help
-	  This enables support for Melfas MMS128-100s over I2C based touchscreens.
-
-config TOUCHSCREEN_MELFAS_MMS100S
-	tristate "Melfas MMS100s i2c touchscreen"
-	depends on I2C
-	help
-	  This enables support for Melfas MMS128-100s over I2C based touchscreens.
-
 config TOUCHSCREEN_MTOUCH
 	tristate "MicroTouch serial touchscreens"
 	select SERIO

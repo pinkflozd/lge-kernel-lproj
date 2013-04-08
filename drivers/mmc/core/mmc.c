@@ -540,20 +540,6 @@ static int mmc_read_ext_csd(struct mmc_card *card, u8 *ext_csd)
 			ext_csd[EXT_CSD_MAX_PACKED_READS];
 	}
 
-	/* [LGE_CHANGE_S] bohyun.jung@lge.com  
-	 * samsung support discard option on version 4.41+ 
-	 * Enable discard only for V3, also check manufacture id in case of V3 support both memory(Hynix, Samsung).
-	 * DO NOT add feature for v7/u0/m4/etc without firm reason on emmc spec or vendor confirm */
-#if defined (CONFIG_MACH_MSM7X25A_V3) && defined (CONFIG_MACH_FEATURE_DISCARD)
-#define MANUFACTURE_ID_SAMSUNG	0x15
-	if (card->cid.manfid == MANUFACTURE_ID_SAMSUNG)
-	{
-		card->ext_csd.feature_support |= MMC_DISCARD_FEATURE;
-		pr_info("%s: !!! card->cid.manfid:%d, prod_name:%s !!! \n", 
-			mmc_hostname(card->host), card->cid.manfid, card->cid.prod_name);
-	}
-#endif
-
 out:
 	return err;
 }

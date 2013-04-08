@@ -38,6 +38,17 @@
 #include <linux/rcupdate.h>
 #include <linux/notifier.h>
 
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)
+#ifndef OOM_SCORE_CAL 
+#define	OOM_SCORE_CAL			((OOM_SCORE_ADJ_MAX) / -OOM_DISABLE) 
+#endif
+// This is a process currently hosting a backup operation. Killing it is not entirely fatal but is generally a bad idea.
+#define BACKUP_APP_ADJ			4		
+#define AGGRESSIVE_ADJ_SCORE 	(BACKUP_APP_ADJ * OOM_SCORE_CAL)
+
+static int s_miss_cnt = 0;
+#endif
+
 static uint32_t lowmem_debug_level = 2;
 static int lowmem_adj[6] = {
 	0,
@@ -121,6 +132,9 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 	    time_before_eq(jiffies, lowmem_deathpending_timeout))
 		return 0;
 #endif
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)
+	s_miss_cnt++;
+#endif
 
 	if (lowmem_adj_size < array_size)
 		array_size = lowmem_adj_size;
@@ -151,6 +165,15 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		lowmem_print(3, "lowmem_shrink %lu, %x, ofree %d %d, ma %d\n",
 				sc->nr_to_scan, sc->gfp_mask, other_free,
 				other_file, min_score_adj);
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)	
+		if (s_miss_cnt > 16 )
+		{
+			// set minimum score here (adj score for backup(4)). on for loop, biggest oom_socre_adj is selected.
+			if ( min_score_adj > AGGRESSIVE_ADJ_SCORE) 
+				min_score_adj = AGGRESSIVE_ADJ_SCORE;
+		}
+		s_miss_cnt++;			
+#endif
 	}
 
 	rem = global_page_state(NR_ACTIVE_ANON) +
@@ -176,18 +199,6 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		if (!p)
 			continue;
 
-		/* LGE_CHANGE : bohyun.jung@lge.com 2013.02.14 
-	 	 * Skip a task if it is already terminating by oom-killer.
-		 * A Signal does not reach in issued condition, and lmk continously select & kill same process repeatly.
-		 * Possible Modem crash (watchdog) due to kernel get stuck */
-#if defined (CONFIG_LGE_DEATHPENDING_LMK)
-		if (test_tsk_thread_flag(p, TIF_MEMDIE) || (p->flags & PF_EXITING))
-		{
-			lowmem_print(2, "skip %d (%s) is terminating due to OOM killer. p->flags(%x)\n", p->pid, p->comm, p->flags);
-			task_unlock(p);
-			continue;
-		}
-#endif
 		if (test_tsk_thread_flag(p, TIF_MEMDIE) &&
 		    time_before_eq(jiffies, lowmem_deathpending_timeout)) {
 			task_unlock(p);
@@ -227,6 +238,9 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		send_sig(SIGKILL, selected, 0);
 		set_tsk_thread_flag(selected, TIF_MEMDIE);
 		rem -= selected_tasksize;
+#if defined (CONFIG_LGE_AGGRESSIVE_LMK)
+		s_miss_cnt = 0;
+#endif
 	}
 	lowmem_print(4, "lowmem_shrink %lu, %x, return %d\n",
 		     sc->nr_to_scan, sc->gfp_mask, rem);

@@ -344,21 +344,13 @@ static struct clk_lookup msm_cmn_clk_7625a_7627a[] __initdata = {
 #ifdef CONFIG_MACH_LGE
 #ifdef CONFIG_HI351
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0040"), /* GSBI0, Slave Addr: 0x40, hi351 */
-#elif defined (CONFIG_T4K28)
-	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0078"), /* GSBI0, Slave Addr: 0x78, t4k28 */	
 #elif defined (CONFIG_HI542) // && defined (CONFIG_MT9V113) // for m4
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0040"), /* GSBI0, Slave Addr: 0x40, hi542 */
-//	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-007a"), /* GSBI0, Slave Addr: 0x7A, mt9v113 */	
+	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-007a"), /* GSBI0, Slave Addr: 0x7A, mt9v113 */	
 #else
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-006e"), /* GSBI0, Slave Addr: 0x6E, t8ev4 */
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0034"), /* GSBI0, Slave Addr: 0x34, imx111 */
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0060"), /* GSBI0, Slave Addr: 0x60, hi707 */
-#endif
-#if	defined(CONFIG_MT9E013_LGIT) // for u0_tcl_mx
-    CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-006c"), /* GSBI0, Slave Addr: 0x6c, mt9e013_lgit */	
-#endif
-#if	defined(CONFIG_MT9V113) // for u0_tcl_mx
-    CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-007a"), /* GSBI0, Slave Addr: 0x7A, mt9v113 */	
 #endif
 #else
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0036"),

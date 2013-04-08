@@ -123,8 +123,3 @@ int32_t msm_sensor_write_enum_conf_array(struct msm_camera_i2c_client *client,
 int32_t msm_sensor_write_all_conf_array(struct msm_camera_i2c_client *client,
 	struct msm_camera_i2c_conf_array *array, uint16_t size);
 #endif
-
-#if 1//def CONFIG_MT9E013_LGIT
-int32_t msm_camera_i2c_rxdata_manual(struct i2c_adapter *adapter, uint16_t saddr,
-	unsigned char *rxdata, int data_length);
-#endif

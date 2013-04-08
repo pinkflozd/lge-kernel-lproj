@@ -146,13 +146,4 @@ config LGE_WAIT_FOR_EFS_SYNC_COMPLETE
 	 This patch waits in power down/ reset handler if any efs sync is going on.
 	 Turn Off phone only when currently active sync complete.This makes sure that
 	 modem file system is proper.
-
-#LGE_CHANGE_S : bohyun.jung@lge.com - remove debug feature 
-config MACH_LGE_NO_DEBUG_INFO
-    depends on MACH_LGE
-	default n
-    bool "MSM7x27A U0 DEBUG Option"
-    help
-        Support for the LG Electronics MSM7x27A U0.
-#LGE_CHANGE_E : bohyun.jung@lge.com - remove debug feature 
-
+	 

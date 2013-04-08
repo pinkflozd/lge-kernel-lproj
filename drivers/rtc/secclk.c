@@ -69,16 +69,6 @@ int secclk_rtc_changed(int (*fp_read_rtc)(struct device *, struct rtc_time *), s
   }
   spin_unlock(&secclk_lock);
 
-  if (!secclk_diff_time) {
-    /*
-      No need to update any of them.
-      If a user selected auto time sync, it'll try time sync with network.
-      But the probability of setting the same time with current time is over 95%.
-      So simply skip that case.
-    */
-    return 0;
-  }
-
   if (1) {
     struct rtc_time tm_prev;
     rtc_time_to_tm(prev_time, &tm_prev);
@@ -99,7 +89,6 @@ int secclk_rtc_changed(int (*fp_read_rtc)(struct device *, struct rtc_time *), s
   1 : Returned negative diff
   -EINVAL : Unknown command
   -EAGAIN : Blocking was released by unknown (unhandled) event
-  -EINTR  : Interrupted system call
 */
 static long secclk_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
@@ -110,11 +99,7 @@ static long secclk_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
   switch (cmd) {
   case SECCLK_IOCTL_GET_DIFF:
     /* Block and wait */
-    ret = wait_event_interruptible(secclk_wait_queue, secclk_wakeup_sign != 0);
-    if (ret == -ERESTARTSYS) {
-        /* system call is interrupted when kernel freezes processes to suspend device. */
-        return -EINTR;
-    }
+    wait_event_interruptible(secclk_wait_queue, secclk_wakeup_sign != 0);
 
     spin_lock(&secclk_lock);
     diff_time = secclk_diff_time;
@@ -135,6 +120,8 @@ static long secclk_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
       if (copy_to_user((void __user *)arg, &diff_time, sizeof(diff_time))) {
         ret = -1;
       }
+    } else {
+      printk("secure clock: enter sleep\n");
     }
     break;
 
@@ -143,6 +130,7 @@ static long secclk_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
     break;
   }
 
+  printk("secure clock: end of ioctl()\n");
   return ret;
 }
 

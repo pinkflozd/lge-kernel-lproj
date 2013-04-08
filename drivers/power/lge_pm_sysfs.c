@@ -22,9 +22,9 @@
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include <mach/lge/lge_pm.h>
 
-#include <../../kernel/power/power.h>
+#include "../../kernel/power/power.h"
 #include <mach/msm_smsm.h>
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 #include <mach/msm_hsusb.h>
 #endif
 #ifdef CONFIG_LGE_LOW_VOLTAGE_BATTERY_CHECK
@@ -32,16 +32,11 @@
 #include <linux/reboot.h>
 #include <linux/cpumask.h>
 #endif
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
-#include <mach/msm_battery.h>
-#endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
 
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 extern int get_charger_type(void); /* defined in msm72k_udc.c */
 #endif
-extern u32 msm_batt_get_vbatt_level(void);
+
 static ssize_t batt_volt_show(struct device* dev,struct device_attribute* attr,char* buf)
 {
 	return snprintf(buf, PAGE_SIZE, "%d\n", lge_get_batt_volt());
@@ -98,7 +93,7 @@ static ssize_t lge_battery_id_info_show(struct device* dev,struct device_attribu
 #endif
 
 /* LGE_CHANGE_S: [murali.ramaiah@lge.com] 2013-01-07 */
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 static ssize_t msm_batt_chgr_status_show(struct device* dev, struct device_attribute* attr, char* buf)
 {
 	int chg_type;
@@ -107,19 +102,7 @@ static ssize_t msm_batt_chgr_status_show(struct device* dev, struct device_attri
 }
 #endif /* CONFIG_MACH_MSM7X25A_V3 */
 /* LGE_CHANGE_S: [murali.ramaiah@lge.com] 2013-01-07 */
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
-static ssize_t msm_batt_capacity_show(struct device* dev, struct device_attribute* attr, char* buf)
-{
-	return snprintf(buf, PAGE_SIZE,"%d\n", msm_batt_get_vbatt_capacity());
-}
-#endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
 
-static ssize_t msm_batt_level_show(struct device* dev, struct device_attribute* attr, char* buf)
-{
-	return snprintf(buf, PAGE_SIZE,"%d\n", msm_batt_get_vbatt_level());
-}
 static DEVICE_ATTR(batt_volt, S_IRUGO, batt_volt_show, NULL);
 static DEVICE_ATTR(chg_therm, S_IRUGO, chg_therm_show, NULL);
 static DEVICE_ATTR(pcb_version, S_IRUGO, pcb_version_show, NULL);
@@ -136,16 +119,9 @@ static DEVICE_ATTR(pm_suspend_state, S_IRUGO, pm_suspend_state_show, NULL);
 #ifdef CONFIG_LGE_PM_BATT_ID_DETECTION
 static DEVICE_ATTR(lge_battery_id_info, S_IRUGO, lge_battery_id_info_show, NULL);
 #endif
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 static DEVICE_ATTR(chgr_status, S_IRUGO, msm_batt_chgr_status_show, NULL);
 #endif
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
-static DEVICE_ATTR(batt_capacity, S_IRUGO, msm_batt_capacity_show, NULL);
-#endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-
-static DEVICE_ATTR(msm_batt_level, S_IRUGO, msm_batt_level_show, NULL);
 
 static struct attribute* dev_attrs_lge_pm_info[] = {
 	&dev_attr_batt_volt.attr,
@@ -164,15 +140,9 @@ static struct attribute* dev_attrs_lge_pm_info[] = {
 #ifdef CONFIG_LGE_PM_BATT_ID_DETECTION
 	&dev_attr_lge_battery_id_info.attr,
 #endif
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 	&dev_attr_chgr_status.attr,
 #endif
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
-	&dev_attr_batt_capacity.attr,
-#endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-	&dev_attr_msm_batt_level.attr,
 	NULL,
 };
 
@@ -220,8 +190,7 @@ static void  __init  lge_pm_boot_batt_id_check(void)
 
 		batt_id = *smem_batt_id;
 
-		if((batt_id == BATT_ISL6296_L) || (batt_id == BATT_DS2704_L)
-		   || (batt_id == BATT_DS2704_C) || (batt_id == BATT_ISL6296_C)){
+		if((batt_id == BATT_ISL6296_L) || (batt_id == BATT_DS2704_L)){
 			printk(KERN_INFO "%s, High Voltage Battery Detected \n",__func__);
 		}
 		else if(batt_id == BATT_NORMAL){

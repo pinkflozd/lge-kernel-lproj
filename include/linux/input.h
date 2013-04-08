@@ -439,8 +439,8 @@ struct input_keymap_entry {
 #define KEY_BRIGHTNESSUP	225
 #define KEY_MEDIA		226
 
-#define KEY_SWITCHVIDEOMODE	227	/* Cycle between available video outputs (Monitor/LCD/TV-out/etc) */
-#define KEY_SIM_SWITCH		228	/* LGE add for Multi Sim */
+#define KEY_SWITCHVIDEOMODE	227	/* Cycle between available video
+					   outputs (Monitor/LCD/TV-out/etc) */
 #define KEY_KBDILLUMTOGGLE	228
 #define KEY_KBDILLUMDOWN	229
 #define KEY_KBDILLUMUP		230
@@ -1508,37 +1508,21 @@ int input_flush_device(struct input_handle *handle, struct file *file);
 void input_event(struct input_dev *dev, unsigned int type, unsigned int code, int value);
 void input_inject_event(struct input_handle *handle, unsigned int type, unsigned int code, int value);
 
-#if defined(CONFIG_MACH_MSM7X25A_M4)||defined(CONFIG_MACH_MSM7X25A_V3) ||defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_M4)||defined(CONFIG_MACH_MSM7X25A_V3)||defined(CONFIG_MACH_MSM8X25_V7)
 	extern int LGF_TestModeGetDisableInputDevices(void);
 #endif
 static inline void input_report_key(struct input_dev *dev, unsigned int code, int value)
 {
-#if defined(CONFIG_MACH_MSM7X25A_M4)||defined(CONFIG_MACH_MSM7X25A_V3) ||defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_M4)||defined(CONFIG_MACH_MSM7X25A_V3)||defined(CONFIG_MACH_MSM8X25_V7)
 	if(LGF_TestModeGetDisableInputDevices()){
 		if(code==0x6b)
-#if defined(CONFIG_MACH_MSM8X25_V7)
-			input_event(dev, EV_KEY, code, value);
-#else
 			input_event(dev, EV_KEY, code, !!value);
-#endif
 		else
-              ;      
-	}	
-	else 
-#endif		
-	{
-#if defined(CONFIG_MACH_MSM8X25_V7)
-			input_event(dev, EV_KEY, code, value);
-#else
-/* LGE_CHANGE_S homin.jeon@lge.com 2013-02-07 TD(302390) issue fixed(ghost finger)*/
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-        input_event(dev, EV_KEY, code, value);
-#else
-        input_event(dev, EV_KEY, code, !!value);
-#endif
-/* LGE_CHANGE_E homin.jeon@lge.com 2013-02-07 TD(302390) issue fixed*/
-#endif
+              ;
 	}
+	else
+#endif
+	input_event(dev, EV_KEY, code, !!value);
 }
 
 static inline void input_report_rel(struct input_dev *dev, unsigned int code, int value)
@@ -1552,7 +1536,7 @@ static inline void input_report_abs(struct input_dev *dev, unsigned int code, in
 	if(LGF_TestModeGetDisableInputDevices())
 		;
 	else
-#endif		
+#endif
 	input_event(dev, EV_ABS, code, value);
 }
 
@@ -1577,7 +1561,7 @@ static inline void input_mt_sync(struct input_dev *dev)
 	if(LGF_TestModeGetDisableInputDevices())
 		;
 	else
-#endif		
+#endif
 	input_event(dev, EV_SYN, SYN_MT_REPORT, 0);
 }
 

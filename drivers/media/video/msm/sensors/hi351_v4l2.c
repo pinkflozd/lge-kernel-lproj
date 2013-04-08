@@ -85,7 +85,7 @@ static struct msm_camera_i2c_conf_array hi351_confs[][4] = {
 	ARRAY_SIZE(hi351_prev_settings2), 10, MSM_CAMERA_I2C_BYTE_DATA},
 	 {&hi351_prev_settings3[0],
 	ARRAY_SIZE(hi351_prev_settings3), 0, MSM_CAMERA_I2C_BYTE_DATA},},
-
+	
 };
 #else
 static struct msm_camera_i2c_conf_array hi351_confs[] = {
@@ -259,7 +259,7 @@ static struct msm_camera_i2c_enum_conf_array hi351_wb_oem_enum_confs = {
 
 
 static struct msm_camera_i2c_conf_array hi351_iso_confs[][1] = {
-	{{hi351_iso[0], ARRAY_SIZE(hi351_iso[0]),  0,
+	{{hi351_iso[0], ARRAY_SIZE(hi351_iso[0]),  0,	
 		MSM_CAMERA_I2C_BYTE_DATA},},				//AUTO
 	{{hi351_iso[1], ARRAY_SIZE(hi351_iso[1]),  0,
 		MSM_CAMERA_I2C_BYTE_DATA},},				//DEBLUR
@@ -322,7 +322,7 @@ static struct msm_camera_i2c_conf_array hi351_fps_range_confs[][3] = {
 };
 
 static int hi351_fps_range_enum_map[] = {
-	MSM_V4L2_FPS_15_15,
+	MSM_V4L2_FPS_15_15, 
 	MSM_V4L2_FPS_7P5_30,
 	MSM_V4L2_FPS_30_30,
 };
@@ -338,63 +338,63 @@ static struct msm_camera_i2c_enum_conf_array hi351_fps_range_enum_confs = {
 
 static struct msm_camera_i2c_conf_array hi351_bestshot_mode_confs[][2] = {
 	{	//SCENE OFF
-		{&hi351_scene_normal_settings[0], ARRAY_SIZE(hi351_scene_normal_settings),
+		{&hi351_scene_normal_settings[0], ARRAY_SIZE(hi351_scene_normal_settings), 
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE AUTO
-		{&hi351_scene_normal_settings[0], ARRAY_SIZE(hi351_scene_normal_settings),
+		{&hi351_scene_normal_settings[0], ARRAY_SIZE(hi351_scene_normal_settings),  
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE LANDSCAPE
-		{&hi351_scene_landscape_settings[0], ARRAY_SIZE(hi351_scene_landscape_settings),
+		{&hi351_scene_landscape_settings[0], ARRAY_SIZE(hi351_scene_landscape_settings),  
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE SNOW //NOT USE
-		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),
+		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),
+		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE BEACH //NOT USE
-		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),
+		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),
+		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE SUNSET
-		{&hi351_scene_sunset_settings[0], ARRAY_SIZE(hi351_scene_sunset_settings),
+		{&hi351_scene_sunset_settings[0], ARRAY_SIZE(hi351_scene_sunset_settings),  
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE NIGHT
-		{&hi351_scene_night_settings[0], ARRAY_SIZE(hi351_scene_night_settings),
+		{&hi351_scene_night_settings[0], ARRAY_SIZE(hi351_scene_night_settings),  
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE PORTRAIT
-		{&hi351_scene_portrait_settings[0], ARRAY_SIZE(hi351_scene_portrait_settings),
+		{&hi351_scene_portrait_settings[0], ARRAY_SIZE(hi351_scene_portrait_settings),  
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE BACKLIGHT //NOT USE
-		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),
+		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),
+		{&hi351_no_active_settings[0], ARRAY_SIZE(hi351_no_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 	{	//SCENE SPORTS
-		{&hi351_scene_sport_settings[0], ARRAY_SIZE(hi351_scene_sport_settings),
+		{&hi351_scene_sport_settings[0], ARRAY_SIZE(hi351_scene_sport_settings),  
 			10,		MSM_CAMERA_I2C_BYTE_DATA},
-		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),
+		{&hi351_scene_active_settings[0], ARRAY_SIZE(hi351_scene_active_settings),  
 			0,		MSM_CAMERA_I2C_BYTE_DATA},
 	},
 };
@@ -405,7 +405,7 @@ static int hi351_bestshot_mode_enum_map[] = {
 	MSM_V4L2_BESTSHOT_LANDSCAPE,
 	MSM_V4L2_BESTSHOT_SNOW,			//NOT USE
 	MSM_V4L2_BESTSHOT_BEACH,		//NOT USE
-	MSM_V4L2_BESTSHOT_SUNSET,
+	MSM_V4L2_BESTSHOT_SUNSET,		
 	MSM_V4L2_BESTSHOT_NIGHT,
 	MSM_V4L2_BESTSHOT_PORTRAIT,
 	MSM_V4L2_BESTSHOT_BACKLIGHT,		//NOT USE
@@ -430,7 +430,7 @@ int hi351_effect_msm_sensor_s_ctrl_by_enum(struct msm_sensor_ctrl_t *s_ctrl,
 	pr_err("%s is called effect=%d\n", __func__, value);
 	if (PREV_EFFECT == value || PREV_EFFECT == -1) {
 		PREV_EFFECT = value;
-		pr_err("%s: SKIP: EFFECT called previous value :%d\n", __func__,value);
+		pr_err("%s: SKIP: EFFECT called previous value :%d\n", __func__,value); 
 		return rc;
 	}
 	PREV_EFFECT = value;
@@ -510,7 +510,7 @@ int hi351_msm_sensor_s_ctrl_by_enum(struct msm_sensor_ctrl_t *s_ctrl,
 		rc = msm_sensor_write_enum_conf_array(
 		s_ctrl->sensor_i2c_client,
 		ctrl_info->enum_cfg_settings, value);
-
+		
 		if (rc < 0)
 			printk(KERN_ERR "[ERROR]%s:write failed for enum num: %d, value = %d, retry = %d\n", __func__, ctrl_info->ctrl_id, value, retry);
 		else
@@ -518,7 +518,7 @@ int hi351_msm_sensor_s_ctrl_by_enum(struct msm_sensor_ctrl_t *s_ctrl,
 	}
 	pr_err("%s: write done for enum num: %d , value = %d\n", __func__, ctrl_info->ctrl_id, value);
 	return rc;
-
+		
 }
 
 struct msm_sensor_v4l2_ctrl_info_t hi351_v4l2_ctrl_info[] = {
@@ -651,10 +651,10 @@ int8_t hi351_get_snapshot_data(struct msm_sensor_ctrl_t *s_ctrl, struct snapshot
 	u16 Exposure3 = 0;
 	u16 Exposure4 = 0;
 	int ExposureTotal = 0;
-
+	
 	//ISO Speed
-	rc = msm_camera_i2c_write(s_ctrl->sensor_i2c_client, 0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA);
-	rc = msm_camera_i2c_read(s_ctrl->sensor_i2c_client, 0x50, &analogGain, MSM_CAMERA_I2C_BYTE_DATA);
+	rc = msm_camera_i2c_write(s_ctrl->sensor_i2c_client, 0x03, 0x20, MSM_CAMERA_I2C_BYTE_DATA);	
+	rc = msm_camera_i2c_read(s_ctrl->sensor_i2c_client, 0x50, &analogGain, MSM_CAMERA_I2C_BYTE_DATA);	
 
 	if (rc < 0) {
 		pr_err("%s: error to get analog & digital gain \n", __func__);
@@ -688,10 +688,10 @@ int8_t hi351_get_snapshot_data(struct msm_sensor_ctrl_t *s_ctrl, struct snapshot
 
 	snapshot_data->iso_speed = isoSpeed;
 	snapshot_data->exposure_time = exposureTime;
-	pr_err("[CHECK]Camera Snapshot Data iso_speed = %d, exposure_time = %d \n", snapshot_data->iso_speed, snapshot_data->exposure_time);
+	pr_err("[CHECK]Camera Snapshot Data iso_speed = %d, exposure_time = %d \n", snapshot_data->iso_speed, snapshot_data->exposure_time); 
 
 	return 0;
-
+	
 }
 
 static int32_t hi351_i2c_write_b_sensor(struct msm_camera_i2c_client *client, u8 baddr, u8 bdata)
@@ -770,7 +770,7 @@ static int32_t hi351_sensor_write_init_settings(struct msm_camera_i2c_client *cl
 				buf[bufIndex] = conf->reg_addr;
 				bufIndex++;
 				buf[bufIndex] = conf->reg_data;
-				bufIndex++;
+				bufIndex++;				
 			}
 			else {
 				buf[bufIndex] = conf->reg_data;
@@ -789,7 +789,7 @@ static int32_t hi351_sensor_write_init_settings(struct msm_camera_i2c_client *cl
  					return rc;
 				}
 			}
-			rc = hi351_i2c_write_b_sensor(client,
+			rc = hi351_i2c_write_b_sensor(client, 
 									conf->reg_addr,
 									conf->reg_data);
 
@@ -799,7 +799,7 @@ static int32_t hi351_sensor_write_init_settings(struct msm_camera_i2c_client *cl
 			}
 		}
 		conf++;
-
+	
 	}
 	return rc;
 
@@ -835,7 +835,7 @@ int32_t hi351_sensor_write_conf_array(struct msm_camera_i2c_client *client,
 {
 	int32_t rc = 0;
 	int32_t retry = 0;
-
+	
 	for (retry = 0; retry < 3; ++retry) {
 
 		rc = hi351_i2c_write_b_table(client,
@@ -865,7 +865,7 @@ int32_t hi351_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 	static int csi_config;
 
 	if (update_type == MSM_SENSOR_REG_INIT) {
-#if defined (LGE_CAMERA_ANTIBAND_50HZ)	//Flicker 50Hz
+#if defined (CONFIG_MACH_MSM7X25A_V3_EU)	//Flicker 50Hz
 		pr_err("Register INIT with Flicker 50Hz Mode\n");
 #else
 		pr_err("Register INIT with Flicker 60Hz Mode\n");
@@ -899,7 +899,7 @@ int32_t hi351_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 		hi351_sensor_write_conf_array(
 			s_ctrl->sensor_i2c_client,
 			s_ctrl->msm_sensor_reg->mode_settings, res);
-
+		
 		v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 			NOTIFY_PCLK_CHANGE,
 			&s_ctrl->sensordata->pdata->ioclk.vfe_clk_rate);
@@ -969,13 +969,13 @@ int hi351_sensor_power_up(struct msm_sensor_ctrl_t *s_ctrl)
 		goto enable_clk_failed;
 	}
 	msleep(10);
-
+	
 	// 6. RESET HIGH
 	rc = gpio_direction_output(data->sensor_reset, 1);
 	if (rc < 0)
 		pr_err("%s: gpio:CAM_RESET %d direction can't be set\n", __func__, data->sensor_reset);
 	msleep(1);
-
+	
 	printk("%s: X %d\n", __func__, __LINE__);
 
 	return rc;
@@ -983,7 +983,7 @@ enable_clk_failed:
 	msm_camera_request_gpio_table(data, 0);
 request_gpio_failed:
 	msm_camera_config_gpio_table(data, 0);
-config_gpio_failed:
+config_gpio_failed:		
 	data->sensor_platform_info->ext_power_ctrl(0);
 	return rc;
 }
@@ -1017,14 +1017,14 @@ int hi351_sensor_power_down(struct msm_sensor_ctrl_t *s_ctrl)
 		pr_err("%s: gpio:CAM_PWDN %d direction can't be set\n", __func__, data->sensor_pwd);
 	gpio_free(data->sensor_pwd);
 	msleep(1);
-
+	
 	// 4. CAM PWR OFF
 	msm_camera_config_gpio_table(data, 0);
 	msm_camera_request_gpio_table(data, 0);
 
 	if (data->sensor_platform_info->ext_power_ctrl != NULL)
 		data->sensor_platform_info->ext_power_ctrl(0);
-
+	
 	kfree(s_ctrl->reg_ptr);
 	printk("%s: X %d\n", __func__, __LINE__);
 	return 0;
@@ -1032,7 +1032,7 @@ int hi351_sensor_power_down(struct msm_sensor_ctrl_t *s_ctrl)
 
 int32_t hi351_camera_i2c_write_tbl(struct msm_camera_i2c_client *client,
                                      struct msm_camera_i2c_reg_conf *reg_conf_tbl, uint16_t size,
-                                     enum msm_camera_i2c_data_type data_type)
+                                     enum msm_camera_i2c_data_type data_type)                                    
 {
 	int i;
 	int32_t rc = -EFAULT;
@@ -1096,7 +1096,7 @@ int32_t hi351_match_id(struct msm_sensor_ctrl_t *s_ctrl)
 			SENSOR_REG_PAGE_ADDR,
 			SENSOR_REG_PAGE_0,
 			MSM_CAMERA_I2C_BYTE_DATA);
-
+	
 	rc = msm_camera_i2c_read(
 			s_ctrl->sensor_i2c_client,
 			s_ctrl->sensor_id_info->sensor_id_reg_addr, &chipid,

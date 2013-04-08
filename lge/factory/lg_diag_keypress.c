@@ -134,30 +134,6 @@ void LGF_SendKey(word keycode)
 
 EXPORT_SYMBOL(LGF_SendKey);
 
-#ifdef CONFIG_TOUCHSCREEN_MELFAS_MMS100S
-void Send_Touch( unsigned int x, unsigned int y)
-{
-	struct input_dev* idev = NULL;
-
-	idev = get_ats_input_dev();
-
-	if(idev == NULL)
-		printk("%s: input device addr is NULL\n",__func__);
-
-	/* Press */
-        input_report_abs(idev, ABS_MT_TOUCH_MAJOR, 1);
-        input_report_abs(idev, ABS_MT_POSITION_X, x);
-        input_report_abs(idev, ABS_MT_POSITION_Y, y);
-        input_mt_sync(idev);
-        input_sync(idev);
-	/* Release */
-        input_report_abs(idev, ABS_MT_TOUCH_MAJOR, 0);
-        input_report_abs(idev, ABS_MT_POSITION_X, x);
-        input_report_abs(idev, ABS_MT_POSITION_Y, y);
-        input_mt_sync(idev);
-        input_sync(idev);
-}
-#endif
 
 PACK (void *)LGF_KeyPress (
         PACK (void	*)req_pkt_ptr,			/* pointer to request packet  */

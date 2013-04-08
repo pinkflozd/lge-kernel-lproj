@@ -11,12 +11,7 @@
 #define __WEAK __attribute__((weak))
 #endif
 
-//LGE_CHANGE_S [panchaxari.t@lge.com][to prevent vbatt dog timeout leading to modem crash][SR# 1049898]	
-#define LGE_VBATT_MODEM_CRASH_FIX
-//LGE_CHANGE_E [panchaxari.t@lge.com][to prevent vbatt dog timeout leading to modem crash][SR# 1049898]	
-
 #define  LGE_DEV_CHARGING_CURRENT
-#define  LGE_CHG_DONE_NOTIFICATION
 
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 /* allocate 128K * 2 instead of ram_console's original size 128K

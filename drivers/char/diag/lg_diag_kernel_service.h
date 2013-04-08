@@ -3,10 +3,7 @@
 
 #include <../../../lge/include/lg_comdef.h>
 
-/* LGE_CHANGE : hyungjoon.jeon@lge.com 2013-03-05 */
-#if defined(CONFIG_MACH_MSM7X25A_M4)
-#define LG_DIAG_DEBUG
-#endif
+//#define LG_DIAG_DEBUG
 
 #define DIAGPKT_HDR_PATTERN (0xDEADD00DU)
 #define DIAGPKT_OVERRUN_PATTERN (0xDEADU)

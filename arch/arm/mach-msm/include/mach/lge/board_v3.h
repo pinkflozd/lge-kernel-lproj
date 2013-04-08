@@ -11,8 +11,6 @@
 #define __WEAK __attribute__((weak))
 #endif
 
-#define  LGE_CHG_DONE_NOTIFICATION
-
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 /* allocate 128K * 2 instead of ram_console's original size 128K
  * this is for storing kernel panic log which is used by lk loader

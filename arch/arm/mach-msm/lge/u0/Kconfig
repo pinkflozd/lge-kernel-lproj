@@ -6,6 +6,13 @@ config MACH_MSM7X27A_U0
     help
         Support for the LG Electronics MSM7x27A U0.
 
+config MACH_MSM7X27A_U0_NO_DEBUG
+    depends on MACH_MSM7X27A_U0
+	default n
+    bool "MSM7x27A U0 DEBUG Option"
+    help
+        Support for the LG Electronics MSM7x27A U0.
+
 config LGE_BATTERY_SUSPEND_RESUME
     depends on ARCH_MSM7X27A
     select MACH_LGE

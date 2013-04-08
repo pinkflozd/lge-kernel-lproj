@@ -299,6 +299,7 @@ static void android_work(struct work_struct *data)
 			pr_info("%s: sent missed DISCONNECT event\n", __func__);
 		/* 2013-01-10 lbh.lee@lge.com exception processing factory cable.[START]*/
 		if(!factory_mode_enabled){
+			pr_info("%s: Normal Cable Connect \n", __func__);
 			kobject_uevent_env(&dev->dev->kobj, KOBJ_CHANGE,
 								disconnected);
 			msleep(20);
@@ -313,6 +314,7 @@ static void android_work(struct work_struct *data)
 			msleep(50);
 		/* 2013-01-10 lbh.lee@lge.com exception processing factory cable.[START]*/
 		if(!factory_mode_enabled){
+			pr_info("%s: Normal Cable DISConnect \n", __func__);
 			kobject_uevent_env(&dev->dev->kobj, KOBJ_CHANGE, uevent_envp);
 			last_uevent = next_state;
 			pr_info("%s: sent uevent %s\n", __func__, uevent_envp[0]);
@@ -1899,7 +1901,6 @@ static ssize_t enable_store(struct device *pdev, struct device_attribute *attr,
 	struct android_usb_function *f;
 	int enabled = 0;
 	int err = 0;
-	bool audio_enabled = false; //[SR 1077716] QCT patch	
 
 	if (!cdev)
 		return -ENODEV;
@@ -1928,27 +1929,15 @@ static ssize_t enable_store(struct device *pdev, struct device_attribute *attr,
 		cdev->desc.bDeviceSubClass = device_desc.bDeviceSubClass;
 		cdev->desc.bDeviceProtocol = device_desc.bDeviceProtocol;
 
-//[SR 1077716] QCT patch_start
-/*
 		if(cdev->desc.idVendor == 0x18D1){
 			pr_debug("%s Accessory Connected\n",__func__);
 			mdelay(80);
 		}
-*/
 
-	      /* Audio dock accessory is unable to enumerate device if
-		 * pull-up is enabled immediately. The enumeration is
-		 * reliable with a delay of 100 milliseconds.
-		 */
 		list_for_each_entry(f, &dev->enabled_functions, enabled_list) {
 			if (f->enable)
 				f->enable(f);
-			if (!strncmp(f->name, "audio_source", 12))
-			        audio_enabled = true;
 		}
-		if (audio_enabled)
-		        msleep(100);
-//[SR 1077716] QCT patch_end
 		err = android_enable(dev);
 		if (err < 0) {
 			pr_err("%s: android_enable failed\n", __func__);
@@ -2131,7 +2120,19 @@ int android_set_factory_mode(void)
 	ECableUsbType cable = USB_UNKOWN;
 
 	cable = (ECableUsbType)lge_get_cable_info();
-/*[LGE_BSP_S][indeok1.han@lge.com] 2013-01-23 add_u0_uart TO NO BATT BOOT */
+/*[LGE_BSP_S][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+	if ((cable == USB_56K) 
+			|| (cable == USB_910K)) {
+		printk(KERN_INFO " %s : Using Factory Cable (%d)\n", __func__, cable);
+		factory_mode_enabled = true;
+		android_factory_desc(0);
+		android_factory_desc(1);
+		return cable;
+	} else if(cable == USB_130K) {
+		printk(KERN_INFO " %s : Using USB_130K Cable (%d)\n", __func__, cable);
+		return USB_130K;
+#else
 	if ((cable == USB_56K) 
 			|| (cable == USB_130K)
 			|| (cable == USB_910K)) {
@@ -2140,7 +2141,8 @@ int android_set_factory_mode(void)
 		android_factory_desc(0);
 		android_factory_desc(1);
 		return cable;
-/*[LGE_BSP_E][indeok1.han@lge.com] 2013-01-23 add_u0_uart TO NO BATT BOOT */
+#endif
+/*[LGE_BSP_E][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
 	} else {
 		printk(KERN_INFO " %s : Using Normal Cable (%d)\n", __func__, cable);
 		factory_mode_enabled = false;

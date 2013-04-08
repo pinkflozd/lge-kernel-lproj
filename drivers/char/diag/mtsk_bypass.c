@@ -188,11 +188,11 @@ int mtsk_tty_process (char * buf, int* plen, int proc_num) {
 		if(buf == NULL || *plen_local > _BUF_SIZE_MTSK_16K)
 			return TRUE;
 
-#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7)
 		mutex_lock(&driver->diagchar_mutex);
 #endif
 		*plen_local = mtsk_tty_msg(buf , *plen_local, proc_num);
-#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7)
 		mutex_unlock(&driver->diagchar_mutex);
 #endif
 	}

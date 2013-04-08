@@ -29,10 +29,13 @@
 #include <linux/string.h>
 #include CONFIG_LGE_BOARD_HEADER_FILE
 //LGE_CHANGE_S FTM boot mode
-#include <mach/lge/board_v1.h>
+#include <mach/lge/board_v3.h>
+#include <mach/lge/board_v7.h>
 #include <mach/proc_comm.h>
 #include <lg_diag_testmode.h>
-#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7)
+#include <mach/lge/board_v3.h>
+#include <mach/lge/board_v7.h>
 #include <mach/proc_comm.h>
 #include <mach/lge/lge_proc_comm.h>
 #include <lg_diag_testmode.h>
@@ -268,14 +271,6 @@ static int boot_info_write(const char *val, struct kernel_param *kp)
 }
 module_param_call(boot_info, boot_info_write, param_get_int, &boot_info, S_IWUSR | S_IRUGO);
 //[END] LGE_BOOTCOMPLETE_INFO
-
-/* ys.seong@lge.com nfc boot compelete check [start] */
-#ifdef CONFIG_LGE_NFC
-int boot_info_nfc = 0;
-module_param(boot_info_nfc, int, S_IWUSR | S_IRUGO);
-#endif //CONFIG_LGE_NFC
-/* ys.seong@lge.com nfc boot compelete check [end] */
-
 
 // LGE_CHANGE_S, myunghwan.kim@lge.com
 int is_factory=0;
@@ -878,7 +873,7 @@ module_param_call(smpl_counter, write_SMPL_flag, read_SMPL_flag, NULL, S_IWUSR |
 
 
 //LGE_CHANGE_S FTM boot mode
-#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7)
 extern unsigned lge_nv_manual_f(int val);
 extern void send_to_arm9( void * pReq, void * pRsp);
 test_mode_req_type manual;
@@ -1511,7 +1506,7 @@ module_param_call(misc_io, lge_emmc_misc_io_write, lge_emmc_misc_io_read, NULL, 
 #endif
 /*LGE_CHANGE_E 2012-10-26 khyun.kim@lge.com [V7] misc partition FS API for LGE*/
 /* LGE_CHANGE_S  : adiyoung.lee, FTM Mode and ManualModeCkeckComplete on RPC, 2012-12-12 */
-#if !defined(CONFIG_MACH_MSM7X25A_M4) && (defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1))
+#if !defined(CONFIG_MACH_MSM7X25A_M4) && (defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7))
 extern void send_to_arm9( void * pReq, void * pRsp);
 test_mode_req_type manual;
 void AAT_Local(int manual_mode)

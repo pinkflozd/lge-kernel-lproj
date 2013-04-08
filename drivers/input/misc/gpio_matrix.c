@@ -26,11 +26,6 @@ struct gpio_kp {
 	struct gpio_event_matrix_info *keypad_info;
 	struct hrtimer timer;
 	struct wake_lock wake_lock;
-/* LGE_CHANGE_S [jaewoo1.park@lge.com] 2013-01-28 enable irq wake-up about volum up/donw key. (Make sure that event handled in android)*/
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-	struct wake_lock event_wake_lock;
-#endif
-/* LGE_CHANGE_E [jaewoo1.park@lge.com] */
 	int current_output;
 	unsigned int use_irq:1;
 	unsigned int key_state_changed:1;
@@ -220,15 +215,7 @@ static enum hrtimer_restart gpio_keypad_timer_func(struct hrtimer *timer)
 	}
 	for (in = 0; in < mi->ninputs; in++)
 		enable_irq(gpio_to_irq(mi->input_gpios[in]));
-
-/* LGE_CHANGE_S [jaewoo1.park@lge.com] 2013-01-28 enable irq wake-up about volum up/donw key(Make sure that event handled in android) */
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-	if(wake_lock_active(&kp->wake_lock))
-		wake_unlock(&kp->wake_lock);
-#else
 	wake_unlock(&kp->wake_lock);
-#endif
-/* LGE_CHANGE_E [jaewoo1.park@lge.com] */
 	return HRTIMER_NORESTART;
 }
 
@@ -255,21 +242,7 @@ static irqreturn_t gpio_keypad_irq_handler(int irq_in, void *dev_id)
 		else
 			gpio_direction_input(mi->output_gpios[i]);
 	}
-
-/* LGE_CHANGE_S [jaewoo1.park@lge.com] 2013-01-28 enable irq wake-up about volum up/donw key(Make sure that event handled in android)*/
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-	if(irq_in == 292 || irq_in == 293){
-		if(wake_lock_active(&kp->event_wake_lock))
-	       		wake_unlock(&kp->event_wake_lock);
-		wake_lock_timeout(&kp->event_wake_lock, HZ);
-	}else{
-		wake_lock(&kp->wake_lock);
-	}
-#else
 	wake_lock(&kp->wake_lock);
-#endif
-/* LGE_CHANGE_E [jaewoo1.park@lge.com] */
-
 	hrtimer_start(&kp->timer, ktime_set(0, 0), HRTIMER_MODE_REL);
 	return IRQ_HANDLED;
 }
@@ -309,9 +282,7 @@ static int gpio_keypad_request_irqs(struct gpio_kp *kp)
 			goto err_request_irq_failed;
 		}
 /* LGE_CHANGE_S [jongjin7.park@lge.com] 2012-12-11 Handle to wake-up only home-key */
-/* LGE_CHANGE_S [jaewoo1.park@lge.com] 2013-01-28 Handle to wake-up about volume up/donw key.(#if !defined(CONFIG_MACH_MSM7X27A_U0) -> #if 1) */
-#if 1//!defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E [jaewoo1.park@lge.com] */
+#if !defined(CONFIG_MACH_MSM7X27A_U0)
                 err = enable_irq_wake(irq);
 #else
                 if( 38 == mi->input_gpios[i]) /*38 is Home Key GPIO*/
@@ -440,11 +411,6 @@ int gpio_event_matrix_func(struct gpio_event_input_devs *input_devs,
 		hrtimer_init(&kp->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 		kp->timer.function = gpio_keypad_timer_func;
 		wake_lock_init(&kp->wake_lock, WAKE_LOCK_SUSPEND, "gpio_kp");
-/* LGE_CHANGE_S [jaewoo1.park@lge.com] 2013-01-28 enable irq wake-up about volum up/donw key. (Make sure that event handled in android)*/
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-		wake_lock_init(&kp->event_wake_lock, WAKE_LOCK_SUSPEND, "gpio_kp_event");
-#endif
-/* LGE_CHANGE_E [jaewoo1.park@lge.com] */
 		err = gpio_keypad_request_irqs(kp);
 		kp->use_irq = err == 0;
 

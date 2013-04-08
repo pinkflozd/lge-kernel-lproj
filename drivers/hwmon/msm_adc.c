@@ -1098,10 +1098,6 @@ static int __devinit msm_rpc_adc_device_init_hwmon(struct platform_device *pdev,
 	int i, rc, num_chans = transl->hwmon_end - transl->hwmon_start + 1;
 	const char prefix[] = "curr", postfix[] = "_input";
 	char tmpbuf[5];
-#if defined(CONFIG_MACH_MSM8X25_V7)
-	struct msm_adc_platform_data *pdata = pdev->dev.platform_data;
-	struct msm_adc_channel_names *channel_names = pdata->chan_names;
-#endif
 
 	adc_dev->fnames = kzalloc(num_chans * MSM_ADC_MAX_FNAME +
 				  num_chans * sizeof(char *), GFP_KERNEL);
@@ -1121,19 +1117,11 @@ static int __devinit msm_rpc_adc_device_init_hwmon(struct platform_device *pdev,
 	for (i = 0; i < num_chans; i++) {
 		adc_dev->fnames[i] = (char *)adc_dev->fnames +
 			i * MSM_ADC_MAX_FNAME + num_chans * sizeof(char *);
-
-#if defined(CONFIG_MACH_MSM8X25_V7)
-	  if(NULL != channel_names[i].name){
-	  	strcpy(adc_dev->fnames[i], channel_names[i].name);
-	  }
-	  else
-#endif
-          {
 		strcpy(adc_dev->fnames[i], prefix);
 		sprintf(tmpbuf, "%d", transl->hwmon_start + i);
 		strcat(adc_dev->fnames[i], tmpbuf);
 		strcat(adc_dev->fnames[i], postfix);
-	  }
+
 		msm_rpc_adc_curr_in_attr.index = transl->hwmon_start + i;
 		msm_rpc_adc_curr_in_attr.dev_attr.attr.name =
 					adc_dev->fnames[i];

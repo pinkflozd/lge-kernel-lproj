@@ -40,9 +40,6 @@
 #define MSM8x25_MSM_FB_SIZE		0x3FC000
 #endif
 
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
-static bool firstbootend=0; 
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
 
 static unsigned fb_size = MSM_FB_SIZE;
 static int __init fb_size_setup(char *p)
@@ -253,15 +250,7 @@ static int mipi_dsi_panel_power(int on)
 {
 	int rc = 0;
 
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
-	if(on == 0){
-    		if(firstbootend == 0){
-             		firstbootend = 1;
-
-			return 0;
-         	}
-       }
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
+	static bool firstbootend=0;
 
 	if (unlikely(!dsi_gpio_initialized)) 
 	{

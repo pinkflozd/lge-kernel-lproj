@@ -2842,7 +2842,7 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 /* LGE_CHANGE : bohyun.jung@lge.com - [2013.01.03] prevent kernel panic. from CodeAurora. 
  *		binder: don't allow mmap() by process other than proc->tsk 
  * 		http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=a79f41ed9786b75ebe75e52295ad54049b8551b6 */
-#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_MACH_MSM7X27A_U0)
 	if (proc->tsk != current)
 		return -EINVAL;
 #endif
@@ -2915,7 +2915,7 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 /* LGE_CHANGE : bohyun.jung@lge.com - [2013.01.03] prevent kernel panic. from CodeAurora. 
  *		binder: don't allow mmap() by process other than proc->tsk 
  * 		http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=a79f41ed9786b75ebe75e52295ad54049b8551b6 */
-#if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_MACH_MSM7X27A_U0)
 	proc->files = get_files_struct(current);
 #else
 	proc->files = get_files_struct(proc->tsk);

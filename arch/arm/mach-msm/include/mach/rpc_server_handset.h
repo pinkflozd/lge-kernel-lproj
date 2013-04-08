@@ -21,7 +21,5 @@ struct msm_handset_platform_data {
 };
 
 void report_headset_status(bool connected);
-#ifdef CONFIG_MACH_LGE
-void report_power_key(void);
-#endif
+
 #endif

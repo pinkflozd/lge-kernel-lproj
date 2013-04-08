@@ -80,13 +80,10 @@ static void Release_All_Fingers(void);
 #define TS_READ_START_ADDR 								0x0F
 #define TS_READ_START_ADDR2 							0x10
 
-#if 1	//  woden@lge.com [2013-02-26] => New TS Firmware was applied.
-#define TS_LATEST_FW_VERSION_EU_SUN	0x16
-#define TS_LATEST_FW_VERSION_EU_INO	0x20
-#else
+
 #define TS_LATEST_FW_VERSION_EU_SUN	0x15
 #define TS_LATEST_FW_VERSION_EU_INO	0x18
-#endif
+
 
 #define TS_READ_REGS_LEN 									66
 #define MELFAS_MAX_TOUCH									11
@@ -101,9 +98,7 @@ static void Release_All_Fingers(void);
 #define	SET_DOWNLOAD_BY_GPIO							1
 #define GPIO_TOUCH_ID 121
 
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
 #define KEY_SIM_SWITCH 223
-#endif
 
 int power_flag=0;
 static int irq_flag;
@@ -459,7 +454,7 @@ Touchscreen doesn't work*/
 				#endif
 				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
 
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
+				#if defined(CONFIG_MACH_MSM7X25A_V3_DS)
 				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
 				switch(keyID)
 				{
@@ -481,7 +476,7 @@ Touchscreen doesn't work*/
 						break;					
 				}
 				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [END] */ 
-#else
+				#else
 				/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */ 
 				#if 0
 				if (keyID == 0x1)
@@ -495,7 +490,7 @@ Touchscreen doesn't work*/
 					input_report_key(ts->input_dev, KEY_MENU, touchState ? PRESS_KEY : RELEASE_KEY);
 				#endif
 				/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [END] */ 
-#endif
+				#endif
 				/* LGE_CHANGE_E: E1 yongboem.kim@lge.com [2012-01-10] : for Rev.A Touch Key */
 			}
 		}
@@ -1087,7 +1082,7 @@ static int __devinit mcs8000_ts_init(void)
 	#else
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_BACK)] |= BIT_MASK(KEY_BACK);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_MENU)] |= BIT_MASK(KEY_MENU);
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3_DS)    
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_HOMEPAGE)] |= BIT_MASK(KEY_HOMEPAGE);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_SIM_SWITCH)] |= BIT_MASK(KEY_SIM_SWITCH);
 #endif

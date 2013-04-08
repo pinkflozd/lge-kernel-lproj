@@ -45,12 +45,8 @@
 
 #define APDS9130_PS_DETECTION_THRESHOLD		600
 #define APDS9130_PS_HSYTERESIS_THRESHOLD	500
-
-#ifdef CONFIG_LEDS_LP5521
-#define APDS9130_PS_PULSE_NUMBER		12
-#else
 #define APDS9130_PS_PULSE_NUMBER		9
-#endif
+
 /* Change History
  *
  * 1.0.0	Funcamental Functions of APDS-9130
@@ -358,14 +354,9 @@ static void apds9130_Set_PS_Threshold_Adding_Cross_talk(struct i2c_client *clien
 		cal_data = 0;
 
 	data->cross_talk = cal_data;
-
-#ifdef CONFIG_LEDS_LP5521
-	data->ps_threshold = 100 + cal_data;
-	data->ps_hysteresis_threshold = data->ps_threshold - 70;
-#else
 	data->ps_threshold = 150 + cal_data;
-	data->ps_hysteresis_threshold = data->ps_threshold - 60;
-#endif
+	data->ps_hysteresis_threshold = data->ps_threshold - 100;
+
 }
 
 static int apds9130_Run_Cross_talk_Calibration(struct i2c_client *client)
@@ -415,13 +406,9 @@ RE_CALIBRATION:
 		}
 	}
 
-#ifdef CONFIG_LEDS_LP5521
-	data->ps_threshold = 100 + data->cross_talk;
-	data->ps_hysteresis_threshold = data->ps_threshold - 70;
-#else
 	data->ps_threshold = 150 + data->cross_talk;
-	data->ps_hysteresis_threshold = data->ps_threshold - 60;
-#endif
+	data->ps_hysteresis_threshold = data->ps_threshold - 100;
+
 	ret = apds9130_backup_crosstalk_data_fs(data->cross_talk);
 
 	printk(KERN_INFO"%s threshold : %d\n", __FUNCTION__, data->ps_threshold);

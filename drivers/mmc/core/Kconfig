@@ -58,14 +58,7 @@ config MACH_SAMSUNG_EMMC_V441_PLUS
 	bool "Samsung EMMC ver. 4.41 Plus"
 	default n
 	help
-	  If you say Y here, disable bkops.
-
-config MACH_FEATURE_DISCARD
-	bool "Discard Option"
-	default n
-	help
 	  If you say Y here, additional feature like discard is enabled.
-	  Before actually enable discard, it double check emmc version and manufacture id.
-	  support over 4.5 or samsung emmc 4.41+ (vendor confirm).
+	  which support over 4.5. samsung emmc support discard. vendor confirm.
 
 # LGE_CHANGE_E : bohyun.jung@lge.com 

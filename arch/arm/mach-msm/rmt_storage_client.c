@@ -37,14 +37,6 @@
 #endif
 #include "smd_private.h"
 
-/*[LGE_BSP_S][indeok1.han@lge.com]2013-01-15 */
-/* Fix for FRST   */
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-#include CONFIG_LGE_BOARD_HEADER_FILE
-#define RECOVERY_MODE	0x77665502
-#endif
-/*[LGE_BSP_E][indeok1.han@lge.com]2013-01-15 */
-
 enum {
 	RMT_STORAGE_EVNT_OPEN = 0,
 	RMT_STORAGE_EVNT_CLOSE,
@@ -126,15 +118,6 @@ static void rmt_storage_sdio_smem_work(struct work_struct *work);
 
 static struct rmt_storage_client_info *rmc;
 struct rmt_storage_srv *rmt_srv; /*LGE_CHANGE : seven.kim@lge.com qct patch for power on/off test modem crash*/
-
-//LGE_CHANGE_S[panchaxari.t@lge.com]
-static char forceSyncDone=0;
-//LGE_CHANGE_E[panchaxari.t@lge.com]
-
-//LGE_CHANGE_S[panchaxari.t@lge.com][QCT SR#01086171]
-#define MAX_GET_SYNC_STATUS_TRIES 200
-#define RMT_SLEEP_INTERVAL_MS 20
-//LGE_CHANGE_E[panchaxari.t@lge.com][QCT SR#01086171]
 
 #ifdef CONFIG_MSM_SDIO_SMEM
 DECLARE_DELAYED_WORK(sdio_smem_work, rmt_storage_sdio_smem_work);
@@ -560,7 +543,6 @@ static int rmt_storage_event_write_block_cb(
 	uint32_t event_type;
 	int ret;
 
-	pr_info("%s Entered\n",__func__);
 	xdr_recv_uint32(xdr, &event_type);
 	if (event_type != RMT_STORAGE_EVNT_WRITE_BLOCK)
 		return -1;
@@ -605,7 +587,6 @@ static int rmt_storage_event_get_err_cb(struct rmt_storage_event *event_args,
 	uint32_t event_type;
 	int ret;
 
-	pr_info("%s Entered\n",__func__);
 	xdr_recv_uint32(xdr, &event_type);
 	if (event_type != RMT_STORAGE_EVNT_GET_DEV_ERROR)
 		return -1;
@@ -634,7 +615,6 @@ static int rmt_storage_event_user_data_cb(struct rmt_storage_event *event_args,
 	uint32_t event_type;
 	int ret;
 
-	pr_info("%s Entered\n",__func__);
 	xdr_recv_uint32(xdr, &event_type);
 	if (event_type != RMT_STORAGE_EVNT_SEND_USER_DATA)
 		return -1;
@@ -666,7 +646,6 @@ static int rmt_storage_event_write_iovec_cb(
 	struct rmt_storage_stats *stats;
 #endif
 
-	pr_info("%s Entered\n",__func__);
 	xdr_recv_uint32(xdr, &event_type);
 	if (event_type != RMT_STORAGE_EVNT_WRITE_IOVEC)
 		return -EINVAL;
@@ -699,8 +678,6 @@ static int rmt_storage_event_write_iovec_cb(
 		wake_lock(&rmc->wlock);
 
 	pr_debug("iovec transfer count = %d\n\n", event_args->xfer_cnt);
-	pr_info("%s Exitting\n",__func__);
-
 	return RMT_STORAGE_NO_ERROR;
 }
 
@@ -714,7 +691,6 @@ static int rmt_storage_event_read_iovec_cb(
 	struct rmt_storage_stats *stats;
 #endif
 
-	pr_info("%s Entered\n",__func__);
 	xdr_recv_uint32(xdr, &event_type);
 	if (event_type != RMT_STORAGE_EVNT_READ_IOVEC)
 		return -EINVAL;
@@ -991,9 +967,6 @@ static int rmt_storage_open(struct inode *ip, struct file *fp)
 	else
 		ret = -EBUSY;
 	spin_unlock(&rmc->lock);
-
-/*LGE_CHANGE_S : seunhang.lee@lge.com 03/01/2013*/
-#if !defined(CONFIG_MACH_MSM7X27A_U0)	
 /*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting based on kernel2.6.38*/
 #ifdef CONFIG_LGE_REPORT_RMT_STORAGE_CLIENT_READY
 	/* LGE_CHANGE
@@ -1004,8 +977,6 @@ static int rmt_storage_open(struct inode *ip, struct file *fp)
 		rmt_storate_report_available();
 #endif
 /*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting based on kernel2.6.38*/
-#endif	
-/*LGE_CHANGE_E : seunhang.lee@lge.com 03/01/2013*/
 
 	return ret;
 }
@@ -1034,7 +1005,6 @@ static long rmt_storage_ioctl(struct file *fp, unsigned int cmd,
 	ktime_t curr_stat;
 #endif
 
-	pr_info("%s Entered\n",__func__);
 	switch (cmd) {
 
 	case RMT_STORAGE_SHRD_MEM_PARAM:
@@ -1164,21 +1134,8 @@ static long rmt_storage_ioctl(struct file *fp, unsigned int cmd,
 /*Wait for EFS sync comeplete while power off/ reset*/
 /*LGE_CHANGE_E: seven.kim@lge.com  21/03/2012*/
 #endif
-//LGE_CHANGE_S[panchaxari.t@lge.com]
-			if(forceSyncDone)
-				forceSyncDone = 0;
-			pr_info("%s gracefully breaking out from SEND_STATUS\n",__func__);
-//LGE_CHANGE_E[panchaxari.t@lge.com]			
 		break;
 
-#if defined(CONFIG_MACH_MSM7X27A_U0)	
-/*LGE_CHANGE_S: seunhang.lee@lge.com 03/01/2013:Check rmt Client Ready*/
-	case RMT_STORAGE_READY_CLIENT:
-		pr_info("%s: Receive RMT_STORAGE_READY_CLIENT\n", __func__);
-		rmt_storate_report_available();
-		break;
-/*LGE_CHANGE_E: seunhang.lee@lge.com 03/01/2013:Check rmt Client Ready*/
-#endif		
 	default:
 		ret = -EINVAL;
 		break;
@@ -1197,7 +1154,6 @@ static int rmt_storage_receive_sync_arg(struct msm_rpc_client *client,
 	struct rmt_storage_sync_recv_arg *args = data;
 	struct rmt_storage_srv *srv;
 
-	pr_info("%s Entered\n",__func__);
 	srv = rmt_storage_get_srv(client->prog);
 	if (!srv)
 		return -EINVAL;
@@ -1211,17 +1167,6 @@ static int rmt_storage_force_sync(struct msm_rpc_client *client)
 	struct rmt_storage_sync_recv_arg args;
 	int rc;
 	
-
-	pr_info("@@@: %s: Entered\n", __func__); /*qct_patch_seven*/
-
-//LGE_CHANGE_S[panchaxari.t@lge.com]
-	if(forceSyncDone){ 
-		pr_info("%s Returning Already ForceSync in progress\n",__func__);
-		return 0;
-	}
-	else forceSyncDone=1;
-//LGE_CHANGE_E[panchaxari.t@lge.com]
-
 	pr_info("@@@: %s: Force-sync req sent\n", __func__); /*qct_patch_seven*/
 	
 	rc = msm_rpc_client_req2(client,
@@ -1479,7 +1424,6 @@ set_force_sync(struct device *dev, struct device_attribute *attr,
 	struct rmt_storage_srv *srv;
 	int value, rc;
 
-	pr_info("%s Entered\n",__func__);
 	pdev = container_of(dev, struct platform_device, dev);
 	rpc_pdev = container_of(pdev, struct rpcsvr_platform_device, base);
 	srv = rmt_storage_get_srv(rpc_pdev->prog);
@@ -1518,6 +1462,20 @@ int rmt_storate_frst_status(struct rmt_storage_srv *srv, int frst_flag)
 
 	return msm_rpc_client_req2(srv->rpc_client, RMT_STORAGE_CHANGE_FRST, rmt_storage_send_frst_sts_arg, &frst_args, NULL, NULL, -1);
 }
+static ssize_t
+store_send_frst(struct device *dev, struct device_attribute *attr,
+		const char *buf, size_t count)
+{
+	struct rmt_storage_srv *srv = rmt_storage_get_srv(MSM_RMT_STORAGE_APIPROG);
+	int value;
+
+	sscanf(buf, "%d", &value);
+	pr_info("%s: do rmt_storage sync value (%d)!\n", __func__, value);
+
+	rmt_storate_frst_status(srv, value);
+
+	return count;
+}
 #endif
 /*LGE_CHANGE_E: seunhang.lee@lge.com 18/12/2012:Factory Reset with AT Command*/
 #endif
@@ -1531,7 +1489,6 @@ show_force_sync(struct device *dev, struct device_attribute *attr,
 	struct rpcsvr_platform_device *rpc_pdev;
 	struct rmt_storage_srv *srv;
 
-	pr_info("%s Entered\n",__func__);
 	pdev = container_of(dev, struct platform_device, dev);
 	rpc_pdev = container_of(pdev, struct rpcsvr_platform_device, base);
 	srv = rmt_storage_get_srv(rpc_pdev->prog);
@@ -1555,7 +1512,6 @@ show_sync_sts(struct device *dev, struct device_attribute *attr, char *buf)
 	struct rpcsvr_platform_device *rpc_pdev;
 	struct rmt_storage_srv *srv;
 
-	pr_info("%s Entered\n",__func__);
 	pdev = container_of(dev, struct platform_device, dev);
 	rpc_pdev = container_of(pdev, struct rpcsvr_platform_device, base);
 	srv = rmt_storage_get_srv(rpc_pdev->prog);
@@ -1580,36 +1536,11 @@ static int rmt_storage_reboot_call(
 {
 	int ret, count = 0;
 
-//LGE_CHANGE_S[panchaxari.t@lge.com][QCT SR#01086171]
-	/*
-	 * In recovery mode RMT daemon is not available, 
-	 * so return from reboot notifier without initiating
-	 * force sync.
-	 */
-
-	spin_lock(&rmc->lock);
-	if(!rmc->open_excl){
-			spin_unlock(&rmc->lock);
-			msm_rpc_unregister_client(rmt_srv->rpc_client);
-			return NOTIFY_DONE;
-	}
-	spin_unlock(&rmc->lock);
-//LGE_CHANGE_E[panchaxari.t@lge.com][QCT SR#01086171]
-
-/*[LGE_BSP_S][indeok1.han@lge.com]2013-01-15 */
-/* Fix for FRST   */
-#if defined(CONFIG_MACH_MSM7X27A_U0)
-	if(get_reboot_mode() == RECOVERY_MODE)
-		rmt_storate_frst_status(rmt_srv, 0);
-#endif
-/*[LGE_BSP_E][indeok1.han@lge.com]2013-01-15 */  
-
 	switch (code) {
 	case SYS_RESTART:
 	case SYS_HALT:
 	case SYS_POWER_OFF:
-		pr_info("%s: Force RMT storage final sync...calling rmt_storage_force_sync\n", __func__);
-
+		pr_info("%s: Force RMT storage final sync...\n", __func__);
 		ret = rmt_storage_force_sync(rmt_srv->rpc_client);
 		if (ret) {
 			pr_err("%s: RMT force sync failed.\n", __func__);
@@ -1618,44 +1549,16 @@ static int rmt_storage_reboot_call(
 
 		do {
 			count++;
-//LGE_CHANGE_S[panchaxari.t@lge.com][QCT SR#01086171]			
-			//msleep(20);
-			msleep(RMT_SLEEP_INTERVAL_MS);
-//LGE_CHANGE_E[panchaxari.t@lge.com][QCT SR#01086171]			
+			msleep(20);
 			ret = rmt_storage_get_sync_status(rmt_srv->rpc_client);
-//LGE_CHANGE_S[panchaxari.t@lge.com][QCT SR#01086171]			
-//		} while (ret != 1 && count < 200);
-		} while (ret != 1 && count < MAX_GET_SYNC_STATUS_TRIES);
-//LGE_CHANGE_E[panchaxari.t@lge.com][QCT SR#01086171]
+		} while (ret != 1 && count < 200);
+
 		if (ret == 1)
-		{
-			pr_info("%s: Final-sync successful\n",__func__);
-		}
+			pr_info("%s: RMT storage sync successful.\n", __func__);
 		else
-		{
-			pr_info("%s: Final-sync failed\n",__func__);
-		}
+			pr_err("%s: RMT storage sync failed.\n", __func__);
 
-//LGE_CHANGE_S[panchaxari.t@lge.com][QCT SR#01086171]
-		/*
-		 * Check if any ongoing efs_sync triggered just before force
-		 * sync is pending. If so, wait for 4 sec for completing efs_sync
-		 * before unregistering client.
-		 */
-
-		count = 0;
-		while(count < MAX_GET_SYNC_STATUS_TRIES) {
-			if( 0 == atomic_read(&rmc->wcount)){
-				break;
-			}else {
-				count++;
-				msleep(RMT_SLEEP_INTERVAL_MS);
-			}
-		}//end of while(MAX_GET_SYNC_STATUS_TRIES)
-		if(atomic_read(&rmc->wcount))
-			pr_err("%s: Efs_sync still incomplete\n",__func__);
-//LGE_CHANGE_E[panchaxari.t@lge.com][QCT SR#01086171]
-		pr_info("%s: Un-register RMT storage client.\n", __func__);
+		pr_info("%s: Un register RMT storage client.\n", __func__);
 		msm_rpc_unregister_client(rmt_srv->rpc_client);
 		break;
 
@@ -1719,7 +1622,6 @@ static void rmt_storage_set_client_status(struct rmt_storage_srv *srv,
 {
 	struct rmt_shrd_mem *shrd_mem;
 
-	pr_info("%s Entered\n",__func__);
 	spin_lock(&rmc->lock);
 	list_for_each_entry(shrd_mem, &rmc->shrd_mem_list, list)
 		if (shrd_mem->srv->prog == srv->prog)
@@ -1736,9 +1638,19 @@ static DEVICE_ATTR(force_sync, S_IRUGO | S_IWUSR, show_force_sync, NULL);
 #endif
 /*LGE_CHANGE_E: seven.kim@lge.com  28/03/2012*/
 static DEVICE_ATTR(sync_sts, S_IRUGO | S_IWUSR, show_sync_sts, NULL);
+/*LGE_CHANGE_S: seunhang.lee@lge.com 18/12/2012:Factory Reset with AT Command*/
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+static DEVICE_ATTR(send_sync, S_IRUGO | S_IWUSR, NULL, store_send_frst);
+#endif
+/*LGE_CHANGE_E: seunhang.lee@lge.com 18/12/2012:Factory Reset with AT Command*/
 static struct attribute *dev_attrs[] = {
 	&dev_attr_force_sync.attr,
 	&dev_attr_sync_sts.attr,
+/*LGE_CHANGE_S: seunhang.lee@lge.com 18/12/2012:Factory Reset with AT Command*/
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+	&dev_attr_send_sync.attr,
+#endif
+/*LGE_CHANGE_E: seunhang.lee@lge.com 18/12/2012:Factory Reset with AT Command*/
 	NULL,
 };
 static struct attribute_group dev_attr_grp = {

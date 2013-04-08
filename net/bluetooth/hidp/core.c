@@ -132,8 +132,6 @@ static void __hidp_link_session(struct hidp_session *session)
 // +s QCT_BT_COMMON_PATCH_01039341 
 static void __hidp_unlink_session(struct hidp_session *session)
 {
-	//*s QCT_BT_PATCH_SR01110096 fix not to reset the device when a HID is turned on and off repeatedly kyuseok.kim@lge.com 2013-02-20
-	/* Original
 	bdaddr_t *dst = &session->bdaddr;
 	struct hci_dev *hdev; 
 	struct device *dev = NULL; 
@@ -147,9 +145,7 @@ static void __hidp_unlink_session(struct hidp_session *session)
 		hci_dev_put(hdev); 
 	} 
 
-	if (dev) */
-	if (session->conn)
-	//*e QCT_BT_PATCH_SR01110096
+	if (dev) 
 		hci_conn_put_device(session->conn); 
 
 	list_del(&session->list); 

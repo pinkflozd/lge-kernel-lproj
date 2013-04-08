@@ -196,43 +196,6 @@ static struct msm_camera_gpio_conf gpio_conf_hi542 = {
 	.gpio_no_mux = 1,
 };
 #endif
-
-#ifdef CONFIG_MT9E013_LGIT
-static uint32_t mt9e013_lgit_cam_off_gpio_table[] = {
-	GPIO_CFG(15/*GPIO_CAM_RESET*/, 0, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA),
-};
-
-static uint32_t mt9e013_lgit_cam_on_gpio_table[] = {
-	GPIO_CFG(15/*GPIO_CAM_RESET*/, 1, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA),
-};
-
-static struct gpio mt9e013_lgit_cam_req_gpio[] = {
-	{49, GPIOF_DIR_OUT, "CAM_DVDD"},	
-	{128, GPIOF_DIR_OUT, "CAM_IOVDD"},
-	{48, GPIOF_DIR_OUT, "CAM_AVDD"},
-	{23, GPIOF_DIR_OUT, "CAM_VCM"},
-};
-
-static struct msm_gpio_set_tbl mt9e013_lgit_cam_gpio_set_tbl[] = {
-	{49, GPIOF_OUT_INIT_HIGH, 1000}, // dvdd18	
-	{128, GPIOF_OUT_INIT_HIGH, 1000}, // iovdd18
-	{48, GPIOF_OUT_INIT_HIGH, 1000}, // avdd28
-	{23, GPIOF_OUT_INIT_HIGH, 1000}, // vcm28
-};
-
-static struct msm_camera_gpio_conf gpio_conf_mt9e013_lgit = {
-	.camera_off_table =  mt9e013_lgit_cam_off_gpio_table,
-	.camera_off_table_size = ARRAY_SIZE(mt9e013_lgit_cam_off_gpio_table),
-	.camera_on_table =  mt9e013_lgit_cam_on_gpio_table,
-	.camera_on_table_size = ARRAY_SIZE(mt9e013_lgit_cam_on_gpio_table),
-	.cam_gpio_req_tbl = mt9e013_lgit_cam_req_gpio,
-	.cam_gpio_req_tbl_size = ARRAY_SIZE(mt9e013_lgit_cam_req_gpio),
-	.cam_gpio_set_tbl = mt9e013_lgit_cam_gpio_set_tbl,
-	.cam_gpio_set_tbl_size = ARRAY_SIZE(mt9e013_lgit_cam_gpio_set_tbl),
-	.gpio_no_mux = 1,
-};
-#endif
-
 #ifdef CONFIG_MT9V113
 static uint32_t mt9v113_cam_off_gpio_table[] = {
 	GPIO_CFG(15, 0, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA), // mclk	
@@ -358,59 +321,6 @@ static struct msm_camera_sensor_info msm_camera_sensor_hi542_data = {
 #endif
 };
 #endif
-
-#ifdef CONFIG_MT9E013_LGIT
-#ifdef CONFIG_MT9E013_LGIT_ACT
-static struct i2c_board_info msm_act_main_cam_i2c_info = {
-		I2C_BOARD_INFO("msm_actuator", 0x11),
-};
-
-static struct msm_actuator_info msm_act_main_cam_6_info = {
-	.board_info     = &msm_act_main_cam_i2c_info,
-	.cam_name   = MSM_ACTUATOR_MAIN_CAM_6,
-	.bus_id         = MSM_GSBI0_QUP_I2C_BUS_ID,
-	.vcm_pwd        = 1, 
-	.vcm_enable     = 1,
-};
-#endif//CONFIG_MT9E013_LGIT_ACT
-
-#ifdef CONFIG_LEDS_AS364X
-static struct msm_camera_sensor_flash_src led_flash_src = {
-	.flash_sr_type = MSM_CAMERA_FLASH_SRC_CURRENT_DRIVER,
-};
-
-static struct msm_camera_sensor_flash_data flash_mt9e013_lgit = {
-	.flash_type = MSM_CAMERA_FLASH_LED,
-    .flash_src              = &led_flash_src,
-};
-#else
-static struct msm_camera_sensor_flash_data flash_mt9e013_lgit = {
-	.flash_type             = MSM_CAMERA_FLASH_LED,
-	//.flash_src              = &msm_flash_src
-};
-#endif//CONFIG_LEDS_AS364X
-
-static struct msm_camera_sensor_platform_info mt9e013_lgit_sensor_info = {
-	.mount_angle = 90,
-	.gpio_conf = &gpio_conf_mt9e013_lgit,		
-};
-
-static struct msm_camera_sensor_info msm_camera_sensor_mt9e013_lgit_data = {
-        .sensor_name          = "mt9e013_lgit",
-		.sensor_reset_enable = 1,
-        .sensor_reset         = 34, // GPIO_34
-        .pdata                = &msm_camera_device_data_csi1[0],
-        .flash_data           = &flash_mt9e013_lgit,
-        .sensor_platform_info  = &mt9e013_lgit_sensor_info,
-        .csi_if               = 1,
-	    .camera_type = BACK_CAMERA_2D,
-	    .sensor_type = BAYER_SENSOR,           
-#ifdef CONFIG_MT9E013_LGIT_ACT
-	    .actuator_info = &msm_act_main_cam_6_info,
-#endif	    
-};
-#endif
-
 #ifdef CONFIG_MT9V113
 static struct msm_camera_sensor_flash_data flash_mt9v113 = {
 	.flash_type             = MSM_CAMERA_FLASH_NONE,
@@ -659,10 +569,6 @@ static void __init msm7x27a_init_cam(void)
 				sensor_board_info_hi542.cam_vreg = NULL;
 				sensor_board_info_hi542.num_vreg = 0;
 #endif
-#ifdef CONFIG_MT9E013_LGIT
-				mt9e013_lgit_sensor_info.cam_vreg = NULL;
-				mt9e013_lgit_sensor_info.num_vreg = 0;
-#endif
 #ifdef CONFIG_MT9V113
 		sensor_board_info_mt9v113.cam_vreg = NULL;
 		sensor_board_info_mt9v113.num_vreg = 0;
@@ -748,12 +654,6 @@ static struct i2c_board_info i2c_camera_devices[] = {
 	{
 		I2C_BOARD_INFO("hi542", 0x40),
 		.platform_data = &msm_camera_sensor_hi542_data,
-	},
-#endif
-#ifdef CONFIG_MT9E013_LGIT
-	{
-		I2C_BOARD_INFO("mt9e013_lgit", 0x6C),
-        .platform_data = &msm_camera_sensor_mt9e013_lgit_data,			
 	},
 #endif
 #ifdef CONFIG_MT9V113

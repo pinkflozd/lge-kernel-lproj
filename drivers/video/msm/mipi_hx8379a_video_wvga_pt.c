@@ -23,18 +23,23 @@ static struct msm_panel_info pinfo;
  */
 static struct mipi_dsi_phy_ctrl dsi_video_mode_phy_db =
 {
+
+#if 1 //QCT reccomend, sohyun.nam@lge.com, 2012-11-16
 	/*60fps*/ 
-	/* DSI Bit Clock at 385.24MHz, 2 lane, RGB888 */
-	/* regulator */
-	{0x03, 0x01, 0x01, 0x00},
-	/* timing */
-	{0xAC, 0x8A, 0x18, 0x00, 0x92, 0x91, 0x1B, 0x8C, 0x12, 0x03, 0x04},
-	/* phy ctrl */
-	{0x7f, 0x00, 0x00, 0x00},
-	/* strength */
-	{0xbb, 0x02, 0x06, 0x00},
-	/* pll control */
-	{0x00, 0x7C, 0x31, 0xD2, 0x00, 0x40, 0x37, 0x62, 0x01, 0x0F, 0x07, 0x05, 0x14, 0x03, 0x0, 0x0, 0x0, 0x20, 0x0, 0x02, 0x0}
+	/* DSI Bit Clock at 335MHz, 2 lane, RGB888 */ 
+	/* regulator */ 
+	{0x03, 0x01, 0x01, 0x00}, 
+	/* timing */ 
+	{0xA6, 0x89, 0x15, 0x00, 0x90, 0x8F, 0x18, 0x8B, 0x0F, 0x03, 0x04}, 
+	/* phy ctrl */ 
+	{0x7f, 0x00, 0x00, 0x00}, 
+	/* strength */ 
+	{0xbb, 0x02, 0x06, 0x00}, 
+	/* pll control */ 
+	{0x00, 0x4B, 0x31, 0xD2, 0x00, 0x40, 0x37, 0x62, 0x01, 0x0F, 0x07, 
+	0x05, 0x14, 0x03, 0x0, 0x0, 0x0, 0x20, 0x0, 0x02, 0x0}, 
+#endif
+
 };
 
 static int __init mipi_video_hx8379a_hvga_pt_init(void)
@@ -52,13 +57,13 @@ static int __init mipi_video_hx8379a_hvga_pt_init(void)
 	pinfo.pdest = DISPLAY_1;
 	pinfo.wait_cycle = 0;
 	pinfo.bpp = 24;
-	pinfo.lcdc.h_back_porch = 118; //60;
-	pinfo.lcdc.h_front_porch = 47;
-	pinfo.lcdc.h_pulse_width = 1; //60;
-	pinfo.lcdc.v_back_porch = 10; //9;
+	pinfo.lcdc.h_back_porch = 50;//30; //11;
+	pinfo.lcdc.h_front_porch = 50;//40;//12;
+	pinfo.lcdc.h_pulse_width = 50;//40; //11;
+	pinfo.lcdc.v_back_porch = 9; //6;
 	pinfo.lcdc.v_front_porch = 14;
 	pinfo.lcdc.v_pulse_width = 4;
-	pinfo.clk_rate = 385249680;
+	pinfo.clk_rate = 335000000;/*335000000 : 60fps, 200000000 : 50fps,  167000000 : 30fps */
 
 	pinfo.lcdc.border_clr = 0;	/* blk */
 	pinfo.lcdc.underflow_clr = 0xff;	/* blue */
@@ -98,7 +103,7 @@ static int __init mipi_video_hx8379a_hvga_pt_init(void)
 	pinfo.mipi.t_clk_post = 0x04;
 	pinfo.mipi.t_clk_pre = 0x17;
 	pinfo.mipi.stream = 0; /* dma_p */
-	pinfo.mipi.mdp_trigger = DSI_CMD_TRIGGER_NONE; /*DSI_CMD_TRIGGER_SW;*/
+	pinfo.mipi.mdp_trigger = DSI_CMD_TRIGGER_SW; /*DSI_CMD_TRIGGER_SW;*/
 	pinfo.mipi.dma_trigger = DSI_CMD_TRIGGER_SW;
 	pinfo.mipi.frame_rate = 60;	/* 60fps, 50fps, 30fps */
 

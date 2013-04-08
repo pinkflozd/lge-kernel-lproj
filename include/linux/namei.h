@@ -2,15 +2,6 @@
 #define _LINUX_NAMEI_H
 
 #include <linux/dcache.h>
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20130117
- *http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=08b60f8438879a84246d7debded31c9cb7aea6e4
- *This solves:
- *In file included from fs/ext3/symlink.c:20:0:
- *include/linux/namei.h: In function 'retry_estale':
- *include/linux/namei.h:114:19: error: 'ESTALE' undeclared (first use in this function)
-*/
-#include <linux/errno.h>
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20130117*/
 #include <linux/linkage.h>
 #include <linux/path.h>
 
@@ -117,30 +108,5 @@ static inline void nd_terminate_link(void *name, size_t len, size_t maxlen)
 {
 	((char *) name)[min(len, maxlen)] = '\0';
 }
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20130117:Apply mainline kernel patch
- *http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=b9d6ba94b875192ef5e2dab92d72beea33b83c3d
- *This function is expected to be called from path-based syscalls to help
- *them decide whether to try the lookup and call again in the event that
- *they got an -ESTALE return back on an earier try.
- *
- *Currently, we only retry the call once on an ESTALE error, but in the
- *event that we decide that that's not enough in the future, we should be
- *able to change the logic in this helper without too much effort.
- */
-/**
- * retry_estale - determine whether the caller should retry an operation
- * @error: the error that would currently be returned
- * @flags: flags being used for next lookup attempt
- *
- * Check to see if the error code was -ESTALE, and then determine whether
- * to retry the call based on whether "flags" already has LOOKUP_REVAL set.
- *
- * Returns true if the caller should try the operation again.
- */
-static inline bool
-retry_estale(const long error, const unsigned int flags)
-{
-       return error == -ESTALE && !(flags & LOOKUP_REVAL);
-}
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20130117*/
+
 #endif /* _LINUX_NAMEI_H */

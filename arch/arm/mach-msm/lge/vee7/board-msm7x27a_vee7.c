@@ -703,25 +703,8 @@ static char *msm_adc_surf_device_names[] = {
 	"XO_ADC",
 };
 
-static struct  msm_adc_channel_names msm_adc_xoadc_channel_names[] = {
-	{"vcoin"},
-	{"vbatt"},
-	{"vchg"},
-	{"ichg"},
-	{"vph_pwr"},
-	{"pcb_rev"},
-	{"chg_current"},
-	{"usb_id"},
-	{"batt_therm"},
-	{"pa_therm"},
-	{"usb_vbus"},
-	{"pmic_therm"},
-	{NULL},{NULL},{NULL},
-	{"vbatt_gsm"},
-};
 static struct msm_adc_platform_data msm_adc_pdata = {
 	.dev_names = msm_adc_surf_device_names,
-        .chan_names = msm_adc_xoadc_channel_names,
 	.num_adc = ARRAY_SIZE(msm_adc_surf_device_names),
 	.target_hw = MSM_8x25,
 };

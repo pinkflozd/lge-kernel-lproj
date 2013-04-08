@@ -5842,21 +5842,11 @@ static irqreturn_t bma2x2_irq_handler(int irq, void *handle)
 }
 #endif /* defined(BMA2X2_ENABLE_INT1)||defined(BMA2X2_ENABLE_INT2) */
 
-#ifdef CONFIG_MACH_MSM7X25A_V1
-#ifndef CONFIG_MINIABB_REGULATOR
-extern int lge_rt8966a_ldo_set_level( int ldo_id, int level );
-extern int lge_rt8966a_ldo_control( int ldo_id, int onoff );
-#endif /* CONFIG_MINIABB_REGULATOR */
-#endif /* CONFIG_MACH_MSM7X25A_V1 */
-
 static int bma2x2_probe(struct i2c_client *client,
 		const struct i2c_device_id *id)
 {
 	int err = 0;
 	int tempvalue;
-#ifdef BMA2X2_ACCEL_CALIBRATION	//2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry
-	int retry_chipid = 0;
-#endif
 	unsigned char tmp_chip_id;
 	struct bma2x2_data *data;
 	struct input_dev *dev;
@@ -5864,13 +5854,6 @@ static int bma2x2_probe(struct i2c_client *client,
 	//omap_mux_init_gpio(145, OMAP_PIN_INPUT);
 	//omap_mux_init_gpio(146, OMAP_PIN_INPUT);
 	printk(KERN_INFO "bma2x2_probe\n");
-
-#ifdef CONFIG_MACH_MSM7X25A_V1		//jinseok.choi 2013-02-06 Always Turn on VREG_PROX_3.0V for Sensor working on RevA. 
-#ifndef CONFIG_MINIABB_REGULATOR
-	lge_rt8966a_ldo_set_level(1, 11); //11 -> 3V - modem rt8966a.h
-	lge_rt8966a_ldo_control( 1, 1 );
-#endif /* CONFIG_MINIABB_REGULATOR */
-#endif /* CONFIG_MACH_MSM7X25A_V1 */
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		printk(KERN_INFO "i2c_check_functionality error\n");
@@ -5881,11 +5864,6 @@ static int bma2x2_probe(struct i2c_client *client,
 		err = -ENOMEM;
 		goto exit;
 	}
-
-#ifdef BMA2X2_ACCEL_CALIBRATION //2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry
-do{	
-		mdelay(2);
-#endif	
 	/* read chip id */
 	tempvalue = i2c_smbus_read_word_data(client, BMA2X2_CHIP_ID_REG);
 	tmp_chip_id = tempvalue&0x00ff;
@@ -5905,19 +5883,7 @@ do{
 		break;
 	default:
 		data->sensor_type = -1;
-		printk(KERN_INFO "Bosch Sensortec Device not found  retry_chipid = %d \n", retry_chipid);		
 	}
-#ifdef BMA2X2_ACCEL_CALIBRATION	//2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry
-	printk(KERN_INFO "i2c_smbus_read_word_data retry_chipid  = %d, tempvalue = %d\n",retry_chipid ,tempvalue);
-
-	retry_chipid++;
-	if(retry_chipid == 6)
-		break;
-	
-}while(data->sensor_type == -1);
-#endif
-
-
 	if (data->sensor_type != -1) {
 		data->chip_id = tmp_chip_id;
 		printk(KERN_INFO "Bosch Sensortec Device detected!\n"
@@ -5926,12 +5892,8 @@ do{
 	} else{
 		printk(KERN_INFO "Bosch Sensortec Device not found"
 				"i2c error %d \n", tempvalue);
-#ifdef BMA2X2_ACCEL_CALIBRATION	//2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry		
-		data->sensor_type = BMA255_TYPE;
-#else		
 		err = -ENODEV;
 		goto kfree_exit;
-#endif
 	}
 	i2c_set_clientdata(client, data);
 	data->bma2x2_client = client;

@@ -43,18 +43,8 @@ obj-$(CONFIG_BACKLIGHT_PCF50633)	+= pcf50633-backlight.o
 obj-$(CONFIG_BACKLIGHT_AAT2870) += aat2870_bl.o
 obj-$(CONFIG_BACKLIGHT_OT200) += ot200_bl.o
 
-#[V1][sangnae.yoon][2013.02.15] change backlight power 
-obj-$(CONFIG_BACKLIGHT_LGE_RT8966) += lge_rt8966_bl.o
-#[V1][sangnae.yoon] END
-
 #LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
-# LGE_CHANGE_S jungrock.oh@lge.com 2013-02-06 add for lm3530_bl_u0
-ifeq ($(CONFIG_MACH_MSM7X27A_U0),y)
-obj-$(CONFIG_BACKLIGHT_LM3530) += lm3530_bl_u0.o
-else
 obj-$(CONFIG_BACKLIGHT_LM3530) += lm3530_bl.o
-endif
-# LGE_CHANGE_E jungrock.oh@lge.com 2013-02-06 add for lm3530_bl_u0
 obj-$(CONFIG_BACKLIGHT_LM3528) += lm3528_bl.o
 obj-$(CONFIG_BACKLIGHT_BU61800) += bu61800_bl.o
 #[V3][junghoon79.kim][2012.9.9] change backlight charge pump

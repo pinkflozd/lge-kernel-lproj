@@ -239,7 +239,7 @@ static int __init mipi_dsi_regulator_init(void)
                 return PTR_ERR(regulator_mipi_dsi);
         }
 
-        rc = regulator_set_voltage(regulator_mipi_dsi, 2850000,2850000);
+        rc = regulator_set_voltage(regulator_mipi_dsi, 2800000,2800000);
         if (rc) {
                 pr_err("%s: vreg_set_level failed for mipi_dsi_v28\n", __func__);
                 goto vreg_put_dsi_v28;
@@ -258,16 +258,17 @@ static int mipi_dsi_panel_power(int on)
 	int rc = 0;
 
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, When Mipi dsi on, regulator control prevent. */
-	//if(maker_id == 1)
-	{
+			if(maker_id == 1) //LG4572b
+{
 		if(on == 0)
 		{
 			if(firstbootend == 0){
-				firstbootend = 1;
+				firstbootend = 1;	
 				return 0;
 			}
 		}
-	}
+}
+
 /*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, When Mipi dsi on, regulator control prevent. */
 
 		if (unlikely(!dsi_gpio_initialized)) {
@@ -341,7 +342,7 @@ static int mipi_dsi_panel_power(int on)
 				goto vreg_put_dsi_v28;
 			}
 
-			if (firstbootend) {
+			if (!firstbootend) {
 				rc = gpio_direction_output(GPIO_LCD_RESET, 1);
 				if (rc) {
 					pr_err("%s: gpio_direction_output failed for lcd_reset\n", __func__);

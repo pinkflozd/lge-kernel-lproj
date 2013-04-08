@@ -56,19 +56,6 @@ config SENSOR_APDS9190
 	  To compile this driver as a module, choose M here: the
 	  module will be called apds9190.
 
-#LGE_CHANGE : 2013-02-04 jinseok.choi@lge.com V1 uses Rohm RPR0400 for Proximity Sensor
-config SENSOR_RPR0400
-	tristate "RPR0400 based proximity sensor"
-	help
-	  Say Y here if you have a sensor interface using the
-	  RPR0400 controller, and your board-specific
-	  setup code includes i2c devices.
-
-	  If unsure, say N (but it's safe to say "Y").
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called rpr0400.
-
 #[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] Avago Proximity Changes
 config SENSOR_APDS9130
        tristate "APDS9130 Proximity Sensor Driver"

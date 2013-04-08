@@ -15,9 +15,6 @@ obj-$(CONFIG_SENSOR_APDS9190)   += apds9190.o
 obj-$(CONFIG_SENSOR_APDS9130)   += apds9130.o
 #[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
 
-#LGE_CHANGE : 2013-02-04 jinseok.choi@lge.com V1 uses Rohm RPR0400 for Proximity Sensor
-obj-$(CONFIG_SENSOR_RPR0400)   += rpr0400_driver.o
-
 ifeq ($(CONFIG_SENSORS_BMM050),y)
 EXTRA_CFLAGS += -DBMM_USE_BASIC_I2C_FUNC
 endif

@@ -11,8 +11,6 @@
 #define BATT_DS2704_L   32
 #define BATT_ISL6296_N  73
 #define BATT_ISL6296_L  94
-#define BATT_DS2704_C 	48
-#define BATT_ISL6296_C  105
 #endif
 // LGE_CHANGE_E,narasimha.chikka@lge.com,Add BATT_ID Check
 

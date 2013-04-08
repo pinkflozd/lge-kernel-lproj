@@ -917,6 +917,7 @@ typedef struct DIAG_TEST_MODE_F_rsp_tag {
     word					sub_cmd_code;
     test_mode_ret_stat_type	ret_stat_code;
     test_mode_rsp_type		test_mode_rsp;
+	char lcd_info[15];
 } PACKED DIAG_TEST_MODE_F_rsp_type;
 
 typedef enum

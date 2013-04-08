@@ -2490,12 +2490,3 @@ config MSM_FIQ
 	  Modem will then generate an raise a FIQ on this line before sending
 	  SMSM reset
 endif
-
-### [LGE_BSP_S] jihyun2.jang@lge.com, 20130212 - RT8966A miniABB regulator
-config MINIABB_REGULATOR
-	tristate "MINIABB Voltage Regulator"
-	help
-	  Enable regulator framework support for regulators managed by MINIABB
-	  on the modem, and controlled through proccomm calls.
-### [LGE_BSP_E] jihyun2.jang@lge.com, 20130212 - RT8966A miniABB regulator
-

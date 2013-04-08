@@ -259,9 +259,7 @@ int mdp_dsi_video_on(struct platform_device *pdev)
 	}
 #else /* below code is required for smooth boot logo display*/
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
-#if !defined(CONFIG_MACH_MSM8X25_V7) && !defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 add fearuring for booting animation sometimes no display*/
+#if !defined(CONFIG_MACH_MSM8X25_V7)
 		MDP_OUTP(MDP_BASE + DSI_VIDEO_BASE, 0);
 		mipi_dsi_controller_cfg(0);
 #endif
@@ -310,7 +308,6 @@ int mdp_dsi_video_on(struct platform_device *pdev)
 		pr_debug("%s: kobject_uevent(KOBJ_ADD)\n", __func__);
 		vsync_cntrl.sysfs_created = 1;
 	}
-	mdp_histogram_ctrl_all(TRUE);
 
 	return ret;
 }
@@ -318,12 +315,12 @@ int mdp_dsi_video_on(struct platform_device *pdev)
 int mdp_dsi_video_off(struct platform_device *pdev)
 {
 	int ret = 0;
+
 	/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com] */
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B
 	static boolean firstbootend=true;
 #endif
 
-	mdp_histogram_ctrl_all(FALSE);
 
 /* LGE_CHANGE_S : LCD ESD Protection 
  * 2012-01-30, yoonsoo@lge.com

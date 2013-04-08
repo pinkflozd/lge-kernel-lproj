@@ -37,7 +37,7 @@
 #define ILI9486_TUNING_FROM_SDCARD  1 // 0 : /data/ili9486  1: /sdcard/external_sd/ili9486 , /sdcard2/
 #endif
 
-#define ILI9486_ESD_COM_REGISTER 	0xB0
+#define ILI9486_ESD_COM_REGISTER 	0xA0
 
 #ifdef CONFIG_LGE_LCD_ESD_DETECTION
 enum {
@@ -154,7 +154,7 @@ static char config_page_address_set[5]={0x2B, 0x00, 0x00, 0x01, 0xDF}; //DCS-Lon
 
 static char config_pixel_format[2]={0x3A,0x66}; //DCS-1param
 static char config_entry_mode_set[2]={0xB7,0x06}; //Gen-1param
-static char config_frame_rate[3]={0xB1,ILI9486_ESD_COM_REGISTER,0x13}; //Gen-2param
+static char config_frame_rate[3]={0xB1,ILI9486_ESD_COM_REGISTER,0x12}; //Gen-2param
 
 static char config_F7[6]={0xF7,0xA9,0x91,0x2D,0x8A,0x4C}; //Gen
 static char config_blacnking_porch_control[5]={0xB5,0x06,0x06,0x0A,0x04}; //Gen-long
@@ -435,11 +435,6 @@ static long ili9486_reg_init_ext(void)
 }
 #endif
 
-/*LGE_CHANGE_S,hyungjoon.jeon,13-02-06, for M4 lcd backlight timning code*/
-#if defined(CONFIG_MACH_MSM7X25A_M4)
-extern int lcd_on_completed;
-#endif
-
 static int mipi_ili9486_lcd_on(struct platform_device *pdev)
 {
 	struct msm_fb_data_type *mfd;
@@ -565,12 +560,6 @@ static int mipi_ili9486_lcd_on(struct platform_device *pdev)
 #ifdef CONFIG_LGE_LCD_ESD_DETECTION
 	lcd_on_off = 1;
 #endif
-
-/*LGE_CHANGE_S,hyungjoon.jeon,13-02-06, for M4 lcd backlight timning code*/
-#if defined(CONFIG_MACH_MSM7X25A_M4)
- lcd_on_completed = 1;
-#endif
-
 	return 0;
 }
 

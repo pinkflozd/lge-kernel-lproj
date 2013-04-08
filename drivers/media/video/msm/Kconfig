@@ -86,14 +86,6 @@ config HI707_PWR_SEPARATE
 	Hynix VGA Soc Sensor, DVDD and IOVDD is separated
 # LGE_CHANGE_E : 2012-11-14 sungmin.cho@lge.com DVDD and IOVDD is separated before Rev A
 
-# LGE_CHANGE_S: V1 T4K28 Camera Bringup - aidan.choi@lge.com 2013/03/08
-config T4K28
-	bool "Sensor T4K28 (YUV 2M)"
-	depends on MSM_CAMERA && MSM_CAMERA_V4L2
-	---help---
-	Toshiba 2M YUV Sensor
-# LGE_CHANGE_E: V1 T4K28 Camera Bringup - aidan.cho@lge.com 2013/03/08	
-
 # LGE_CHANGE_S: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
 config HI351
 	bool "Sensor HI351 (YUV 3M)"
@@ -105,7 +97,6 @@ config HI351
 config HI542
 	bool "Sensor HI542 (BAYER 5M)"
 	depends on MSM_CAMERA && MSM_CAMERA_V4L2
-	default n
 	---help---
 	Hynix 5MP Bayer Sensor
 config HI542_ACT
@@ -214,19 +205,6 @@ config MT9E013
 	---help---
 	  Aptina 8M Bayer Sensor modules with Autofocus
 
-config MT9E013_LGIT
-	bool "Sensor MT9E013 LGIT module (BAYER 8M)"
-	depends on MSM_CAMERA && MSM_CAMERA_V4L2
-	default n
-	---help---   
-	APTINA 8M Bayer Sensor with Autofocus 
-config MT9E013_LGIT_ACT
-	bool "Actuator MT9E013 LGIT module (BAYER 8M)"
-	depends on MSM_CAMERA && MSM_CAMERA_V4L2
-	select MSM_ACTUATOR
-	---help---
-	Actuator for APTINA 8M Bayer Sensor
-	
 config IMX074_ACT
 	bool "Actuator IMX074 (BAYER 13.5M)"
 	depends on MSM_CAMERA

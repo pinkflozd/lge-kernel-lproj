@@ -308,19 +308,13 @@ static int mipi_lg4573b_lcd_on(struct platform_device *pdev)
  */
 #ifdef CONFIG_LGE_LCD_ESD_DETECTION
 	/*If any work pending flush it & disable irq */	
-
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-02-02 delete for ESD signal*/
-#if !defined(CONFIG_MACH_MSM7X27A_U0)
 	int_en_wq_ret = cancel_delayed_work_sync(&lcd_esd->esd_det_work);
 	int_en_wq_ret = cancel_delayed_work_sync(&lcd_esd->esd_dsi_panel_on);
-#endif
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-02-02 delete for ESD signal*/
 	int_en_wq_ret = flush_delayed_work_sync(&lcd_esd->esd_int_en_work);
-
 	if( true == int_en_wq_ret)
 	{
 		printk("Pending INTR EN work Finished \n");
-	}
+	}			
 	if( 1 == atomic_read(&lcd_esd->esd_irq_state))
 	{
 		disable_irq(lcd_esd->esd_irq);
@@ -331,6 +325,7 @@ static int mipi_lg4573b_lcd_on(struct platform_device *pdev)
 /* LGE_CHANGE_E : LCD ESD Protection*/ 
 
 	mipi_set_tx_power_mode(1);
+
 	result=mipi_dsi_cmds_tx(&lg4573b_tx_buf, lg4573b_init_on_cmds,
 			ARRAY_SIZE(lg4573b_init_on_cmds));
 
@@ -340,9 +335,7 @@ static int mipi_lg4573b_lcd_on(struct platform_device *pdev)
 			ARRAY_SIZE(lg4573b_sleep_out_cmds));
 
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 reduce the display time*/
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-02-02 delete for ESD signal*/
-#if !defined(CONFIG_MACH_MSM8X25_V7) && !defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-02-02 delete for ESD signal*/
+#if !defined(CONFIG_MACH_MSM8X25_V7)
 	/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com]: Sometimes display is blank or distorted during bootlogo*/
 	if(lglogo_firstboot){
 		mdelay(120);
@@ -394,6 +387,7 @@ static int mipi_lg4573b_lcd_off(struct platform_device *pdev)
 #ifdef CONFIG_LGE_LCD_ESD_DETECTION	
 	bool int_en_wq_ret;
 	bool panel_power_on_wq_ret;
+
 	if ( (!local_pdev_for_pwm) && (pdev) )
 	{
 		local_pdev_for_pwm = pdev;
@@ -402,9 +396,7 @@ static int mipi_lg4573b_lcd_off(struct platform_device *pdev)
 /* LGE_CHANGE_E : LCD ESD Protection*/ 
 
 /*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, for V7 sometimes booting animation is no display*/
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
-#if defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 add featuring for booting animation sometimes no display*/
+#if defined(CONFIG_MACH_MSM8X25_V7)
 #ifndef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
 	if(lglogo_firstboot){
 		lglogo_firstboot = FALSE;
@@ -439,11 +431,10 @@ static int mipi_lg4573b_lcd_off(struct platform_device *pdev)
 	panel_power_on_wq_ret = flush_delayed_work_sync(&lcd_esd->esd_dsi_panel_on);
 	if( true == panel_power_on_wq_ret )
 		printk("Waited for Panel On work to finish \n");
-
 /*Disable ESD interrupt while powering off*/
 	if( 1 == atomic_read(&lcd_esd->esd_irq_state))
-	{	
-		disable_irq(lcd_esd->esd_irq); 
+	{
+		disable_irq(lcd_esd->esd_irq);
 		printk("ESD irq Disabled \n");
 		atomic_set(&lcd_esd->esd_irq_state,0);
 	}
@@ -472,8 +463,6 @@ static int mipi_lg4573b_lcd_off(struct platform_device *pdev)
 #ifndef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
 	lglogo_firstboot = FALSE;
 #endif
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-02-02 add for ESD signal*/
-/* LGE_CHANGE_ E jungrock.oh@lge.com 2013-02-02 add for ESD signal*/
 	return 0;
 }
 
@@ -645,13 +634,7 @@ static void esd_dsi_panel_on_wq_handler(struct work_struct *w)
 /*In case of ESD no delays required in power off*/
 	struct msm_fb_data_type *mfd;
 	mfd = platform_get_drvdata(local_pdev_for_pwm);
-	/* LGE_CHANGE_S jungrock.oh@lge.com 2013-02-02 modify for ESD signal*/
-	#if !defined(CONFIG_MACH_MSM7X27A_U0)
 	if ( b_normal_wakeup_started || b_normal_sleep_started )
-	#else
-	if ( (atomic_read(&lcd_esd->panel_poweroff) == 0) || b_normal_wakeup_started || b_normal_sleep_started )
-	#endif
-	/* LGE_CHANGE_E jungrock.oh@lge.com 2013-02-02 modify for ESD signal*/
 	{
 		is_esd_occured = false;
 		printk("Panel on/off started in FB !! \n");
@@ -698,7 +681,7 @@ static irqreturn_t esd_detect_handler(int irq, void *dev_id)
 {
 /*LGE_START: Kiran.kanneganti@lge.com 25-2-2012*/
 /*In case of ESD no delays required in power off*/
-
+	printk("esddet LOW \n");
 /*LGE_CHANGE_S byungyong.hwang - firstbooting is not and panel should be power-on state excute irq-handler*/
 	if((!lglogo_firstboot) && ( 0 == atomic_read(&lcd_esd->panel_poweroff))){
 /*LGE_CHANGE_E byungyong.hwang - firstbooting is not and panel should be power-on state excute irq-handler*/
@@ -722,7 +705,6 @@ static void  esd_detect_wq_handler(struct work_struct *w)
 	{
 		if( 1 == atomic_read(&lcd_esd->esd_irq_state))
 		{
-
 			disable_irq(lcd_esd->esd_irq);
 			printk("ESD irq Disabled \n");
 			atomic_set(&lcd_esd->esd_irq_state,0);
@@ -764,7 +746,7 @@ static void esd_int_en_wq_handler(struct work_struct *w)
 	{
 		printk("ESD irq Enabled \n");
 		enable_irq(lcd_esd->esd_irq);
-		atomic_set(&lcd_esd->esd_irq_state,1); 
+		atomic_set(&lcd_esd->esd_irq_state,1);
 	}
 /*LGE_END: Kiran.kanneganti@lge.com*/
 }
@@ -808,7 +790,7 @@ static int __devinit mipi_lg4573b_lcd_probe(struct platform_device *pdev)
 		goto skip_esd_detection;
 	}
 	
-	rc = gpio_tlmm_config(GPIO_CFG(lcd_esd->esd_detect_gpio,0,GPIO_CFG_INPUT,GPIO_CFG_NO_PULL,GPIO_CFG_2MA), GPIO_CFG_ENABLE);
+	rc = gpio_tlmm_config( GPIO_CFG(lcd_esd->esd_detect_gpio,0,GPIO_CFG_INPUT,GPIO_CFG_NO_PULL,GPIO_CFG_2MA), GPIO_CFG_ENABLE);
 	if( 0 > rc)
 	{
 		pr_err("failed to configure tlmm for %d \n",lcd_esd->esd_detect_gpio);
@@ -842,7 +824,6 @@ static int __devinit mipi_lg4573b_lcd_probe(struct platform_device *pdev)
 		goto skip_esd_detection;
 	}
 #endif
-
 	atomic_set(&lcd_esd->esd_irq_state, 1);
 	atomic_set(&lcd_esd->panel_poweroff,0);
 	/*Work queue to serve interrupt*/
@@ -938,14 +919,11 @@ static int __init mipi_lg4573b_lcd_init(void)
 /*LCD Reset After data pulled Down*/
 void mipi_ldp_lcd_panel_poweroff(void)
 {
+
 // LGE_S, bohyun.jung@lge.com, 12-11-28 without this U0 JB does not go 1.8mA
 #if 1//defined(CONFIG_MACH_MSM7X27A_U0)
 	gpio_set_value(GPIO_U0_LCD_RESET, 0);  /* LGE_CHANGE  [yoonsoo.kim@lge.com] 20110906: LCD Pinname */
-#if defined(CONFIG_MACH_MSM8X25_V7)
-	msleep(40);
-#else
 	msleep(20);
-#endif
 #endif
 // LGE_E, bohyun.jung@lge.com, 12-11-28 without this U0 JB does not go 1.8mA
 }

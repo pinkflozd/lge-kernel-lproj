@@ -3715,7 +3715,7 @@ void __init kmem_cache_init(void)
 /* LGE_CHANGE : bohyun.jung@lge.com - [2013.01.03] prevent kernel panic. from CodeAurora. 
  * 				slub: Zero initial memory segment for kmem_cache and kmem_cache_node '
  * 				http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commit;h=9df53b154ac712c87db1170057aa6df05eb7bdbd */
-#if defined (CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_MACH_MSM7X27A_U0)
 	kmem_cache = (void *)__get_free_pages(GFP_NOWAIT | __GFP_ZERO, order);
 #else
 	kmem_cache = (void *)__get_free_pages(GFP_NOWAIT, order);

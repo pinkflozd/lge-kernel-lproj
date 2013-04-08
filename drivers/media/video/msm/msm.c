@@ -1901,7 +1901,7 @@ static int msm_open(struct file *f)
 	pcam_inst->pcam = pcam;
 	pcam->dev_inst[i] = pcam_inst;
 
-	printk("%s index %d nodeid %d count %d\n", __func__,
+	D("%s index %d nodeid %d count %d\n", __func__,
 			pcam_inst->my_index,
 			pcam->vnode_id, pcam->use_count);
 	pcam->use_count++;
@@ -2210,7 +2210,7 @@ static int msm_close(struct file *f)
 	if (pcam_inst->vbqueue_initialized)
 		vb2_queue_release(&pcam_inst->vid_bufq);
 	D("%s Closing down instance %p ", __func__, pcam_inst);
-	printk("%s index %d nodeid %d count %d\n", __func__, pcam_inst->my_index,
+	D("%s index %d nodeid %d count %d\n", __func__, pcam_inst->my_index,
 		pcam->vnode_id, pcam->use_count);
 	pcam->dev_inst[pcam_inst->my_index] = NULL;
 	if (pcam_inst->my_index == 0) {
@@ -2542,11 +2542,11 @@ static int msm_close_server(struct file *fp)
 		if (g_server_dev.pcam_active) {
 			struct v4l2_event v4l2_ev;
 /* LGE_CHANGE_S V3 Camera adapt early from QCT PATCH for stability of vfe & IOMMU hong.junki@lge.com*/ 
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+#ifdef CONFIG_MACH_MSM7X25A_V3
 			mutex_lock(&g_server_dev.pcam_active->vid_lock);	//QCT PATCH for ensure to lock sever closing hong.junki@lge.com 2012/11/12
 #endif
 			msm_cam_stop_hardware(g_server_dev.pcam_active);
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+#ifdef CONFIG_MACH_MSM7X25A_V3
 			mutex_unlock(&g_server_dev.pcam_active->vid_lock);	//QCT PATCH for ensure to lock sever closing hong.junki@lge.com 2012/11/12
 #endif
 /* LGE_CHANGE_E V3 Camera adapt early from QCT PATCH for stability of vfe & IOMMU hong.junki@lge.com*/ 
