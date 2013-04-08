@@ -4,7 +4,7 @@
 #include <linux/android_pmem.h>
 #include <linux/gpio.h>
 //LGE_CHANGE_S jongjin7.park@lge.com for frst 2012-11-22 
-#if defined(CONFIG_MACH_MSM7X27A_U0)
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
 #include <linux/export.h>
 #endif
 //LGE_CHANGE_E jongjin7.park
@@ -93,7 +93,7 @@ static int __init lge_frst_mode(char *cmdline)
 __setup("lge.frst=", lge_frst_mode);
 
 //LGE_CHANGE_S jongjin7.park@lge.com for frst 2012-11-22 
-#if defined(CONFIG_MACH_MSM7X27A_U0) 
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
 char* get_frst_mode(void)
 {
 	return frst_mode;
@@ -197,7 +197,7 @@ static int __init rebootmode_setup(char *arg)
 __setup("lge.reboot=", rebootmode_setup);
 
 //LGE_CHANGE_S FTM boot mode
-#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7)
+#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
 static enum lge_fboot_mode_type lge_fboot_mode = second_boot;
 int __init lge_fboot_mode_init(char *s)
 {

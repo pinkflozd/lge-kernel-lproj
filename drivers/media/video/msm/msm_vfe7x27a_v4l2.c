@@ -775,37 +775,37 @@ static void vfe_7x_ops(void *driver_data, unsigned id, size_t len,
 				struct vfe_error_msg *VFE_ErrorMessageBuffer
 					= data;
 				ptr = data;
-				CDBG("Error: %x %x\n", ptr[0], ptr[1]);
-				CDBG("CAMIF_Error              = %d\n",
+				pr_err("Error: %x %x\n", ptr[0], ptr[1]);
+				pr_err("CAMIF_Error              = %d\n",
 					VFE_ErrorMessageBuffer->camif_error);
-				CDBG("output1YBusOverflow      = %d\n",
+				pr_err("output1YBusOverflow      = %d\n",
 					VFE_ErrorMessageBuffer->
 					output1ybusoverflow);
-				CDBG("output1CbCrBusOverflow   = %d\n",
+				pr_err("output1CbCrBusOverflow   = %d\n",
 					VFE_ErrorMessageBuffer->
 					output1cbcrbusoverflow);
-				CDBG("output2YBusOverflow      = %d\n",
+				pr_err("output2YBusOverflow      = %d\n",
 					VFE_ErrorMessageBuffer->
 					output2ybusoverflow);
-				CDBG("output2CbCrBusOverflow   = %d\n",
+				pr_err("output2CbCrBusOverflow   = %d\n",
 						VFE_ErrorMessageBuffer->
 						output2cbcrbusoverflow);
-				CDBG("autofocusStatBusOverflow = %d\n",
+				pr_err("autofocusStatBusOverflow = %d\n",
 						VFE_ErrorMessageBuffer->
 						autofocusstatbusoverflow);
-				CDBG("WB_EXPStatBusOverflow    = %d\n",
+				pr_err("WB_EXPStatBusOverflow    = %d\n",
 						VFE_ErrorMessageBuffer->
 						wb_expstatbusoverflow);
-				CDBG("AXIError                 = %d\n",
+				pr_err("AXIError                 = %d\n",
 						VFE_ErrorMessageBuffer->
 						axierror);
-				CDBG("CAMIF_Staus              = %d\n",
+				pr_err("CAMIF_Staus              = %d\n",
 						VFE_ErrorMessageBuffer->
 						camif_staus);
-				CDBG("pixel_count              = %d\n",
+				pr_err("pixel_count              = %d\n",
 						VFE_ErrorMessageBuffer->
 						pixel_count);
-				CDBG("line_count               = %d\n",
+				pr_err("line_count               = %d\n",
 						VFE_ErrorMessageBuffer->
 						line_count);
 			}

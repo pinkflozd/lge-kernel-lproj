@@ -623,6 +623,10 @@ int32_t msm_sensor_power_up(struct msm_sensor_ctrl_t *s_ctrl)
 	int32_t rc = 0;
 	struct msm_camera_sensor_info *data = s_ctrl->sensordata;
 	CDBG("%s: %d\n", __func__, __LINE__);
+#ifdef CONFIG_MT9E013_LGIT
+	if (data->sensor_platform_info->ext_power_ctrl != NULL) 
+		data->sensor_platform_info->ext_power_ctrl(1); 
+#endif
 	pr_err("%s: E: %s\n", __func__, data->sensor_name); /* LGE_CHANGE, For debugging, 2012-07-03, sunkyoo.hwang@lge.com */
 	s_ctrl->reg_ptr = kzalloc(sizeof(struct regulator *)
 			* data->sensor_platform_info->num_vreg, GFP_KERNEL);
@@ -673,6 +677,11 @@ int32_t msm_sensor_power_up(struct msm_sensor_ctrl_t *s_ctrl)
 	}
 
 	usleep_range(1000, 2000);
+#ifdef CONFIG_MT9E013_LGIT
+	if (data->sensor_platform_info->ext_power_ctrl != NULL)
+			data->sensor_platform_info->ext_power_ctrl(0); 
+	mdelay(1); 
+#endif
 	if (data->sensor_platform_info->ext_power_ctrl != NULL)
 		data->sensor_platform_info->ext_power_ctrl(1);
 

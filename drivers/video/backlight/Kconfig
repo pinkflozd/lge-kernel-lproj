@@ -389,6 +389,13 @@ config BACKLIGHT_RT9396
 	help
 	  If you have a Rohm RT9396, say y to enable the backlight driver
 
+config BACKLIGHT_LGE_RT8966
+	tristate "LGE_RT8966 Backlight Driver "
+	depends on BACKLIGHT_CLASS_DEVICE
+	default n
+	help
+	  If you have a Rohm RT8966, say y to enable the backlight driver
+	  
 endif # BACKLIGHT_CLASS_DEVICE
 
 endif # BACKLIGHT_LCD_SUPPORT

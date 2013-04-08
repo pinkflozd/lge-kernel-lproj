@@ -24,6 +24,10 @@
 #define MAX_FINGER	10
 #define MAX_BUTTON	4
 
+#ifndef CUST_G_TOUCH
+#define CUST_G_TOUCH
+#endif
+
 struct touch_device_caps
 {
 	u8		button_support;
@@ -60,6 +64,14 @@ struct touch_operation_role
 	int		accuracy_filter_enable;	// enable = 1, disable = 0
 	int		ghost_finger_solution_enable;
 	unsigned long	irqflags;
+#ifdef CUST_G_TOUCH
+	int		show_touches;
+	int		pointer_location;
+	int		ta_debouncing_count;
+	int		ta_debouncing_finger_num;
+	int		ghost_detection_enable;
+	int		pen_enable;
+#endif
 };
 
 struct touch_power_module
@@ -117,6 +129,9 @@ struct fw_upgrade_info
 {
 	char		fw_path[256];
 	u8			fw_force_upgrade;
+#ifdef CUST_G_TOUCH
+	u8			fw_force_rework;
+#endif
 	volatile u8	is_downloading;
 };
 
@@ -152,6 +167,9 @@ struct section_info
 
 struct ghost_finger_ctrl {
 	volatile u8	 stage;
+#ifdef CUST_G_TOUCH
+	int	incoming_call;
+#endif
 	int probe;
 	int count;
 	int min_count;
@@ -204,11 +222,18 @@ struct accuracy_filter_info {
 
 struct touch_device_driver {
 	int		(*probe)		(struct i2c_client *client);
+#ifdef CUST_G_TOUCH
+	int		(*resolution)	(struct i2c_client *client);
+#endif
 	void	(*remove)		(struct i2c_client *client);
 	int		(*init)			(struct i2c_client *client, struct touch_fw_info* info);
 	int		(*data)			(struct i2c_client *client, struct touch_data* data);
 	int		(*power)		(struct i2c_client *client, int power_ctrl);
+#ifdef CUST_G_TOUCH
+	int		(*ic_ctrl)		(struct i2c_client *client, u8 code, u32 value);
+#else
 	int		(*ic_ctrl)		(struct i2c_client *client, u8 code, u16 value);
+#endif
 	int 	(*fw_upgrade)	(struct i2c_client *client, struct touch_fw_info* info);
 };
 
@@ -290,6 +315,13 @@ enum{
 	KEYGUARD_ENABLE,
 };
 
+#ifdef CUST_G_TOUCH
+enum{
+	INCOMIMG_CALL_RESERVED,
+	INCOMIMG_CALL_TOUCH,
+};
+#endif
+
 enum{
 	GHOST_STAGE_CLEAR=0,
 	GHOST_STAGE_1=1,
@@ -302,9 +334,6 @@ enum{
 	BASELINE_OPEN = 0,
 	BASELINE_FIX,
 	BASELINE_REBASE,
-/*LGE_CHANGE_S : byungyong.hwang@lge.com touch - Synaptics s3203 panel don't need baseline rebase*/
-	BASELINE_DO_NOTHING,
-/*LGE_CHANGE_E : byungyong.hwang@lge.com touch - Synaptics s3203 panel don't need baseline rebase*/
 };
 
 enum{
@@ -319,6 +348,7 @@ enum{
 	IC_CTRL_READ,
 	IC_CTRL_WRITE,
 	IC_CTRL_RESET_CMD,
+	IC_CTRL_REPORT_MODE,
 };
 
 enum{
@@ -334,6 +364,7 @@ enum{
 	DEBUG_POWER				= (1U << 8),	// 256
 	DEBUG_JITTER			= (1U << 9),	// 512
 	DEBUG_ACCURACY			= (1U << 10),	// 1024
+	DEBUG_NOISE				= (1U << 11),	// 2048
 };
 
 #ifdef LGE_TOUCH_TIME_DEBUG
@@ -366,6 +397,27 @@ enum{
 	WORK_POST_ERR_CIRTICAL,
 	WORK_POST_MAX,
 };
+
+#ifdef CUST_G_TOUCH
+enum{
+	IGNORE_INTERRUPT	= 100,
+	NEED_TO_OUT,
+	NEED_TO_INIT,
+};
+
+enum{
+	TIME_EX_INIT_TIME,
+	TIME_EX_FIRST_INT_TIME,
+	TIME_EX_PREV_PRESS_TIME,
+	TIME_EX_CURR_PRESS_TIME,
+	TIME_EX_BUTTON_PRESS_START_TIME,
+	TIME_EX_BUTTON_PRESS_END_TIME,
+	TIME_EX_FIRST_GHOST_DETECT_TIME,
+	TIME_EX_SECOND_GHOST_DETECT_TIME,
+	TIME_EX_CURR_INT_TIME,
+	TIME_EX_PROFILE_MAX
+};
+#endif
 
 #define LGE_TOUCH_NAME		"lge_touch"
 

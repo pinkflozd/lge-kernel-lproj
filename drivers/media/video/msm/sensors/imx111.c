@@ -18,6 +18,10 @@
 #define PLATFORM_DRIVER_NAME "msm_camera_imx111"
 #define imx111_obj imx111_##obj
 
+/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+#define CAPTURE_10FPS_444Mhz
+/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+
 DEFINE_MUTEX(imx111_mut);
 static struct msm_sensor_ctrl_t imx111_s_ctrl;
 
@@ -259,8 +263,15 @@ static struct msm_camera_i2c_reg_conf imx111_comm1_settings[] = {
 };
 
 static struct msm_camera_i2c_reg_conf imx111_comm2_part1_settings[] = {
+/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+#if defined(CAPTURE_10FPS_444Mhz)
+	{0x0307, 0x25},
+	{0x0340, 0x09},
+	{0x0341, 0xD0},
+#else //15 fps 672HMz
 	{0x0340, 0x09},
 	{0x0341, 0xE2},
+#endif	
 	{0x034C, 0x0C},
 	{0x034D, 0xD0},
 	{0x034E, 0x09},
@@ -275,7 +286,12 @@ static struct msm_camera_i2c_reg_conf imx111_comm2_part1_settings[] = {
 	{0x30D6, 0x85},
 	{0x30D7, 0x2A},
 	{0x30DE, 0x00},
+#if defined(CAPTURE_10FPS_444Mhz)
+	{0x3318, 0x66},
+#else //15 fps 672HMz
 	{0x3318, 0x62},
+#endif
+/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
 };
 
 static struct msm_camera_i2c_reg_conf imx111_comm2_part2_settings[] = {
@@ -322,6 +338,20 @@ static struct msm_camera_i2c_conf_array imx111_confs[] = {
 };
 
 static struct msm_sensor_output_info_t imx111_dimensions[] = {
+/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+#if defined(CAPTURE_10FPS_444Mhz)
+	{
+		/* 10 fps */
+		.x_output = 0x0CD0, /* 3280 */
+		.y_output = 0x9A0, /* 2464 */
+		.line_length_pclk = 0xDD0, /* 3536 */
+		.frame_length_lines = 0x9D0, /* 2512 */  
+		.vt_pixel_clk = 88800000,
+		.op_pixel_clk = 88800000,
+		.binning_factor = 1,
+
+	},
+#else
 	{
 		/* 15 fps */
 		.x_output = 0x0CD0, /* 3280 */
@@ -333,6 +363,8 @@ static struct msm_sensor_output_info_t imx111_dimensions[] = {
 		.binning_factor = 1,
 
 	},
+#endif 
+/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
 	{
 		/* 30 fps preview */
 		.x_output = 0x668, /* 1640 */
@@ -537,11 +569,48 @@ int32_t imx111_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 	return rc;
 }
 
+/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+void imx111_calculate_integration_time(struct msm_sensor_ctrl_t *s_ctrl, int res, int prev_res)
+{
+	
+	int32_t rc = 0;
+	uint16_t int_time = 0;
+	uint32_t curr_clk = s_ctrl->msm_sensor_reg->output_settings[res].vt_pixel_clk/100000;
+	uint32_t prev_clk = s_ctrl->msm_sensor_reg->output_settings[prev_res].vt_pixel_clk/100000;
+	
+	CDBG("%s : E\n", __func__);
+	if(res != prev_res && prev_res != -1){
+		rc = msm_camera_i2c_read(
+				s_ctrl->sensor_i2c_client,
+				s_ctrl->sensor_exp_gain_info->coarse_int_time_addr, &int_time,
+				MSM_CAMERA_I2C_WORD_DATA);
+		if (rc < 0) {
+			pr_err("%s: %s: read int time failed\n", __func__,
+				s_ctrl->sensordata->sensor_name);
+		}
+		CDBG("%s : read int time = 0x%x\n", __func__, int_time);
+	
+		int_time = (uint32_t)((curr_clk*1000/prev_clk) * int_time)/1000;	
+		CDBG("%s : write int time = 0x%x\n", __func__, int_time);
+		rc = msm_camera_i2c_write(
+				s_ctrl->sensor_i2c_client,
+				s_ctrl->sensor_exp_gain_info->coarse_int_time_addr, int_time,
+				MSM_CAMERA_I2C_WORD_DATA);
+		if (rc < 0) {
+			pr_err("%s: %s: write int time failed\n", __func__,
+				s_ctrl->sensordata->sensor_name);
+		}
+	}
+	CDBG("%s : X\n", __func__);
+}
+/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+
 int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 			int update_type, int res)
 {
 	int32_t rc = 0;
 	static int csi_config;
+	static int prev_res = -1;   /* LGE_CHANGE, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
 
 	printk("%s : E\n", __func__);
 	s_ctrl->func_tbl->sensor_stop_stream(s_ctrl);
@@ -552,6 +621,7 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 		msm_sensor_enable_debugfs(s_ctrl);
 		msm_sensor_write_init_settings(s_ctrl);
 		csi_config = 0;
+		prev_res = -1;	/* LGE_CHANGE, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
  	} else if (update_type == MSM_SENSOR_UPDATE_PERIODIC) {
  		CDBG("PERIODIC : %d\n", res);
  		if (res == 0) { // need to check
@@ -576,7 +646,13 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 				mb();
 				msleep(30);
 				csi_config = 1;
+			}/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+			else {				
+				imx111_calculate_integration_time(s_ctrl, res, prev_res);
+				msleep(30);
 			}
+			/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+			
 			v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 				NOTIFY_PCLK_CHANGE,
 				&s_ctrl->sensordata->pdata->ioclk.vfe_clk_rate);
@@ -585,6 +661,7 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 			msleep(50);
 		}
  	}
+	prev_res = res;	/* LGE_CHANGE, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
 	printk("%s : X\n", __func__);
 	return rc;
 }

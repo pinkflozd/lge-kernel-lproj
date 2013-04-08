@@ -79,12 +79,6 @@ config ANDROID_INTF_ALARM_DEV
 	  Also exports the alarm interface to user-space.
 
 # LGE_CHANGE_S : bohyun.jung@lge.com 
-config LGE_AGGRESSIVE_LMK
-	bool "Enable Aggressive"
-	default n
-	help
-	  If you say Y here, LMK run more aggressive. 
-
 config LGE_DEATHPENDING_LMK
 	bool "Enable deathpending LMK"
 	default n
@@ -93,7 +87,6 @@ config LGE_DEATHPENDING_LMK
 	  some of min_score_adj's calculation is moved to Compiler. 
 	  ex) min_score_adj = (lowmem_adj[i] * OOM_SCORE_ADJ_MAX) / -OOM_DISABLE;
 	  divide ops is time-consuming, so (OOM_SCORE_ADJ_MAX / -OOM_DISABLE) is calculated on compile time.
-
 # LGE_CHANGE_E : bohyun.jung@lge.com 
 
 endif # if ANDROID

@@ -32,4 +32,5 @@ struct msm_psy_batt_pdata {
 #ifdef CONFIG_LGE_FUEL_GAUGE
 u32 msm_batt_get_vbatt_capacity(void);
 #endif
+u32 msm_batt_get_vbatt_level(void);
 #endif

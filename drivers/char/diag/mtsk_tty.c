@@ -25,7 +25,7 @@ struct mts_tty *mtsk_tty = NULL;
 
 int init_mtsk_tty = FALSE;
 int mts_state  = MTS_TTY_NONE;
-#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7)
+#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
 extern short mtsk_factory_mode;
 #endif
 
@@ -228,7 +228,7 @@ static int mtsk_tty_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned lon
 			}
 			break;
 #endif
-#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7)
+#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
 		case MTSK_TTY_FACTORY_MODE:
 			info = mtsk_factory_mode;
 			if(info)

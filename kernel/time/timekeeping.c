@@ -1139,8 +1139,13 @@ void get_monotonic_boottime(struct timespec *ts)
 
 	} while (read_seqretry(&timekeeper.lock, seq));
 
+	/* LGE_CHANGE : bohyun.jung@lge.com
+	 * fix 32-bit overflow in get_monotonic_boottime
+	 * https://android.googlesource.com/kernel/common/+/3b2107dfbe90989e7c904766309d1da9aa7def29%5E%21/#F0
+	 */
 	set_normalized_timespec(ts, ts->tv_sec + tomono.tv_sec + sleep.tv_sec,
-			ts->tv_nsec + tomono.tv_nsec + sleep.tv_nsec + nsecs);
+			(s64)ts->tv_nsec + tomono.tv_nsec + sleep.tv_nsec + nsecs);
+			//ts->tv_nsec + tomono.tv_nsec + sleep.tv_nsec + nsecs);
 }
 EXPORT_SYMBOL_GPL(get_monotonic_boottime);
 

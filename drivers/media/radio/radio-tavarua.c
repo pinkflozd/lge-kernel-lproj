@@ -1074,11 +1074,6 @@ static void tavarua_handle_interrupts(struct tavarua_device *radio)
 
 	/* Error occurred. Read ERRCODE to determine cause */
 	if (radio->registers[STATUS_REG3] & ERROR) {
-#ifdef FM_DEBUG
-		unsigned char xfr_buf[XFR_REG_NUM];
-		int retval = sync_read_xfr(radio, ERROR_CODE, xfr_buf);
-		FMDBG("retval of ERROR_CODE read : %d\n", retval);
-#endif
 		FMDERR("ERROR STATE\n");
 	}
 
@@ -2524,6 +2519,38 @@ static int tavarua_vidioc_queryctrl(struct file *file, void *priv,
 	return retval;
 }
 
+#define PSALL_POKE_MSB  0x00
+#define PSALL_POKE_LSB  0xD5
+
+static int poke_PSALL(struct tavarua_device *radio, unsigned char data)
+{
+	int retval = 0;
+	unsigned char xfr_buf[XFR_REG_NUM];
+	unsigned char size = 0;
+
+	FMDERR("Inside poke_PSALL(): request to POKE PSALL : %d", data);
+
+	/*Poking the PSALL register : 0x00D5 */
+	size = 0x01;
+	xfr_buf[0] = (XFR_POKE_MODE | (size << 1));
+	xfr_buf[1] = PSALL_POKE_MSB;
+	xfr_buf[2] = PSALL_POKE_LSB;
+	xfr_buf[3] = data;
+
+	retval = tavarua_write_registers(radio, XFRCTRL, xfr_buf, 4);
+	if (retval < 0) {
+		FMDERR("%s: Failed to configure PSALL value\n", __func__);
+		return retval;
+	} else {
+		FMDERR("%s: PSALL value configured successfully\n", __func__);
+	}
+
+	/*Wait for the XFR interrupt */
+	msleep(TAVARUA_DELAY*5);
+
+	return retval;
+}
+
 static int update_spur_table(struct tavarua_device *radio)
 {
 	unsigned char xfr_buf[XFR_REG_NUM];
@@ -3176,12 +3203,17 @@ static int tavarua_vidioc_s_ctrl(struct file *file, void *priv,
 			FMDBG("%s: turning off...\n", __func__);
 			tavarua_write_register(radio, RDCTRL, ctrl->value);
 			/* flush the event and work queues */
+			FMDERR("Flushing the Event queue\n");
 			kfifo_reset(&radio->data_buf[TAVARUA_BUF_EVENTS]);
+			FMDERR("Canceling works \n");
+			cancel_delayed_work_sync(&radio->work);
+			FMDERR("Flushing the work queue\n");
 			flush_workqueue(radio->wqueue);
 			/*
 			 * queue the READY event from the host side
 			 * in case of FM off
 			 */
+			FMDERR("queuing the disabled event\n"); 
 			tavarua_q_event(radio, TAVARUA_EVT_RADIO_DISABLED);
 
 			FMDBG("%s, Disable All Interrupts\n", __func__);
@@ -3322,13 +3354,7 @@ static int tavarua_vidioc_s_ctrl(struct file *file, void *priv,
 		retval = sync_write_xfr(radio, RDS_CONFIG, xfr_buf);
 		break;
 	case V4L2_CID_PRIVATE_TAVARUA_PSALL:
-		retval = sync_read_xfr(radio, RDS_CONFIG, xfr_buf);
-		value = ctrl->value & RDS_CONFIG_PSALL;
-		if (retval < 0)
-			break;
-		xfr_buf[12] &= ~RDS_CONFIG_PSALL;
-		xfr_buf[12] |= value;
-		retval = sync_write_xfr(radio, RDS_CONFIG, xfr_buf);
+		retval = poke_PSALL(radio, (unsigned char)ctrl->value);
 		break;
 	case V4L2_CID_PRIVATE_TAVARUA_LP_MODE:
 		retval = 0;
@@ -4089,12 +4115,12 @@ FUNCTION:  tavarua_suspend
 static int tavarua_suspend(struct platform_device *pdev, pm_message_t state)
 {
 	struct tavarua_device *radio = platform_get_drvdata(pdev);
+	struct marimba config = { .mod_id =  SLAVE_ID_BAHAMA};
 	int retval;
-	int users = 0;
 	printk(KERN_INFO DRIVER_NAME "%s: radio suspend\n\n", __func__);
 	if (radio) {
-		users = atomic_read(&radio->users);
-		if (!users) {
+
+		if (marimba_get_fm_status(&config)) {
 			retval = tavarua_disable_interrupts(radio);
 			if (retval < 0) {
 				printk(KERN_INFO DRIVER_NAME
@@ -4120,13 +4146,12 @@ static int tavarua_resume(struct platform_device *pdev)
 {
 
 	struct tavarua_device *radio = platform_get_drvdata(pdev);
+	struct marimba config = { .mod_id =  SLAVE_ID_BAHAMA};
 	int retval;
-	int users = 0;
 	printk(KERN_INFO DRIVER_NAME "%s: radio resume\n\n", __func__);
 	if (radio) {
-		users = atomic_read(&radio->users);
 
-		if (!users) {
+		if (marimba_get_fm_status(&config)) {
 			retval = tavarua_setup_interrupts(radio,
 			(radio->registers[RDCTRL] & 0x03));
 			if (retval < 0) {

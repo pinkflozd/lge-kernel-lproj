@@ -218,8 +218,17 @@ struct msm_adc_channels {
 
 };
 
+#if defined(CONFIG_MACH_MSM8X25_V7)
+struct msm_adc_channel_names {
+	char *name;
+};
+#endif
+
 struct msm_adc_platform_data {
 	struct msm_adc_channels *channel;
+#if defined(CONFIG_MACH_MSM8X25_V7)
+        struct msm_adc_channel_names *chan_names;
+#endif
 	uint32_t num_chan_supported;
 	uint32_t num_adc;
 	uint32_t chan_per_adc;

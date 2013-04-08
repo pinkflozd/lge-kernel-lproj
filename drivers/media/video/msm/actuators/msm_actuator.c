@@ -44,9 +44,16 @@ static struct msm_actuator msm_piezo_actuator_table = {
 	},
 };
 
+#ifdef CONFIG_MT9E013_LGIT_ACT
+extern struct msm_actuator msm_actuator_table_mt9e013_lgit;
+#endif
+
 static struct msm_actuator *actuators[] = {
 	&msm_vcm_actuator_table,
 	&msm_piezo_actuator_table,
+#ifdef CONFIG_MT9E013_LGIT_ACT
+	&msm_actuator_table_mt9e013_lgit,
+#endif	
 };
 
 int32_t msm_actuator_piezo_set_default_focus(
