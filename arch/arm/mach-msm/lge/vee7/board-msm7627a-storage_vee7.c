@@ -18,7 +18,7 @@
 #include <asm/mach/mmc.h>
 #include <mach/gpiomux.h>
 #include <mach/board.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../pm.h"
@@ -28,8 +28,8 @@
 #include "devices.h"
 #include "pm.h"
 #include "board-msm7627a.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 
 #if (defined(CONFIG_MMC_MSM_SDC1_SUPPORT)\
 	|| defined(CONFIG_MMC_MSM_SDC2_SUPPORT)\
@@ -52,8 +52,8 @@ struct sdcc_gpio {
  * require higher value since it should handle bad signal quality due
  * to size of T-flash adapters.
  */
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121112:
- *Increase GPIO strength 14MA->16MA some SD card needs higher value*/
+/*                                            
+                                                                   */
 static struct msm_gpio sdc1_cfg_data[] = {
 	{GPIO_CFG(51, 1, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_UP, GPIO_CFG_16MA),
 								"sdc1_dat_3"},
@@ -68,7 +68,7 @@ static struct msm_gpio sdc1_cfg_data[] = {
 	{GPIO_CFG(56, 1, GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL, GPIO_CFG_16MA),
 								"sdc1_clk"},
 };
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121112*/
+/*                                           */
 
 static struct msm_gpio sdc2_cfg_data[] = {
 	{GPIO_CFG(62, 2, GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL, GPIO_CFG_8MA),
@@ -124,7 +124,7 @@ static struct msm_gpio sdc3_cfg_data[] = {
 #endif
 };
 
-/* LGE_CHANGE_S [kh.tak@lge.com] 20120921 : eMMC sleep configuration */
+/*                                                                   */
 static struct msm_gpio sdc3_sleep_cfg_data[] = {
 	{GPIO_CFG(88, 0, GPIO_CFG_INPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA),
 								"sdc3_clk"},
@@ -149,7 +149,7 @@ static struct msm_gpio sdc3_sleep_cfg_data[] = {
 								"sdc3_dat_4"},
 #endif
 };
-/* LGE_CHANGE_E [kh.tak@lge.com] 20120921 */
+/*                                        */
 
 static struct msm_gpio sdc4_cfg_data[] = {
 	{GPIO_CFG(19, 1, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_UP, GPIO_CFG_10MA),
@@ -179,9 +179,9 @@ static struct sdcc_gpio sdcc_cfg_data[] = {
 	{
 		.cfg_data = sdc3_cfg_data,
 		.size = ARRAY_SIZE(sdc3_cfg_data),
-/* LGE_CHANGE_S [kh.tak@lge.com] 20120921 : eMMC sleep configuration */
+/*                                                                   */
 		.sleep_cfg_data = sdc3_sleep_cfg_data,
-/* LGE_CHANGE_E [kh.tak@lge.com] 20120921 */
+/*                                        */
 	},
 	{
 		.cfg_data = sdc4_cfg_data,
@@ -226,9 +226,9 @@ static int msm_sdcc_setup_gpio(int dev_id, unsigned int enable)
 	}
 	return rc;
 }
-// LGE_UPDATE_S 20121130 kh.tak temporarily power off
+//                                                   
 extern unsigned int g_sd_power_dircect_ctrl;
-// LGE_UPDATE_E 20121130
+//                      
 
 static int msm_sdcc_setup_vreg(int dev_id, unsigned int enable)
 {
@@ -251,7 +251,7 @@ static int msm_sdcc_setup_vreg(int dev_id, unsigned int enable)
 		if (rc)
 			pr_err("%s: could not enable regulator: %d\n",
 						__func__, rc);
-// LGE_UPDATE_S 20121130 kh.tak temporarily power off
+//                                                   
 	} else if(dev_id == 1){
 		if(g_sd_power_dircect_ctrl) {
 			clear_bit(dev_id, &vreg_sts);
@@ -260,7 +260,7 @@ static int msm_sdcc_setup_vreg(int dev_id, unsigned int enable)
 				pr_err("%s: could not disable regulator: %d\n",
 							__func__, rc);
 		}
-// LGE_UPDATE_E 20121130
+//                      
 	} else {
 		clear_bit(dev_id, &vreg_sts);
 		rc = regulator_disable(curr);
@@ -292,7 +292,7 @@ static unsigned int msm7627a_sdcc_slot_status(struct device *dev)
 {
 	int status;
 
-/*LGE_CHANGE_S : [kyeongdon.kim@lge.com] 20120409 : SD cad GPIO to detect */
+/*                                                                        */
 #ifdef CONFIG_MACH_LGE
 	status = gpio_tlmm_config(GPIO_CFG(GPIO_SD_DETECT_N, 0, GPIO_CFG_INPUT,
 					GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
@@ -337,7 +337,7 @@ static unsigned int msm7627a_sdcc_slot_status(struct device *dev)
 		gpio_free(gpio_sdc1_hw_det);
 	}
 #endif
-/*LGE_CHANGE_E : [kyeongdon.kim@lge.com] 20120409 : SD cad GPIO to detect */	
+/*                                                                        */	
 	return status;
 }
 
@@ -349,9 +349,9 @@ static struct mmc_platform_data sdc1_plat_data = {
 	.msmsdcc_fmid   = 24576000,
 	.msmsdcc_fmax   = 49152000,
 	.status      = msm7627a_sdcc_slot_status,
-/*LGE_CHANGE_S : [kyeongdon.kim@lge.com] 20120409 : SD cad detect */
+/*                                                                */
 	.status_irq  = MSM_GPIO_TO_INT(GPIO_SD_DETECT_N),
-/*LGE_CHANGE_E : [kyeongdon.kim@lge.com] 20120409 : SD cad detect */
+/*                                                                */
 	.irq_flags   = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
 };
 #endif

@@ -21,27 +21,27 @@
 #include <mach/msm_iomap.h>
 #include <mach/board.h>
 #include <mach/irqs-7xxx.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices-msm7x2xa.h"
 #include "../../board-msm7627a.h"
 #else /*qct original*/
 #include "devices-msm7x2xa.h"
 #include "board-msm7627a.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 #include <mach/vreg.h>
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifdef CONFIG_MACH_LGE
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 #ifdef CONFIG_LEDS_AS364X
 #include <linux/leds-as364x.h>
 #endif
-/* LGE_CHANGE_E: 2012/12/7 mjoh@lge.com M4 Flash Porting */
+/*                                                       */
 
 
 #define GPIO_SKU1_CAM_VGA_SHDN    18
@@ -54,7 +54,7 @@
 #define GPIO_SKU7_CAM_5MP_CAMIF_RESET   23   /* (board_is(EVT))?123:121 RESET */
 
 #ifdef CONFIG_MSM_CAMERA_V4L2
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 static uint32_t camera_off_gpio_table[] = {
 	GPIO_CFG(15, 0, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA),
@@ -134,20 +134,20 @@ static struct msm_camera_sensor_flash_src msm_flash_src = {
 	._fsrc.ext_driver_src.led_flash_en = GPIO_CAM_GP_LED_EN2,
 };
 #endif
-#endif // CONFIG_MACH_LGE
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
-/* LGE_CHANGE 2012-03-29, woonrae.cho@lge.com, becasue of ldo change */
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+#endif //                
+/*                                                               */
+/*                                                                   */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 static struct camera_vreg_t msm_cam_vreg[] = {
 	{"msme1", REG_LDO, 1800000, 1800000, 0},
 	{"ldo10", REG_LDO, 2850000, 2850000, 0},
 	{"usb2", REG_LDO, 1800000, 1800000, 0},
 };
-#endif // CONFIG_MACH_LGE
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+#endif //                
+/*                                                               */
 
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifdef CONFIG_HI542
 static uint32_t hi542_cam_off_gpio_table[] = {
 	GPIO_CFG(15, 0, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA), // mclk	
@@ -183,8 +183,8 @@ static struct msm_camera_gpio_conf gpio_conf_hi542 = {
 	.gpio_no_mux = 1,
 };
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                            */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 static struct camera_vreg_t ov5647_gpio_vreg[] = {
 	{"cam_ov5647_avdd", REG_GPIO, 0, 0, 0},
@@ -203,7 +203,7 @@ static struct camera_vreg_t ov7692_gpio_vreg[] = {
 
 static struct msm_camera_sensor_info msm_camera_sensor_s5k4e1_data;
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
 struct msm_camera_device_platform_data msm_camera_device_data_csi1[] = {
 	{
@@ -235,7 +235,7 @@ struct msm_camera_device_platform_data msm_camera_device_data_csi0[] = {
 	},
 };
 
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifdef CONFIG_HI542
 static struct i2c_board_info msm_act_main_cam_i2c_info = {
 #if defined(CONFIG_HI542_ACT) 
@@ -286,8 +286,8 @@ static struct msm_camera_sensor_info msm_camera_sensor_hi542_data = {
 #endif
 };
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                            */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 static struct msm_actuator_info msm_act_main_cam_4_info = {
 	.board_info     = &msm_act_main_cam_i2c_info,
@@ -297,7 +297,7 @@ static struct msm_actuator_info msm_act_main_cam_4_info = {
 	.vcm_enable     = 1,
 };
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
 #ifdef CONFIG_S5K4E1
 static struct msm_camera_sensor_flash_data flash_s5k4e1 = {
@@ -395,7 +395,7 @@ static struct msm_camera_sensor_info msm_camera_sensor_ov5647_data = {
 
 #endif
 
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 static struct msm_camera_gpio_conf gpio_conf_ov8825 = {
 	.camera_off_table = camera_off_gpio_table,
@@ -486,8 +486,8 @@ static struct msm_camera_sensor_info msm_camera_sensor_ov9726_data = {
 	.sensor_type = BAYER_SENSOR,
 };
 #endif
-#endif // CONFIG_MACH_LGE
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+#endif //                
+/*                                                               */
 
 
 
@@ -502,13 +502,13 @@ static void __init msm7x27a_init_cam(void)
 	if (!(machine_is_msm7x27a_ffa() || machine_is_msm7625a_ffa()
 				|| machine_is_msm7627a_qrd1()
 				|| machine_is_msm8625_ffa())) {
-//LGE_CHANGE_S: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
+//                                                                     
 #ifdef CONFIG_MACH_LGE
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifdef CONFIG_HI542
 				sensor_board_info_hi542.cam_vreg = NULL;
 				sensor_board_info_hi542.num_vreg = 0;
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #endif
 #else
 		sensor_board_info_s5k4e1.cam_vreg = NULL;
@@ -524,9 +524,9 @@ static void __init msm7x27a_init_cam(void)
 		sensor_board_info_ov8825.cam_vreg = NULL;
 		sensor_board_info_ov8825.num_vreg = 0;
 #endif
-//LGE_CHANGE_E: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
+//                                                                     
 	}
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 	if (machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()) {
@@ -544,7 +544,7 @@ static void __init msm7x27a_init_cam(void)
 			ARRAY_SIZE(ov8825_gpio_vreg);
 	}
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 	platform_device_register(&msm_camera_server);
 #if 0
 	if (machine_is_msm8625_surf() || machine_is_msm8625_evb()
@@ -569,15 +569,15 @@ static void __init msm7x27a_init_cam(void)
 }
 
 static struct i2c_board_info i2c_camera_devices[] = {
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifdef CONFIG_HI542
 	{
 		I2C_BOARD_INFO("hi542", 0x40),
 		.platform_data = &msm_camera_sensor_hi542_data,
 	},
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                            */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 	{
 		I2C_BOARD_INFO("s5k4e1", 0x36),
@@ -607,9 +607,9 @@ static struct i2c_board_info i2c_camera_devices[] = {
 		I2C_BOARD_INFO("sc628a", 0x6E),
 	},
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 };
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 #ifdef CONFIG_LEDS_AS364X
 static struct gpio_i2c_pin flash_i2c_pin[] = {
 	{
@@ -657,7 +657,7 @@ static struct i2c_board_info i2c_camera_flash_devices[] = {
 	},
 };
 #endif // CONFIG_LEDS_AS364X
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 #else
 static uint32_t camera_off_gpio_table[] = {
 	GPIO_CFG(15, 0, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA),
@@ -741,7 +741,7 @@ static void qrd1_camera_gpio_cfg(void)
 
 static void evb_camera_gpio_cfg(void)
 {
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 	int rc = 0;
 
@@ -785,7 +785,7 @@ static void evb_camera_gpio_cfg(void)
 		pr_err("%s: unable to set gpio: %d direction for ov5647 camera\n",
 			__func__, msm_camera_sensor_ov5647_data.sensor_reset);
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 }
 
 #ifndef CONFIG_MSM_CAMERA_V4L2
@@ -1236,7 +1236,7 @@ static struct platform_device *camera_devices_evb[] __initdata = {
 };
 #endif
 
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 enum {
 	SX150X_CAM,
@@ -1267,7 +1267,7 @@ static void __init register_i2c_devices(void)
 				ARRAY_SIZE(cam_exp_i2c_info));
 }
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
 #ifndef CONFIG_MSM_CAMERA_V4L2
 #define LCD_CAMERA_LDO_2V8 35 /* SKU1&SKU3 2.8V LDO */
@@ -1370,7 +1370,7 @@ int lcd_camera_power_onoff(int on)
 EXPORT_SYMBOL(lcd_camera_power_onoff);
 #endif
 
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 #ifdef CONFIG_LEDS_AS364X
 static void __init lge_init_i2c_camera(int bus_num)
 {
@@ -1382,7 +1382,7 @@ static void __init lge_init_i2c_camera(int bus_num)
 	platform_device_register(&flash_i2c_device);
 }
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 void __init msm7627a_camera_init(void)
 {
 
@@ -1392,7 +1392,7 @@ void __init msm7627a_camera_init(void)
 
 	pr_debug("msm7627a_camera_init Entered\n");
 
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 	if (machine_is_msm7627a_qrd3() || machine_is_msm8625_qrd7()) {
 		ov7692_cam_req_gpio[0].gpio =
@@ -1406,7 +1406,7 @@ void __init msm7627a_camera_init(void)
 			GPIO_SKU7_CAM_5MP_CAMIF_RESET;
 	}
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 	/* LCD and camera power (VREG & LDO) init */
 	if (machine_is_msm7627a_evb() || machine_is_msm8625_evb()
 			|| machine_is_msm8625_evt()
@@ -1436,7 +1436,7 @@ void __init msm7627a_camera_init(void)
 		platform_add_devices(camera_devices_msm,
 				ARRAY_SIZE(camera_devices_msm));
 #endif
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 	if (!machine_is_msm7627a_qrd1() || !machine_is_msm7627a_evb()
 					|| !machine_is_msm8625_evb()
@@ -1445,7 +1445,7 @@ void __init msm7627a_camera_init(void)
 					|| !machine_is_msm8625_qrd7())
 		register_i2c_devices();
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MSM_CAMERA_V4L2
 	rc = regulator_bulk_get(NULL, ARRAY_SIZE(regs_camera), regs_camera);
 
@@ -1485,9 +1485,9 @@ void __init msm7627a_camera_init(void)
 		i2c_register_board_info(MSM_GSBI0_QUP_I2C_BUS_ID,
 				i2c_camera_devices,
 				ARRAY_SIZE(i2c_camera_devices));
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 #ifdef CONFIG_LEDS_AS364X
 	lge_add_gpio_i2c_device(lge_init_i2c_camera);
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com M4 Flash Porting */
+/*                                                        */
 }

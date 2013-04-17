@@ -62,17 +62,17 @@ static struct snd_curr_dev_info curr_dev;
 #define SND_CAD_SET_VOLUME_PROC 39
 #define MAX_SND_ACTIVE_DEVICE 2
 
-//LGE_CHANGE_S, [youngbae.choi@lge.com] , 2011-12-08
+//                                                  
 #if defined (CONFIG_MACH_LGE)
 #define SND_SET_LOOPBACK_MODE_PROC 61
-/* LGE_CHANGE_S :  2011-12-30, gt.kim@lge.com, Description: Bluetooth NERC Cmd Support */
+/*                                                                                     */
 #define SND_SET_NREC_PROC 77
-/* LGE_CHANGE_E :  Bluetooth NERC Cmd Support*/
-/* LGE_CHANGE_S :  2012-01-26, gt.kim@lge.com, Description:  Display Service Type */
+/*                                           */
+/*                                                                                */
 #define SND_GET_SERVICE_TYPE_PROC	78
-/* LGE_CHANGE_E :   Display Service Type*/
+/*                                      */
 #endif
-//LGE_CHANGE_E, [youngbae.choi@lge.com] , 2011-12-08
+//                                                  
 struct rpc_cad_set_device_args {
 	struct cad_devices_type device;
 	uint32_t ear_mute;
@@ -102,7 +102,7 @@ struct snd_cad_set_volume_msg {
 };
 
 struct cad_endpoint *get_cad_endpoints(int *size);
-//LGE_CHANGE_S, [youngbae.choi@lge.com] , 2011-12-08
+//                                                  
 #if defined (CONFIG_MACH_LGE)
 struct snd_set_loopback_param_rep {
 	struct rpc_reply_hdr hdr;
@@ -120,7 +120,7 @@ struct snd_set_loopback_mode_msg {
 	struct rpc_snd_set_loopback_mode_args args;
 };
 
-/* LGE_CHANGE_S :  2012-1-2, gt.kim@lge.com, Description: Bluetooth NERC Cmd Support */
+/*                                                                                   */
 struct rpc_snd_set_bt_nerc_mode_args {
 	uint32_t mode;
 	uint32_t cb_func;
@@ -137,9 +137,9 @@ struct snd_set_bt_nerc_mode_rep {
 	uint32_t get_mode;
 }bt_nerc_rep;
 
-/* LGE_CHANGE_E :  Bluetooth NERC Cmd Support */
+/*                                            */
 
-/* LGE_CHANGE_S :  2012-01-26, gt.kim@lge.com, Description:  Display Service Type */
+/*                                                                                */
 int service_type;
 struct rpc_snd_get_service_type_args {
 	uint32_t cb_func;
@@ -155,21 +155,21 @@ struct snd_get_service_type_rep {
 	struct rpc_reply_hdr hdr;
 	uint32_t get_service;
 }get_service_rep;
-/* LGE_CHANGE_E :   Display Service Type*/
+/*                                      */
 
 union snd_set_union_param_msg{
 	struct snd_set_loopback_mode_msg lbmsg;
-/* LGE_CHANGE_S :  2012-1-2, gt.kim@lge.com, Description: Bluetooth NERC Cmd Support */
+/*                                                                                   */
 	struct snd_set_bt_nerc_mode_msg bt_nerc;
-/* LGE_CHANGE_E :  Bluetooth NERC Cmd Support */
+/*                                            */
 
-/* LGE_CHANGE_S :  2012-01-26, gt.kim@lge.com, Description:  Display Service Type */
+/*                                                                                */
 	struct snd_get_service_type_msg get_service;
-/* LGE_CHANGE_E :   Display Service Type*/
+/*                                      */
 };
 
 #endif
-//LGE_CHANGE_E, [youngbae.choi@lge.com] , 2011-12-08
+//                                                  
 
 #ifdef CONFIG_DEBUG_FS
 static struct dentry *dentry;
@@ -320,15 +320,15 @@ static long snd_cad_ioctl(struct file *file, unsigned int cmd,
 	struct msm_cad_device_config dev;
 	struct msm_cad_volume_config vol;
 	struct snd_cad_ctxt *snd = file->private_data;
-//LGE_CHANGE_S, [youngbae.choi@lge.com] , 2011-12-08
+//                                                  
 #if defined (CONFIG_MACH_LGE)
 	struct msm_snd_set_loopback_mode_param loopback;
-/* LGE_CHANGE_S :  2012-01-05, gt.kim@lge.com, Decription: Bluetooth NERC Cmd Support */	
+/*                                                                                    */	
     struct msm_snd_set_bt_nerc_param bt_nerc;
-/* LGE_CHANGE_E :Bluetooth NERC Cmd Support*/	
+/*                                         */	
 	union snd_set_union_param_msg umsg;
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 	int rc = 0;
 
 	mutex_lock(&snd->lock);
@@ -404,7 +404,7 @@ static long snd_cad_ioctl(struct file *file, unsigned int cmd,
 		rc = get_endpoint(snd, arg);
 		break;
 
-/*LGE_CHANBE_S : seven.kim@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                        */
 #if defined (CONFIG_MACH_LGE)
 	case SND_SET_LOOPBACK_MODE:
 		if (copy_from_user(&loopback, (void __user *) arg, sizeof(loopback))) {
@@ -435,7 +435,7 @@ static long snd_cad_ioctl(struct file *file, unsigned int cmd,
 		}
 	break;
 
-/* LGE_CHANGE_S :  2012-01-26, gt.kim@lge.com, Description:  Display Service Type */
+/*                                                                                */
 	case SND_GET_SERVICE_TYPE:
 		umsg.get_service.args.cb_func = -1;
 		umsg.get_service.args.client_data = 0;
@@ -459,8 +459,8 @@ static long snd_cad_ioctl(struct file *file, unsigned int cmd,
 			}
 		}
 		break;
-/* LGE_CHANGE_E :	Display Service Type*/
-/* LGE_CHANGE_S :  2011-12-30, gt.kim@lge.com, Description: Bluetooth NERC Cmd Support */
+/*                                    */
+/*                                                                                     */
 case SND_SET_NREC:
 	if (copy_from_user(&bt_nerc, (void __user *) arg, sizeof(bt_nerc))) {
 		pr_err("snd_ioctl set_NREC: invalid pointer.\n");
@@ -492,9 +492,9 @@ case SND_SET_NREC:
 	}
 
 	break;
-/* LGE_CHANGE_E :  Bluetooth NERC Cmd Support */
+/*                                            */
 #endif
-/*LGE_CHANBE_E : seven.kim@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                        */
 
 	default:
 		MM_ERR("unknown command\n");

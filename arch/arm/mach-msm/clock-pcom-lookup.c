@@ -81,7 +81,7 @@ static struct pcom_clk dsi_byte_clk = {
 	.c = {
 		.ops = &clk_ops_pcom_ext_config,
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-		.flags = 0, /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+		.flags = 0, /*                                                   */
 #endif
 		.dbg_name = "dsi_byte_clk",
 		CLK_INIT(dsi_byte_clk.c),
@@ -93,7 +93,7 @@ static struct pcom_clk dsi_clk = {
 	.c = {
 		.ops = &clk_ops_pcom_ext_config,
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-		.flags = CLKFLAG_SKIP_AUTO_OFF, /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+		.flags = CLKFLAG_SKIP_AUTO_OFF, /*                                                   */
 #endif
 		.dbg_name = "dsi_clk",
 		CLK_INIT(dsi_clk.c),
@@ -105,7 +105,7 @@ static struct pcom_clk dsi_esc_clk = {
 	.c = {
 		.ops = &clk_ops_pcom_ext_config,
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-		.flags = CLKFLAG_SKIP_AUTO_OFF, /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+		.flags = CLKFLAG_SKIP_AUTO_OFF, /*                                                   */
 #endif
 		.dbg_name = "dsi_esc_clk",
 		CLK_INIT(dsi_esc_clk.c),
@@ -117,7 +117,7 @@ static struct pcom_clk dsi_pixel_clk = {
 	.c = {
 		.ops = &clk_ops_pcom_ext_config,
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-		.flags = CLKFLAG_SKIP_AUTO_OFF, /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+		.flags = CLKFLAG_SKIP_AUTO_OFF, /*                                                   */
 #endif
 		.dbg_name = "dsi_pixel_clk",
 		CLK_INIT(dsi_pixel_clk.c),
@@ -125,7 +125,7 @@ static struct pcom_clk dsi_pixel_clk = {
 };
 
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-static DEFINE_CLK_PCOM(dsi_ref_clk,	DSI_REF_CLK,	CLKFLAG_SKIP_AUTO_OFF); /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+static DEFINE_CLK_PCOM(dsi_ref_clk,	DSI_REF_CLK,	CLKFLAG_SKIP_AUTO_OFF); /*                                                   */
 #else
 static DEFINE_CLK_PCOM(dsi_ref_clk,	DSI_REF_CLK,	0);
 static DEFINE_CLK_PCOM(ebi1_clk,	EBI1_CLK,	CLKFLAG_MIN);
@@ -151,7 +151,7 @@ static DEFINE_CLK_PCOM(icodec_tx_clk,	ICODEC_TX_CLK,	0);
 static DEFINE_CLK_PCOM(imem_clk,	IMEM_CLK,	0);
 static DEFINE_CLK_PCOM(mdc_clk,		MDC_CLK,	0);
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-static DEFINE_CLK_PCOM(mdp_clk,		MDP_CLK,	0/*CLKFLAG_SKIP_AUTO_OFF*/); /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+static DEFINE_CLK_PCOM(mdp_clk,		MDP_CLK,	0/*CLKFLAG_SKIP_AUTO_OFF*/); /*                                                   */
 #else
 static DEFINE_CLK_PCOM(mdp_clk,		MDP_CLK,	CLKFLAG_MIN);
 #endif
@@ -161,7 +161,7 @@ static DEFINE_CLK_PCOM(mdp_lcdc_pclk_clk, MDP_LCDC_PCLK_CLK,
 		0);
 static DEFINE_CLK_PCOM(mdp_vsync_clk,	MDP_VSYNC_CLK,	0);
 #ifdef CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO
-static DEFINE_CLK_PCOM(mdp_dsi_p_clk,	MDP_DSI_P_CLK,	CLKFLAG_SKIP_AUTO_OFF); /*LGE_CHANGE : boot logo 2011-11-28 johny.lee@lge.com*/
+static DEFINE_CLK_PCOM(mdp_dsi_p_clk,	MDP_DSI_P_CLK,	CLKFLAG_SKIP_AUTO_OFF); /*                                                   */
 #else
 static DEFINE_CLK_PCOM(mdp_dsi_p_clk,	MDP_DSI_P_CLK,	0);
 static DEFINE_CLK_PCOM(pbus_clk,	PBUS_CLK,	CLKFLAG_MIN);
@@ -340,12 +340,10 @@ static struct clk_lookup msm_cmn_clk_7625a_7627a[] __initdata = {
 	CLK_LOOKUP("master_iface_clk",		ahb_m_clk.c,	"mipi_dsi.1"),
 	CLK_LOOKUP("slave_iface_clk",		ahb_s_clk.c,	"mipi_dsi.1"),
 	CLK_LOOKUP("cam_m_clk",		cam_m_clk.c,	NULL),
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifdef CONFIG_MACH_LGE
 #ifdef CONFIG_HI351
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0040"), /* GSBI0, Slave Addr: 0x40, hi351 */
-#elif defined (CONFIG_T4K28)
-	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0078"), /* GSBI0, Slave Addr: 0x78, t4k28 */	
 #elif defined (CONFIG_HI542) // && defined (CONFIG_MT9V113) // for m4
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-0040"), /* GSBI0, Slave Addr: 0x40, hi542 */
 //	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-007a"), /* GSBI0, Slave Addr: 0x7A, mt9v113 */	
@@ -368,7 +366,7 @@ static struct clk_lookup msm_cmn_clk_7625a_7627a[] __initdata = {
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-006c"),
 	CLK_LOOKUP("cam_clk",		cam_m_clk.c,	"0-000d"),
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 	CLK_LOOKUP("csi_clk",		csi0_clk.c,	"msm_camera_ov9726.0"),
 	CLK_LOOKUP("csi_pclk",		csi0_p_clk.c,	"msm_camera_ov9726.0"),
 	CLK_LOOKUP("csi_vfe_clk",	csi0_vfe_clk.c,	"msm_camera_ov9726.0"),

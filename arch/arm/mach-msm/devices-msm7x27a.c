@@ -846,9 +846,9 @@ static struct platform_device msm_lcdc_device = {
 };
 
 #ifdef CONFIG_FB_MSM_EBI2
-/* LGE_CHANGE
- * FIXME: EBI2 LCD platform device add. If QCT is implement, should be removed.
- * 2011-06-17, bongkyu.kim@lge.com
+/*           
+                                                                               
+                                  
  */
 static struct resource msm_ebi2_lcd_resources[] = {
 	{
@@ -896,13 +896,13 @@ static struct resource kgsl_3d0_resources[] = {
 
 static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 	.pwrlevel = {
-		/* LGE_CHANGE_S [peter.jung@lge.com]
-		    DoU Power consumption */
+		/*                                  
+                            */
 		{
 			.gpu_freq = 320000000,
 			.bus_freq = 200000000,
 		},
-		/* LGE_CHANGE_E [peter.jung@lge.com] */
+		/*                                   */
 		{
 			.gpu_freq = 245760000,
 			.bus_freq = 200000000,
@@ -917,10 +917,10 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 		},
 	},
 	.init_level = 0,
-	/* LGE_CHANGE_S [peter.jung@lge.com]
-	     DoU Power consumption */
+	/*                                  
+                            */
 	.num_levels = 4,
-	/* LGE_CHANGE_S [peter.jung@lge.com] */
+	/*                                   */
 	.set_grp_async = set_grp_xbar_async,
 	.idle_timeout = HZ,
 	.strtstp_sleepwake = true,
@@ -1007,7 +1007,7 @@ struct platform_device led_pdev = {
 		.platform_data	= &msm_kpbl_pdm_led_pdata,
 	},
 };
-/*LGE_CANGE_S : who were changed ?? */
+/*                                  */
 #if 0 //ew0804 mutiple define
 struct platform_device asoc_msm_pcm = {
 	.name   = "msm-dsp-audio",
@@ -1024,7 +1024,7 @@ struct platform_device asoc_msm_dai1 = {
 	.id     = 0,
 };
 #endif
-/*LGE_CANGE_E : who were changed ?? */
+/*                                  */
 static struct resource gpio_resources[] = {
 	{
 		.start	= INT_GPIO_GROUP1,
@@ -1607,10 +1607,10 @@ void __init msm_fb_register_device(char *name, void *data)
 			msm_register_device(&msm_lcdc_device, data);
 	} 
 #ifdef CONFIG_FB_MSM_EBI2
-	/* LGE_CHANGE
-	 * FIXME: EBI2 LCD platform device add. If QCT is implement, should be removed.
-	 * 2011-06-17, bongkyu.kim@lge.com
-	 */
+	/*           
+                                                                                
+                                   
+  */
 	else if (!strncmp(name, "ebi2", 4))
 		msm_register_device(&msm_ebi2_lcd_device, data);
 #endif	
@@ -1916,26 +1916,20 @@ static void __init msm_cpr_init(void)
 		msm_cpr_mode_data[TURBO_MODE].turbo_Vmin = 1100000;
 	}
 
-	pr_info("%s: cpr: ring_osc: 0x%x\n", __func__,
+	pr_debug("%s: cpr: ring_osc: 0x%x\n", __func__,
 		msm_cpr_mode_data[TURBO_MODE].ring_osc);
 	pr_info("%s: cpr: turbo_quot: 0x%x\n", __func__, cpr_info->turbo_quot);
 	pr_info("%s: cpr: pvs_fuse: 0x%x\n", __func__, cpr_info->pvs_fuse);
 	pr_info("%s: cpr: floor_fuse: 0x%x\n", __func__, cpr_info->floor_fuse);
+	pr_debug("%s: cpr: nom_Vmin: %d, turbo_Vmin: %d\n", __func__,
+		msm_cpr_mode_data[TURBO_MODE].nom_Vmin,
+		msm_cpr_mode_data[TURBO_MODE].turbo_Vmin);
 	kfree(cpr_info);
 
 	if (msm8625_cpu_id() == MSM8625A)
 		msm_cpr_pdata.max_freq = 1209600;
-	else if (msm8625_cpu_id() == MSM8625) {
+	else if (msm8625_cpu_id() == MSM8625)
 		msm_cpr_pdata.max_freq = 1008000;
-		msm_cpr_mode_data[TURBO_MODE].turbo_Vmin = 1175000;
-	}
-
-	pr_info("%s: cpr: nom_Vmin: %d, turbo_Vmin: %d\n", __func__,
-		msm_cpr_mode_data[TURBO_MODE].nom_Vmin,
-		msm_cpr_mode_data[TURBO_MODE].turbo_Vmin);
-	pr_info("%s: cpr: nom_Vmax: %d, turbo_Vmax: %d\n", __func__,
-		msm_cpr_mode_data[TURBO_MODE].nom_Vmax,
-		msm_cpr_mode_data[TURBO_MODE].turbo_Vmax);
 
 	msm_cpr_clk_enable();
 
@@ -2128,8 +2122,8 @@ void __init msm_common_io_init(void)
 	msm7x27x_cache_init();
 }
 
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
-#if !defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X27A_U0) && !defined(CONFIG_MACH_MSM7X25A_V1)
+/*                                                      */
+#if !defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X27A_U0)
 void __init msm8625_init_irq(void)
 {
 	msm_gic_irq_extn_init();
@@ -2146,7 +2140,7 @@ void __init msm8625_map_io(void)
 	msm7x27x_cache_init();
 }
 #endif /*CONFIG_MACH_MSM7X25A_V3*/
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 
 static int msm7627a_init_gpio(void)
 {

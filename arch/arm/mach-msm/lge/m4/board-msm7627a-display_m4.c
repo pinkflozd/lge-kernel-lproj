@@ -13,13 +13,13 @@
 #include "../../board-msm7627a.h"
 #include CONFIG_LGE_BOARD_HEADER_FILE
 
-/* LGE_CHANGE_S : lcd regulator patch
- * 2011-12-21, sinjo.mattappallil@lge.com,
- * vreg is converted to regulator framework.
+/*                                   
+                                          
+                                            
  */
 //#include <mach/vreg.h>
 #include <linux/regulator/consumer.h>
-/* LGE_CHANGE_E : lcd regulator patch */
+/*                                    */
 
 
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
@@ -75,7 +75,7 @@ static struct platform_device *msm_fb_devices[] __initdata = {
 };
 
 
-/* LGE_CHANGE_S, backlight device, sohyun.nam@lge.com, 2012-10-25 */
+/*                                                                */
 static struct gpio_i2c_pin bl_i2c_pin = {
 	.sda_pin = 112,
 	.scl_pin = 111,
@@ -107,9 +107,9 @@ static struct i2c_board_info bl_i2c_bdinfo[] = {
 	},
 };
 #endif
-/* LGE_CHANGE_E, backlight device, sohyun.nam@lge.com, 2012-10-25 */
+/*                                                                */
 
-/* LGE_CHANGE_S, lcd device , sohyun.nam@lge.com, 2012-10-25*/
+/*                                                          */
 #if defined (CONFIG_FB_MSM_MIPI_DSI_ILI9486)
 static struct platform_device mipi_dsi_ili9486_panel_device = {
 	.name = "mipi_ili9486",
@@ -121,7 +121,7 @@ static struct platform_device *m4_panel_devices[] __initdata = {
 	&mipi_dsi_ili9486_panel_device,
 };
 #endif
-/* LGE_CHANGE_E, lcd device, sohyun.nam@lge.com, 2012-10-25 */
+/*                                                          */
 
 void __init msm_msm7627a_allocate_memory_regions(void)
 {
@@ -158,9 +158,9 @@ void __init msm_msm7627a_allocate_memory_regions(void)
 static struct msm_panel_common_pdata mdp_pdata = {
 	.gpio = 97,						/*LCD_VSYNC_P*/
 	.mdp_rev = MDP_REV_303,
-/* [LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com] - QCT supported continuation of display logo image from LK*/	
+/*                                                                                                          */	
 	.cont_splash_enabled = 0x1,
-/* [LGSI_SP4_BSP_END] [kiran.jainapure@lge.com] */	
+/*                                              */	
 };
 
 enum {
@@ -185,9 +185,9 @@ static int msm_fb_get_lane_config(void)
 #define GPIO_LCD_RESET 125
 static int dsi_gpio_initialized = 0;
 static int Isfirstbootend = 0;
-/* LGE_CHANGE_S : lcd regulator patch
- * 2011-12-21, sinjo.mattappallil@lge.com,
- * vreg is converted to regulator framework.
+/*                                   
+                                          
+                                            
  */
 static struct regulator *vreg_mipi_dsi_v28;
 
@@ -258,10 +258,10 @@ int mipi_dsi_panel_power(int on)
 			gpio_set_value(GPIO_LCD_RESET, 0);
 			msleep(10);
 			gpio_set_value(GPIO_LCD_RESET, 1);
-			//LGE_CHANGE_S : youngbae.choi@lge.com [2012-04-28]		
+			//                                                   
 			//Although Recommand is 120ms, 60ms is no problem when wake up. (120ms --> 60ms)
 			msleep(120);
-			//LGE_CHANGE_E : youngbae.choi@lge.com [2012-04-28]
+			//                                                 
 
 			
 		} else{
@@ -283,9 +283,9 @@ vreg_put_dsi_v28:
 	
 	return rc;
 }
-/* LGE_CHANGE_E : lcd regulator patch */
+/*                                    */
 
-/* LGE_CHANGE_S, MDP setting, sohyun.nam@lge.com, 2012-10-25*/
+/*                                                          */
 #define MDP_303_VSYNC_GPIO 97
 
 #ifdef CONFIG_FB_MSM_MDP303
@@ -298,7 +298,7 @@ static struct mipi_dsi_platform_data mipi_dsi_pdata = {
 	.get_lane_config = msm_fb_get_lane_config,
 };
 #endif
-/* LGE_CHANGE_E, MDP setting, sohyun.nam@lge.com, 2012-10-25 */
+/*                                                           */
 
 void __init msm7x27a_m4_init_i2c_backlight(int bus_num)
 {

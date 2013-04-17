@@ -37,7 +37,7 @@ static DECLARE_DELAYED_WORK(dogsoftwork_struct, pet_softwatchdog_work);
 
 static void pet_softwatchdog_work(struct work_struct *work)
 {
-#if !defined (CONFIG_MACH_MSM7X27A_U0)		// bohyun.jung@lge.com - it overwhelms all over kernel logs. 
+#if !defined (CONFIG_MACH_MSM7X27A_U0)		//                                                           
 /*	printk(KERN_INFO "MSM Soft Watchdog petting every 2 seconds"); */
 #endif
 	last_pet = sched_clock();

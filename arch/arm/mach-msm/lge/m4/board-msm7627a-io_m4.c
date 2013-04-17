@@ -25,7 +25,7 @@
 #include <mach/pmic.h>
 #include <linux/ktime.h>
 #include <mach/vreg.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../board-msm7627a.h"
@@ -35,8 +35,8 @@
 #include "devices.h"
 #include "board-msm7627a.h"
 #include "devices-msm7x2xa.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 
 #ifdef CONFIG_LGE_NFC
 #include <linux/nfc/pn544_lge.h>
@@ -115,12 +115,12 @@ int m4_matrix_info_wrapper(struct gpio_event_input_devs *input_dev,
 
 static int m4_gpio_matrix_power(const struct gpio_event_platform_data *pdata, bool on)
 {
-	/* this is dummy function
-	 * to make gpio_event driver register suspend function
-	 * 2010-01-29, cleaneye.kim@lge.com
-	 * copy from ALOHA code
-	 * 2010-04-22 younchan.kim@lge.com
-	 */
+	/*                       
+                                                       
+                                    
+                        
+                                   
+  */
 	return 0;
 }
 
@@ -131,11 +131,11 @@ static struct gpio_event_matrix_info m4_keypad_matrix_info = {
 	.input_gpios	= keypad_row_gpios,
 	.noutputs	= ARRAY_SIZE(keypad_col_gpios),
 	.ninputs	= ARRAY_SIZE(keypad_row_gpios),	
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 proting
- * gpio_event_matrix_info structure member was changed, ktime_t -> struct timespec */	
+/*                                                  
+                                                                                   */	
 	.settle_time.tv64 = 40 * NSEC_PER_USEC,
 	.poll_time.tv64 = 20 * NSEC_PER_MSEC,
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 proting*/
+/*                                                  */
 	.flags		= GPIOKPF_LEVEL_TRIGGERED_IRQ | GPIOKPF_PRINT_UNMAPPED_KEYS | GPIOKPF_DRIVE_INACTIVE
 };
 
@@ -183,7 +183,7 @@ static struct platform_device *m4_ats_input_devices[] __initdata = {
 };
 #endif
 
-/* LGE_CHANGE_S [seven.kim@lge.com] 20110922 New Bosch compass+accel Sensor Porting*/ 
+/*                                                                                 */ 
 static struct gpio_i2c_pin accel_i2c_pin[] = {
 	[0] = {
 		.sda_pin	= SENSOR_GPIO_I2C_SDA,
@@ -374,11 +374,11 @@ static int init_gpio_i2c_pin_touch(
 	i2c_adap_pdata->sda_pin = gpio_i2c_pin.sda_pin;
 	i2c_adap_pdata->scl_pin = gpio_i2c_pin.scl_pin;
 
-/* LGE_CHANGE_S: seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                    */
 	gpio_request(TS_GPIO_I2C_SDA, "Melfas_I2C_SDA");
 	gpio_request(TS_GPIO_I2C_SCL, "Melfas_I2C_SCL");
 	gpio_request(TS_GPIO_IRQ, "Melfas_I2C_INT");
-/* LGE_CHANGE_E: seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                    */
 
 	gpio_tlmm_config(
 		GPIO_CFG(gpio_i2c_pin.sda_pin, 0, GPIO_CFG_OUTPUT,
@@ -396,13 +396,13 @@ static int init_gpio_i2c_pin_touch(
 		gpio_set_value(gpio_i2c_pin.reset_pin, 1);
 	}
 
-#if 0	/*LGE_CHANGE_S : seven.kim@lge.com for V3 Touch Porting*/
+#if 0	/*                                                     */
 #if (defined(CONFIG_MACH_MSM7X25A_M4EU_REV_A) || defined(CONFIG_MACH_MSM7X25A_M4BR_REV_B))
 	gpio_tlmm_config(
 		GPIO_CFG(TS_GPIO_POWER, 0, GPIO_CFG_OUTPUT,
 				GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
 #endif
-#endif /*LGE_CHANGE_E : seven.kim@lge.com for V3 Touch Porting*/
+#endif /*                                                     */
 
 	if (gpio_i2c_pin.irq_pin) {
 		gpio_tlmm_config(
@@ -412,11 +412,11 @@ static int init_gpio_i2c_pin_touch(
 			MSM_GPIO_TO_INT(gpio_i2c_pin.irq_pin);
 	}
 
-/* LGE_CHANGE_S : seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                     */
 	gpio_free(TS_GPIO_I2C_SDA);
 	gpio_free(TS_GPIO_I2C_SCL);
 	gpio_free(TS_GPIO_IRQ);
-/* LGE_CHANGE_E: seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                    */
 
 	return 0;
 }
@@ -431,11 +431,11 @@ static void __init m4_init_i2c_touch(int bus_num)
 		bus_num, &ts_i2c_bdinfo[0], 1);
 	platform_device_register(&ts_i2c_device);
 }
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 melfas mms128s touch*/
+/*                                                            */
 #endif 
 
 #ifdef CONFIG_LGE_NFC
-// 2012.09.26 garam.kim@lge.com NFC registration
+//                                              
 static struct gpio_i2c_pin nfc_i2c_pin[] = {
 	[0] = {
 		.sda_pin	= NFC_GPIO_I2C_SDA,
@@ -505,15 +505,15 @@ static void __init m4_init_i2c_nfc(int bus_num)
 
 void __init msm7627a_add_io_devices(void)
 {
-	/*LGE_CHANGE_S : seven.kim@lge.com JB 2035.2B Migration*/
+	/*                                                     */
 	/* ignore end key as this target doesn't need it */
 	hs_platform_data.ignore_end_key = true;
-	/*LGE_CHANGE_E : seven.kim@lge.com JB 2035.2B Migration*/
+	/*                                                     */
 	
 	platform_add_devices(m4_input_devices, ARRAY_SIZE(m4_input_devices));
 
 	
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 mms128 touch*/
+/*                                                    */
 #if defined(CONFIG_TOUCHSCREEN_MELFAS_TS)
 	lge_add_gpio_i2c_device(m4_init_i2c_touch);
 #endif
@@ -522,13 +522,13 @@ void __init msm7627a_add_io_devices(void)
 	platform_add_devices(m4_ats_input_devices, ARRAY_SIZE(m4_ats_input_devices));
 #endif
 
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 mms128 touch*/
+/*                                                    */
 
 #if defined (CONFIG_SENSORS_BMM050) ||defined(CONFIG_SENSORS_BMA250)
 	lge_add_gpio_i2c_device(m4_init_i2c_sensor);
 #endif	
 
-	//eee3114.lee@lge.com sensor
+	//                          
 	lge_add_gpio_i2c_device(m4_init_i2c_prox);
 
 #ifdef CONFIG_LGE_NFC

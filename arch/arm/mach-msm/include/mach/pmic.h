@@ -623,7 +623,7 @@ struct pm8xxx_gpio_rpc_cfg {
 	bool				int_polarity;
 };
 
-//LGE_CHANGE_S,narasimha.chikka@lge.com,Add charger ic register status
+//                                                                    
 #if defined(CONFIG_MACH_MSM8X25_V7)
 enum max8971_register{
 	MAX8971_REG_CHGINT ,
@@ -653,7 +653,7 @@ struct max8971_reg{
 	enum max8971_register  read_result;
 };
 #endif
-//LGE_CHANGE_E,narasimha.chikka@lge.com,Add charger ic register status
+//                                                                    
 
 int pmic_lp_mode_control(enum switch_cmd cmd, enum vreg_lp_id id);
 int pmic_vreg_set_level(enum vreg_id vreg, int level);
@@ -778,12 +778,12 @@ int pmic_gpio_get_value(unsigned gpio);
 int pmic_gpio_get_direction(unsigned gpio);
 int pmic_gpio_config(struct pm8xxx_gpio_rpc_cfg *);
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-   /* LGE_CHANGE_S : U0 Heating and DoU Issue
-    * 2012-01-26, yoonsoo.kim@lge.com,
-    * When user enter the streaming service, change the charging current
+   /*                                        
+                                      
+                                                                        
     */
 int pmic_miniabb_charging_current_change(uint16_t charging_current);
-   /* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+   /*                                        */
 #endif
 #if defined(CONFIG_MACH_MSM8X25_V7)
 int pmic_get_charging_ic_reg(struct max8971_reg *reg);

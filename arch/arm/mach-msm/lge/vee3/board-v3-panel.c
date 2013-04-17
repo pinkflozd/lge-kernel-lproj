@@ -36,7 +36,7 @@
 #endif
 
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
-#define MSM_FB_SIZE		0x1C3000		/* 20121025 Yoonsoo-Kim[yoonsoo.kim@lge.com] [V3] : QVGA Customization ; 1.76MB  0x4BF000->0x1C3000  */
+#define MSM_FB_SIZE		0x1C3000		/*                                                                                                   */
 #define MSM7x25A_MSM_FB_SIZE    0x1C2000
 #define MSM8x25_MSM_FB_SIZE	0x5FA000
 #else
@@ -45,10 +45,10 @@
 #define MSM8x25_MSM_FB_SIZE	0x3FC000
 #endif
 
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 lcd*/
+/*                                           */
 #define GPIO_LCD_RESET_N 125
 #define MDP_303_VSYNC_GPIO 97
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 lcd*/
+/*                                           */
 
 static unsigned fb_size = MSM_FB_SIZE;
 static int __init fb_size_setup(char *p)
@@ -376,7 +376,7 @@ static int mipi_dsi_panel_power(int on)
 				goto vreg_put_dsi_v18;
 			}
 			
-			msleep(3); //LGE_CHANGE_S [changbum.lee] 20120130 : add delay
+			msleep(3); //                                                
 			rc = regulator_enable(regulator_mipi_dsi[1]);
 			if (rc) {
 				pr_err("%s: vreg_enable failed for mipi_dsi_v28\n", __func__);
@@ -384,7 +384,7 @@ static int mipi_dsi_panel_power(int on)
 			}
 	
 			if (Isfirstbootend) {
-	//LGE_CHANGE_S [changbum.lee] 20120130 //Toggle 2.8V
+	//                                                  
 				msleep(15);
 				rc = regulator_disable(regulator_mipi_dsi[1]);//2.8v
 				if (rc) {
@@ -397,7 +397,7 @@ static int mipi_dsi_panel_power(int on)
 					pr_err("%s: vreg_enable failed for mipi_dsi_v28\n", __func__);
 					goto vreg_put_dsi_v28;
 				}		
-	//LGE_CHANGE_E [changbum.lee] 20120130 //Toggle 2.8V
+	//                                                  
 			} else{
 				Isfirstbootend = 1;
 			}
@@ -513,12 +513,12 @@ static struct mipi_dsi_platform_data mipi_dsi_pdata = {
 
 void __init msm_fb_add_devices(void)
 {
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 lcd*/
+/*                                           */
 	if(ebi2_tovis_panel_data.initialized)
 		ebi2_tovis_power_save(1);
 
 	fb_register_client(&v3eu_fb_event_notifier);
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 lcd*/	
+/*                                           */	
 	
 	platform_add_devices(msm_fb_devices, ARRAY_SIZE(msm_fb_devices));
 	platform_add_devices(v3eu_panel_devices, ARRAY_SIZE(v3eu_panel_devices));
@@ -532,9 +532,9 @@ void __init msm_fb_add_devices(void)
 	msm_fb_register_device("mipi_dsi", &mipi_dsi_pdata);
 #endif
 
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 lcd*/
+/*                                           */
 	lge_add_gpio_i2c_device(msm7x27a_v3eu_init_i2c_backlight);
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 lcd*/	
+/*                                           */	
 
 #ifdef CONFIG_FB_MSM_MIPI_DSI
 	mipi_dsi_regulator_init();

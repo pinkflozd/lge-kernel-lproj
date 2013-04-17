@@ -20,11 +20,11 @@
 #include <linux/spinlock.h>
 
 #ifdef CONFIG_LGE_WAIT_FOR_EFS_SYNC_COMPLETE
-/*LGE_CHANGE_S: seven.kim@lge.com  21/03/2012*/
+/*                                           */
 /*Wait for EFS sync comeplete while power off/ reset*/
 #include <linux/wait.h>
 /*Wait for EFS sync comeplete while power off/ reset*/
-/*LGE_CHANGE_E: seven.kim@lge.com  21/03/2012*/
+/*                                           */
 #endif
 
 #include <mach/msm_smsm.h>
@@ -261,7 +261,7 @@ extern spinlock_t smem_lock;
 void smd_diag(void);
 
 #ifdef CONFIG_LGE_WAIT_FOR_EFS_SYNC_COMPLETE
-/*LGE_CHANGE_S: seven.kim@lge.com  21/03/2012*/
+/*                                           */
 /*Wait for EFS sync comeplete while power off/ reset*/
 struct pm_rmt_clnt_wait_info {
 	atomic_t wait_for_RPC_close;
@@ -270,7 +270,7 @@ struct pm_rmt_clnt_wait_info {
 };
 extern struct pm_rmt_clnt_wait_info *pm_rmt_wait;
 /*Wait for EFS sync comeplete while power off/ reset*/
-/*LGE_CHANGE_E: seven.kim@lge.com  21/03/2012*/
+/*                                           */
 #endif
 
 struct interrupt_stat {

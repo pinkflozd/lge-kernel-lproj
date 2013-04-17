@@ -24,7 +24,7 @@
 #include <mach/gpiomux.h>
 #include <mach/socinfo.h>
 #include <mach/rpc_pmapp.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../board-msm7627a.h"
@@ -33,8 +33,8 @@
 #else /*qct original*/
 #include "devices.h"
 #include "board-msm7627a.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MSM_FB_SIZE		0x1C2000
@@ -46,11 +46,11 @@
 #define MSM8x25_MSM_FB_SIZE	0x3FC000
 #endif
 
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 lcd*/
+/*                                           */
 #define GPIO_LCD_RESET_N 125
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 lcd*/
+/*                                           */
 
-/*LGE_CHANGE_S : seven.kim@lge.com block not used variables for v3 lcd*/
+/*                                                                    */
 #ifndef CONFIG_MACH_LGE
 /*
  * Reserve enough v4l2 space for a double buffered full screen
@@ -487,8 +487,8 @@ static struct platform_device lcdc_toshiba_panel_device = {
 		.platform_data = &lcdc_toshiba_panel_data,
 	}
 };
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com block not used variables for v3 lcd*/
+#endif /*               */
+/*                                                                    */
 
 static struct resource msm_fb_resources[] = {
 	{
@@ -504,7 +504,7 @@ static struct resource msm_v4l2_video_overlay_resources[] = {
 };
 #endif
 
-/*LGE_CHANGE_S : seven.kim@lge.com block not used variables for v3 lcd*/
+/*                                                                    */
 #ifndef CONFIG_MACH_LGE
 #define LCDC_TOSHIBA_FWVGA_PANEL_NAME   "lcdc_toshiba_fwvga_pt"
 #define MIPI_CMD_RENESAS_FWVGA_PANEL_NAME       "mipi_cmd_renesas_fwvga"
@@ -556,10 +556,10 @@ static int mipi_truly_set_bl(int on)
 
 	return 1;
 }
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com block not used variables for v3 lcd*/
+#endif /*               */
+/*                                                                    */
 
-/*LGE_CHANGE_S : seven.kim@lge.com add variables for v3 lcd*/
+/*                                                         */
 #ifdef CONFIG_MACH_LGE
 static int msm_fb_detect_panel(const char *name)
 {
@@ -570,8 +570,8 @@ static int msm_fb_detect_panel(const char *name)
 
 	return ret;
 }
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com add variables for v3 lcd*/
+#endif /*               */
+/*                                                         */
 
 static struct msm_fb_platform_data msm_fb_pdata = {
 	.detect_client = msm_fb_detect_panel,
@@ -624,7 +624,7 @@ static struct platform_device mipi_dsi_renesas_panel_device = {
 };
 #endif
 
-/*LGE_CHANGE_S : seven.kim@lge.com block not used variables for v3 lcd*/
+/*                                                                    */
 #ifndef CONFIG_MACH_LGE
 static int evb_backlight_control(int level, int mode)
 {
@@ -768,11 +768,11 @@ static struct platform_device mipi_dsi_NT35516_panel_device = {
 		.platform_data = &mipi_NT35516_pdata,
 	}
 };
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com block not used variables for v3 lcd*/
+#endif /*               */
+/*                                                                    */
 
 static struct platform_device *msm_fb_devices[] __initdata = {
-/*LGE_CHANGE_S : seven.kim@lge.com v3 LCD Porting*/
+/*                                               */
 #ifdef CONFIG_MACH_LGE
 		&msm_fb_device,
 #else /*qct original*/	
@@ -784,11 +784,11 @@ static struct platform_device *msm_fb_devices[] __initdata = {
 #ifdef CONFIG_MSM_V4L2_VIDEO_OVERLAY_DEVICE
 	&msm_v4l2_video_overlay_device,
 #endif
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_S : seven.kim@lge.com v3 LCD Porting*/
+#endif /*               */
+/*                                               */
 };
 
-/*LGE_CHANGE_S : seven.kim@lge.com block not used variables for v3 lcd*/
+/*                                                                    */
 #ifndef CONFIG_MACH_LGE
 static struct platform_device *qrd_fb_devices[] __initdata = {
 	&msm_fb_device,
@@ -805,8 +805,8 @@ static struct platform_device *evb_fb_devices[] __initdata = {
 	&mipi_dsi_NT35510_panel_device,
 	&mipi_dsi_NT35516_panel_device,
 };
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com block not used variables for v3 lcd*/
+#endif /*               */
+/*                                                                    */
 
 void __init msm_msm7627a_allocate_memory_regions(void)
 {
@@ -838,7 +838,7 @@ static struct msm_panel_common_pdata mdp_pdata = {
 	.cont_splash_enabled = 0x1,
 };
 
-/*LGE_CHANGE_S : seven.kim@lge.com block not used variables for v3 lcd*/
+/*                                                                    */
 #ifndef CONFIG_MACH_LGE
 static char lcdc_splash_is_enabled()
 {
@@ -1396,10 +1396,10 @@ void msm7x27a_set_display_params(char *prim_panel)
 			disable_splash = 1;
 	}
 }
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com block not used variables for v3 lcd*/
+#endif /*               */
+/*                                                                    */
 
-/*LGE_CHANGE_S : seven.kim@lge.com add LG lcd and backlight features */
+/*                                                                   */
 #ifdef CONFIG_MACH_LGE 
 static struct gpio_i2c_pin bl_i2c_pin = {
 	.sda_pin = 112,
@@ -1417,7 +1417,7 @@ static struct platform_device bl_i2c_device = {
 	.name = "i2c-gpio",
 	.dev.platform_data = &bl_i2c_pdata,
 };
-#endif /*CONFIG_MACH_LGE*/
+#endif /*               */
 
 #ifdef CONFIG_BACKLIGHT_BU61800
 static struct lge_backlight_platform_data bu61800bl_data = {
@@ -1538,10 +1538,10 @@ static int v3eu_fb_event_notify(struct notifier_block *self,
 	struct fb_info *info = event->info;
 	struct fb_var_screeninfo *var = &info->var;
 	if(action == FB_EVENT_FB_REGISTERED) {
-/*[2012-12-18][junghoon79.kim@lge.com]screen size chage (dpi 140 -> 127)[TD:259111]  [start]*/
+/*                                                                                          */
 		var->width = 49/*43*/;
 		var->height = 65/*58*/;
-/*[2012-12-18][junghoon79.kim@lge.com]screen size chage (dpi 140 -> 127)[TD:259111]  [end]*/	
+/*                                                                                        */	
 	}
 	return 0;
 }
@@ -1550,11 +1550,11 @@ static struct notifier_block v3eu_fb_event_notifier = {
 	.notifier_call	= v3eu_fb_event_notify,
 };
 #endif /*CONFIG_FB_MSM_EBI2_TOVIS_QVGA*/
-/*LGE_CHANGE_E : seven.kim@lge.com add LG lcd and backlight features */
+/*                                                                   */
 
 void __init msm_fb_add_devices(void)
 {
-/*LGE_CHANGE_S : seven.kim@lge.com V3 LCD Porting */
+/*                                                */
 #ifndef CONFIG_MACH_LGE  /*QCT original*/		
 	int rc = 0;
 
@@ -1632,6 +1632,6 @@ void __init msm_fb_add_devices(void)
 
 	lge_add_gpio_i2c_device(msm7x27a_v3eu_init_i2c_backlight);
 
-#endif /*ifndef CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com V3 LCD Porting */	
+#endif /*                      */
+/*                                                */	
 }

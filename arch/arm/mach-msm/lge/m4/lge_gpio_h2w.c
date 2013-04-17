@@ -50,7 +50,7 @@ static void detection_work(struct work_struct *work);
 static DECLARE_WORK(g_detection_work, detection_work);
 static int ip_dev_reg;
 
-#if 0 //def CONFIG_LGE_DIAGTEST
+#if 0 //                       
 extern uint8_t if_condition_is_on_key_buffering;
 extern uint8_t lgf_factor_key_test_rsp(char);
 #endif
@@ -119,7 +119,7 @@ static void button_pressed(void)
 	atomic_set(&hi->btn_state, 1);
 	input_report_key(hi->input, KEY_MEDIA, 1);
 	input_sync(hi->input);
-#if 0 //def CONFIG_LGE_DIAGTEST
+#if 0 //                       
 	if(if_condition_is_on_key_buffering == 1)
 		lgf_factor_key_test_rsp((u8)KEY_MEDIA);
 #endif
@@ -210,9 +210,9 @@ static void insert_headset(void)
 	}
 #endif	
 	hi->debounce_time = ktime_set(0, 20000000);  /* 20 ms */
-/* LGE_CHANGE_S 2012-08-20 hoseong.kang@lge.com changed unplug debounce time 100ms -> 10ms */
+/*                                                                                         */
 	hi->unplug_debounce_time = ktime_set(0, 10000000);
-/* LGE_CHANGE_E changed unplug debounce time */
+/*                                           */
 }
 
 static void remove_headset(void)
@@ -235,17 +235,17 @@ static void remove_headset(void)
 		hi->enable_btn_irq = 0;
 		local_irq_restore(irq_flags);
 	}
-/* LGE_CHANGE_S 2012-08-20 hoseong.kang@lge.com	sleep 1500ms because the detect event is too slower than button event*/
+/*                                                                                                                   */
 	msleep(1500);
-/* LGE_CHANGE_E sleep 1500ms */
+/*                           */
 	/*Check Button State*/
 	if (atomic_read(&hi->btn_state))
 		button_released();
 	
 //bc	gpio_set_value(hi->gpio_mic_mode, 0);
-/* LGE_CHANGE_S: 2012-04-03, hoseong.kang@lge.com Description: 500ms -> 250ms */
+/*                                                                            */
 	hi->debounce_time = ktime_set(0, 250000000);  /* 500ms */
-/* LGE_CHANGE_E: 500ms -> 250ms */
+/*                              */
 }
 
 static void detection_work(struct work_struct *work)
@@ -318,9 +318,9 @@ static irqreturn_t detect_irq_handler(int irq, void *dev_id)
 {
 	int value1, value2;
 	int retry_limit = 10;
-/* LGE_CHANGE_S 2012-08-20 hoseong.kang@lge.com a flag of btn_timer state */	
+/*                                                                        */	
 	int cancel_btn_timer = 0;
-/* LGE_CHANGE_E flag */
+/*                   */
 	H2W_DBG("");
 	irq_set_irq_type(hi->irq_btn, IRQF_TRIGGER_LOW);
 	do {
@@ -347,11 +347,11 @@ static irqreturn_t detect_irq_handler(int irq, void *dev_id)
 			|| switch_get_state(&hi->sdev) == BIT_HEADSET_SPEAKER_ONLY
 	){
 		//test gpio_set_value(hi->gpio_mic_mode, 0);
-/* LGE_CHANGE_S 2012-08-20 hoseong.kang@lge.com when unplug the headset, cancel btn_timer.
-												when the btn_timer is active, cancel_btn_timer is 1*/
+/*                                                                                        
+                                                               */
 		cancel_btn_timer = hrtimer_cancel(&hi->btn_timer);
 		H2W_DBG("cancel_btn_timer : %d", cancel_btn_timer);
-/* LGE_CHANGE_E cancel btn_timer */
+/*                               */
 		hrtimer_start(&hi->timer, hi->unplug_debounce_time, HRTIMER_MODE_REL);
 		H2W_DBG("Unplug timer set \n");
 	}
@@ -386,13 +386,13 @@ static irqreturn_t button_irq_handler(int irq, void *dev_id)
 #endif
 	H2W_DBG("value2 = %d (%d retries) setBTNtimer 10ms", value2, (10-retry_limit));
 
-/* LGE_CHANGE_S 2012-08-20 hoseong.kang@lge.com changed button debounce time 70ms -> 30ms, 70ms -> 40ms */
+/*                                                                                                      */
 //	hrtimer_start(&hi->btn_timer, hi->btn_debounce_time, HRTIMER_MODE_REL);
 	if(value2 == 0)
 		hrtimer_start(&hi->btn_timer, ktime_set(0, 30000000), HRTIMER_MODE_REL);
 	else
 		hrtimer_start(&hi->btn_timer, ktime_set(0, 40000000), HRTIMER_MODE_REL);
-/* LGE_CHANGE_E changed button debounce time */
+/*                                           */
 
 	return IRQ_HANDLED;
 }
@@ -409,17 +409,17 @@ static int gpio_h2w_probe(struct platform_device *pdev)
 
 	atomic_set(&hi->btn_state, 0);
 	hi->ignore_btn = 0;
-/* LGE_CHANGE_S: 2012-04-03, hoseong.kang@lge.com Description: 500ms -> 250ms */
+/*                                                                            */
 	hi->debounce_time = ktime_set(0, 250000000);   /* VS760 100 ms -> 300ms */
-/* LGE_CHANGE_E: 500ms -> 250ms */
+/*                              */
 	//hi->btn_debounce_time = ktime_set(0, 10000000); /* 10 ms */
 /* not used
 	hi->btn_debounce_time = ktime_set(0, 70000000); 
 */
 
-/* LGE_CHANGE_S 2012-08-20 hoseong.kang@lge.com changed unplug debounce time 100ms -> 10ms */
+/*                                                                                         */
 	hi->unplug_debounce_time = ktime_set(0, 10000000);
-/* LGE_CHANGE_E changed unplug debounce time */
+/*                                           */
 
 	hi->gpio_detect = pdata->gpio_detect;
 	hi->gpio_button_detect = pdata->gpio_button_detect;

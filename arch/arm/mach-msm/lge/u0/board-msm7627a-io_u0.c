@@ -487,7 +487,7 @@ static struct platform_device hs_pdev = {
 	},
 };
  
-/* LGE_CHANGE  [yoonsoo.kim@lge.com]  20111006  : U0 RevB Key Configuration */
+/*                                                                          */
 static unsigned int keypad_row_gpios[] = {36, 37,38};
 static unsigned int keypad_col_gpios[] = {32,33};
 
@@ -498,7 +498,7 @@ static const unsigned short keypad_keymap_u0[] = {
 	[KEYMAP_INDEX(0, 1)] = KEY_VOLUMEDOWN,
 	[KEYMAP_INDEX(1, 2)] = KEY_HOME,
 };
-/* LGE_CHANGE_E  [yoonsoo.kim@lge.com]  20111006  : U0 RevB Key Configuration */
+/*                                                                            */
 
 int u0_matrix_info_wrapper(struct gpio_event_input_devs *input_dev,
 			   struct gpio_event_info *info, void **data, int func)
@@ -510,7 +510,7 @@ int u0_matrix_info_wrapper(struct gpio_event_input_devs *input_dev,
 		gpio_tlmm_config(GPIO_CFG(keypad_row_gpios[1], 0, GPIO_CFG_INPUT,
 				 GPIO_CFG_PULL_UP, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
 	}
-	/* LGE_CHANGE [yoonsoo.kim@lge.com] 20120303  : Revert Patch Code */
+	/*                                                                */
 	
 	ret = gpio_event_matrix_func(input_dev, info, data, func);
 	return ret ;
@@ -518,12 +518,12 @@ int u0_matrix_info_wrapper(struct gpio_event_input_devs *input_dev,
 
 static int u0_gpio_matrix_power(const struct gpio_event_platform_data *pdata, bool on)
 {
-	/* this is dummy function
-	 * to make gpio_event driver register suspend function
-	 * 2010-01-29, cleaneye.kim@lge.com
-	 * copy from ALOHA code
-	 * 2010-04-22 younchan.kim@lge.com
-	 */
+	/*                       
+                                                       
+                                    
+                        
+                                   
+  */
 	return 0;
 }
 
@@ -534,11 +534,11 @@ static struct gpio_event_matrix_info u0_keypad_matrix_info = {
 	.input_gpios		= keypad_row_gpios,
 	.noutputs			= ARRAY_SIZE(keypad_col_gpios),
 	.ninputs			= ARRAY_SIZE(keypad_row_gpios),	
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 proting
- * gpio_event_matrix_info structure member was changed, ktime_t -> struct timespec */	
+/*                                                  
+                                                                                   */	
 	.settle_time.tv64 	= 40 * NSEC_PER_USEC,
 	.poll_time.tv64 	= 20 * NSEC_PER_MSEC,
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 proting*/
+/*                                                  */
 	.flags		= GPIOKPF_LEVEL_TRIGGERED_IRQ | GPIOKPF_PRINT_UNMAPPED_KEYS | GPIOKPF_DRIVE_INACTIVE
 };
 
@@ -907,7 +907,7 @@ static struct i2c_board_info atmel_ts_i2c_info[] __initdata = {
 #endif 
 
 #ifdef CONFIG_LGE_NFC
-// 2012.09.26 garam.kim@lge.com NFC registration
+//                                              
 static struct gpio_i2c_pin nfc_i2c_pin[] = {
 	[0] = {
 		.sda_pin	= NFC_GPIO_I2C_SDA,
@@ -1160,10 +1160,10 @@ static struct platform_device tricolor_leds_pdev = {
 void __init msm7627a_add_io_devices(void)
 {
 #if defined (CONFIG_MACH_MSM7X27A_U0)
-	/*LGE_CHANGE_S : seven.kim@lge.com JB 2035.2B Migration*/
+	/*                                                     */
 	/* ignore end key as this target doesn't need it */
 	hs_platform_data.ignore_end_key = true;
-	/*LGE_CHANGE_E : seven.kim@lge.com JB 2035.2B Migration*/
+	/*                                                     */
 	
 	platform_add_devices(
 		u0_input_devices, ARRAY_SIZE(u0_input_devices));

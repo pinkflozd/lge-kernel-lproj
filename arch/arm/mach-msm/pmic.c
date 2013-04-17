@@ -134,12 +134,12 @@
 #define GPIO_SET_OUTPUT_BUFFER_DRIVE_STRENGTH_PROC 113
 
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
 #define MINIABB_CHARGING_CURRENT_PROC 115
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 #endif
 
 #if defined(CONFIG_MACH_MSM8X25_V7)
@@ -1299,19 +1299,19 @@ int pmic_gpio_config(struct pm8xxx_gpio_rpc_cfg *param)
 EXPORT_SYMBOL(pmic_gpio_config);
 
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
 int pmic_miniabb_charging_current_change(uint16_t charging_current)
 {
         return pmic_rpc_set_only(charging_current, 0, 0, 0, 1, MINIABB_CHARGING_CURRENT_PROC);
 }
 EXPORT_SYMBOL(pmic_miniabb_charging_current_change);
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 #endif
 
-//LGE_CHANGE_S,narasimha.chikka@lge.com,Add charger ic register status
+//                                                                    
 #if defined(CONFIG_MACH_MSM8X25_V7)
 int pmic_get_charging_ic_reg(struct max8971_reg *reg)
 {
@@ -1320,4 +1320,4 @@ int pmic_get_charging_ic_reg(struct max8971_reg *reg)
 }
 EXPORT_SYMBOL(pmic_get_charging_ic_reg);
 #endif
-//LGE_CHANGE_E,narasimha.chikka@lge.com,Add charger ic register status
+//                                                                    

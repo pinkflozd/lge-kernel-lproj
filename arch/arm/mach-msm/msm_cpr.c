@@ -58,7 +58,7 @@ module_param(enable, bool, 0644);
 MODULE_PARM_DESC(enable, "CPR Enable");
 
 //static int msm_cpr_debug_mask = 7;
-//LGE_CHANGE,narasimha.chikka@lge.com,Modify CPR Log level
+//                                                        
 static int msm_cpr_debug_mask = 0;
 module_param_named(
 	debug_mask, msm_cpr_debug_mask, int, S_IRUGO | S_IWUSR

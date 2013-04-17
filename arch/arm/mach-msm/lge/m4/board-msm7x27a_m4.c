@@ -15,11 +15,11 @@
 #include <linux/memblock.h>
 #include <asm/mach-types.h>
 #include <linux/memblock.h>
-// LGE TestMode interface porting, myunghwan.kim@lge.com [START]
+//                                                              
 #ifdef CONFIG_LGE_DIAGTEST
 #include <../../../lge/include/lg_fw_diag_communication.h>
 #endif 
-// LGE TestMode interface porting, myunghwan.kim@lge.com [END]
+//                                                            
 #include <asm/mach/arch.h>
 #include <asm/hardware/gic.h>
 #include <mach/board.h>
@@ -54,12 +54,12 @@
 #include <linux/atmel_maxtouch.h>
 #include <linux/msm_adc.h>
 #include <linux/ion.h>
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121009: ram_console support*/
+/*                                                                */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #include <linux/persistent_ram.h>
 #endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121009: ram_console support*/
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                                */
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../timer.h"
@@ -72,34 +72,34 @@
 #include "board-msm7x27a-regulator.h"
 #include "devices-msm7x2xa.h"
 #include "pm.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 #include <mach/rpc_server_handset.h>
 #include <mach/socinfo.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include "../../pm-boot.h"
 #include "../../board-msm7627a.h"
-/*LGE_CHANGE_S : seven.kim@lge.com demigot crash handler */
+/*                                                       */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #include <asm/setup.h>
 #endif /*CONFIG_ANDROID_RAM_CONSOLE*/
-/*LGE_CHANGE_E : seven.kim@lge.com demigot crash handler */
+/*                                                       */
 #else
 #include "pm-boot.h"
 #include "board-msm7627a.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E: seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                   */
 #ifdef CONFIG_LGE_BOOT_MODE
 #include <mach/lge/lge_boot_mode.h>
 #endif
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121102:
- *Migrating QCT patch to remove pmem and fmem support*/
+/*                                            
+                                                     */
 #define RESERVE_KERNEL_EBI1_SIZE	0x3A000
 #define MSM_RESERVE_AUDIO_SIZE	0x1F4000
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121102*/
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121009: ram_console support*/
+/*                                           */
+/*                                                                */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #define MSM7X27_EBI1_CS0_SIZE	0xFD00000
 #define LGE_RAM_CONSOLE_START	(MSM7X27_EBI1_CS0_BASE + MSM7X27_EBI1_CS0_SIZE)
@@ -124,7 +124,7 @@ static struct platform_device ram_console_device = {
 	.id = -1,
 };
 #endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121009: ram_console support*/
+/*                                                                */
 
 #if defined(CONFIG_GPIO_SX150X)
 enum {
@@ -160,7 +160,7 @@ static struct i2c_board_info core_exp_i2c_info[] __initdata = {
 
 static void __init register_i2c_devices(void)
 {
-/* LGE_CHANGE 2012-03-29, woonrae.cho@lge.com, board feature change */
+/*                                                                  */
 #if 0
 	if (machine_is_msm7x27a_surf() || machine_is_msm7625a_surf() ||
 		machine_is_msm8x25_lge() || machine_is_msm7x27a_u0() )
@@ -177,7 +177,7 @@ static void __init register_i2c_devices(void)
 }
 #endif
 
-/* LGE_CHANGE_S, sohyun.nam@lge.com, parsing kcal from cmdline */
+/*                                                             */
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 static int atoi(const char *name)
 {
@@ -212,8 +212,8 @@ static int __init lcd_k_cal_setup(char *arg)
 	return 1;
 }
 __setup("lge.lcd_k_cal=", lcd_k_cal_setup);
-#endif //CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
-/* LGE_CHANGE_E, sohyun.nam@lge.com, parsing kcal from cmdline */
+#endif //                                
+/*                                                             */
 
 
 static struct msm_gpio qup_i2c_gpios_io[] = {
@@ -255,9 +255,9 @@ static void gsbi_qup_i2c_gpio_config(int adap_id, int config_type)
 }
 
 static struct msm_i2c_platform_data msm_gsbi0_qup_i2c_pdata = {
-//LGE_CHANGE_S: V3 HI351 Camera Bringup I2C speed up burst mode - hong.junki@lge.com 2012/10/05
+//                                                                                             
 	.clk_freq		= 400000,	//100000,
-//LGE_CHANGE_E: V3 HI351 Camera Bringup I2C speed up burst mode - hong.junki@lge.com 2012/10/05
+//                                                                                             
 	.msm_i2c_config_gpio	= gsbi_qup_i2c_gpio_config,
 };
 
@@ -267,14 +267,14 @@ static struct msm_i2c_platform_data msm_gsbi1_qup_i2c_pdata = {
 };
 
 #ifdef CONFIG_ARCH_MSM7X27A
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121102:
- *Migrating QCT patch to remove pmem and fmem support*/
+/*                                            
+                                                     */
 #define MSM_RESERVE_MDP_SIZE       	    0x1500000 	// 0x2300000 
 #define MSM7x25A_MSM_RESERVE_MDP_SIZE       0x1500000
 
 #define MSM_RESERVE_ADSP_SIZE      	    0x1200000
 #define MSM7x25A_MSM_RESERVE_ADSP_SIZE      0xB91000
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121102*/
+/*                                           */
 #define CAMERA_ZSL_SIZE		(SZ_1M * 60)
 #endif
 
@@ -421,7 +421,7 @@ static struct msm_hsusb_gadget_platform_data msm_gadget_pdata = {
 	.is_phy_status_timer_on = 1,
 };
 
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 #ifndef CONFIG_MACH_MSM7X25A_V3
 static struct resource smc91x_resources[] = {
 	[0] = {
@@ -443,7 +443,7 @@ static struct platform_device smc91x_device = {
 	.resource       = smc91x_resources,
 };
 #endif /*CONFIG_MACH_MSM7X25A_V3*/
-/*LGE_CHANGE_E : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 
 #ifdef CONFIG_SERIAL_MSM_HS
 static struct msm_serial_hs_platform_data msm_uart_dm1_pdata = {
@@ -452,7 +452,7 @@ static struct msm_serial_hs_platform_data msm_uart_dm1_pdata = {
 };
 #endif
 
-// LGE TestMode interface porting, myunghwan.kim@lge.com [START]
+//                                                              
 #ifdef CONFIG_LGE_DIAGTEST
 static struct diagcmd_platform_data lg_fw_diagcmd_pdata = {
 	.name = "lg_fw_diagcmd",
@@ -474,7 +474,7 @@ static struct platform_device lg_diag_cmd_device = {
 	},
 };
 #endif
-// LGE TestMode interface porting, myunghwan.kim@lge.com [END]
+//                                                            
 
 static struct msm_pm_platform_data msm7x27a_pm_data[MSM_PM_SLEEP_MODE_NR] = {
 	[MSM_PM_MODE(0, MSM_PM_SLEEP_MODE_POWER_COLLAPSE)] = {
@@ -583,8 +583,8 @@ static struct msm_pm_boot_platform_data msm_pm_8625_boot_pdata __initdata = {
 };
 
 
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121102:
- *Migrating QCT patch to remove pmem and fmem support*/
+/*                                            
+                                                     */
 static unsigned reserve_mdp_size = MSM_RESERVE_MDP_SIZE;
 static int __init reserve_mdp_size_setup(char *p)
 {
@@ -602,7 +602,7 @@ static int __init reserve_adsp_size_setup(char *p)
 }
 
 early_param("reserve_adsp_size", reserve_adsp_size_setup);
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121102*/
+/*                                           */
 
 static u32 msm_calculate_batt_capacity(u32 current_voltage);
 
@@ -635,7 +635,7 @@ static struct platform_device msm_batt_device = {
 	.dev.platform_data  = &msm_psy_batt_data,
 };
 
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifndef CONFIG_MACH_LGE
 static struct smsc911x_platform_config smsc911x_config = {
 	.irq_polarity	= SMSC911X_IRQ_POLARITY_ACTIVE_HIGH,
@@ -673,7 +673,7 @@ static struct msm_gpio smsc911x_gpios[] = {
 							 "eth_fifo_sel" },
 };
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 static char *msm_adc_surf_device_names[] = {
 	"XO_ADC",
 };
@@ -692,7 +692,7 @@ static struct platform_device msm_adc_device = {
 	},
 };
 
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifndef CONFIG_MACH_LGE
 #define ETH_FIFO_SEL_GPIO	49
 static void msm7x27a_cfg_smsc911x(void)
@@ -718,7 +718,7 @@ static void msm7x27a_cfg_smsc911x(void)
 	gpio_set_value(ETH_FIFO_SEL_GPIO, 0);
 }
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #if defined(CONFIG_SERIAL_MSM_HSL_CONSOLE) \
 		&& defined(CONFIG_MSM_SHARED_GPIO_FOR_UART2DM)
 static struct msm_gpio uart2dm_gpios[] = {
@@ -745,7 +745,7 @@ static void msm7x27a_cfg_uart2dm_serial(void) { }
 #endif
 
 
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 #ifndef CONFIG_MACH_MSM7X25A_V3
 static struct platform_device *rumi_sim_devices[] __initdata = {
 	&msm_device_dmov,
@@ -765,7 +765,7 @@ static struct platform_device *msm8625_rumi3_devices[] __initdata = {
 	&msm8625_gsbi0_qup_i2c_device,
 };
 #endif /*CONFIG_MACH_MSM7X25A_V3*/
-/*LGE_CHANGE_E : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 
 static struct platform_device *msm7627a_surf_ffa_devices[] __initdata = {
 	&msm_device_dmov,
@@ -777,27 +777,27 @@ static struct platform_device *msm7627a_surf_ffa_devices[] __initdata = {
 	&msm_gsbi1_qup_i2c_device,
 	&msm_device_otg,
 	&msm_device_gadget_peripheral,
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifndef CONFIG_MACH_LGE
 	&smsc911x_device,
 #endif
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 	&msm_kgsl_3d0,
 };
 
 static struct platform_device *common_devices[] __initdata = {
 	&android_usb_device,
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121009 Adding ram_console_device registration*/
+/*                                                                                  */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 	&ram_console_device,
 #endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121009*/
-        /*LGE_CHANGE_S : seven.kim@lge.com for V3*/
+/*                                           */
+        /*                                       */
         #if 0
 	&msm_device_nand,
         #endif
-        /*LGE_CHANGE_E : seven.kim@lge.com for V3*/
-/* 2012-10-04 JongKwang-Lee(jongkwang.lee@lge.com) [V3] support Ear Detect IC(RSA8008) [START]*/
+        /*                                       */
+/*                                                                                            */
 #if 0 ////ew0804 multiple define audio platform devices
 	&msm_device_snd,
 	&msm_device_cad,
@@ -806,18 +806,18 @@ static struct platform_device *common_devices[] __initdata = {
 	&asoc_msm_dai0,
 	&asoc_msm_dai1,
 #endif
-/* 2012-10-04 JongKwang-Lee(jongkwang.lee@lge.com) [V3] support Ear Detect IC(RSA8008) [END]*/
+/*                                                                                          */
 	&msm_batt_device,
 	&msm_adc_device,
 #ifdef CONFIG_ION_MSM
 	&ion_dev,
 #endif
-// LGE TestMode interface porting, myunghwan.kim@lge.com [START]
+//                                                              
 #ifdef CONFIG_LGE_DIAGTEST
 	&lg_fw_diagcmd_device,	
 	&lg_diag_cmd_device,
 #endif 
-// LGE TestMode interface porting, myunghwan.kim@lge.com [END]
+//                                                            
 };
 
 static struct platform_device *msm8625_surf_devices[] __initdata = {
@@ -833,8 +833,8 @@ static struct platform_device *msm8625_surf_devices[] __initdata = {
 	&msm8625_kgsl_3d0,
 };
 
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121102:
- *Migrating QCT patch to remove pmem and fmem support*/
+/*                                            
+                                                     */
 static unsigned reserve_kernel_ebi1_size = RESERVE_KERNEL_EBI1_SIZE;
 static int __init reserve_kernel_ebi1_size_setup(char *p)
 {
@@ -869,7 +869,7 @@ static void fix_sizes(void)
 	msm_ion_sf_size = reserve_mdp_size;
 #endif
 }
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121102*/
+/*                                           */
 #ifdef CONFIG_ION_MSM
 #ifdef CONFIG_MSM_MULTIMEDIA_USE_ION
 static struct ion_co_heap_pdata co_ion_pdata = {
@@ -982,7 +982,7 @@ static void __init msm7x27a_reserve(void)
 	msm_reserve();
 }
 
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 #ifndef CONFIG_MACH_MSM7X25A_V3
 static void __init msm8625_reserve(void)
 {
@@ -992,7 +992,7 @@ static void __init msm8625_reserve(void)
 	memblock_remove(MSM8625_NON_CACHE_MEM, SZ_2K);
 }
 #endif /*CONFIG_MACH_MSM7X25A_V3*/
-/*LGE_CHANGE_E : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 
 static void __init msm7x27a_device_i2c_init(void)
 {
@@ -1021,12 +1021,12 @@ static void __init msm7x27a_init_ebi2(void)
 		return;
 
 	ebi2_cfg = readl(ebi2_cfg_ptr);
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 lcd */
+/*                                            */
 #if 0
 	if (machine_is_msm7x27a_rumi3() || machine_is_msm7x27a_surf() ||
 		machine_is_msm7625a_surf() || machine_is_msm8x25_lge())//machine_is_msm8625_surf())
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 lcd */		
+/*                                            */		
 		ebi2_cfg |= (1 << 4); /* CS2 */
 
 	writel(ebi2_cfg, ebi2_cfg_ptr);
@@ -1039,11 +1039,11 @@ static void __init msm7x27a_init_ebi2(void)
 		return;
 
 	ebi2_cfg = readl(ebi2_cfg_ptr);
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 lcd */
+/*                                            */
 #if 0	
 	if (machine_is_msm7x27a_surf() || machine_is_msm7625a_surf())
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 lcd */	
+/*                                            */	
 		ebi2_cfg |= (1 << 31);
 
 	writel(ebi2_cfg, ebi2_cfg_ptr);
@@ -1081,7 +1081,7 @@ static void msm_adsp_add_pdev(void)
 	}
 }
 
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 #ifndef CONFIG_MACH_MSM7X25A_V3
 static void __init msm7627a_rumi3_init(void)
 {
@@ -1105,7 +1105,7 @@ static void __init msm8625_rumi3_init(void)
 	msm_pm_register_cpr_ops();
 }
 #endif /*CONFIG_MACH_MSM7X25A_V3*/
-/*LGE_CHANGE_E : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 
 #define UART1DM_RX_GPIO		45
 
@@ -1208,11 +1208,11 @@ static void __init msm7x2x_init(void)
 	msm7x27a_uartdm_config();
 
 	msm7x27a_otg_gadget();
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #ifndef CONFIG_MACH_LGE
 	msm7x27a_cfg_smsc911x();
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 
 	msm7x27a_add_footswitch_devices();
 	msm7x27a_add_platform_devices();
@@ -1222,60 +1222,60 @@ static void __init msm7x2x_init(void)
 	msm_fb_add_devices();
 	msm7x2x_init_host();
 	msm7x27a_pm_init();
-/* LGE_CHANGE_S: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #if defined(CONFIG_I2C) && defined(CONFIG_GPIO_SX150X)
 	register_i2c_devices();
 #endif
-/* LGE_CHANGE_E: 2012/12/11 mjoh@lge.com HI542 Camera Bringup */
+/*                                                            */
 #if defined(CONFIG_BT) && defined(CONFIG_MARIMBA_CORE)
 	msm7627a_bt_power_init();
 #endif
-/* 2012-10-04 JongKwang-Lee(jongkwang.lee@lge.com) [V3] support Ear Detect IC(RSA8008) [START]*/
+/*                                                                                            */
 #ifdef CONFIG_MSM7X27A_AUDIO //ew0804.kim
 	printk("[EW0804]Audio init\n");
 	lge_add_sound_devices();
 #endif
-/* 2012-10-04 JongKwang-Lee(jongkwang.lee@lge.com) [V3] support Ear Detect IC(RSA8008) [END]*/
+/*                                                                                          */
 	msm7627a_camera_init();
 	msm7627a_add_io_devices();
 	/*7x25a kgsl initializations*/
 	msm7x25a_kgsl_3d0_init();
 	/*8x25 kgsl initializations*/
 	msm8x25_kgsl_3d0_init();
-   /*LGE_CHANGE_S : seven.kim@lge.com for v3*/
+   /*                                       */
 	lge_add_gpio_i2c_devices();
-/* 2012-10-25 dajin.kim@lge.com Boot Mode Check [START] */
+/*                                                      */
 #ifdef CONFIG_LGE_POWER_ON_STATUS_PATCH
 	lge_board_pwr_on_status();
 #endif
 #ifdef CONFIG_LGE_BOOT_MODE
 	lge_add_boot_mode_devices();
 #endif
-/* 2012-10-25 dajin.kim@lge.com Boot Mode Check [END] */
-        /*LGE_CHANGE_S : seven.kim@lge.com demigot crash handler */
+/*                                                    */
+        /*                                                       */
 	#if defined(CONFIG_ANDROID_RAM_CONSOLE) && defined(CONFIG_LGE_HANDLE_PANIC)
 	lge_add_panic_handler_devices();
-	#endif /*CONFIG_ANDROID_RAM_CONSOLE && CONFIG_LGE_HANDLE_PANIC*/
-        /*LGE_CHANGE_E : seven.kim@lge.com demigot crash handler */
-   /*LGE_CHANGE_E : seven.kim@lge.com for v3*/
+	#endif /*                                                     */
+        /*                                                       */
+   /*                                       */
 
-// LGE_CHANGE_S, narasimha.chikka@lge.com,Add pm device	
+//                                                      
 	lge_add_pm_devices();
-// LGE_CHANGE_E, narasimha.chikka@lge.com,Add pm device	
+//                                                      
 }
 
 static void __init msm7x2x_init_early(void)
 {
 	msm_msm7627a_allocate_memory_regions();
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121009:
-*This is called to initiailize peristent ram */
+/*                                            
+                                             */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 	persistent_ram_early_init(&ram_console_ram);
 #endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121009*/
+/*                                           */
 }
 
-/*LGE_CHANGE_S : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 #ifndef CONFIG_MACH_MSM7X25A_V3
 MACHINE_START(MSM7X27A_RUMI3, "QCT MSM7x27a RUMI3")
 	.atag_offset	= 0x100,
@@ -1357,7 +1357,7 @@ MACHINE_START(MSM8625_FFA, "QCT MSM8625 FFA")
 	.handle_irq	= gic_handle_irq,
 MACHINE_END
 #endif /*CONFIG_MACH_MSM7X25A_V3*/
-/*LGE_CHANGE_E : seven.kim@lge.com for msm7x25ab chipset*/
+/*                                                      */
 MACHINE_START(MSM7X25A_V3, "LG MSM7225AB")
 	.atag_offset	= 0x100,
 	.map_io		= msm_common_io_init,

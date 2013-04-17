@@ -913,7 +913,7 @@ static int debug_spkr_is_mute_en(char *buf, int size)
 	return snprintf(buf, size, "%d\n", enabled);
 }
 
-//LGE_CHAGE_S,narasimha.chikka@lge.com,Add debugfs for charger ic register
+//                                                                        
 #if defined(CONFIG_MACH_MSM8X25_V7)
 static int debug_get_charger_ic_reg(char *buf, int size)
 {
@@ -943,7 +943,7 @@ static int debug_get_charger_ic_reg(char *buf, int size)
 
 }
 #endif
-//LGE_CHAGE_E,narasimha.chikka@lge.com,Add debugfs for charger ic register
+//                                                                        
 
 /*******************************************************************
  * debug function table

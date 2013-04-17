@@ -13,11 +13,11 @@
 #include <linux/init.h>
 #include <linux/gpio_event.h>
 #include <linux/memblock.h>
-// LGE TestMode interface porting, myunghwan.kim@lge.com [START]
+//                                                              
 #ifdef CONFIG_LGE_DIAGTEST
 #include <../../../lge/include/lg_fw_diag_communication.h>
 #endif 
-// LGE TestMode interface porting, myunghwan.kim@lge.com [END]
+//                                                            
 #include <asm/mach-types.h>
 #include <linux/memblock.h>
 #include <asm/mach/arch.h>
@@ -51,12 +51,12 @@
 #include <linux/atmel_maxtouch.h>
 #include <linux/msm_adc.h>
 #include <linux/ion.h>
-/*LGE_CHANGE_S[satya.kamasali@lge.com]20121017: ram_console support*/
+/*                                                                 */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #include <linux/persistent_ram.h>
 #endif
-/*LGE_CHANGE_E[satya.kamasali@lge.com]20121017: ram_console support*/
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                                 */
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../timer.h"
@@ -69,25 +69,25 @@
 #include "board-msm7x27a-regulator.h"
 #include "devices-msm7x2xa.h"
 #include "pm.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 #include <mach/rpc_server_handset.h>
 #include <mach/socinfo.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include "../../pm-boot.h"
 #include "../../board-msm7627a.h"
-/*LGE_CHANGE_S : seven.kim@lge.com demigot crash handler */
+/*                                                       */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #include <asm/setup.h>
 #endif /*CONFIG_ANDROID_RAM_CONSOLE*/
-/*LGE_CHANGE_E : seven.kim@lge.com demigot crash handler */
+/*                                                       */
 #else
 #include "pm-boot.h"
 #include "board-msm7627a.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E: seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                   */
 #ifdef CONFIG_LGE_BOOT_MODE
 #include <mach/lge/lge_boot_mode.h>
 #endif
@@ -97,7 +97,7 @@
 #define RESERVE_KERNEL_EBI1_SIZE	0x3A000
 #define MSM_RESERVE_AUDIO_SIZE	0x1F4000
 
-/*LGE_CHANGE_S[satya.kamasali@lge.com]20121017: ram_console support*/
+/*                                                                 */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 #define MSM7X27_EBI1_CS0_SIZE	0x1FD00000
 #define LGE_RAM_CONSOLE_START	(MSM7X27_EBI1_CS0_BASE + MSM7X27_EBI1_CS0_SIZE)
@@ -126,7 +126,7 @@ static struct platform_device ram_console_device = {
 	.id = -1,
 };
 #endif
-/*LGE_CHANGE_E[satya.kamasali@lge.com]20121017: ram_console support*/
+/*                                                                 */
 
 #if defined(CONFIG_GPIO_SX150X)
 enum {
@@ -162,7 +162,7 @@ static struct i2c_board_info core_exp_i2c_info[] __initdata = {
 
 static void __init register_i2c_devices(void)
 {
-/* LGE_CHANGE 2012-03-29, woonrae.cho@lge.com, board feature change */
+/*                                                                  */
 	if (machine_is_msm7x27a_surf() || machine_is_msm7625a_surf()
 		|| machine_is_msm8625_surf()
 		|| machine_is_msm8x25_v7())
@@ -178,7 +178,7 @@ static void __init register_i2c_devices(void)
 }
 #endif
 
-/* LGE_CHANGE_S, sohyun.nam@lge.com, parsing kcal from cmdline */
+/*                                                             */
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 static int atoi(const char *name)
 {
@@ -196,7 +196,7 @@ int g_lge_lcd_k_cal[6]; //set k_cal value during booting from saved cal value
 static int __init lcd_k_cal_setup(char *arg)
 {
 	char buf[4]={0,};
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 2012-10-26, to swap cal_R and cal_B for V7*/
+/*                                                                             */
 #if defined(CONFIG_MACH_MSM8X25_V7)
 
 	memcpy(buf, arg+0, 3); // B
@@ -218,7 +218,7 @@ static int __init lcd_k_cal_setup(char *arg)
 	g_lge_lcd_k_cal[2] = atoi(buf);
 
 #endif
-/* LGE_CHANGE_E, sohyun.nam@lge.com, 2012-10-26, to swap cal_R and cal_B for V7*/
+/*                                                                             */
 	// magic code => "cal"
 	memcpy(g_lge_lcd_k_cal+3, arg+9, 3);
 
@@ -226,8 +226,8 @@ static int __init lcd_k_cal_setup(char *arg)
 	return 1;
 }
 __setup("lge.lcd_k_cal=", lcd_k_cal_setup);
-#endif //CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
-/* LGE_CHANGE_E, sohyun.nam@lge.com, parsing kcal from cmdline */
+#endif //                                
+/*                                                             */
 
 
 static struct msm_gpio qup_i2c_gpios_io[] = {
@@ -269,13 +269,13 @@ static void gsbi_qup_i2c_gpio_config(int adap_id, int config_type)
 }
 
 static struct msm_i2c_platform_data msm_gsbi0_qup_i2c_pdata = {
-/* LGE_CHANGE_S : 2012-10-04 sungmin.cho@lge.com */
+/*                                               */
 #ifdef CONFIG_MACH_LGE
 	.clk_freq		= 400000,
 #else
 	.clk_freq		= 100000,
 #endif
-/* LGE_CHANGE_E : 2012-10-04 sungmin.cho@lge.com */
+/*                                               */
 	.msm_i2c_config_gpio	= gsbi_qup_i2c_gpio_config,
 };
 
@@ -285,9 +285,9 @@ static struct msm_i2c_platform_data msm_gsbi1_qup_i2c_pdata = {
 };
 
 #ifdef CONFIG_ARCH_MSM7X27A
-#define MSM_RESERVE_MDP_SIZE		0x2800000 //sohyun.nam@lge.com, 12-11-22,ion_out_of_memory from 0x2300000
+#define MSM_RESERVE_MDP_SIZE		0x2800000 //                                                             
 #define MSM7x25A_MSM_RESERVE_MDP_SIZE   0x1500000
-#define MSM_RESERVE_ADSP_SIZE		0x1E00000 //youngbae.choi@lge.com, 12-12-22, camera ion allocation fail 0x1200000
+#define MSM_RESERVE_ADSP_SIZE		0x1E00000 //                                                                     
 #define MSM7x25A_MSM_RESERVE_ADSP_SIZE	0xB91000
 #define CAMERA_ZSL_SIZE			(SZ_1M * 60)
 #endif
@@ -328,7 +328,7 @@ static struct msm_serial_hs_platform_data msm_uart_dm1_pdata = {
 };
 #endif
 
-// LGE TestMode interface porting, myunghwan.kim@lge.com [START]
+//                                                              
 #ifdef CONFIG_LGE_DIAGTEST
 static struct diagcmd_platform_data lg_fw_diagcmd_pdata = {
 	.name = "lg_fw_diagcmd",
@@ -350,7 +350,7 @@ static struct platform_device lg_diag_cmd_device = {
 	},
 };
 #endif
-// LGE TestMode interface porting, myunghwan.kim@lge.com [END]
+//                                                            
 
 static struct msm_pm_platform_data msm7x27a_pm_data[MSM_PM_SLEEP_MODE_NR] = {
 	[MSM_PM_MODE(0, MSM_PM_SLEEP_MODE_POWER_COLLAPSE)] = {
@@ -635,7 +635,7 @@ static struct msm_psy_batt_pdata msm_psy_batt_data = {
 
 static u32 msm_calculate_batt_capacity(u32 current_voltage)
 {
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Use Battery Capacity from Vbatt
+//                                                                       
 #ifdef CONFIG_LGE_FUEL_GAUGE
 	return msm_batt_get_vbatt_capacity();
 #else
@@ -650,7 +650,7 @@ static u32 msm_calculate_batt_capacity(u32 current_voltage)
 		return (current_voltage - low_voltage) * 100
 			/ (high_voltage - low_voltage);
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Use Battery Capacity from Vbatt
+//                                                                       
 }
 
 static struct platform_device msm_batt_device = {
@@ -688,7 +688,7 @@ static struct platform_device smsc911x_device = {
 	},
 };
 
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 static struct msm_gpio smsc911x_gpios[] = {
 	{ GPIO_CFG(48, 0, GPIO_CFG_INPUT, GPIO_CFG_NO_PULL, GPIO_CFG_6MA),
@@ -697,7 +697,7 @@ static struct msm_gpio smsc911x_gpios[] = {
 							 "eth_fifo_sel" },
 };
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
 static char *msm_adc_surf_device_names[] = {
 	"XO_ADC",
@@ -734,7 +734,7 @@ static struct platform_device msm_adc_device = {
 	},
 };
 
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 #define ETH_FIFO_SEL_GPIO	49
 static void msm7x27a_cfg_smsc911x(void)
@@ -760,7 +760,7 @@ static void msm7x27a_cfg_smsc911x(void)
 	gpio_set_value(ETH_FIFO_SEL_GPIO, 0);
 }
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
 #if defined(CONFIG_SERIAL_MSM_HSL_CONSOLE) \
 		&& defined(CONFIG_MSM_SHARED_GPIO_FOR_UART2DM)
@@ -820,11 +820,11 @@ static struct platform_device *msm7627a_surf_ffa_devices[] __initdata = {
 };
 
 static struct platform_device *common_devices[] __initdata = {
-/*LGE_CHANGE_S[satya.kamasali@lge.com]20121017 Adding ram_console_device registration*/
+/*                                                                                   */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 	&ram_console_device,
 #endif
-/*LGE_CHANGE_E[satya.kamasali@lge.com]20121017*/
+/*                                            */
 	//&msm_device_nand,
 #if 0 ////ew0804 multiple define audio platform devices
 	&msm_device_adspdec,
@@ -840,12 +840,12 @@ static struct platform_device *common_devices[] __initdata = {
 #ifdef CONFIG_ION_MSM
 	&ion_dev,
 #endif
-// LGE TestMode interface porting, myunghwan.kim@lge.com [START]
+//                                                              
 #ifdef CONFIG_LGE_DIAGTEST
 	&lg_fw_diagcmd_device,	
 	&lg_diag_cmd_device,
 #endif 
-// LGE TestMode interface porting, myunghwan.kim@lge.com [END]
+//                                                            
 
 };
 
@@ -889,12 +889,12 @@ static void fix_sizes(void)
                reserve_mdp_size = MSM_RESERVE_MDP_SIZE;
                reserve_adsp_size = MSM_RESERVE_ADSP_SIZE;
 	}
-/* LGE_CHANGE_S : 2012-11-29 hyungtae.lee@lge.com Disable to ZSL for memory */	
+/*                                                                          */	
 	/*
 	if (get_ddr_size() > SZ_512M)
 		reserve_adsp_size = CAMERA_ZSL_SIZE;
 	*/
-/* LGE_CHANGE_E : 2012-11-29 hyungtae.lee@lge.com Disable to ZSL for memory */
+/*                                                                          */
 #ifdef CONFIG_ION_MSM
 	msm_ion_camera_size = reserve_adsp_size;
 	msm_ion_audio_size = (MSM_RESERVE_AUDIO_SIZE +
@@ -1049,7 +1049,7 @@ static void __init msm7x27a_init_ebi2(void)
 		return;
 
 	ebi2_cfg = readl(ebi2_cfg_ptr);
-/* LGE_CHANGE 2012-03-29, woonrae.cho@lge.com, board feature change */
+/*                                                                  */
 	if (machine_is_msm7x27a_rumi3() || machine_is_msm7x27a_surf() ||
 		machine_is_msm7625a_surf() || machine_is_msm8625_surf() ||machine_is_msm8x25_v7() )
 		ebi2_cfg |= (1 << 4); /* CS2 */
@@ -1199,11 +1199,11 @@ static void __init msm7x2x_init(void)
 	msm7x27a_init_ebi2();
 	msm7x27a_uartdm_config();
 
-/* LGE_CHANGE_S : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 #ifndef CONFIG_MACH_LGE
 	msm7x27a_cfg_smsc911x();
 #endif
-/* LGE_CHANGE_E : 2012-09-14 sungmin.cho@lge.com camera bring up */
+/*                                                               */
 
 	msm7x27a_add_footswitch_devices();
 	msm7x27a_add_platform_devices();
@@ -1211,9 +1211,9 @@ static void __init msm7x2x_init(void)
 	msm7x27a_init_ar6000pm();
 	msm7627a_init_mmc();
 	msm_fb_add_devices();
-// LGE_CHANGE_S, add usb devices
+//                              
 	lge_add_usb_devices();
-// LGE_CHANGE_E, add usb devices
+//                              
 	msm7x27a_pm_init();
 	register_i2c_devices();
 #if defined(CONFIG_BT) && defined(CONFIG_MARIMBA_CORE)
@@ -1229,33 +1229,33 @@ static void __init msm7x2x_init(void)
 	/*8x25 kgsl initializations*/
 	msm8x25_kgsl_3d0_init();
 	lge_add_gpio_i2c_devices();
-/* 2012-10-25 dajin.kim@lge.com Boot Mode Check [START] */
+/*                                                      */
 #ifdef CONFIG_LGE_POWER_ON_STATUS_PATCH
 	lge_board_pwr_on_status();
 #endif
 #ifdef CONFIG_LGE_BOOT_MODE
 	lge_add_boot_mode_devices();
 #endif
-/* 2012-10-25 dajin.kim@lge.com Boot Mode Check [END] */
-        /*LGE_CHANGE_S : seven.kim@lge.com demigot crash handler */
+/*                                                    */
+        /*                                                       */
 	#if defined(CONFIG_ANDROID_RAM_CONSOLE) && defined(CONFIG_LGE_HANDLE_PANIC)
 	lge_add_panic_handler_devices();
-   #endif /*CONFIG_ANDROID_RAM_CONSOLE && CONFIG_LGE_HANDLE_PANIC*/
-   /*LGE_CHANGE_E : seven.kim@lge.com demigot crash handler */
-// LGE_CHANGE_S, narasimha.chikka@lge.com,Add pm device	
+   #endif /*                                                     */
+   /*                                                       */
+//                                                      
 	lge_add_pm_devices();
-// LGE_CHANGE_E, narasimha.chikka@lge.com,Add pm device
+//                                                     
 }
 
 static void __init msm7x2x_init_early(void)
 {
 	msm_msm7627a_allocate_memory_regions();
-/*LGE_CHANGE_S[satya.kamasali@lge.com]20121017:
-*This is called to initiailize peristent ram */
+/*                                             
+                                             */
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 	persistent_ram_early_init(&ram_console_ram);
 #endif
-/*LGE_CHANGE_E[satya.kamasali@lge.com]20121017*/
+/*                                            */
 }
 
 #ifdef CONFIG_LGE_UART_MODE

@@ -13,14 +13,14 @@
 
 #include <linux/kernel.h>
 #include <linux/platform_device.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../board-msm7x27a-regulator.h"
 #else /*qct original*/
 #include "board-msm7x27a-regulator.h"
-#endif /*CONFIG_MACH_LGE*/
+#endif /*               */
 #include CONFIG_LGE_BOARD_HEADER_FILE
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 
 #define VOLTAGE_RANGE(min_uV, max_uV, step_uV)	((max_uV - min_uV) / step_uV)
 
@@ -222,7 +222,7 @@ static struct proccomm_regulator_info msm7x27a_pcom_vreg_info[] = {
 	 * S = supply voltage (uV)
 	 * T = type of regulator (smps, pldo, nldo)
 	 *            name   id  supp  min uV    max uV  R   P  A  B  V  S  T*/
-/* LGE_CHANGE_S [murali.ramamaiah@lge.com] 2011-12-21: according to lge board specifications */	 
+/*                                                                                           */	 
 #if 1
 	PCOM_VREG_SMP(smps1,  3, NULL,  1100000,  1100000, 0, -1, 0, 0, 0, 0, s), // +1V1_MSM_CORE1
 	PCOM_VREG_SMP(smps2,  4, NULL,  1100000,  1100000, 0, -1, 0, 0, 0, 0, s), // +1V1_MSM_CORE1
@@ -252,7 +252,7 @@ static struct proccomm_regulator_info msm7x27a_pcom_vreg_info[] = {
 	PCOM_VREG_LDO(ldo18, 11, NULL,  2700000,  2700000, 0, -1, 0, 0, 0, 0, p), // VREG_RF_2.7V
 	PCOM_VREG_LDO(ldo19, 57, NULL,  1200000,  1800000, 0, -1, 0, 0, 0, 0, p), // +1V2_MSM_A2_WCN
 
-/* LGE_CHANGE, narasimha.chikka@lge.com,ldo15 and ldo16 will be controlled by SIM driver */
+/*                                                                                       */
 	/* not used verg_ncp */
 	PCOM_VREG_NCP(ncp,   31, NULL, -1800000, -1800000, 0,     0, 0, 0, 0),
 #else /* QCT's */
@@ -281,8 +281,8 @@ static struct proccomm_regulator_info msm7x27a_pcom_vreg_info[] = {
 	PCOM_VREG_LDO(ldo19, 57, NULL, 1200000, 1800000, 0, -1, 0, 0, 0, 0, p),
 
 	PCOM_VREG_NCP(ncp,   31, NULL, -1800000, -1800000, 0,     0, 0, 0, 0),
-#endif /* CONFIG_MACH_LGE */
-/* LGE_CHANGE_E [murali.ramamaiah@lge.com] 2011-12-21 */
+#endif /*                 */
+/*                                                    */
 };
 
 struct proccomm_regulator_platform_data msm7x27a_proccomm_regulator_data = {

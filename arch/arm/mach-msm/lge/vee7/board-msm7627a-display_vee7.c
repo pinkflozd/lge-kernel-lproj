@@ -25,7 +25,7 @@
 #include <mach/gpiomux.h>
 #include <mach/socinfo.h>
 #include <mach/rpc_pmapp.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../board-msm7627a.h"
@@ -33,11 +33,11 @@
 #else /*qct original*/
 #include "devices.h"
 #include "board-msm7627a.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
-//LGE_S, sohyun.name@lge.com porting tovis panel, 12-12-26
+#endif /*               */
+/*                                                    */
+//                                                        
 #include <linux/module.h> // export_symbol
-//LGE_E, sohyun.name@lge.com porting tovis panel, 12-12-26
+//                                                        
 
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MSM_FB_SIZE		0x4BF000
@@ -49,11 +49,11 @@
 #define MSM8x25_MSM_FB_SIZE	0x3FC000
 #endif
 
-//LGE_S, sohyun.name@lge.com porting tovis panel, 12-12-26
+//                                                        
 #define  GPIO_LCD_MAKER_ID      126
 unsigned int maker_id;
 EXPORT_SYMBOL(maker_id);
-//LGE_E, sohyun.name@lge.com porting tovis panel, 12-12-26
+//                                                        
 
 static bool firstbootend=0;
 
@@ -203,9 +203,9 @@ void __init msm_msm7627a_allocate_memory_regions(void)
 static struct msm_panel_common_pdata mdp_pdata = {
 	.gpio = 97,
 	.mdp_rev = MDP_REV_303,
-/* [LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com] - QCT supported continuation of display logo image from LK*/	
+/*                                                                                                          */	
 	.cont_splash_enabled = 0x1,
-/* [LGSI_SP4_BSP_END] [kiran.jainapure@lge.com] */	
+/*                                              */	
 };
 
 static char mipi_dsi_splash_is_enabled(void)
@@ -257,7 +257,7 @@ static int mipi_dsi_panel_power(int on)
 {
 	int rc = 0;
 
-/*LGE_CHANGE_S, youngbae.choi@lge.com, 12-12-28, When Mipi dsi on, regulator control prevent. */
+/*                                                                                            */
 	//if(maker_id == 1)
 	{
 		if(on == 0)
@@ -268,7 +268,7 @@ static int mipi_dsi_panel_power(int on)
 			}
 		}
 	}
-/*LGE_CHANGE_E, youngbae.choi@lge.com, 12-12-28, When Mipi dsi on, regulator control prevent. */
+/*                                                                                            */
 
 		if (unlikely(!dsi_gpio_initialized)) {
 		
@@ -333,7 +333,7 @@ static int mipi_dsi_panel_power(int on)
 		{
 			printk("%s  hx8379a start \n",__func__);
 
-			msleep(3); //LGE_CHANGE_S [changbum.lee] 20120130 : add delay
+			msleep(3); //                                                
 			rc = regulator_enable(regulator_mipi_dsi);
 			udelay(50);
 			if (rc) {
@@ -363,7 +363,7 @@ static int mipi_dsi_panel_power(int on)
 
 			} 
 			//else {
-			//	firstbootend=1; /* [LGSI_SP4_BSP] [kiran.jainapure@lge.com] */
+			//                                                               
 			//}
 
 		}

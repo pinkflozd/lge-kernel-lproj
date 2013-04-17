@@ -11,17 +11,17 @@
 #define __WEAK __attribute__((weak))
 #endif
 
-//LGE_CHANGE_S [panchaxari.t@lge.com][to prevent vbatt dog timeout leading to modem crash][SR# 1049898]	
+//                                                                                                      
 #define LGE_VBATT_MODEM_CRASH_FIX
-//LGE_CHANGE_E [panchaxari.t@lge.com][to prevent vbatt dog timeout leading to modem crash][SR# 1049898]	
+//                                                                                                      
 
 #define  LGE_DEV_CHARGING_CURRENT
 #define  LGE_CHG_DONE_NOTIFICATION
 
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
-/* allocate 128K * 2 instead of ram_console's original size 128K
- * this is for storing kernel panic log which is used by lk loader
- * 2010-03-03, cleaneye.kim@lge.com
+/*                                                              
+                                                                  
+                                   
  */
 #define MSM7X27_EBI1_CS0_BASE	PHYS_OFFSET
 #define LGE_RAM_CONSOLE_SIZE    (124 * SZ_1K * 2)
@@ -30,12 +30,12 @@
 #ifdef CONFIG_LGE_HANDLE_PANIC
 #define LGE_CRASH_LOG_SIZE              (4 * SZ_1K)
 #endif
-//LGE_CHANGE_S FTM boot mode
+//                          
 enum lge_fboot_mode_type {
 	first_boot,
 	second_boot
 };
-//LGE_CHANGE_E FTM boot mode
+//                          
 #if 0
 #define PMEM_KERNEL_EBI1_SIZE	0x3A000
 #define MSM_PMEM_AUDIO_SIZE	0x5B000
@@ -79,13 +79,13 @@ struct gpio_i2c_pin {
 	unsigned int irq_pin;
 };
 
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
- * camera flash device/driver naming match
+/*                                                  
+                                          
  */
  #if defined (CONFIG_LEDS_AS364X)
 #define LEDS_CAMERA_FLASH_NAME	"as3647"
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting*/
+/*                                                  */
 
 #ifdef CONFIG_MMC_MSM_CARD_HW_DETECTION
 #define GPIO_SD_DETECT_N 40
@@ -114,28 +114,28 @@ struct gpio_i2c_pin {
 #else
 #define ECOM_I2C_ADDRESS		0x10 /* slave address 7bit - U0 bmm050 bosch compass sensor */
 #endif
-/* LGE_CHANGE_E [yoonsoo.kim@lge.com] 20110902: New Porting BMC050*/
+/*                                                                */
 
 /* proximity sensor */
 #define PROXI_GPIO_I2C_SCL		16
 #define PROXI_GPIO_I2C_SDA		30
 #define PROXI_GPIO_DOUT			17
 #if defined (CONFIG_SENSOR_APDS9190) || defined (CONFIG_SENSOR_APDS9130)
-#define PROXI_I2C_ADDRESS		0x39 /* slave address 7bit - APDS9130 [LGSI_SP4_BSP][kirankumar.vm@lge.com] */
+#define PROXI_I2C_ADDRESS		0x39 /*                                                                     */
 #endif
 #define PROXI_LDO_NO_VCC		1
 
-/*LGE_CHANGE_E : seven.kim@lge.com for V7 */
+/*                                        */
 
 
-/*[LGE_BSP_S][yunmo.yang@lge.com] LP5521 RGB Driver*/
+/*                                                 */
 #ifdef CONFIG_LEDS_LP5521
 #define RGB_GPIO_I2C_SCL		57
 #define RGB_GPIO_I2C_SDA		58
 #define RGB_GPIO_RGB_EN 		115
 #define RGB_I2C_ADDRESS			0x32
 #endif
-/*[LGE_BSP_E][yunmo.yang@lge.com] LP5521 RGB Driver*/
+/*                                                 */
 
 
 /* touch screen platform data */
@@ -179,7 +179,7 @@ struct touch_platform_data {
 };
 #endif
 
-/*LGE_CHANGE_S : byungyong.hwang@lge.com touch - Synaptics s3203 panel	for V7*/
+/*                                                                           */
 #if defined(CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
 #define MELFAS_TS_NAME "melfas-ts"
 
@@ -212,9 +212,9 @@ struct melfas_tsi_platform_data {
 #define SYNAPTICS_TS_I2C_SCL                   9
 #define SYNAPTICS_TS_I2C_INT_GPIO              39
 #endif
-/*LGE_CHANGE_E : byungyong.hwang@lge.com touch - Synaptics s3203 panel	for V7*/
+/*                                                                           */
 
-/*LGE CHANGES_S : bohyun.jung@lge.com : u0 */
+/*                                         */
 #if !defined(CONFIG_LGE_TOUCHSCREEN_SYNAPTICS_I2C_RMI4) && defined(CONFIG_TOUCHSCREEN_MELFAS_MMS136) /*U0 Rev.b melfas touch*/
 #define MELFAS_TS_NAME "melfas-ts"
 
@@ -242,7 +242,7 @@ struct melfas_tsi_platform_data {
 	int (*power_enable)(int en, bool log_en);
 };
 #endif /*U0 Rev.b melfas touch*/
-/*LGE CHANGES_E : bohyun.jung@lge.com : u0 */
+/*                                         */
 
 #if defined(CONFIG_TOUCHSCREEN_MCS8000)
 struct touch_platform_data {
@@ -460,11 +460,11 @@ void __init msm7x27a_reserve(void);
 #endif
 /* lge API functions to register i2c devices */
 
-/* LGE_CHANGE_S: murali.ramaiah@lge.com [2011-09-22]  */
+/*                                                    */
 #ifdef CONFIG_LGE_POWER_ON_STATUS_PATCH
 void __init lge_board_pwr_on_status(void);
 #endif
-/* LGE_CHANGE_E: murali.ramaiah@lge.com [2011-09-22]  */
+/*                                                    */
 
 typedef void (gpio_i2c_init_func_t)(int bus_num);
 
@@ -490,9 +490,9 @@ void __init lge_add_camera_devices(void);
 void __init lge_add_pm_devices(void);
 void __init lge_add_usb_devices(void);
 void __init lge_add_connectivity_devices(void);
-/*LGE_CHANGE_S : NFC ,2011-11-15, siny@lge.com, Delete SW I2C NFC*/
+/*                                                               */
 void __init lge_add_nfc_devices(void);
-/*LGE_CHANGE_E : NFC*/
+/*                  */
 
 void __init lge_add_gpio_i2c_device(gpio_i2c_init_func_t *init_func);
 
@@ -511,32 +511,32 @@ int get_reboot_mode(void);
 char*   lge_get_battery_id(void);
 #endif
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Touch Enable by PMIC LD0
+//                                                               
 #if (CONFIG_LGE_PCB_REVISION >= REV_B)
 #define  LGE_TOUCHENABLE_USING_PMIC_LD0
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Touch Enable by PMIC LD0
+//                                                               
 void __init msm7x27a_init_regulators(void);
-//LGE_CHANGE_S FTM boot mode
+//                          
 enum lge_fboot_mode_type lge_get_fboot_mode(void);
 unsigned lge_nv_manual_f(int val);
-//LGE_CHANGE_E FTM boot mode
-/* LGE_CHANGE_S, youngbae.choi@lge.com, for silence reset */
+//                          
+/*                                                        */
 #ifdef CONFIG_LGE_SILENCE_RESET
 unsigned lge_silence_reset_f(int val);
 #endif
-/* LGE_CHANGE_E, youngbae.choi@lge.com, for silence reset */
+/*                                                        */
 
 unsigned lge_smpl_counter_f(int val);
 unsigned lge_charging_bypass_boot_f(int val);
 unsigned lge_pseudo_battery_mode_f(int val);
-/* LGE_CHANGE_S  : adiyoung.lee, FTM Mode and ManualModeCkeckComplete on RPC, 2012-12-12 */
+/*                                                                                       */
 #if !defined(CONFIG_MACH_MSM7X25A_M4) && (defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM8X25_V7))
 unsigned lge_aat_partial_f(int val);
 unsigned lge_aat_full_f(int val);
 unsigned lge_aat_partial_or_full_f(int val);
 #endif
-/* LGE_CHANGE_E  : adiyoung.lee, FTM Mode and ManualModeCkeckComplete on RPC, 2012-12-12 */
+/*                                                                                       */
 
 #endif
 

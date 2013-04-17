@@ -128,10 +128,10 @@ static void vibrator_enable(struct timed_output_dev *dev, int value)
 		timed_vibrator_off(dev);
 	else {
 		value = (value > 15000 ? 15000 : value);
-        /*[LGE_BSP_START][yunmo.yang@lge.com] Unlimit Vibrator Bug fix*/
+        /*                                                            */
         if(value < 10)
             value = 10;
-        /*[LGE_BSP_END][yunmo.yang@lge.com] Unlimit Vibrator Bug fix*/
+        /*                                                          */
 
 		set_pmic_vibrator(1);
 

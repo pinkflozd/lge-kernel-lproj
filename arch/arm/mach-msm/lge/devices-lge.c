@@ -3,11 +3,11 @@
 #include <linux/bootmem.h>
 #include <linux/android_pmem.h>
 #include <linux/gpio.h>
-//LGE_CHANGE_S jongjin7.park@lge.com for frst 2012-11-22 
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+//                                                       
+#if defined(CONFIG_MACH_MSM7X27A_U0)
 #include <linux/export.h>
 #endif
-//LGE_CHANGE_E jongjin7.park
+//                          
 #include <asm/mach-types.h>
 
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
@@ -92,8 +92,8 @@ static int __init lge_frst_mode(char *cmdline)
 
 __setup("lge.frst=", lge_frst_mode);
 
-//LGE_CHANGE_S jongjin7.park@lge.com for frst 2012-11-22 
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+//                                                       
+#if defined(CONFIG_MACH_MSM7X27A_U0) 
 char* get_frst_mode(void)
 {
 	return frst_mode;
@@ -102,7 +102,7 @@ EXPORT_SYMBOL(get_frst_mode);
 #endif
 
 
-/* LGE_CHANGE_S,narasimha.chikka@lge.com,Add BATT_ID Check */
+/*                                                         */
 #ifdef CONFIG_LGE_PM_BATT_ID_DETECTION
 
 static char battery_id[10];
@@ -127,12 +127,12 @@ char	 *lge_get_battery_id(void)
 
 #endif
 
-/* LGE_CHANGE_S,narasimha.chikka@lge.com,Add BATT_ID Check */
+/*                                                         */
 
-//LGE_CHANGE_E jongjin7.park
-/* LGE_CHANGE_S: murali.ramaiah@lge.com [2011-09-22]
-	Read power on status from modem, and update boot reason.
-	Ref:- Documentation\arm\msm\boot.txt
+//                          
+/*                                                  
+                                                         
+                                     
 */
 #ifdef CONFIG_LGE_POWER_ON_STATUS_PATCH
 void __init lge_board_pwr_on_status(void)
@@ -144,9 +144,9 @@ void __init lge_board_pwr_on_status(void)
 	boot_reason &= 0xFF;
 	printk(KERN_NOTICE "Boot Reason = 0x%02x\n", boot_reason);
 }
-#endif /* CONFIG_LGE_POWER_ON_STATUS_PATCH */
+#endif /*                                  */
 
-/* LGE_CHANGE_S, [20121110][youngbae.choi@lge.com] */
+/*                                                 */
 static int __init panicmode_setup(char *arg)
 {	
 	if ((!strcmp(arg, "soff_pon")) || (!strcmp(arg, "son_pon")))
@@ -196,8 +196,8 @@ static int __init rebootmode_setup(char *arg)
 }
 __setup("lge.reboot=", rebootmode_setup);
 
-//LGE_CHANGE_S FTM boot mode
-#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+//                          
+#if (defined (CONFIG_MACH_MSM7X25A_V3) && !defined (CONFIG_MACH_MSM7X25A_M4)) || defined (CONFIG_MACH_MSM8X25_V7)
 static enum lge_fboot_mode_type lge_fboot_mode = second_boot;
 int __init lge_fboot_mode_init(char *s)
 {
@@ -219,13 +219,13 @@ enum lge_fboot_mode_type lge_get_fboot_mode(void)
 	return lge_fboot_mode;
 }
 #endif
-//LGE_CHANGE_E FTM boot mode
+//                          
 
 int get_reboot_mode(void)
 {
 	return reboot_mode;
 }
-/* LGE_CHANGE_E, [20121110][youngbae.choi@lge.com] */
+/*                                                 */
 
 #ifdef CONFIG_LGE_BOOT_MODE
 static struct platform_device lge_boot_mode_device = {
@@ -272,9 +272,9 @@ void __init lge_add_panic_handler_devices(void)
 
 	platform_device_register(&panic_handler_device);
 }
-#endif /*CONFIG_ANDROID_RAM_CONSOLE && CONFIG_LGE_HANDLE_PANIC*/
+#endif /*                                                     */
 
-// LGE_CHANGE_S, narasimha.chikka@lge.com,Add pm device
+//                                                     
 static struct platform_device lge_pm_device = {
 	.name = LGE_PM_DEVICE,
 	.id      = -1,
@@ -287,7 +287,7 @@ void __init lge_add_pm_devices(void)
 {
 	platform_device_register(&lge_pm_device);
 }
-// LGE_CHANGE_E, narasimha.chikka@lge.com,Add pm device
+//                                                     
 
 /* lge gpio i2c device */
 #define MAX_GPIO_I2C_DEV_NUM		10

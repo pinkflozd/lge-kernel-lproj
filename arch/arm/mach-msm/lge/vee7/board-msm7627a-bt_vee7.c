@@ -22,15 +22,15 @@
 #include <mach/rpc_pmapp.h>
 #include <mach/socinfo.h>
 
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../board-msm7627a.h"
 #include "../../devices-msm7x2xa.h"
 #else /*qct original*/
 #include "board-msm7627a.h"
 #include "devices-msm7x2xa.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 
 #if defined(CONFIG_BT) && defined(CONFIG_MARIMBA_CORE)
 
@@ -106,7 +106,7 @@ static unsigned fm_i2s_config_power_off[] = {
 int gpio_bt_sys_rest_en = 133;
 static void gpio_bt_config(void)
 {
-	// *s LGBT_COMMON_FUNCTION_BRINGUP change the BT reset pin for bring-up 2012-09-13 sunmee.choi@lge.com
+	//                                                                                                    
 	/* Google Original
 	u32 socinfo = socinfo_get_platform_version();
 	if (machine_is_msm7627a_qrd1())

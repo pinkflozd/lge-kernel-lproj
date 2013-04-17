@@ -14,6 +14,3 @@ source "arch/arm/mach-msm/lge/u0/Kconfig"
 # LGE M4 Model
 source "arch/arm/mach-msm/lge/m4/Kconfig"
 
-# LGE V1 Model
-source "arch/arm/mach-msm/lge/v1/Kconfig"
-

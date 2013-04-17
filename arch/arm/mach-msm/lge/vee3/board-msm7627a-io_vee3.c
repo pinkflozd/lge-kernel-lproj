@@ -29,12 +29,12 @@
 #include <mach/pmic.h>
 #include <linux/ktime.h>
 
-/*[LGE_BSP_S][yunmo.yang@lge.com] LP5521 RGB Driver*/
+/*                                                 */
 #ifdef CONFIG_LEDS_LP5521
 #include <linux/leds-lp5521.h>
 #endif
-/*[LGE_BSP_E][yunmo.yang@lge.com] LP5521 RGB Driver*/
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                 */
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../devices.h"
 #include "../../board-msm7627a.h"
@@ -44,8 +44,8 @@
 #include "devices.h"
 #include "board-msm7627a.h"
 #include "devices-msm7x2xa.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 
 
 #define ATMEL_TS_I2C_NAME "maXTouch"
@@ -499,8 +499,8 @@ static struct platform_device hs_pdev = {
 	},
 };
  
-/* LGE_CHANGE_S [dajin.kim@lge.com] : V3 Rev.B Key Configuration */
-/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single HOME Key Bring Up [START] */ 
+/*                                                               */
+/*                                                                                   */ 
 #if defined(CONFIG_MACH_MSM7X25A_V3_DS)
 static unsigned int keypad_row_gpios[] = {36, 37};
 static unsigned int keypad_col_gpios[] = {33};
@@ -523,7 +523,7 @@ static const unsigned short keypad_keymap_v3[] = {
 	[KEYMAP_INDEX(1, 2)] = KEY_HOMEPAGE,
 };
 #endif
-/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single HOME Key Bring Up [END] */ 
+/*                                                                                 */ 
 
 int v3_matrix_info_wrapper(struct gpio_event_input_devs *input_dev,
 			   struct gpio_event_info *info, void **data, int func)
@@ -540,16 +540,16 @@ int v3_matrix_info_wrapper(struct gpio_event_input_devs *input_dev,
 	ret = gpio_event_matrix_func(input_dev, info, data, func);
 	return ret ;
 }
-/* LGE_CHANGE_E [dajin.kim@lge.com] : V3 Rev.B Key Configuration */
+/*                                                               */
 
 static int v3_gpio_matrix_power(const struct gpio_event_platform_data *pdata, bool on)
 {
-	/* this is dummy function
-	 * to make gpio_event driver register suspend function
-	 * 2010-01-29, cleaneye.kim@lge.com
-	 * copy from ALOHA code
-	 * 2010-04-22 younchan.kim@lge.com
-	 */
+	/*                       
+                                                       
+                                    
+                        
+                                   
+  */
 	return 0;
 }
 
@@ -560,11 +560,11 @@ static struct gpio_event_matrix_info v3_keypad_matrix_info = {
 	.input_gpios	= keypad_row_gpios,
 	.noutputs	= ARRAY_SIZE(keypad_col_gpios),
 	.ninputs	= ARRAY_SIZE(keypad_row_gpios),	
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 proting
- * gpio_event_matrix_info structure member was changed, ktime_t -> struct timespec */	
+/*                                                  
+                                                                                   */	
 	.settle_time.tv64 = 40 * NSEC_PER_USEC,
 	.poll_time.tv64 = 20 * NSEC_PER_MSEC,
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 proting*/
+/*                                                  */
 	.flags		= GPIOKPF_LEVEL_TRIGGERED_IRQ | GPIOKPF_PRINT_UNMAPPED_KEYS | GPIOKPF_DRIVE_INACTIVE
 };
 
@@ -594,7 +594,7 @@ static struct platform_device *v3_input_devices[] __initdata = {
 };
 
 
-/* LGE_CHANGE_S [seven.kim@lge.com] 20110922 New Bosch compass+accel Sensor Porting*/ 
+/*                                                                                 */ 
 #if defined (CONFIG_SENSORS_BMM050) || defined (CONFIG_SENSORS_BMA250)
 static struct gpio_i2c_pin accel_i2c_pin[] = {
 	[0] = {
@@ -628,7 +628,7 @@ static struct platform_device sensor_i2c_device = {
 static struct i2c_board_info sensor_i2c_bdinfo[] = {
 	[0] = {
 #if defined (CONFIG_SENSORS_BMA2X2)
-/*#LGE_CHANGE : 2012-10-24 Sanghun,Lee(eee3114.@lge.com) sensor change from bmc150 to bmc050
+/*                                                                                          
 */
 		I2C_BOARD_INFO("bma2x2", ACCEL_I2C_ADDRESS),
 		.type = "bma2x2",
@@ -665,7 +665,7 @@ static void __init v3_init_i2c_sensor(int bus_num)
 	platform_device_register(&sensor_i2c_device);
 }
 #endif
-#endif /* LGE_CHANGE_E [seven.kim@lge.com 20110922 New Bosch compass+accel Sensor Porting*/ 
+#endif /*                                                                                */ 
 
 #if defined (CONFIG_SENSOR_APDS9190)
 extern int rt9396_ldo_enable(struct device *dev, unsigned num, unsigned enable);
@@ -769,7 +769,7 @@ static void __init v3_init_i2c_prox(int bus_num)
 	platform_device_register(&proxi_i2c_device);
 }
 #endif
-/*[LGE_BSP_S][yunmo.yang@lge.com] LP5521 RGB Driver*/
+/*                                                 */
 #ifdef CONFIG_LEDS_LP5521
 
 static struct lp5521_led_config lp5521_led_config[] = {
@@ -842,7 +842,7 @@ static u8 mode6_blue[] = {0xE0, 0x80, 0x40, 0x00, 0x12, 0xFE, 0x40, 0xC0, 0x0A, 
 //static u8 mode7_red[]={0x40, 0x00, 0x10, 0xFE, 0x40, 0x5D, 0xE2, 0x00, 0x07, 0xAD, 0xE2, 0x00, 0x07, 0xAE, 0xE2, 0x00, 0x48, 0x00, 0x40, 0x5D, 0xE2, 0x00, 0x07, 0xAD, 0xE2, 0x00, 0x07, 0xAE, 0xE2, 0x00, 0x25, 0xFE,};
 //static u8 mode7_green[]={0x40, 0x00, 0x10, 0xFE, 0x40, 0xCD, 0xE2, 0x00, 0x03, 0xE6, 0xE2, 0x00, 0x03, 0xE5, 0xE2, 0x00, 0x48, 0x00, 0x40, 0xCD, 0xE2, 0x00, 0x03, 0xE6, 0xE2, 0x00, 0x03, 0xE5, 0xE2, 0x00, 0x25, 0xFE,};
 //static u8 mode7_blue[]={0x40, 0x00, 0x10, 0xFE, 0x40, 0xE6, 0xE0, 0x06, 0x03, 0xF2, 0xE0, 0x06, 0x03, 0xF2, 0xE0, 0x06, 0x48, 0x00, 0x40, 0xE6, 0xE0, 0x06, 0x03, 0xF2, 0xE0, 0x06, 0x03, 0xF2, 0xE0, 0x06, 0x25, 0xFE,};
-/*[2013-02-04][junghoon79.kim@lge.com]changed scenario.*/
+/*                                                     */
 static u8 mode7_red[]={};
 static u8 mode7_green[]={0x40, 0x00, 0x10, 0xfe, 0x40, 0xff, 0x02, 0xd4, 0x02, 0xd4, 0x02, 0xd4, 0x48, 0x00, 0x40, 0xff, 0x02, 0xd4, 0x02, 0xd4, 0x02, 0xd4, 0x25, 0xfe};
 static u8 mode7_blue[]={};
@@ -1022,9 +1022,9 @@ static void __init lp5521_init_i2c_rgb(int bus_num)
 
 #endif /*LP5521*/
 
-/*[LGE_BSP_E][yunmo.yang@lge.com] LP5521 RGB Driver*/
+/*                                                 */
 
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 melfas mms128s touch*/
+/*                                                            */
 #if defined(CONFIG_TOUCHSCREEN_MELFAS_MMS128S)
 static struct gpio_i2c_pin ts_i2c_pin[] = {
 	[0] = {
@@ -1053,7 +1053,7 @@ int ts_set_vreg(unsigned char onoff)
 {
 	int rc;
 	
-#if defined(CONFIG_MACH_MSM7X25A_V3) /*LGE_CHANGE_S : seven.kim@lge.com : V3 Touch Porting*/
+#if defined(CONFIG_MACH_MSM7X25A_V3) /*                                                   */
 
 	//if (is_touch_Initialized == 0) {
 	if (1) {
@@ -1079,7 +1079,7 @@ int ts_set_vreg(unsigned char onoff)
 				pr_err("%s: regulator_disble(regulator_ts) failed\n", __func__);
 	}
 
-#endif  /*LGE_CHANGE_E : seven.kim@lge.com : V3 Touch Porting*/
+#endif  /*                                                   */
 
 	return rc;
 }
@@ -1104,7 +1104,7 @@ static struct i2c_board_info ts_i2c_bdinfo[] = {
 		I2C_BOARD_INFO("touch_mcs8000", TS_I2C_SLAVE_ADDR),
 		.type = "touch_mcs8000",
 #endif
-/* LGE_CHANGE_S : RECENT_APPS_KEY (Bell Operator in Canada) */ 
+/*                                                          */ 
 		.platform_data = &ts_pdata,
 	},
 };
@@ -1118,11 +1118,11 @@ static int init_gpio_i2c_pin_touch(
 	i2c_adap_pdata->sda_pin = gpio_i2c_pin.sda_pin;
 	i2c_adap_pdata->scl_pin = gpio_i2c_pin.scl_pin;
 
-/* LGE_CHANGE_S: seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                    */
 	gpio_request(TS_GPIO_I2C_SDA, "Melfas_I2C_SDA");
 	gpio_request(TS_GPIO_I2C_SCL, "Melfas_I2C_SCL");
 	gpio_request(TS_GPIO_IRQ, "Melfas_I2C_INT");
-/* LGE_CHANGE_E: seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                    */
 
 	gpio_tlmm_config(
 		GPIO_CFG(gpio_i2c_pin.sda_pin, 0, GPIO_CFG_OUTPUT,
@@ -1140,13 +1140,13 @@ static int init_gpio_i2c_pin_touch(
 		gpio_set_value(gpio_i2c_pin.reset_pin, 1);
 	}
 
-#if 0	/*LGE_CHANGE_S : seven.kim@lge.com for V3 Touch Porting*/
+#if 0	/*                                                     */
 #if (defined(CONFIG_MACH_MSM7X25A_M4EU_REV_A) || defined(CONFIG_MACH_MSM7X25A_M4BR_REV_B))
 	gpio_tlmm_config(
 		GPIO_CFG(TS_GPIO_POWER, 0, GPIO_CFG_OUTPUT,
 				GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
 #endif
-#endif /*LGE_CHANGE_E : seven.kim@lge.com for V3 Touch Porting*/
+#endif /*                                                     */
 
 	if (gpio_i2c_pin.irq_pin) {
 		gpio_tlmm_config(
@@ -1156,11 +1156,11 @@ static int init_gpio_i2c_pin_touch(
 			MSM_GPIO_TO_INT(gpio_i2c_pin.irq_pin);
 	}
 
-/* LGE_CHANGE_S : seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                     */
 	gpio_free(TS_GPIO_I2C_SDA);
 	gpio_free(TS_GPIO_I2C_SCL);
 	gpio_free(TS_GPIO_IRQ);
-/* LGE_CHANGE_E: seven.kim@lge.com [V3 Touch Porting] : Fix Touch GPIO Warning Message*/
+/*                                                                                    */
 
 	return 0;
 }
@@ -1175,7 +1175,7 @@ static void __init v3eu_init_i2c_touch(int bus_num)
 		bus_num, &ts_i2c_bdinfo[0], 1);
 	platform_device_register(&ts_i2c_device);
 }
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 melfas mms128s touch*/
+/*                                                            */
 #else /*qct original touch codes*/
 static struct regulator_bulk_data regs_atmel[] = {
 	{ .supply = "ldo12", .min_uV = 2700000, .max_uV = 3300000 },
@@ -1481,7 +1481,7 @@ static struct platform_device tricolor_leds_pdev = {
 };
 #endif
 
-/* 2012-10-16 JongWook-Park(blood9874@lge.com) [V3] DIAG Touch Key patch [START] */
+/*                                                                               */
 #ifdef CONFIG_LGE_DIAGTEST
 static struct platform_device lg_diag_input_device = {
 	.name = "ats_input",
@@ -1493,18 +1493,18 @@ static struct platform_device *v3_ats_input_devices[] __initdata = {
        &lg_diag_input_device,
 };
 #endif
-/* 2012-10-16 JongWook-Park(blood9874@lge.com) [V3] DIAG Touch Key patch [END] */
+/*                                                                             */
 
 void __init msm7627a_add_io_devices(void)
 {
 
-	/*LGE_CHANGE_S : seven.kim@lge.com JB 2035.2B Migration*/
+	/*                                                     */
 	/* ignore end key as this target doesn't need it */
 	hs_platform_data.ignore_end_key = true;
-	/*LGE_CHANGE_E : seven.kim@lge.com JB 2035.2B Migration*/
+	/*                                                     */
 	platform_add_devices(v3_input_devices, ARRAY_SIZE(v3_input_devices));
 
-/*LGE_CHANGE_S : seven.kim@lge.com for v3 mms128 touch*/
+/*                                                    */
 #if defined(CONFIG_TOUCHSCREEN_MELFAS_MMS128S)
 	lge_add_gpio_i2c_device(v3eu_init_i2c_touch);
 #else /*qct original*/
@@ -1520,13 +1520,13 @@ void __init msm7627a_add_io_devices(void)
 				atmel_ts_i2c_info,
 				ARRAY_SIZE(atmel_ts_i2c_info));
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com for v3 mms128 touch*/
+/*                                                    */
 
-/* 2012-10-16 JongWook-Park(blood9874@lge.com) [V3] DIAG Touch Key patch [START] */
+/*                                                                               */
 #ifdef CONFIG_LGE_DIAGTEST
 	platform_add_devices(v3_ats_input_devices, ARRAY_SIZE(v3_ats_input_devices));
 #endif
-/* 2012-10-16 JongWook-Park(blood9874@lge.com) [V3] DIAG Touch Key patch [END] */
+/*                                                                             */
 
 #if defined (CONFIG_SENSORS_BMM050) ||defined(CONFIG_SENSORS_BMA250)
 #if defined (CONFIG_MACH_MSM7X25A_V3)
@@ -1536,18 +1536,18 @@ void __init msm7627a_add_io_devices(void)
 #endif
 #endif
 
-	//eee3114.lee@lge.com sensor
+	//                          
 #if defined (CONFIG_MACH_MSM7X25A_V3)
 	lge_add_gpio_i2c_device(v3_init_i2c_prox);
 #else
 	lge_add_gpio_i2c_device(v3_init_i2c_prox);
 #endif	
 	
-/*[LGE_BSP_S][yunmo.yang@lge.com] LP5521 RGB Driver*/
+/*                                                 */
 #ifdef CONFIG_LEDS_LP5521	
 	lge_add_gpio_i2c_device(lp5521_init_i2c_rgb);
 #endif	
-/*[LGE_BSP_E][yunmo.yang@lge.com] LP5521 RGB Driver*/	
+/*                                                 */	
 #if 0
 	/* keypad */
 	platform_device_register(&kp_pdev);

@@ -61,16 +61,16 @@
 #include <mach/rpc_server_handset.h>
 #include <mach/socinfo.h>
 #include "pm-boot.h"
-/* LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #ifndef CONFIG_MACH_LGE
 #include "board-msm7627a.h"
 #else
 #include "../../board-msm7627a.h"
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #endif
 #if defined (CONFIG_MACH_LGE)
 #include CONFIG_LGE_BOARD_HEADER_FILE
-#endif	// end of CONFIG_MACH_LGE
+#endif	//                       
 #ifdef CONFIG_LGE_BOOT_MODE
 #include <mach/lge/lge_boot_mode.h>
 #endif
@@ -134,7 +134,7 @@ static struct i2c_board_info core_exp_i2c_info[] __initdata = {
 
 static void __init register_i2c_devices(void)
 {
-	/* LGE_CHANGE : bohyun.jung@lge.com	- add LGE specific machine name */
+	/*                                                                  */
 	if (machine_is_msm7x27a_surf() || machine_is_msm7625a_surf() || machine_is_msm8625_surf()
 		|| machine_is_msm7x27a_u0() )
 		sx150x_data[SX150X_CORE].io_open_drain_ena = 0xe0f0;
@@ -148,7 +148,7 @@ static void __init register_i2c_devices(void)
 }
 #endif
 
-/* LGE_CHANGE_S, jungrock.oh@lge.com, 2012-12-09, add cal_R , cal_G and cal_C for U0*/
+/*                                                                                  */
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 static int atoi(const char *name)
 {
@@ -167,8 +167,8 @@ static int __init lcd_k_cal_setup(char *arg)
 {
         char buf[4]={0,};
 
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-05 cal kcal*/
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 2012-10-26, to swap cal_R and cal_B for V7*/
+/*                                                     */
+/*                                                                             */
 #if 0//defined(CONFIG_MACH_MSM7X27A_U0)
         memcpy(buf, arg+0, 3); // B
         g_lge_lcd_k_cal[2] = atoi(buf);
@@ -178,7 +178,7 @@ static int __init lcd_k_cal_setup(char *arg)
 
         memcpy(buf, arg+6, 3); // R
         g_lge_lcd_k_cal[0] = atoi(buf);
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-05 cal kcal*/
+/*                                                     */
 #else
         memcpy(buf, arg+0, 3); // R
         g_lge_lcd_k_cal[0] = atoi(buf);
@@ -190,7 +190,7 @@ static int __init lcd_k_cal_setup(char *arg)
         g_lge_lcd_k_cal[2] = atoi(buf);
 
 #endif
-/* LGE_CHANGE_E, sohyun.nam@lge.com, 2012-10-26, to swap cal_R and cal_B for V7*/
+/*                                                                             */
         // magic code => "cal"
         memcpy(g_lge_lcd_k_cal+3, arg+9, 3);
 
@@ -198,8 +198,8 @@ static int __init lcd_k_cal_setup(char *arg)
         return 1;
 }
 __setup("lge.lcd_k_cal=", lcd_k_cal_setup);
-#endif //CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
-/* LGE_CHANGE_E, jungrock.oh@lge.com, 2012-12-09, add cal_R , cal_G and cal_C for U0*/
+#endif //                                
+/*                                                                                  */
 
 static struct msm_gpio qup_i2c_gpios_io[] = {
 	{ GPIO_CFG(60, 0, GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL, GPIO_CFG_8MA),
@@ -240,13 +240,13 @@ static void gsbi_qup_i2c_gpio_config(int adap_id, int config_type)
 }
 
 static struct msm_i2c_platform_data msm_gsbi0_qup_i2c_pdata = {
-/* LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #ifdef CONFIG_MACH_LGE
 	.clk_freq		= 400000,
 #else
 	.clk_freq		= 100000,
 #endif
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 	.msm_i2c_config_gpio	= gsbi_qup_i2c_gpio_config,
 };
 
@@ -256,8 +256,8 @@ static struct msm_i2c_platform_data msm_gsbi1_qup_i2c_pdata = {
 };
 
 #ifdef CONFIG_ARCH_MSM7X27A
-/* LGE_CHANGE : 2013/01/05 bohyun.jung@lge.com 
- * 				resize mdp_size to U0 ICS value. adsp_size is increased 1MB for JB. otherwise lcd does not come properly */
+/*                                             
+                                                                                                                */
 #define MSM_RESERVE_MDP_SIZE       			0x2300000		// 0x2800000 
 #define MSM7x25A_MSM_RESERVE_MDP_SIZE       0x1500000
 
@@ -591,7 +591,7 @@ static struct platform_device msm_batt_device = {
 	.dev.platform_data  = &msm_psy_batt_data,
 };
 
-/* LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #ifndef CONFIG_MACH_LGE
 static struct smsc911x_platform_config smsc911x_config = {
 	.irq_polarity	= SMSC911X_IRQ_POLARITY_ACTIVE_HIGH,
@@ -629,7 +629,7 @@ static struct msm_gpio smsc911x_gpios[] = {
 							 "eth_fifo_sel" },
 };
 #endif
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 static char *msm_adc_surf_device_names[] = {
 	"XO_ADC",
 };
@@ -653,7 +653,7 @@ static struct platform_device msm_device_pmic_leds = {
 	.id = -1,
 };
 
-/* LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #ifndef CONFIG_MACH_LGE
 #define ETH_FIFO_SEL_GPIO	49
 static void msm7x27a_cfg_smsc911x(void)
@@ -679,7 +679,7 @@ static void msm7x27a_cfg_smsc911x(void)
 	gpio_set_value(ETH_FIFO_SEL_GPIO, 0);
 }
 #endif
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #if defined(CONFIG_SERIAL_MSM_HSL_CONSOLE) \
 		&& defined(CONFIG_MSM_SHARED_GPIO_FOR_UART2DM)
 static struct msm_gpio uart2dm_gpios[] = {
@@ -734,11 +734,11 @@ static struct platform_device *msm7627a_surf_ffa_devices[] __initdata = {
 	&msm_gsbi1_qup_i2c_device,
 	&msm_device_otg,
 	&msm_device_gadget_peripheral,
-/* LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 #ifndef CONFIG_MACH_LGE
 	&smsc911x_device,
 #endif
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 	&msm_kgsl_3d0,
 };
 
@@ -953,7 +953,7 @@ static void __init msm7x27a_init_ebi2(void)
 		return;
 
 	ebi2_cfg = readl(ebi2_cfg_ptr);
-	/* LGE_CHANGE : bohyun.jung@lge.com	- add LGE specific machine name */
+	/*                                                                  */
 	if (machine_is_msm7x27a_rumi3() || machine_is_msm7x27a_surf() ||
 		machine_is_msm7625a_surf() || machine_is_msm8625_surf() ||
 		machine_is_msm7x27a_u0() )
@@ -1132,11 +1132,11 @@ static void __init msm7x2x_init(void)
 	msm7x27a_uartdm_config();
 
 	msm7x27a_otg_gadget();
-/* LGE_CHANGE_: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                      */
 #ifndef CONFIG_MACH_LGE
 	msm7x27a_cfg_smsc911x();
 #endif
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 
 	msm7x27a_add_footswitch_devices();
 	msm7x27a_add_platform_devices();
@@ -1155,23 +1155,23 @@ static void __init msm7x2x_init(void)
 #ifdef CONFIG_MSM7X27A_AUDIO
 	lge_add_sound_devices();
 #endif
-/* LGE_CHANGE_S: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 	msm7627a_camera_init();
-/* LGE_CHANGE_E: 2012/11/2 mjoh@lge.com U0 Flash Porting */
+/*                                                       */
 	msm7627a_add_io_devices();
 	/*7x25a kgsl initializations*/
 	msm7x25a_kgsl_3d0_init();
 	/*8x25 kgsl initializations*/
 	msm8x25_kgsl_3d0_init();
 	lge_add_gpio_i2c_devices();
-/* 2012-10-25 dajin.kim@lge.com Boot Mode Check [START] */
+/*                                                      */
 #ifdef CONFIG_LGE_POWER_ON_STATUS_PATCH
 	lge_board_pwr_on_status();
 #endif
 #ifdef CONFIG_LGE_BOOT_MODE
 	lge_add_boot_mode_devices();
 #endif
-/* 2012-10-25 dajin.kim@lge.com Boot Mode Check [END] */
+/*                                                    */
 #if defined(CONFIG_ANDROID_RAM_CONSOLE) && defined(CONFIG_LGE_HANDLE_PANIC)
 	lge_add_panic_handler_devices();
 #endif

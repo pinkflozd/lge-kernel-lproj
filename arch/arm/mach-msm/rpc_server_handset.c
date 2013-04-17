@@ -295,7 +295,7 @@ static void report_hs_key(uint32_t key_code, uint32_t key_parm)
 	case KEY_MEDIA:
 	case KEY_VOLUMEUP:
 	case KEY_VOLUMEDOWN:
-		// LGE_CHANGE,narasimha.chikka@lge.com,Add Power Key press Log
+		//                                                            
 		printk(KERN_INFO "%s,key=%d,key_code=%d \n",__func__,key,key_code);
 		input_report_key(hs->ipdev, key, (key_code != HS_REL_K));
 		break;
@@ -326,7 +326,7 @@ static void report_hs_key(uint32_t key_code, uint32_t key_parm)
 	input_sync(hs->ipdev);
 }
 
-/*LGE_CHANGE_S,Wakeup apps proc for battery notification */
+/*                                                       */
 #ifdef CONFIG_MACH_LGE
 void report_power_key(void)
 {
@@ -351,7 +351,7 @@ int state = 0;
 }
 EXPORT_SYMBOL(report_power_key);
 #endif
-/*LGE_CHANGE_E,Wakeup apps proc for battery notification */
+/*                                                       */
 
 static int handle_hs_rpc_call(struct msm_rpc_server *server,
 			   struct rpc_request_hdr *req, unsigned len)
@@ -650,7 +650,7 @@ static int __devinit hs_probe(struct platform_device *pdev)
 	hs->sdev.name	= "h2w_rpc";
 #else /*qct original*/
         hs->sdev.name	= "h2w";
-#endif /*CONFIG_MACH_LGE*/
+#endif /*               */
 	hs->sdev.print_name = msm_headset_print_name;
 
 	rc = switch_dev_register(&hs->sdev);

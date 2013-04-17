@@ -32,4 +32,4 @@ int get_lge_boot_mode(void);
 
 void __init lge_add_boot_mode_devices(void);
 
-#endif/*__LGE_BOOT_MODE_H__*/
+#endif/*                   */

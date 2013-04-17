@@ -30,12 +30,12 @@
 #include <mach/msm_rpcrouter.h>
 #include <mach/debug_mm.h>
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_MSM8X25_U0)
 #include "../lge/board-u0.h"
 static int fm_enable;
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 struct snd_ctxt {
 	struct mutex lock;
@@ -64,7 +64,7 @@ static struct snd_ctxt the_snd;
 #define SND_AVC_CTL_PROC 29
 #define SND_AGC_CTL_PROC 30
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_LGE)
 #define SND_SET_LOOPBACK_MODE_PROC 61
 #define SND_SET_VOCCAL_PARAM_PROC 62
@@ -78,7 +78,7 @@ static struct snd_ctxt the_snd;
 #define SND_SET_AMP_GAIN_PROC 70
 #define SND_WRITE_MEM_PROC 71
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 struct rpc_snd_set_device_args {
 	uint32_t device;
@@ -130,7 +130,7 @@ struct snd_agc_ctl_msg {
 	struct rpc_snd_agc_ctl_args args;
 };
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_LGE)
 struct snd_set_loopback_param_rep {
 	struct rpc_reply_hdr hdr;
@@ -191,9 +191,9 @@ struct rpc_snd_set_voccal_param_args {
 	int voccal_param_type; //voccal_property_enum_type voccal_param_type;
 	uint32_t get_flag;  //get_flag = 0 for set, get_flag = 1 for get
     	uint32_t param_val;
-/* LGE_CHANGE_S :  2011-12-12, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
 	uint32_t service_cfg;
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 
 	uint32_t cb_func;
 	uint32_t client_data;
@@ -209,9 +209,9 @@ struct rpc_snd_set_voccal_iir_param_args {
      voccal_iir_filter_type voccal_iir_param_type;
 	 int get_flag;  //get_flag = 0 for set, get_flag = 1 for get
      int32_t param_val;
-/* LGE_CHANGE_S :  2011-12-12, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
      uint32_t service_cfg;
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 
      uint32_t cb_func;
      uint32_t client_data;
@@ -227,9 +227,9 @@ struct rpc_snd_set_next_ec_param_args {
      nextgen_ec_param_enum_type ec_param_type;
 	 int get_flag;  //get_flag = 0 for set, get_flag = 1 for get
      int32_t param_val;
-/* LGE_CHANGE_S :  2011-12-12, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
      uint32_t service_cfg;
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 
      uint32_t cb_func;
      uint32_t client_data;
@@ -246,9 +246,9 @@ struct rpc_snd_set_rx_volume_param_args {
 	uint32_t idx;
 	int get_flag;	/* get_flag = 0 for set, get_flag = 1 for get */
 	int32_t param_val;
-/* LGE_CHANGE_S :  2011-12-12, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
 	uint32_t service_cfg;
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 
 	uint32_t cb_func;
 	uint32_t client_data;
@@ -264,9 +264,9 @@ struct rpc_snd_set_dtmf_volume_param_args {
 	uint32_t idx;
 	int get_flag;	/* get_flag = 0 for set, get_flag = 1 for get */
 	int32_t param_val;
-/* LGE_CHANGE_S :  2011-12-12, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
 	uint32_t service_cfg;
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 
 	uint32_t cb_func;
 	uint32_t client_data;
@@ -343,7 +343,7 @@ union snd_set_union_param_msg{
 };
 
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 struct snd_endpoint *get_snd_endpoints(int *size);
 
 static inline int check_mute(int mute)
@@ -392,7 +392,7 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	struct msm_snd_volume_config vol;
 	struct snd_ctxt *snd = file->private_data;
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_LGE)
 	struct msm_snd_set_loopback_mode_param loopback;
 	struct msm_snd_set_voccal_param voccal;
@@ -405,7 +405,7 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	struct msm_snd_set_micamp_gain_param micampgain;
 	union snd_set_union_param_msg umsg;
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 	int rc = 0;
 
@@ -435,14 +435,14 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		MM_INFO("snd_set_device %d %d %d\n", dev.device,
 				dev.ear_mute, dev.mic_mute);
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_MSM8X25_U0)
 		if (dev.device == 10 || dev.device == 11)
 			fm_enable = 1;
 		else
 			fm_enable = 0;
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 		rc = msm_rpc_call(snd->ept,
 			SND_SET_DEVICE_PROC,
@@ -527,7 +527,7 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		rc = get_endpoint(snd, arg);
 		break;
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_LGE)
 	case SND_SET_LOOPBACK_MODE:
 		if (copy_from_user(&loopback, (void __user *) arg, sizeof(loopback))) {
@@ -568,9 +568,9 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		umsg.cmsg.args.voccal_param_type = cpu_to_be32(voccal.voccal_param_type);
 		umsg.cmsg.args.get_flag = cpu_to_be32(voccal.get_flag);
 		umsg.cmsg.args.param_val = cpu_to_be32(voccal.param_val);
-/* LGE_CHANGE_S :  2011-12-14, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
-		umsg.cmsg.args.service_cfg = cpu_to_be32(voccal.service_cfg);	// gt.kim@lge.com
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                                                              */
+		umsg.cmsg.args.service_cfg = cpu_to_be32(voccal.service_cfg);	//               
+/*                                       */
 		umsg.cmsg.args.cb_func = -1;
 		umsg.cmsg.args.client_data = 0;
 
@@ -601,9 +601,9 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		umsg.cimsg.args.voccal_iir_param_type = cpu_to_be32(voccaliir.voccal_iir_param_type);
 		umsg.cimsg.args.get_flag = cpu_to_be32(voccaliir.get_flag);
 		umsg.cimsg.args.param_val = cpu_to_be32(voccaliir.param_val);
-/* LGE_CHANGE_S :  2011-12-14, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
-		umsg.cimsg.args.service_cfg = cpu_to_be32(voccaliir.service_cfg);		// gt.kim@lge.com
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                                                              */
+		umsg.cimsg.args.service_cfg = cpu_to_be32(voccaliir.service_cfg);		//               
+/*                                       */
 
 		umsg.cimsg.args.cb_func = -1;
 		umsg.cimsg.args.client_data = 0;
@@ -635,9 +635,9 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		umsg.nmsg.args.ec_param_type = cpu_to_be32(nextec.ec_param_type);
 		umsg.nmsg.args.get_flag = cpu_to_be32(nextec.get_flag);
 		umsg.nmsg.args.param_val = cpu_to_be32(nextec.param_val);
-/* LGE_CHANGE_S :  2011-12-14, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
 		umsg.nmsg.args.service_cfg = cpu_to_be32(nextec.service_cfg);
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 		umsg.nmsg.args.cb_func = -1;
 		umsg.nmsg.args.client_data = 0;
 
@@ -669,9 +669,9 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		umsg.rmsg.args.idx = cpu_to_be32(rxvol.idx);
 		umsg.rmsg.args.get_flag = cpu_to_be32(rxvol.get_flag);
 		umsg.rmsg.args.param_val = cpu_to_be32(rxvol.param_val);
-/* LGE_CHANGE_S :  2011-12-14, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
 		umsg.rmsg.args.service_cfg = cpu_to_be32(rxvol.service_cfg);
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 		umsg.rmsg.args.cb_func = -1;
 		umsg.rmsg.args.client_data = 0;
 
@@ -701,9 +701,9 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		umsg.fmsg.args.idx = cpu_to_be32(dtmfvol.idx);
 		umsg.fmsg.args.get_flag = cpu_to_be32(dtmfvol.get_flag);
 		umsg.fmsg.args.param_val = cpu_to_be32(dtmfvol.param_val);
-/* LGE_CHANGE_S :  2011-12-14, gt.kim@lge.com, Desc: Audio Part Merge From GB   */
+/*                                                                              */
 		umsg.nmsg.args.service_cfg = cpu_to_be32(dtmfvol.service_cfg);
-/* LGE_CHANGE_E :Audio Part Merge From GB*/
+/*                                       */
 		umsg.fmsg.args.cb_func = -1;
 		umsg.fmsg.args.client_data = 0;
 
@@ -860,7 +860,7 @@ static long snd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		break;
 
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 	default:
 		MM_ERR("unknown command\n");
@@ -1142,14 +1142,14 @@ static long snd_dev_enable(const char *arg)
 	MM_INFO("snd_set_device %d %d %d\n", dev.device, dev.ear_mute,
 			dev.mic_mute);
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_MSM8X25_U0)
 	if (dev.device == 10 || dev.device == 11)
 		fm_enable = 1;
 	else
 		fm_enable = 0;
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 	rc = msm_rpc_call(snd_sys->ept,
 		SND_SET_DEVICE_PROC,
@@ -1157,7 +1157,7 @@ static long snd_dev_enable(const char *arg)
 	return rc;
 }
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_MSM8X25_U0)
 void snd_fm_vol_mute()
 {
@@ -1181,7 +1181,7 @@ void snd_fm_vol_mute()
 	snd_sys_release();
 }
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
 static ssize_t snd_dev_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
@@ -1245,11 +1245,11 @@ static int snd_probe(struct platform_device *pdev)
 	struct snd_sys_ctxt *snd_sys = &the_snd_sys;
 	int rc = 0;
 
-/*LGE_CHANBE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 #if defined (CONFIG_MACH_MSM8X25_U0)
 	fm_enable = 0;
 #endif
-/*LGE_CHANBE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 	mutex_init(&snd->lock);
 	mutex_init(&snd_sys->lock);
 	snd_sys->ept = NULL;

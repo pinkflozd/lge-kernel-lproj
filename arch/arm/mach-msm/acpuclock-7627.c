@@ -1017,9 +1017,9 @@ static void __devinit select_freq_plan(void)
 	 * are using different clock plan based reprogramming method.
 	 */
 	if (cpu_is_msm8625() &&	pll_mhz[ACPU_PLL_4] == 1008) {
-// LGE_CHANGE_S peter.jung@lge.com
+//                                
 		if (pll_mhz[ACPU_PLL_1] == 245)
-// LGE_CHANGE_E peter.jung@lge.com
+//                                
 			acpu_freq_tbl =
 				pll0_960_pll1_245_pll2_1200_pll4_1008_2p0;
 		else

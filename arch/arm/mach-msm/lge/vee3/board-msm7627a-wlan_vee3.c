@@ -17,7 +17,7 @@
 #include <linux/regulator/consumer.h>
 #include <asm/mach-types.h>
 #include <mach/rpc_pmapp.h>
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.4 for v3/v5*/
+/*                                                    */
 #if defined (CONFIG_MACH_LGE)
 #include "../../board-msm7627a.h"
 #include "../../devices-msm7x2xa.h"
@@ -26,8 +26,8 @@
 #include "board-msm7627a.h"
 #include "devices-msm7x2xa.h"
 #include "timer.h"
-#endif /*CONFIG_MACH_LGE*/
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.4 for v3/v5*/
+#endif /*               */
+/*                                                    */
 
 #define GPIO_WLAN_3V3_EN 119
 static const char *id = "WLAN";

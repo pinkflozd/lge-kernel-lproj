@@ -293,11 +293,11 @@ int pmic_vid_en(uint enable);
 int pmic_vid_load_detect_en(uint enable);
 
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
 int pmic_miniabb_charging_current_change(uint16_t charging_current);
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 #endif
 #endif

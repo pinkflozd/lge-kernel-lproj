@@ -403,8 +403,3 @@ endif
 obj-$(CONFIG_MSM_FIQ) += msm7k_fiq.o
 obj-$(CONFIG_MSM_FIQ) += msm7k_fiq_handler.o
 obj-$(CONFIG_MSM_FIQ) += msm_watchdog7k.o
-
-### [LGE_BSP_S] jihyun2.jang@lge.com, 20130212 - RT8966A miniABB regulator
-obj-$(CONFIG_MINIABB_REGULATOR) += miniabb-regulator.o
-### [LGE_BSP_E] jihyun2.jang@lge.com, 20130212 - RT8966A miniABB regulator
-

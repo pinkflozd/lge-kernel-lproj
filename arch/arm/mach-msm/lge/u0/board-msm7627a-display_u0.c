@@ -32,7 +32,7 @@
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #define MSM_FB_SIZE				0x4BF000
 #define MSM7x25A_MSM_FB_SIZE    0x1C2000	
-#define MSM7x27A_MSM_FB_SIZE    0x4BF000	// [LGE_CHANGE][bohyun.jung@lge.com] - resize Framebuffer
+#define MSM7x27A_MSM_FB_SIZE    0x4BF000	//                                                       
 #define MSM8x25_MSM_FB_SIZE		0x5FA000
 #else
 #define MSM_FB_SIZE				0x32A000
@@ -40,9 +40,9 @@
 #define MSM8x25_MSM_FB_SIZE		0x3FC000
 #endif
 
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
+/*                                                                                   */
 static bool firstbootend=0; 
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
+/*                                                                                   */
 
 static unsigned fb_size = MSM_FB_SIZE;
 static int __init fb_size_setup(char *p)
@@ -180,17 +180,17 @@ void __init msm_msm7627a_allocate_memory_regions(void)
 static struct msm_panel_common_pdata mdp_pdata = {
 	.gpio = 97,
 	.mdp_rev = MDP_REV_303,
-/* [LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com] - QCT supported continuation of display logo image from LK*/	
+/*                                                                                                          */	
 	.cont_splash_enabled = 0x1,
-/* [LGSI_SP4_BSP_END] [kiran.jainapure@lge.com] */	
+/*                                              */	
 };
 
-/* [LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com] */
+/*                                                */
 static char mipi_dsi_splash_is_enabled(void)
 {
 	return mdp_pdata.cont_splash_enabled;
 }
-/* [LGSI_SP4_BSP_END] [kiran.jainapure@lge.com] */
+/*                                              */
 
 
 enum {
@@ -253,7 +253,7 @@ static int mipi_dsi_panel_power(int on)
 {
 	int rc = 0;
 
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
+/*                                                                                   */
 	if(on == 0){
     		if(firstbootend == 0){
              		firstbootend = 1;
@@ -261,7 +261,7 @@ static int mipi_dsi_panel_power(int on)
 			return 0;
          	}
        }
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-15 booting animation sometimes no display*/
+/*                                                                                   */
 
 	if (unlikely(!dsi_gpio_initialized)) 
 	{
@@ -286,7 +286,7 @@ static int mipi_dsi_panel_power(int on)
 			goto vreg_put_dsi_v18;
 		}
 			
-		msleep(3); //LGE_CHANGE_S [changbum.lee] 20120130 : add delay
+		msleep(3); //                                                
 		rc = regulator_enable(regulator_mipi_dsi[1]);
 		if (rc) {
 			pr_err("%s: vreg_enable failed for mipi_dsi_v28\n", __func__);
@@ -361,7 +361,7 @@ static struct mipi_dsi_platform_data mipi_dsi_pdata = {
 	.dsi_client_reset   = msm_fb_dsi_client_reset,
 #endif
 	.get_lane_config	= msm_fb_get_lane_config,
-	.splash_is_enabled	= mipi_dsi_splash_is_enabled, /* [LGSI_SP4_BSP] [kiran.jainapure@lge.com] */
+	.splash_is_enabled	= mipi_dsi_splash_is_enabled, /*                                          */
 };
 #endif
 
