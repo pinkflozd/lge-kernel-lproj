@@ -98,13 +98,13 @@ next:
 
 	*bh = sb_bread(sb, phys);
 	if (*bh == NULL) {
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121108:
- *avoid printing error message every time SD card is removed*/
+/*                                            
+                                                            */
 #ifndef CONFIG_MACH_LGE
 		fat_msg(sb, KERN_ERR, "Directory bread(block %llu) failed",
 		       (llu)phys);
 #endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121108*/
+/*                                           */
 		/* skip this block */
 		*pos = (iblock + 1) << sb->s_blocksize_bits;
 		goto next;

@@ -18,7 +18,7 @@
 
 #include "mcs8000_download.h"
 
-/* To enable i2c communication by matthew.kim@lge.com 20110808 */
+/*                                                             */
 #include <linux/i2c.h>
 //============================================================
 //
@@ -31,7 +31,7 @@
 //============================================================
 
 #include "MTH_M3C_R00_V03_bin.c" //for M3C EVB 사용 안함.
-#if 1 //  woden@lge.com [2013-02-26] => New TS Firmware was applied. 
+#if 1 //                                                             
 #include "LGE610_R00_V16_bin.c"//for M4 EU suntel,Telus suntel
 #include "LGE610_R01_V20_bin.c" //for M4 EU Inotek,Telus inotek
 #else

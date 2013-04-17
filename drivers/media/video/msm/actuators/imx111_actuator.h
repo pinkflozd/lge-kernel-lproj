@@ -1,6 +1,6 @@
 
 
-#define SUPPORT_AF_CALIBRATION  /* LGE_CHANGED, modification qct's af calibration routines, 2012-08-07, donghyun.kwon@lge.com */
+#define SUPPORT_AF_CALIBRATION  /*                                                                                            */
 
 /* QCT_CHANGED_S, add AF calibration parameters for imx111, 2012-08-06, kwangilc@qualcomm.com */
 #define ACTUATOR_EEPROM_SADDR                0x50 >> 1

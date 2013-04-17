@@ -1554,8 +1554,8 @@ void unmap_underlying_metadata(struct block_device *bdev, sector_t block)
 }
 EXPORT_SYMBOL(unmap_underlying_metadata);
 
-/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page, when playing music file ramdomly
-		 http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=45bce8f3e3436bbe2e03dd2b076abdce79ffabb7 */
+/*                                                                                                          
+                                                                                                                        */
 /*
  * Size is a power-of-two in the range 512..PAGE_SIZE,
  * and the case we care about most is PAGE_SIZE.
@@ -1577,7 +1577,7 @@ static struct buffer_head *create_page_buffers(struct page *page, struct inode *
                create_empty_buffers(page, 1 << ACCESS_ONCE(inode->i_blkbits), b_state);
        return page_buffers(page);
 }
-/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+/*                                                                        */
 
 /*
  * NOTE! All mapped/uptodate combinations are valid:
@@ -1616,18 +1616,18 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 	sector_t block;
 	sector_t last_block;
 	struct buffer_head *bh, *head;
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	const unsigned blocksize = 1 << inode->i_blkbits;
 	#else /*from main stream kernel*/
 	unsigned int blocksize, bbits;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	int nr_underway = 0;
 	int write_op = (wbc->sync_mode == WB_SYNC_ALL ?
 			WRITE_SYNC : WRITE);
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	BUG_ON(!PageLocked(page));
 
@@ -1641,7 +1641,7 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 	head = create_page_buffers(page, inode,
 					(1 << BH_Dirty)|(1 << BH_Uptodate));
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 
 	/*
 	 * Be very careful.  We have no exclusion from __set_page_dirty_buffers
@@ -1653,7 +1653,7 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
 	 * handle that here by just cleaning them.
 	 */
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	block = (sector_t)page->index << (PAGE_CACHE_SHIFT - inode->i_blkbits);
 	head = page_buffers(page);
@@ -1666,7 +1666,7 @@ static int __block_write_full_page(struct inode *inode, struct page *page,
         block = (sector_t)page->index << (PAGE_CACHE_SHIFT - bbits);
         last_block = (i_size_read(inode) - 1) >> bbits;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 
 	/*
 	 * Get all the dirty buffers mapped to disk addresses and
@@ -1857,7 +1857,7 @@ int __block_write_begin(struct page *page, loff_t pos, unsigned len,
 	BUG_ON(to > PAGE_CACHE_SIZE);
 	BUG_ON(from > to);
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	blocksize = 1 << inode->i_blkbits;
 	if (!page_has_buffers(page))
@@ -1870,7 +1870,7 @@ int __block_write_begin(struct page *page, loff_t pos, unsigned len,
         blocksize = head->b_size;
         bbits = block_size_bits(blocksize);
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 
 	block = (sector_t)page->index << (PAGE_CACHE_SHIFT - bbits);
 
@@ -1941,16 +1941,16 @@ static int __block_commit_write(struct inode *inode, struct page *page,
 	unsigned blocksize;
 	struct buffer_head *bh, *head;
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	blocksize = 1 << inode->i_blkbits;
 	#else /*from mainstream kernel*/
         bh = head = page_buffers(page);
         blocksize = bh->b_size;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	for(bh = head = page_buffers(page), block_start = 0;
 	    bh != head || !block_start;
@@ -1959,7 +1959,7 @@ static int __block_commit_write(struct inode *inode, struct page *page,
         block_start = 0;
         do {
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 		block_end = block_start + blocksize;
 		if (block_end <= from || block_start >= to) {
 			if (!buffer_uptodate(bh))
@@ -1969,7 +1969,7 @@ static int __block_commit_write(struct inode *inode, struct page *page,
 			mark_buffer_dirty(bh);
 		}
 		clear_buffer_new(bh);
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	}
 	#else /*from mainstream kernel*/
@@ -1977,7 +1977,7 @@ static int __block_commit_write(struct inode *inode, struct page *page,
                 bh = bh->b_this_page;
         } while (bh != head);
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 
 	/*
 	 * If this is a partial write which happened to make all buffers
@@ -2102,11 +2102,11 @@ EXPORT_SYMBOL(generic_write_end);
 int block_is_partially_uptodate(struct page *page, read_descriptor_t *desc,
 					unsigned long from)
 {
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	struct inode *inode = page->mapping->host;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	unsigned block_start, block_end, blocksize;
 	unsigned to;
 	struct buffer_head *bh, *head;
@@ -2115,24 +2115,24 @@ int block_is_partially_uptodate(struct page *page, read_descriptor_t *desc,
 	if (!page_has_buffers(page))
 		return 0;
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	blocksize = 1 << inode->i_blkbits;
 	#else /*from mainstream kernel*/
         head = page_buffers(page);
         blocksize = head->b_size;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	to = min_t(unsigned, PAGE_CACHE_SIZE - from, desc->count);
 	to = from + to;
 	if (from < blocksize && to > PAGE_CACHE_SIZE - blocksize)
 		return 0;
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	head = page_buffers(page);
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	bh = head;
 	block_start = 0;
 	do {
@@ -2165,17 +2165,17 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
 	struct inode *inode = page->mapping->host;
 	sector_t iblock, lblock;
 	struct buffer_head *bh, *head, *arr[MAX_BUF_PER_PAGE];
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	unsigned int blocksize;
 	#else
 	unsigned int blocksize, bbits;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	int nr, i;
 	int fully_mapped = 1;
 
-	/*LGE_CHANGE_S : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	#if 0 /*qct original*/
 	BUG_ON(!PageLocked(page));
 	blocksize = 1 << inode->i_blkbits;
@@ -2193,7 +2193,7 @@ int block_read_full_page(struct page *page, get_block_t *get_block)
         iblock = (sector_t)page->index << (PAGE_CACHE_SHIFT - bbits);
         lblock = (i_size_read(inode)+blocksize-1) >> bbits;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com kernel panic in __block_write_full_page*/
+	/*                                                                        */
 	bh = head;
 	nr = 0;
 	i = 0;

@@ -48,11 +48,11 @@
 #ifdef CONFIG_LGE_CHARGER_TYPE_DETECTION
 #include <linux/module.h>
 #endif
-/* LGE_CHANGE_S, for factory usb composition */
+/*                                           */
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 #include "u_lgeusb.h"
 #endif
-/* LGE_CHANGE_E, for factory usb composition */
+/*                                           */
 
 static const char driver_name[] = "msm72k_udc";
 
@@ -159,7 +159,7 @@ static void usb_do_remote_wakeup(struct work_struct *w);
 #define REMOTE_WAKEUP_DELAY	msecs_to_jiffies(1000)
 #define PHY_STATUS_CHECK_DELAY	(jiffies + msecs_to_jiffies(1000))
 #define EPT_PRIME_CHECK_DELAY	(jiffies + msecs_to_jiffies(1000))
-/*[LGE_BSP_S][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 /*Wonjung PIF Uevent Support*/
 #if defined(CONFIG_MACH_MSM7X27A_U0) && defined(CONFIG_LGE_USB_GADGET_DRIVER)
 #define INVALID_OR_NOCABLE 0
@@ -168,7 +168,7 @@ static void usb_do_remote_wakeup(struct work_struct *w);
 #define PIF_130K_CABLE     4
 int g_cable_type_info = INVALID_OR_NOCABLE;
 #endif
-/*[LGE_BSP_E][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 struct usb_info {
 	/* lock for register/queue/device state changes */
 	spinlock_t lock;
@@ -259,7 +259,7 @@ static void flush_endpoint(struct msm_endpoint *ept);
 static void usb_reset(struct usb_info *ui);
 static int usb_ept_set_halt(struct usb_ep *_ep, int value);
 
-#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined (CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION)||defined (CONFIG_MACH_MSM7X25A_V3)
 extern void update_power_supply(int chg_type);
 #endif
 static void msm_hsusb_set_speed(struct usb_info *ui)
@@ -312,7 +312,7 @@ static ssize_t print_switch_name(struct switch_dev *sdev, char *buf)
 
 static ssize_t print_switch_state(struct switch_dev *sdev, char *buf)
 {
-/*[LGE_BSP_S][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 #if defined(CONFIG_MACH_MSM7X27A_U0) && defined(CONFIG_LGE_USB_GADGET_DRIVER)
 	if (sdev->state == 0)
 		return snprintf(buf, PAGE_SIZE, "%s\n", "offline");
@@ -328,7 +328,7 @@ static ssize_t print_switch_state(struct switch_dev *sdev, char *buf)
 	return snprintf(buf, PAGE_SIZE, "%s\n",
 		sdev->state ? "online" : "offline");
 #endif
-/*[LGE_BSP_E][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 }
 
 static inline enum chg_type usb_get_chg_type(struct usb_info *ui)
@@ -382,13 +382,13 @@ static int usb_get_max_power(struct usb_info *ui)
 
 	if (suspended || !configured)
 	{
-// 2012-11-20 chiwon.son@lge.com, [V3/V7][Supporting.non.standard.TA] Return USB_PROPRIETARY_CHG_CURRENT on non-standard field TA [START] 
+//                                                                                                                                        
 #if 1
 		return USB_PROPRIETARY_CHG_CURRENT;
 #else	// QCT Original
 		return 0;
 #endif
-// 2012-11-20 chiwon.son@lge.com, [V3/V7][Supporting.non.standard.TA] Return USB_PROPRIETARY_CHG_CURRENT on non-standard field TA [END] 
+//                                                                                                                                      
 	}
 
 	return bmaxpow;
@@ -477,7 +477,7 @@ static void usb_chg_stop(struct work_struct *w)
 		usb_phy_set_power(ui->xceiv, 0);
 }
 
-#if defined(CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined(CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined(CONFIG_MACH_MSM7X25A_V3)
 int get_charger_type(void)
 {
 	int chg_type = 0;
@@ -1427,13 +1427,13 @@ static irqreturn_t usb_interrupt(int irq, void *data)
 	unsigned n;
 	unsigned long flags;
 
-/* LGE_CHANGE_S : bohyun.jung@lge.com QCT_PATCH for SR 01087402
- *
- *  USB: msm72k_udc: Don't handle asynchronous interrupt
- *  The UDC interrupt handler is accessing USB registers before clocks are turned on. 
- *  Avoid unclocked access by ignoring the asynchronous interrupt.
+/*                                                             
+  
+                                                        
+                                                                                      
+                                                                  
  */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X27A_U0)
 	struct msm_otg *dev = to_msm_otg(ui->xceiv);
 
 	if (atomic_read(&dev->in_lpm))
@@ -1586,21 +1586,21 @@ static void usb_prepare(struct usb_info *ui)
 
 static void usb_reset(struct usb_info *ui)
 {
-/* LGE_CHANGE_S, for factory usb composition */
+/*                                           */
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 	int cable_type;
 #endif
-/* LGE_CHANGE_E, for factory usb composition */
+/*                                           */
 	struct msm_otg *otg = to_msm_otg(ui->xceiv);
 
 	dev_dbg(&ui->pdev->dev, "reset controller\n");
 
-/* LGE_CHANGE_S, for factory usb composition */
+/*                                           */
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 		msleep(300);
 		cable_type = android_set_factory_mode();
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/*[LGE_BSP_S][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 /*Wonjung PIF Uevent Support*/
 /*Send online UEvent for 56K also.*/
 	g_cable_type_info = lge_get_cable_info();
@@ -1612,12 +1612,12 @@ static void usb_reset(struct usb_info *ui)
 	{
 		switch_set_state(&ui->sdev,1);
 	}	
-	/*if (cable_type == LGE_130K_CABLE)
-		switch_set_state(&ui->sdev, 3); //130k*/
+	/*                                 
+                                        */
 #endif
-/*[LGE_BSP_E][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 #endif
-/* LGE_CHANGE_E, for factory usb composition */
+/*                                           */
 
 	atomic_set(&ui->running, 0);
 
@@ -1764,7 +1764,7 @@ static void usb_do_work(struct work_struct *w)
 			break;
 		case USB_STATE_ONLINE:
 			if (atomic_read(&ui->offline_pending)) {
-/*[LGE_BSP_S][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 /*Wonjung PIF Uevent Support*/
 #if defined(CONFIG_MACH_MSM7X27A_U0) && defined(CONFIG_LGE_USB_GADGET_DRIVER)
 				if(  (PIF_56K_CABLE  != g_cable_type_info)
@@ -1775,7 +1775,7 @@ static void usb_do_work(struct work_struct *w)
 #else
 				switch_set_state(&ui->sdev, 0);		  
 #endif
-/*[LGE_BSP_E][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 /* For PIF types let framework consider States*/
 				atomic_set(&ui->offline_pending, 0);
 			}
@@ -1825,12 +1825,12 @@ static void usb_do_work(struct work_struct *w)
 
 				if (ui->irq) {
 
-/* LGE_CHANGE_S : bohyun.jung@lge.com QCT_PATCH for SR 01087402
- *
- * USB: msm72k_udc: Disable all usb interrupts & acknowledge them
- * Disable and acknowledge all device specific interrupts in UDC driver before freeing the IRQ.
+/*                                                             
+  
+                                                                 
+                                                                                               
  */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X27A_U0)
 					/* Disable and acknowledge all
 					 * USB interrupts before freeing
 					 * irq, so that no USB spurious
@@ -1856,7 +1856,7 @@ static void usb_do_work(struct work_struct *w)
 				ui->state = USB_STATE_OFFLINE;
 				usb_do_work_check_vbus(ui);
 
-				/* QCT SR # 2013-02-07 lbh.lee@lge.com for did not send Uevent  */
+				/*                                                              */
 				if (ui->pdata && ui->pdata->is_phy_status_timer_on){
 						del_timer_sync(&phy_status_timer);
 						cancel_work_sync(&ui->phy_status_check);
@@ -1865,8 +1865,8 @@ static void usb_do_work(struct work_struct *w)
 				pm_runtime_put_noidle(&ui->pdev->dev);
 				pm_runtime_suspend(&ui->pdev->dev);
 				wake_unlock(&ui->wlock);
-// LGE_CHANGE jongjin7.park 20130207 move to msm_hsusb_set_vbus_state()
-#if !defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X27A_U0) && !defined(CONFIG_MACH_MSM8X25_V7) && !defined(CONFIG_MACH_MSM7X25A_V1)
+//                                                                     
+#if !defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X27A_U0) && !defined(CONFIG_MACH_MSM8X25_V7) 
 /*Work around for system wakeup when TA insert*/
 /*Hold wake lock for 2 secs. Let system be in wakeup state So that
 events can reach framework with out delay.*/	
@@ -1902,7 +1902,7 @@ events can reach framework with out delay.*/
 				 * is selected. Send online/offline event
 				 * accordingly.
 				 */
-/*[LGE_BSP_S][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 #if defined(CONFIG_MACH_MSM7X27A_U0) && defined(CONFIG_LGE_USB_GADGET_DRIVER)
 /*Wonjung PIF Uevent Support*/
 				if(  (PIF_56K_CABLE  != g_cable_type_info)
@@ -1915,7 +1915,7 @@ events can reach framework with out delay.*/
 				switch_set_state(&ui->sdev,
 						atomic_read(&ui->configured));
 #endif
-/*[LGE_BSP_E][indeok1.han@lge.com] 2012-11-22 add_u0_atcmd_uart */
+/*                                                              */
 				if (maxpower < 0)
 					break;
 
@@ -2000,7 +2000,7 @@ void msm_hsusb_set_vbus_state(int online)
 	if (online) {
 		ui->usb_state = USB_STATE_POWERED;
 		ui->flags |= USB_FLAG_VBUS_ONLINE;
-		// 2012-11-29 ByungHo-Lee(lbh.lee@lge.com)[td:na] for USB debuging
+		//                                                                
 		pr_info("%s USB Connection\n", __func__);
 	} else {
 		ui->gadget.speed = USB_SPEED_UNKNOWN;
@@ -2012,19 +2012,19 @@ void msm_hsusb_set_vbus_state(int online)
 		ui->chg_type_retry_cnt = 0;
 #endif
 		ui->proprietary_chg = false;
-		// 2012-11-29 ByungHo-Lee(lbh.lee@lge.com)[td:na] for USB debuging
-/* LGE_CHANGE_S jongjin7.park 20130207 fixed issue.- sometimes wake lately */
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_V1)
+		//                                                                
+/*                                                                         */
+#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM8X25_V7)
 		update_power_supply(USB_CHG_TYPE__INVALID);//remove usb/chg cable powesupply chaged to battery, updating supply changed event  to frame work to make screen on
 		wake_lock_timeout(&ui->TA_wlock,2 * HZ);
 #elif defined(CONFIG_MACH_MSM7X27A_U0)
 		wake_lock_timeout(&ui->TA_wlock,2 * HZ);
 #endif//CONFIG_MACH_MSM7X25A_V3
-/* LGE_CHANGE_E jongjin7.park 20130207 fixed issue.- sometimes wake lately */
+/*                                                                         */
 		pr_info("%s USB Disconnection\n", __func__);
 	}
 	if (in_interrupt()) {
-// LGE_CHANGE_S - bohyun.jung@lge.com - unlock irq before schedule_work.
+//                                                                      
 #if defined (CONFIG_MACH_MSM7X27A_U0)
 		spin_unlock_irqrestore(&ui->lock, flags);
 		pr_info("%s irq conunt is true\n", __func__);
@@ -2035,7 +2035,7 @@ void msm_hsusb_set_vbus_state(int online)
 #endif
 	} else {
 		spin_unlock_irqrestore(&ui->lock, flags);
-		pr_info("%s irq conunt is false\n", __func__);		// bohyun.jung@lge.com - put logs.	
+		pr_info("%s irq conunt is false\n", __func__);		//                                 
 		usb_do_work(&ui->work);
 		return;
 	}

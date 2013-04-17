@@ -91,8 +91,6 @@ obj-$(CONFIG_TOUCHSCREEN_MELFAS_MMS136) += melfas_mms136_lgit_bin.o
 #2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START]
 # obj-$(CONFIG_TOUCHSCREEN_MELFAS_MMS128S) += mms128s_ts.o mms128s_firmware_binary.o mms128s_ISC_download.o mms128s_ISP_download.o
 obj-$(CONFIG_TOUCHSCREEN_MELFAS_MMS128S) += mms128s_ts.o mms128s_firmware_binary.o mms128s_ISC_download.o mms128s_ISP_download.o MMS100S_FIRMWARE.o MMS100S_ISC_Updater_Customize.o MMS100S_ISC_Updater_V03.o
-obj-$(CONFIG_TOUCHSCREEN_MELFAS_MMS128S_V1) += mms128s_v1_ts.o mms128s_firmware_binary.o mms128s_ISC_download.o mms128s_ISP_download.o MMS100S_FIRMWARE.o MMS100S_ISC_Updater_Customize.o MMS100S_ISC_Updater_V03.o
-obj-$(CONFIG_TOUCHSCREEN_MELFAS_MMS100S) += mms100s_ts.o
 #2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END]
 obj-$(CONFIG_TOUCHSCREEN_MELFAS_TS)	+= melfas_ts.o mcs8000_download.o melfas_ISC_download.o 
 # obj-$(CONFIG_TOUCHSCREEN_MELFAS_TS) += melfas_ts.o mms128s_firmware_binary.o mms128s_ISC_download.o mms128s_ISP_download.o MMS100S_FIRMWARE.o MMS100S_ISC_Updater_Customize.o MMS100S_ISC_Updater_V03.o

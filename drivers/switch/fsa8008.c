@@ -55,12 +55,12 @@
 #undef  LGE_HSD_ERROR_PRINT
 #define LGE_HSD_ERROR_PRINT
 
-/* CONFIG_LGE_AUDIO start
- * modifiy the case of exception
- * 2012-03-22, donggyun.kim@lge.com,
+/*                       
+                                
+                                    
  */
 #define CONFIG_LGE_AUDIO_FSA8008_MODIFY
-/* CONFIG_LGE_AUDIO end */
+/*                      */
 
 #ifdef CONFIG_LGE_AUDIO_FSA8008_MODIFY
 #define FSA8008_KEY_EN_DELAY_MS	(600 /* milli */ * HZ / 1000) /* convert milli to jiffies */
@@ -162,11 +162,6 @@ enum {
 	EARJACK_TYPE_4_POLE = 0,
 	EARJACK_TYPE_3_POLE = 1,
 };
-#endif
-
-/* LGE_CHANGE : bohyun.jung@lge.com */
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-static bool s_bInitialized = false;
 #endif
 
 static ssize_t lge_hsd_print_name(struct switch_dev *sdev, char *buf)
@@ -277,28 +272,12 @@ static void button_enable(struct work_struct *work)
 
 static void insert_headset(struct work_struct *work)
 {
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	struct delayed_work *dwork 		= NULL;
-	struct hsd_info 	*hi 		= NULL; 
-	int 				earjack_type= 0;
-	int 				value 		= 0;
-
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * prevent kernel panic in case that remove isr comes before probe is done. */
-	if (!s_bInitialized)
-	{
-		HSD_ERR("insert_headset but lge_hsd_probe() is not finished. !!\n");
-		return;
-	}
-	dwork 	= container_of(work, struct delayed_work, work);
-	hi 		= container_of(dwork, struct hsd_info, work_for_insert);
-	value 	= gpio_get_value_cansleep(hi->gpio_detect);
-#else
 	struct delayed_work *dwork = container_of(work, struct delayed_work, work);
 	struct hsd_info *hi = container_of(dwork, struct hsd_info, work_for_insert);
+
 	int earjack_type;
+
 	int value = gpio_get_value_cansleep(hi->gpio_detect);
-#endif
 
 	if(value != EARJACK_INSERTED) {
 		HSD_ERR("insert_headset but actually Fake inserted state!!\n");
@@ -306,7 +285,7 @@ static void insert_headset(struct work_struct *work)
 	}
 	else {
 //		mutex_lock(&hi->mutex_lock);
-//		switch_set_state(&hi->sdev, LGE_HEADSET);
+//                                           
 //		mutex_unlock(&hi->mutex_lock);
 	}
 
@@ -349,7 +328,7 @@ static void insert_headset(struct work_struct *work)
 		mutex_unlock(&hi->mutex_lock);
 
 		input_report_switch(hi->input, SW_HEADPHONE_INSERT, 1);
-		input_sync(hi->input); // 2012-07-01, donggyun.kim@lge.com - to prevent a lost uevent of earjack inserted
+		input_sync(hi->input); //                                                                                
 		input_report_switch(hi->input, SW_MICROPHONE_INSERT, 1);
 		input_sync(hi->input);
 	}
@@ -358,31 +337,11 @@ static void insert_headset(struct work_struct *work)
 
 static void remove_headset(struct work_struct *work)
 {
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	struct delayed_work *dwork 	= NULL; 
-	struct hsd_info 	*hi 	= NULL;  
-	int 				has_mic = 0;
-	int 				value 	= 0;
-
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * prevent kernel panic in case that remove isr comes before probe is done. */
-	if (!s_bInitialized)
-	{
-		HSD_ERR("remove_headset but lge_hsd_probe() is not finished. !!\n");
-		return;
-	}
-
-	dwork 	= container_of(work, struct delayed_work, work);
-	hi		= container_of(dwork, struct hsd_info, work_for_remove);
-	has_mic = switch_get_state(&hi->sdev);
-	value 	= gpio_get_value_cansleep(hi->gpio_detect);
-#else
 	struct delayed_work *dwork = container_of(work, struct delayed_work, work);
 	struct hsd_info *hi = container_of(dwork, struct hsd_info, work_for_remove);
 	int has_mic = switch_get_state(&hi->sdev);
 
 	int value = gpio_get_value_cansleep(hi->gpio_detect);
-#endif
 
 	if(value != EARJACK_REMOVED) {
 		HSD_ERR("remove_headset but actually Fake removed state!!\n");
@@ -435,7 +394,7 @@ static irqreturn_t gpio_irq_handler(int irq, void *dev_id)
 	HSD_DBG("gpio_irq_handler [%d]", state);
 
 	if (state == EARJACK_REMOVED) {
-/* 2012-12-04 Hoseong Kang(hoseong.kang@lge.com) do not check headset status before setting work queue [START] */
+/*                                                                                                             */
 #if 1
 		HSD_DBG("==== LGE headset removing\n");
 		cancel_delayed_work_sync(&(hi->work_for_insert));
@@ -459,7 +418,7 @@ static irqreturn_t gpio_irq_handler(int irq, void *dev_id)
 			HSD_DBG("err_invalid_state state = %d\n", state);
 		}
 #endif
-/* 2012-12-04 Hoseong Kang(hoseong.kang@lge.com) do not check headset status before setting work queue [END] */
+/*                                                                                                           */
 	}
 
 	return IRQ_HANDLED;
@@ -490,7 +449,7 @@ static irqreturn_t button_irq_handler(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-#else /* CONFIG_LGE_AUDIO_FSA8008_MODIFY */
+#else /*                                 */
 
 static void button_pressed(struct work_struct *work)
 {
@@ -696,7 +655,7 @@ static irqreturn_t gpio_irq_handler(int irq, void *dev_id)
 
 #ifdef CONFIG_FSA8008_USE_LOCAL_WORK_QUEUE
 
-#if 1 //def CONFIG_MACH_LGE_I_BOARD_DCM
+#if 1 //                               
 	queue_delayed_work(local_fsa8008_workqueue, &(hi->work), HZ/2 /* 500ms */);
 #else
 	queue_delayed_work(local_fsa8008_workqueue, &(hi->work), 0);
@@ -704,7 +663,7 @@ static irqreturn_t gpio_irq_handler(int irq, void *dev_id)
 
 #else
 
-#if 1 //def CONFIG_MACH_LGE_I_BOARD_DCM
+#if 1 //                               
 	schedule_delayed_work(&(hi->work), HZ/2 /* 500ms */);
 #else
 	schedule_delayed_work(&(hi->work), 0);
@@ -745,7 +704,7 @@ static irqreturn_t button_irq_handler(int irq, void *dev_id)
 
 	return IRQ_HANDLED;
 }
-#endif /* CONFIG_LGE_AUDIO_FSA8008_MODIFY */
+#endif /*                                 */
 
 static int lge_hsd_probe(struct platform_device *pdev)
 {
@@ -954,13 +913,6 @@ static int lge_hsd_probe(struct platform_device *pdev)
 
 #ifdef AT_TEST_GPKD
 	err = device_create_file(&pdev->dev, &dev_attr_hookkeylog);
-#endif
-
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * prevent kernel panic in case that remove isr comes before probe is done. */
-	HSD_DBG("lge_hsd_probe is done.");
-	s_bInitialized = true;
 #endif
 
 	return ret;

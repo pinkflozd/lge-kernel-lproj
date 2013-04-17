@@ -435,7 +435,7 @@ static long ili9486_reg_init_ext(void)
 }
 #endif
 
-/*LGE_CHANGE_S,hyungjoon.jeon,13-02-06, for M4 lcd backlight timning code*/
+/*                                                                       */
 #if defined(CONFIG_MACH_MSM7X25A_M4)
 extern int lcd_on_completed;
 #endif
@@ -461,7 +461,7 @@ static int mipi_ili9486_lcd_on(struct platform_device *pdev)
 
 	if( 0){
 // when panic mode, lcd init no need.
-#if 0 //def CONFIG_LGE_HANDLE_PANIC
+#if 0 //                           
 		if(get_kernel_panicmode() == 2)
 			return 0;
 #endif
@@ -566,7 +566,7 @@ static int mipi_ili9486_lcd_on(struct platform_device *pdev)
 	lcd_on_off = 1;
 #endif
 
-/*LGE_CHANGE_S,hyungjoon.jeon,13-02-06, for M4 lcd backlight timning code*/
+/*                                                                       */
 #if defined(CONFIG_MACH_MSM7X25A_M4)
  lcd_on_completed = 1;
 #endif

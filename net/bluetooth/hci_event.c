@@ -1642,7 +1642,7 @@ static inline void hci_conn_complete_evt(struct hci_dev *hdev, struct sk_buff *s
 		if (conn->type == ACL_LINK) {
 			struct hci_cp_read_remote_version cp;
 			cp.handle = ev->handle;
-// +s LGBT_COMMON_PATCH_SR01017282 sunmee.choi@lge.com 2012-11-26 performance issue (opp request time)
+//                                                                                                    
 			hci_send_cmd(hdev, HCI_OP_READ_CLOCK_OFFSET,
 				sizeof(cp), &cp);
 // +e LGBT_COMMON_PATCH_SR01017282
@@ -1753,7 +1753,7 @@ static inline void hci_conn_request_evt(struct hci_dev *hdev, struct sk_buff *sk
 			cp.content_format = cpu_to_le16(hdev->voice_setting);
 
 			// LGBT_BLUEZCOM_BUGFIX_SCORECONNFAILNTG, 
-			// sco reconnection fail with NTG4.5 (qct patch in e0), jeonghoon.lim@lge.com
+			//                                                                           
 			// cp.retrans_effort = 0x01; // original
 			cp.retrans_effort = 0xff; 
 

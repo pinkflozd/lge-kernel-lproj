@@ -114,10 +114,10 @@ static int try_to_freeze_tasks(bool user_only)
 			       elapsed_csecs / 100, elapsed_csecs % 100,
 			       todo - wq_busy, wq_busy);
 		}
-/* LGE_CHANGE_S : bohyun.jung@lge.com 
- 				  Dumping thread info holds CPU via preempt_disable(), and there is risk of watchdog reset.
-				  DEBUG_SCHED_SHOW_TASK is added for it. it is defined as default, but only MSM7x27A_U0 disable it.
- 				  Changes does not affect on other model(v3/7/m4), it keep dumping task info in error condition.  */
+/*                                    
+                                                                                                
+                                                                                                       
+                                                                                                       */
 #ifdef CONFIG_DEBUG_SCHED_SHOW_TASK
 		if (!wakeup) {
 			read_lock(&tasklist_lock);

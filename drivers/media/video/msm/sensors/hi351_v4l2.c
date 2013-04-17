@@ -36,7 +36,7 @@
 DEFINE_MUTEX(hi351_mut);
 static struct msm_sensor_ctrl_t hi351_s_ctrl;
 
-#if 0 // #ifdef CONFIG_MACH_LGE
+#if 0 //                       
 static int camera_started;
 static int prev_balance_mode;
 static int prev_effect_mode;

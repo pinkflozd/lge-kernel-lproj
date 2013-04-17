@@ -409,15 +409,15 @@ int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
 	if (index == EXT_CSD_BKOPS_START)
 		return 0;
 
-// LGE_CHANGE_S 20121207 kh.tak Stability of eMMC
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20121217:Adding arch specific macro*/
-#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+//                                               
+/*                                                                      */
+#if defined (CONFIG_MACH_MSM7X25A_V3) || defined (CONFIG_MACH_MSM7X27A_U0)
 	mmc_delay(1);
 #else
 	mmc_delay(3);
 #endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20121217*/
-// LGE_CHANGE_E 20121207
+/*                                           */
+//                      
 
 	/* Must check status to be sure of no errors */
 	do {

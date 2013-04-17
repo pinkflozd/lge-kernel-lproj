@@ -18,9 +18,9 @@
 #define PLATFORM_DRIVER_NAME "msm_camera_imx111"
 #define imx111_obj imx111_##obj
 
-/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 #define CAPTURE_10FPS_444Mhz
-/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 
 DEFINE_MUTEX(imx111_mut);
 static struct msm_sensor_ctrl_t imx111_s_ctrl;
@@ -263,7 +263,7 @@ static struct msm_camera_i2c_reg_conf imx111_comm1_settings[] = {
 };
 
 static struct msm_camera_i2c_reg_conf imx111_comm2_part1_settings[] = {
-/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 #if defined(CAPTURE_10FPS_444Mhz)
 	{0x0307, 0x25},
 	{0x0340, 0x09},
@@ -291,7 +291,7 @@ static struct msm_camera_i2c_reg_conf imx111_comm2_part1_settings[] = {
 #else //15 fps 672HMz
 	{0x3318, 0x62},
 #endif
-/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 };
 
 static struct msm_camera_i2c_reg_conf imx111_comm2_part2_settings[] = {
@@ -331,14 +331,14 @@ static struct msm_camera_i2c_conf_array imx111_confs[] = {
 	ARRAY_SIZE(imx111_prev_settings), 0, MSM_CAMERA_I2C_BYTE_DATA},
 	{&imx111_video_settings[0],
 	ARRAY_SIZE(imx111_video_settings), 0, MSM_CAMERA_I2C_BYTE_DATA},
-/* LGE_CHANGE_S, Camera Zero shutter lag patch, 2012.01.12 jungryoul.choi@lge.com */
+/*                                                                                */
 	{&imx111_snap_settings[0],
 	ARRAY_SIZE(imx111_snap_settings), 0, MSM_CAMERA_I2C_BYTE_DATA},
-/* LGE_CHANGE_E, Camera Zero shutter lag patch, 2012.01.12 jungryoul.choi@lge.com */
+/*                                                                                */
 };
 
 static struct msm_sensor_output_info_t imx111_dimensions[] = {
-/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 #if defined(CAPTURE_10FPS_444Mhz)
 	{
 		/* 10 fps */
@@ -364,7 +364,7 @@ static struct msm_sensor_output_info_t imx111_dimensions[] = {
 
 	},
 #endif 
-/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 	{
 		/* 30 fps preview */
 		.x_output = 0x668, /* 1640 */
@@ -386,7 +386,7 @@ static struct msm_sensor_output_info_t imx111_dimensions[] = {
 		.op_pixel_clk = 200000000,
 		.binning_factor = 1,
 	},
-/* LGE_CHANGE_S, Camera Zero shutter lag patch, 2012.01.12 jungryoul.choi@lge.com */
+/*                                                                                */
 	{
 		/* not used */
 		/* 22.5 fps */
@@ -398,7 +398,7 @@ static struct msm_sensor_output_info_t imx111_dimensions[] = {
 		.op_pixel_clk = 199200000,
 		.binning_factor = 1,
 	},
-/* LGE_CHANGE_E, Camera Zero shutter lag patch, 2012.01.12 jungryoul.choi@lge.com */
+/*                                                                                */
 };
 
 static struct msm_camera_csi_params imx111_csic_params = {
@@ -442,9 +442,9 @@ static struct msm_camera_csi2_params *imx111_csi_params_array[] = {
 	&imx111_csi_params,
 	&imx111_csi_params,
 	&imx111_csi_params,
-/* LGE_CHANGE_S, Camera Zero shutter lag patch, 2012.01.12 jungryoul.choi@lge.com */
+/*                                                                                */
 	&imx111_csi_params,
-/* LGE_CHANGE_E, Camera Zero shutter lag patch, 2012.01.12 jungryoul.choi@lge.com */
+/*                                                                                */
 };
 
 static struct msm_sensor_output_reg_addr_t imx111_reg_addr = {
@@ -503,13 +503,13 @@ int32_t imx111_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 {
 	int32_t rc = 0;
 
-/* LGE_CHANGE_S, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+/*                                                                       */
 #if 0  
 	v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 		NOTIFY_ISPIF_STREAM, (void *)ISPIF_STREAM(
 		PIX_0, ISPIF_OFF_IMMEDIATELY));
 #endif
-/* LGE_CHANGE_E, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+/*                                                                       */
 	s_ctrl->func_tbl->sensor_stop_stream(s_ctrl);
 	msleep(30);
 	if (update_type == MSM_SENSOR_REG_INIT) {
@@ -523,7 +523,7 @@ int32_t imx111_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 				imx111_comm_confs[0].conf,
 				imx111_comm_confs[0].size,
 				imx111_comm_confs[0].data_type);
-         printk("[tykim] %s: csi_lane_assign not setting\n", __func__); /* LGE_CHANGE, Camera Setting for ES2, 2012.04.03, soojung.lim@lge.com */
+         printk("[tykim] %s: csi_lane_assign not setting\n", __func__); /*                                                                     */
 		} else {
 			msm_sensor_write_res_settings(s_ctrl, res);
 			if (s_ctrl->curr_csi_params != s_ctrl->csi_params[res]) {
@@ -537,12 +537,12 @@ int32_t imx111_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 				v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 						NOTIFY_CSID_CFG,
 						&s_ctrl->curr_csi_params->csid_params);
-/* LGE_CHANGE_S, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+/*                                                                       */
 #if 0  
 				v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 							NOTIFY_CID_CHANGE, NULL);
 #endif
-/* LGE_CHANGE_E, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+/*                                                                       */
 				mb();
 				v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 						NOTIFY_CSIPHY_CFG,
@@ -554,13 +554,13 @@ int32_t imx111_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 			v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 				NOTIFY_PCLK_CHANGE, &s_ctrl->msm_sensor_reg->
 				output_settings[res].op_pixel_clk);
-/* LGE_CHANGE_S, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+/*                                                                       */
 #if 0  
 			v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 				NOTIFY_ISPIF_STREAM, (void *)ISPIF_STREAM(
 				PIX_0, ISPIF_ON_FRAME_BOUNDARY));
 #endif
-/* LGE_CHANGE_E, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+/*                                                                       */
 			s_ctrl->func_tbl->sensor_start_stream(s_ctrl);
 			msleep(30);
 		}
@@ -569,7 +569,7 @@ int32_t imx111_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 	return rc;
 }
 
-/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 void imx111_calculate_integration_time(struct msm_sensor_ctrl_t *s_ctrl, int res, int prev_res)
 {
 	
@@ -603,14 +603,14 @@ void imx111_calculate_integration_time(struct msm_sensor_ctrl_t *s_ctrl, int res
 	}
 	CDBG("%s : X\n", __func__);
 }
-/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+/*                                                                                     */
 
 int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 			int update_type, int res)
 {
 	int32_t rc = 0;
 	static int csi_config;
-	static int prev_res = -1;   /* LGE_CHANGE, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+	static int prev_res = -1;   /*                                                                                   */
 
 	printk("%s : E\n", __func__);
 	s_ctrl->func_tbl->sensor_stop_stream(s_ctrl);
@@ -621,7 +621,7 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 		msm_sensor_enable_debugfs(s_ctrl);
 		msm_sensor_write_init_settings(s_ctrl);
 		csi_config = 0;
-		prev_res = -1;	/* LGE_CHANGE, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+		prev_res = -1;	/*                                                                                   */
  	} else if (update_type == MSM_SENSOR_UPDATE_PERIODIC) {
  		CDBG("PERIODIC : %d\n", res);
  		if (res == 0) { // need to check
@@ -630,7 +630,7 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 				imx111_comm_confs[0].conf,
 				imx111_comm_confs[0].size,
 				imx111_comm_confs[0].data_type);
-			printk("[tykim] %s: csi_lane_assign not setting\n", __func__); /* LGE_CHANGE, Camera Setting for ES2, 2012.04.03, soojung.lim@lge.com */
+			printk("[tykim] %s: csi_lane_assign not setting\n", __func__); /*                                                                     */
 		} else {
 			msm_sensor_write_conf_array(
 				s_ctrl->sensor_i2c_client,
@@ -646,12 +646,12 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 				mb();
 				msleep(30);
 				csi_config = 1;
-			}/* LGE_CHANGE_S, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+			}/*                                                                                     */
 			else {				
 				imx111_calculate_integration_time(s_ctrl, res, prev_res);
 				msleep(30);
 			}
-			/* LGE_CHANGE_E, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+			/*                                                                                     */
 			
 			v4l2_subdev_notify(&s_ctrl->sensor_v4l2_subdev,
 				NOTIFY_PCLK_CHANGE,
@@ -661,12 +661,12 @@ int32_t imx111_sensor_setting1(struct msm_sensor_ctrl_t *s_ctrl,
 			msleep(50);
 		}
  	}
-	prev_res = res;	/* LGE_CHANGE, Fix line noise with 10fps and 444MHz, 2013-02-15 hyungtae.lee@lge.com */
+	prev_res = res;	/*                                                                                   */
 	printk("%s : X\n", __func__);
 	return rc;
 }
 
-/* LGE_CHANGE_S, Use qcomm fps code, 2012-06-22 jeongda.lee@lge.com */
+/*                                                                  */
 #if 0
 int32_t imx111_sensor_set_fps(struct msm_sensor_ctrl_t *s_ctrl,
 						struct fps_cfg *fps)
@@ -697,7 +697,7 @@ int32_t imx111_sensor_set_fps(struct msm_sensor_ctrl_t *s_ctrl,
 	return rc;
 }
 #endif
-/* LGE_CHANGE_E, Use qcomm fps code, 2012-06-22 jeongda.lee@lge.com */
+/*                                                                  */
 
 int32_t imx111_sensor_write_exp_gain1(struct msm_sensor_ctrl_t *s_ctrl,
 		uint16_t gain, uint32_t line)
@@ -1048,7 +1048,7 @@ static struct msm_sensor_fn_t imx111_func_tbl = {
 	.sensor_power_up = imx111_sensor_power_up, // msm_sensor_power_up,
 	.sensor_power_down = imx111_sensor_power_down, // msm_sensor_power_down,
 	.sensor_adjust_frame_lines = msm_sensor_adjust_frame_lines,
-	.sensor_get_csi_params = msm_sensor_get_csi_params,  /* LGE_CHANGE, migration for LA1730, 2012.08.03, donghyun.kwon@lge.com */
+	.sensor_get_csi_params = msm_sensor_get_csi_params,  /*                                                                     */
 
 };
 

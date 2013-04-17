@@ -103,9 +103,9 @@ struct MMS136_ts_down_ioctl_i2c_type {
 #define MMS136_TS_IOCTL_CHANNEL_DEBUG 			_IO( MMS136_TS_IOCTL_MAGIC, 12)
 #define MMS136_TS_I2C_READ_BURST 				_IOWR( MMS136_TS_IOCTL_MAGIC, 13, struct MMS136_ioctl_i2c_burst_type)
 #define MMS136_TS_IOCTL_KERNEL_DOWN				_IO( MMS136_TS_IOCTL_MAGIC, 14)
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen manual downloading */
+/*                                                                                          */
 #define MMS136_TS_IOCTL_KERNEL_DOWN_MANUAL 	_IO( MMS136_TS_IOCTL_MAGIC, 15)
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen manual downloading */
+/*                                                                                          */
 #define MMS136_TS_IOCTL_MAXNR 15
 
 struct MMS136_ioctl_i2c_type {

@@ -121,8 +121,8 @@ struct MmcPartition {
 typedef struct MmcPartition MmcPartition;
 
 
-/*121015 khyun.kim@lge.com [V7] rpc api for NTCODE [START]*/
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+/*                                                        */
+//                                                                   
 typedef struct
 {
 	unsigned int	pkt_no;
@@ -154,7 +154,7 @@ typedef struct
 #define RPC_LARGE_READ_FINISH			2
 #define RPC_LARGE_READ_ERROR			3
 
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
-/*121015 khyun.kim@lge.com [V7] rpc api for NTCODE [END]*/
+//                                                                 
+/*                                                      */
 
 #endif

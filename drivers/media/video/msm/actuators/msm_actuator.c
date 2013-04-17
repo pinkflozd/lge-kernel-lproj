@@ -14,7 +14,7 @@
 #include "msm_actuator.h"
 
 #ifdef CONFIG_IMX111_ACT  
-#include "imx111_actuator.h"  /* LGE_CHANGED, modification qct's af calibration routines, 2012-08-07, donghyun.kwon@lge.com */
+#include "imx111_actuator.h"  /*                                                                                            */
 #endif
 
 static struct msm_actuator_ctrl_t msm_actuator_t;
@@ -248,10 +248,10 @@ int32_t msm_actuator_move_focus(
 		dir,
 		num_steps);
 
-/* LGE_CHANGE_S : 2012-12-29 sungmin.cho@lge.com exception handling */
+/*                                                                  */
 	if(dest_step_pos > a_ctrl->total_steps - 1)
 		dest_step_pos = a_ctrl->total_steps - 1;
-/* LGE_CHANGE_E : 2012-12-29 sungmin.cho@lge.com exception handling */
+/*                                                                  */
 
 	if (dest_step_pos == a_ctrl->curr_step_pos)
 		return rc;

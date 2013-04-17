@@ -150,12 +150,12 @@ struct suspend_state_info {
 
 static struct suspend_state_info suspend_state = {ATOMIC_INIT(0), 0};
 
-/*LGE_CHANGE_S : 2.0PL pre-cs migration */
+/*                                      */
 #if defined(CONFIG_RTC_INTF_SECCLK)
 extern int secclk_rtc_changed(int (*fp_read_rtc)(struct device *, struct rtc_time *), struct device *dev, struct rtc_time *tm);
 static int msmrtc_timeremote_read_time(struct device *dev, struct rtc_time *tm);
 #endif
-/*LGE_CHANGE_E : 2.0PL pre-cs migration */
+/*                                      */
 
 void msmrtc_updateatsuspend(struct timespec *ts)
 {
@@ -302,11 +302,11 @@ msmrtc_timeremote_set_time(struct device *dev, struct rtc_time *tm)
 	struct rtc_tod_args rtc_args;
 	struct msm_rtc *rtc_pdata = dev_get_drvdata(dev);
 
-/*LGE_CHANGE_S : 2.0PL pre-cs migration */
+/*                                      */
 #if defined(CONFIG_RTC_INTF_SECCLK)
   	secclk_rtc_changed(msmrtc_timeremote_read_time, dev, tm);
 #endif
-/*LGE_CHANGE_E : 2.0PL pre-cs migration */
+/*                                      */
 
 	if (tm->tm_year < 1900)
 		tm->tm_year += 1900;

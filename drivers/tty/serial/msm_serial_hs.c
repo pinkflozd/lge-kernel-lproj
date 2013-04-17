@@ -168,7 +168,7 @@ struct msm_hs_port {
 	struct work_struct clock_off_w; /* work for actual clock off */
 	struct workqueue_struct *hsuart_wq; /* hsuart workqueue */
 	struct mutex clk_mutex; /* mutex to guard against clock off/clock on */
-// +s QCT2035_1a_CR419054 sunmee.choi@lge.com 2012-12-12
+//                                                      
 	bool tty_flush_receive;
 // +e QCT2035_1a_CR419054 
 };
@@ -1244,7 +1244,7 @@ static void msm_hs_enable_ms_locked(struct uart_port *uport)
 
 }
 
-// +s QCT2035_1a_CR419054 sunmee.choi@lge.com 2012-12-12
+//                                                      
 static void msm_hs_flush_buffer(struct uart_port *uport)
 {
 	struct msm_hs_port *msm_uport = UARTDM_TO_MSM(uport);
@@ -1469,7 +1469,7 @@ static irqreturn_t msm_hs_isr(int irq, void *dev)
 		mb();
 		/* Complete DMA TX transactions and submit new transactions */
 
-// *s QCT2035_1a_CR419054 sunmee.choi@lge.com 2012-12-12
+//                                                      
 		/* QCT2035 Original
 		tx_buf->tail = (tx_buf->tail + tx->tx_count) & ~UART_XMIT_SIZE;
 		*/
@@ -2223,7 +2223,7 @@ static struct uart_ops msm_hs_ops = {
 	.config_port = msm_hs_config_port,
 	.release_port = msm_hs_release_port,
 	.request_port = msm_hs_request_port,
-// +s QCT2035_1a_CR419054 sunmee.choi@lge.com 2012-12-12
+//                                                      
 	.flush_buffer = msm_hs_flush_buffer,
 // +e QCT2035_1a_CR419054
 };

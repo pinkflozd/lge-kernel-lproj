@@ -520,7 +520,7 @@ Error:
 }
 EXPORT_SYMBOL(diag_SRD_Init);
 
-#endif //#ifdef CONFIG_LGE_DLOAD_SRD  //kabjoo.choi
+#endif //                                          
 
 
 // LG_FW : 2011.07.07 moon.yongho : saving webdload status variable to eMMC. ----------[[

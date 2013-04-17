@@ -35,10 +35,10 @@ static void tspdrv_vib_enable(struct timed_output_dev *dev, int value)
  	}
 	else {
 		value = (value > max_timeout_ms ? max_timeout_ms : value);
-        /*[LGE_BSP_START][yunmo.yang@lge.com] Unlimit Vibrator Bug fix*/
+        /*                                                            */
 		if(value < 10)
             value = 10;
-        /*[LGE_BSP_END][yunmo.yang@lge.com] Unlimit Vibrator Bug fix*/
+        /*                                                          */
 
 		vib_state = 1;
 		schedule_work(&vibrator_work);

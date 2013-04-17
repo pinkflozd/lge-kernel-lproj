@@ -145,9 +145,9 @@ static int proc_fd_permission(struct inode *inode, int mask);
 
 
 #if defined (CONFIG_LGE_DEATHPENDING_LMK)
-/* LGE_CHANGE : bohyun.jung@lge.com 
- * reduce burden of lowmme_shrink() divide is expensive routine for mass-tier chipset.
- * compiler does take divide burden and use constant value. kernel/drivers/staging/android/lowmemorykiller.c together. */
+/*                                  
+                                                                                      
+                                                                                                                       */
 #ifndef OOM_SCORE_CAL 
 #define	OOM_SCORE_CAL	((OOM_SCORE_ADJ_MAX) / -OOM_DISABLE) 
 #endif

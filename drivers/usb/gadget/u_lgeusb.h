@@ -21,9 +21,9 @@
 
 #define FACTORY_PID		0x6000
 
-/* LGE_CHANGE_S jongjin7.park 2012.12.08 U0 used the same value as V3/V7 */
+/*                                                                       */
 #if defined(CONFIG_LGE_PMIC_CABLE_DETECTION) || defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E jongjin7.park 2012.12.08 U0 used the same value as V3/V7 */
+/*                                                                       */
 /*  Below enum must match with ECableUsbType in 
 	 modem/MODEL/adaptation/cable_detection/cable_detection.h   */
 
@@ -44,7 +44,7 @@ typedef enum
 #define LGE_PIF_CABLE 2
 #define LGE_130K_CABLE 3
 
-#endif	//CONFIG_LGE_PMIC_CABLE_DETECTION
+#endif	//                               
 
 int android_set_factory_mode(void);
 bool android_get_factory_mode(void);
@@ -52,4 +52,4 @@ void android_factory_desc(int enable);
 
 
 
-#endif /* __U_LGEUSB_H__ */
+#endif /*                */

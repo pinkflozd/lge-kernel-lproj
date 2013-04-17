@@ -74,7 +74,7 @@ PACK (void *)LGE_Dload_SRD (PACK (void *)req_pkt_ptr, uint16 pkg_len);
 PACK (void *)LGF_MsgTest (PACK (void *)req_pkt_ptr, uint16 pkg_len);
 //#endif
 
-//#ifdef CONFIG_LGE_DIAG_ERI 
+//                           
 PACK (void *)LGE_ERI (PACK (void *)req_pkt_ptr,uint16	pkt_len );
 //#endif 
 
@@ -108,7 +108,7 @@ static const diagpkt_user_table_entry_type registration_table[] =
 #endif
 #ifdef CONFIG_LGE_DIAG_SCREENSHOT
 	{DIAG_LGF_SCREEN_SHOT_F , DIAG_LGF_SCREEN_SHOT_F , LGF_ScreenShot},
-	//{DIAG_LGE_SCREEN_SECTION_SHOT_F, DIAG_LGE_SCREEN_SECTION_SHOT_F, LGE_ScreenSectionShot},
+	//                                                                                        
 #endif
 #ifdef CONFIG_LGE_DIAG_MTC
 	{DIAG_MTC_F, DIAG_MTC_F, LGF_MTCProcess},
@@ -132,7 +132,7 @@ static const diagpkt_user_table_entry_type registration_table[] =
 	{DIAG_USET_DATA_BACKUP, DIAG_USET_DATA_BACKUP, LGE_Dload_SRD},
 #endif
 
-//#ifdef CONFIG_LGE_DIAG_ERI 
+//                           
 	{DIAG_ERI_CMD_F, DIAG_ERI_CMD_F, LGE_ERI},
 //#endif 
 // LG_FW : 2011.07.07 moon.yongho : saving webdload status variable to eMMC. ----------[[
@@ -158,32 +158,32 @@ static unsigned int gPkt_commit_fail = 0;
 
 void* lg_diag_req_pkt_ptr;
 
-/* LGE_CHANGES_S, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 wlan_status lg_diag_req_wlan_status={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-/* LGE_CHANGES_E, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 #ifdef CONFIG_LGE_DIAG_UDM
-/* LGE_MERGE_S [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+/*                                                              */
 udm_sms_status_new lg_diag_req_udm_sms_status_new = {{0}};
-/* LGE_MERGE_E [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+/*                                                              */
 #endif 
 
 uint16 lg_diag_req_pkt_length;
 uint16 lg_diag_rsp_pkt_length;
 char lg_diag_cmd_line[LG_DIAG_CMD_LINE_LEN];
-/* LGE_CHANGE_S [jihoon.lee@lge.com] 2010-02-22, LG_FW_MTC */
+/*                                                         */
 // enable to send more than maximum packet size limitation
 #ifdef CONFIG_LGE_DIAG_MTC
 extern unsigned char g_diag_mtc_check;
 extern unsigned char g_diag_mtc_capture_rsp_num;
 extern void lg_diag_set_enc_param(void *, void *);
 #endif
-/* LGE_CHANGE_E [jihoon.lee@lge.com] 2010-02-22, LG_FW_MTC */
+/*                                                         */
 
 #ifdef CONFIG_LGE_DIAG_WMC
 extern void* lg_diag_wmc_req_pkt_ptr;
 extern uint16 lg_diag_wmc_req_pkt_length;
 extern uint16 lg_diag_wmc_rsp_pkt_length;
-#endif /*CONFIG_LGE_DIAG_WMC*/
+#endif /*                   */
 
 /* jihye.ahn  2010-11-13  for capturing video preview */
 int blt_mode_enable(void);
@@ -309,7 +309,7 @@ static ssize_t write_cmd_pkt_length(struct device *dev,
 	return write_len;
 }
 
-/* LGE_CHANGES_S, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 #if 0
 static ssize_t read_wlan_status(struct device *dev, struct device_attribute *attr,
 				char *buf)
@@ -441,10 +441,10 @@ static ssize_t write_wmc_cmd_pkt_length(struct device *dev,
 	return -EINVAL;
   
 }
-#endif /*CONFIG_LGE_DIAG_WMC*/
+#endif /*                   */
 
 #ifdef CONFIG_LGE_DIAG_UDM
-/* LGE_MERGE_S [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+/*                                                              */
 static ssize_t read_sms_status_new(struct device *dev, struct device_attribute *attr,
 				   char *buf)
 {
@@ -465,23 +465,23 @@ static ssize_t write_sms_status_new(struct device *dev,
 	return udm_sms_statu_len;
 }
 #endif 
-/* LGE_MERGE_E [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+/*                                                              */
 
-/* LGE_CHANGES_E, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 static DEVICE_ATTR(cmd_pkt, S_IRUGO | S_IWUSR,read_cmd_pkt, write_cmd_pkt);
 static DEVICE_ATTR(length, S_IRUGO | S_IWUSR,read_cmd_pkt_length, write_cmd_pkt_length);
-/* LGE_CHANGES_S, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 #if 0
 static DEVICE_ATTR(wlan_status, S_IRUGO | S_IWUSR,read_wlan_status, write_wlan_status);
 #endif 
-/* LGE_CHANGES_E, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 
 #ifdef CONFIG_LGE_DIAG_WMC
 static DEVICE_ATTR(wmc_cmd_pkt, S_IRUGO | S_IWUSR,read_wmc_cmd_pkt, write_wmc_cmd_pkt);
 static DEVICE_ATTR(wmc_length, S_IRUGO | S_IWUSR,read_wmc_cmd_pkt_length, write_wmc_cmd_pkt_length);
-#endif /*CONFIG_LGE_DIAG_WMC*/
+#endif /*                   */
 
-/* LGE_MERGE_S [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+/*                                                              */
 #ifdef CONFIG_LGE_DIAG_UDM
 static DEVICE_ATTR(get_sms, S_IRUGO | S_IWUSR,read_sms_status_new, write_sms_status_new);
 static DEVICE_ATTR(set_sms, S_IRUGO | S_IWUSR,read_sms_status_new, write_sms_status_new);
@@ -490,7 +490,7 @@ static DEVICE_ATTR(rsp_get_sms, S_IRUGO | S_IWUSR,read_sms_status_new, write_sms
 static DEVICE_ATTR(rsp_set_sms, S_IRUGO | S_IWUSR,read_sms_status_new, write_sms_status_new);
 static DEVICE_ATTR(rsp_sms_status, S_IRUGO | S_IWUSR,read_sms_status_new, write_sms_status_new);
 #endif 
-/* LGE_MERGE_E [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+/*                                                              */
 
 int lg_diag_create_file(struct platform_device *pdev)
 {
@@ -509,8 +509,8 @@ int lg_diag_create_file(struct platform_device *pdev)
 		device_remove_file(&pdev->dev, &dev_attr_length);
 		return ret;
 	}
-	/* LGE_CHANGES_S, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
-#if 0    //LGE_CHANG, [dongp.kim@lge.com], 2010-10-09, deleting #ifdef LG_FW_WLAN_TEST for enabling Wi-Fi Testmode menus
+	/*                                                                                           */
+#if 0    //                                                                                                             
 	ret = device_create_file(&pdev->dev, &dev_attr_wlan_status);
 	if (ret) {
 		printk( KERN_DEBUG "LG_FW : diag device file3 create fail\n");
@@ -518,7 +518,7 @@ int lg_diag_create_file(struct platform_device *pdev)
 		return ret;
 	}
 #endif
-	/* LGE_CHANGES_E, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */	
+	/*                                                                                           */	
 #ifdef CONFIG_LGE_DIAG_WMC
 	ret = device_create_file(&pdev->dev, &dev_attr_wmc_cmd_pkt);
 	if (ret) {
@@ -533,9 +533,9 @@ int lg_diag_create_file(struct platform_device *pdev)
 		device_remove_file(&pdev->dev, &dev_attr_wmc_length);
 		return ret;
 	}
-#endif /*CONFIG_LGE_DIAG_WMC*/
+#endif /*                   */
 
-	/* LGE_MERGE_S [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+	/*                                                              */
 #ifdef CONFIG_LGE_DIAG_UDM
         ret = device_create_file(&pdev->dev, &dev_attr_sms_status);
 	if (ret) {
@@ -579,7 +579,7 @@ int lg_diag_create_file(struct platform_device *pdev)
 		return ret;
 	}
 #endif
-	/* LGE_MERGE_E [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+	/*                                                              */
 
 	return ret;
 }
@@ -589,27 +589,27 @@ int lg_diag_remove_file(struct platform_device *pdev)
 {
 	device_remove_file(&pdev->dev, &dev_attr_cmd_pkt);
 
-#if 0    //LGE_CHANG, [dongp.kim@lge.com], 2010-10-09, deleting #ifdef LG_FW_WLAN_TEST for enabling Wi-Fi Testmode menus
-	/* LGE_CHANGES_S [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+#if 0    //                                                                                                             
+	/*                                                                                          */
 	device_remove_file(&pdev->dev, &dev_attr_wlan_status);
-	/* LGE_CHANGES_E, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+	/*                                                                                           */
 #endif /* LG_FW_WLAN_TEST */
 #ifdef CONFIG_LGE_DIAG_UDM
-	/* LGE_MERGE_S [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+	/*                                                              */
 	device_remove_file(&pdev->dev, &dev_attr_sms_status);
 	device_remove_file(&pdev->dev, &dev_attr_get_sms);
 	device_remove_file(&pdev->dev, &dev_attr_set_sms);
 	device_remove_file(&pdev->dev, &dev_attr_rsp_sms_status);
 	device_remove_file(&pdev->dev, &dev_attr_rsp_get_sms);
 	device_remove_file(&pdev->dev, &dev_attr_rsp_set_sms);
-	/* LGE_MERGE_E [sunmyoung.lee@lge.com] 2010-07-15. SMS UTS Test */
+	/*                                                              */
 #endif
 	device_remove_file(&pdev->dev, &dev_attr_length);
 
 #ifdef CONFIG_LGE_DIAG_WMC
 	device_remove_file(&pdev->dev, &dev_attr_wmc_cmd_pkt);
 	device_remove_file(&pdev->dev, &dev_attr_wmc_length);
-#endif /*CONFIG_LGE_DIAG_WMC*/
+#endif /*                   */
 	return 0;
 }
 EXPORT_SYMBOL(lg_diag_remove_file);
@@ -632,7 +632,7 @@ static int lg_diag_app_execute(void)
 		NULL,
 	};	
 
-	// BEGIN: eternalblue@lge.com.2009-10-23
+	//                                      
 	// 0001794: [ARM9] ATS AT CMD added 
 	if ( (fd = sys_open((const char __user *) "/system/bin/lg_diag_app", O_RDONLY ,0) ) < 0 )
 	{
@@ -645,7 +645,7 @@ static int lg_diag_app_execute(void)
 		sprintf(cmdstr, "/system/bin/lg_diag_app\n");
 		sys_close(fd);
 	}
-	// END: eternalblue@lge.com.2009-10-23
+	//                                    
 
 	printk(KERN_INFO "execute - %s", cmdstr);
 	if ((ret = call_usermodehelper("/system/bin/sh", argv, envp, UMH_WAIT_PROC)) != 0) {
@@ -658,7 +658,7 @@ static int lg_diag_app_execute(void)
 }
 
 
-/* LGE_S jihye.ahn 2010-11-13  for capturing video preview */
+/*                                                         */
 int blt_mode_enable(void)
 {
 	int ret;
@@ -677,7 +677,7 @@ int blt_mode_enable(void)
 		NULL,	
 	};	
 
-	// BEGIN: eternalblue@lge.com.2009-10-23
+	//                                      
 	// 0001794: [ARM9] ATS AT CMD added 
 	if ( (fd = sys_open((const char __user *) "/system/bin/enablebltmode", O_RDONLY ,0) ) < 0 )
 	{
@@ -690,7 +690,7 @@ int blt_mode_enable(void)
 		sprintf(cmdstr, "/system/bin/enablebltmode\n");
 		sys_close(fd);
 	}
-	// END: eternalblue@lge.com.2009-10-23
+	//                                    
 
 	printk(KERN_INFO "execute - %s", cmdstr);
 	if ((ret = call_usermodehelper("/system/bin/sh", argv, envp, UMH_WAIT_PROC)) != 0) {
@@ -721,7 +721,7 @@ int blt_mode_disable(void)
 		NULL,	
 	};	
 
-	// BEGIN: eternalblue@lge.com.2009-10-23
+	//                                      
 	// 0001794: [ARM9] ATS AT CMD added 
 	if ( (fd = sys_open((const char __user *) "/system/bin/disablebltmode", O_RDONLY ,0) ) < 0 )
 	{
@@ -734,7 +734,7 @@ int blt_mode_disable(void)
 		sprintf(cmdstr, "/system/bin/disablebltmode\n");
 		sys_close(fd);
 	}
-	// END: eternalblue@lge.com.2009-10-23
+	//                                    
 
 	printk(KERN_INFO "execute - %s", cmdstr);
 	if ((ret = call_usermodehelper("/system/bin/sh", argv, envp, UMH_WAIT_PROC)) != 0) {
@@ -746,7 +746,7 @@ int blt_mode_disable(void)
 	return ret;
 }
 EXPORT_SYMBOL(blt_mode_disable);
-/* LGE_E jihye.ahn 2010-11-13  for capturing video preview */
+/*                                                         */
 static int diagchar_open(void)
 {
 	int i = 0;
@@ -755,18 +755,18 @@ static int diagchar_open(void)
 		mutex_lock(&driver->diagchar_mutex);
 
 		for (i = 0; i < driver->num_clients; i++)
-			// BEGIN: 0009214 sehyuny.kim@lge.com 2010-09-03
+			//                                              
 			// MOD 0009214: [DIAG] LG Diag feature added in side of android
 			if (driver->client_map[i].pid == 0)
-				// END: 0009214 sehyuny.kim@lge.com 2010-09-03
+				//                                            
 				break;
 
 		if (i < driver->num_clients)
 		{
-			// BEGIN: 0009214 sehyuny.kim@lge.com 2010-09-03
+			//                                              
 			// MOD 0009214: [DIAG] LG Diag feature added in side of android
 			driver->client_map[i].pid = current->tgid;
-			// END: 0009214 sehyuny.kim@lge.com 2010-09-03
+			//                                            
 #ifdef LG_DIAG_DEBUG
 			printk(KERN_DEBUG "LG_FW : client_map id = 0x%x\n", driver->client_map[i].pid);
 #endif
@@ -830,10 +830,10 @@ static int diagchar_read(char *buf, int count )
 	printk(KERN_DEBUG "LG_FW : %s enter \n",__func__);
 #endif
 	for (i = 0; i < driver->num_clients; i++)
-		// BEGIN: 0009214 sehyuny.kim@lge.com 2010-09-03
+		//                                              
 		// MOD 0009214: [DIAG] LG Diag feature added in side of android
 		if (driver->client_map[i].pid == current->tgid)
-			// END: 0009214 sehyuny.kim@lge.com 2010-09-03
+			//                                            
 			index = i;
 
 	if (index == -1)
@@ -981,10 +981,10 @@ static int diagchar_write( const char *buf, size_t count)
 		if (!driver->write_ptr_svc)
 			return 0;
 		
-		/* LGE_CHANGE
-		 * protect to fail to allocation, for WBT
-		 * 2010-06-14, taehung.kim@lge.com
-		 */
+		/*           
+                                           
+                                    
+   */
 		if(!driver->write_ptr_svc) {
 			diagmem_free(driver,buf_hdlc,POOL_TYPE_HDLC);
 			ret = -ENOMEM;
@@ -1016,14 +1016,14 @@ static int diagchar_write( const char *buf, size_t count)
 
 	enc.dest = buf_hdlc + driver->used;
 	// LG_FW khlee 2010.02.01 - to support screen capture, In that case, it has too many 'ESC_CHAR'
-	/* LGE_CHANGES_S [kyuhyung.lee@lge.com] - #ifdef LG_FW_DIAG_SCREEN_CAPTURE*/
+	/*                                                                        */
 	enc.dest_last = (void *)(buf_hdlc + HDLC_OUT_BUF_SIZE -1);
 
 	/* LG_CHANGES_E -#else*/
-	/*LGE_COMMENT_OUT
-	  enc.dest_last = (void *)(buf_hdlc + driver->used + payload_size + 7);
-	  #endif
-	*/
+	/*               
+                                                                        
+         
+ */
 	diag_hdlc_encode(&send, &enc);
 
 #ifdef LG_DIAG_DEBUG
@@ -1117,7 +1117,7 @@ static int diagchar_write( const char *buf, size_t count)
 
 }
 
-/* LGE_CHANGE_S [jihoon.lee@lge.com] 2010-02-22, LG_FW_MTC */
+/*                                                         */
 // enable to send more than maximum packet size limitation
 #if defined (CONFIG_LGE_DIAG_MTC)
 static int diagchar_write_mtc( const char *buf, size_t count, int type)
@@ -1168,15 +1168,15 @@ static int diagchar_write_mtc( const char *buf, size_t count, int type)
 
 	enc.dest = buf_hdlc + driver->used;
 	// LG_FW khlee 2010.02.01 - to support screen capture, In that case, it has too many 'ESC_CHAR'
-	/* LGE_CHANGES_S [kyuhyung.lee@lge.com] - #ifdef LG_FW_DIAG_SCREEN_CAPTURE*/
+	/*                                                                        */
 	//	enc.dest_last = (void *)(buf_hdlc + HDLC_OUT_BUF_SIZE -1);
 	// jihoon.lee 2010.02.22 - transper packet is limmited to HDLC_MAX size
 	enc.dest_last = (void *)(buf_hdlc + HDLC_MAX -1);
 	/* LG_CHANGES_E -#else*/
-	/*LGE_COMMENT_OUT
-	  enc.dest_last = (void *)(buf_hdlc + driver->used + payload_size + 7);
-	  #endif
-	*/
+	/*               
+                                                                        
+         
+ */
 	diag_hdlc_encode_mtc(&send, &enc);
 
 	/* This is to check if after HDLC encoding, we are still within the
@@ -1263,7 +1263,7 @@ fail_free_hdlc:
 
 }
 #endif /*LG_FW_MTC*/
-/* LGE_CHANGE_E [jihoon.lee@lge.com] 2010-02-22, LG_FW_MTC */
+/*                                                         */
 
 static void diagpkt_user_tbl_init (void)
 {
@@ -1393,7 +1393,7 @@ void diagpkt_commit (PACK(void *)pkt)
   	return;
 }               /* diagpkt_commit */
 
-/* LGE_CHANGE_S [jihoon.lee@lge.com] 2010-02-22, LG_FW_MTC */
+/*                                                         */
 // enable to send more than maximum packet size limitation
 #if defined (CONFIG_LGE_DIAG_MTC)
 void diagpkt_commit_mtc(PACK(void *)pkt)
@@ -1443,7 +1443,7 @@ void diagpkt_commit_mtc(PACK(void *)pkt)
 	return;
 }
 #endif /*LG_FW_MTC*/
-/* LGE_CHANGE_E [jihoon.lee@lge.com] 2010-02-22, LG_FW_MTC */
+/*                                                         */
 
 diagpkt_cmd_code_type diagpkt_get_cmd_code (PACK(void *)ptr)
 {
@@ -1559,7 +1559,7 @@ void diagpkt_process_request (void *req_pkt, uint16 pkt_len,
 							printk(KERN_ERR " LG_FW : diagpkt_process_request: about to call diagpkt_commit.\n");
 #endif
 
-#if 1 // CONFIG_LGE_DIAG_MTC
+#if 1 //                    
 #ifdef CONFIG_LGE_DIAG_MTC
 							/* The most common case: response is returned.  Go ahead and commit it here. */
 							if(g_diag_mtc_capture_rsp_num == 1)
@@ -1574,7 +1574,7 @@ void diagpkt_process_request (void *req_pkt, uint16 pkt_len,
 						{
 #ifdef CONFIG_LGE_DIAG_MTC
 							if(g_diag_mtc_check == 0)
-#endif //CONFIG_LGE_DIAG_MTC
+#endif //                   
 							{
 								switch(packet_id)
 								{
@@ -1608,14 +1608,14 @@ void diagpkt_process_request (void *req_pkt, uint16 pkt_len,
 		printk(KERN_ERR "LG_FW : diagpkt_process_request: Did not find match in user table \n");
 	}
 
-	/* BEGIN: 0014110 jihoon.lee@lge.com 20110115 */
+	/*                                            */
 	/* MOD 0014110: [FACTORY RESET] stability */
 	/* exception handling, merge from VS740 */
 	//jihoon.lee - clear req_pkt so that current diag events do not affect the post, if it is not press and release events will be odd.
 	//for example, send key followed by number of keys will be missed.
 	//LG_FW khlee bug fix
 	memset(req_pkt, 0, pkt_len);
-	/* END: 0014110 jihoon.lee@lge.com 20110115 */
+	/*                                          */
 
   	return;
 }               /* diagpkt_process_request */
@@ -1658,9 +1658,9 @@ static int CreateWaitThread(void* param)
 		{
 			break;
 		}
-		/* LGE CHANGE : khyun.kim@lge.com LG diag interface modified.
-		Remove unnecessary loops.
-		*/
+		/*                                                           
+                           
+  */
 		else if(*(int *)read_buffer != PKT_TYPE)
 		{
 			continue;

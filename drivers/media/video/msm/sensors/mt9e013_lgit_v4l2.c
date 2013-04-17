@@ -99,14 +99,14 @@ static struct msm_camera_i2c_reg_conf pll_settings[] = {
 
 static struct msm_camera_i2c_reg_conf prev_settings[] = {
 	/*Output Size (1640x1232)*/
-// LGE_DOM_UPDATE_S sungsik.kim 2011/10/05 {
+//                                          
 	{0x0344, 0x0000},/*X_ADDR_START*/
-	{0x0348, 0x0CCF},/*X_ADDR_END*/	//3279				//jungki.kim@lge.com  2011-12-12  Remove Black Line on the Left-side		//{0x0348, 0x0CD1},/*X_ADDR_END*/
+	{0x0348, 0x0CCF},/*X_ADDR_END*/	//                                                                                                               
 	{0x0346, 0x0000},/*Y_ADDR_START*/
 	{0x034A, 0x09A1},/*Y_ADDR_END*/
 	{0x034C, 0x0668},/*X_OUTPUT_SIZE*/
 	{0x034E, 0x04D0},/*Y_OUTPUT_SIZE*/
-// LGE_DOM_UPDATE_E sungsik.kim 2011/10/05 }
+//                                          
 
 	{0x306E, 0xFCB0},/*DATAPATH_SELECT*/
 	{ 0x3040, 0x04C3}, /*READ_MODE*/
@@ -188,7 +188,7 @@ static struct msm_camera_i2c_reg_conf recommend_settings[] = {
 	{0x30B2, 0xC000},
 	{0x30D6, 0x0800},
 	{0x316C, 0xB42A},
-	{0x316E, 0x869C},	//{0x316E, 0x869B},	// jungki.kim@lge.com  2011-10-24  not to appear the sun to be black
+	{0x316E, 0x869C},	//                                                                                      
 	{0x3170, 0x210E},
 	{0x317A, 0x010E},
 	{0x31E0, 0x1FB9},
@@ -252,7 +252,7 @@ static struct msm_camera_i2c_reg_conf recommend_settings[] = {
 	{0x3E96, 0xF000},
 	{0x3E9A, 0x2905},
 	{0x3E9C, 0x00FF},
-	{0x3ECC, 0x00D8},	//{0x3ECC, 0x00E4},	//{0x3ECC, 0x00EB},	// jungki.kim@lge.com  2011-12-19  not to appear the sun to be black and vertical lines
+	{0x3ECC, 0x00D8},	//                                                                                                                             
 	{0x3ED0, 0x1E24},
 	{0x3ED4, 0xFAA4},
 	{0x3ED6, 0x909B},
@@ -262,9 +262,9 @@ static struct msm_camera_i2c_reg_conf recommend_settings[] = {
 	{0x3174, 0x8000},
 };
 
-// jungki.kim@lge.com  2011-10-05  Read From EEPROM (LSC data)
+//                                                            
 static struct msm_camera_i2c_reg_conf lsc_data[LSC_FIRST_PHASE1_DATA_SIZE*LSC_FIRST_PHASE2_DATA_SIZE+LSC_SECOND_PHASE_DATA_SIZE+LSC_THIRD_PHASE_DATA_SIZE] ;
-// jungki.kim@lge.com  2011-10-05  Read From EEPROM (LSC data)
+//                                                            
 
 static struct sensor_extra_t {
 	uint16_t curr_lens_pos;
@@ -277,14 +277,14 @@ static struct sensor_extra_t * mt9e013_lgit_ctrl = &mt9e013_lgit_extra;
 
 static uint16_t mt9e013_lgit_linear_total_step = MT9E013_LGIT_TOTAL_STEPS_NEAR_TO_FAR;
 static uint16_t mt9e013_lgit_step_position_table[MT9E013_LGIT_TOTAL_STEPS_NEAR_TO_FAR+1];
-// jungki.kim@lge.com  2011-11-21  Fast AF tuning {
+//                                                 
 static uint16_t af_infinity = 30;  // sungmin.woo : at least 64~64+96
 static uint16_t mt9e013_lgit_nl_region_boundary1 = 0;
 static uint16_t mt9e013_lgit_nl_region_code_per_step1 = 0;
 static uint16_t mt9e013_lgit_l_region_code_per_step = 5;
 static uint16_t mt9e013_lgit_vcm_step_time;
 static uint16_t mt9e013_lgit_sw_damping_time_wait;
-// jungki.kim@lge.com  2011-11-21  Fast AF tuning }
+//                                                 
 
 static struct msm_camera_i2c_reg_conf mt9e013_lgit_groupon_settings[] = {
 	{0x0104, 0x01},
@@ -390,7 +390,7 @@ static struct msm_cam_clk_info cam_clk_info[] = {
 	{"cam_clk", MSM_SENSOR_MCLK_24HZ},
 };
 
-// jungki.kim@lge.com  2011-10-03  Read from EEPROM
+//                                                 
 static int32_t mt9e013_lgit_i2c_read_w_eeprom(struct msm_camera_i2c_client* sensor_i2c_client, 
 	uint16_t reg_addr, uint16_t *rdata)
 {

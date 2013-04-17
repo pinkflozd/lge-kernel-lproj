@@ -144,13 +144,13 @@ struct msm_sensor_fn_t {
 		(struct msm_sensor_ctrl_t *s_ctrl, uint16_t res);
 	int32_t (*sensor_get_csi_params)(struct msm_sensor_ctrl_t *,
 		struct csi_lane_params_t *);
-/* LGE_CHANGE_S : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/*                                                                   */
 	int8_t (*sensor_set_aec_roi) (struct msm_sensor_ctrl_t *, int32_t);
-/* LGE_CHANGE_E : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */	
-/* LGE_CHANGE_S : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+/*                                                                   */	
+/*                                                                                           */
 	int8_t (*sensor_get_soc_snapshotdata) (struct msm_sensor_ctrl_t *, 
 		struct snapshot_soc_data_cfg *);
-/* LGE_CHANGE_E : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+/*                                                                                           */
 };
 
 struct msm_sensor_csi_info {

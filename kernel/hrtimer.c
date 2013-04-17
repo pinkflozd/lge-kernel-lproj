@@ -885,7 +885,7 @@ static void __remove_hrtimer(struct hrtimer *timer,
 			     struct hrtimer_clock_base *base,
 			     unsigned long newstate, int reprogram)
 {
-// [LGE_CHANGE_S] seyun.kim : 2012-02-21 : sd card resume suspend problem 
+//                                                                        
 #if 1
 
 	if (!(timer->state & HRTIMER_STATE_ENQUEUED))
@@ -925,7 +925,7 @@ static void __remove_hrtimer(struct hrtimer *timer,
 #endif
 	}
 #endif	
-// [LGE_CHANGE_E] seyun.kim : 2012-02-21 : sd card resume suspend problem 
+//                                                                        
 	if (!timerqueue_getnext(&base->active))
 		base->cpu_base->active_bases &= ~(1 << base->index);
 out:

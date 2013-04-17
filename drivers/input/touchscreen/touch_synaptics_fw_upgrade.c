@@ -1004,7 +1004,7 @@ static int RMI4ReadFirmwareHeader(struct synaptics_fw_data *fw, struct synaptics
 	}
 #endif
 #endif
-/*LGE_CHANGE_S - Touch f/w upgrade defense byungyong.hwang@lge.com*/
+/*                                                                */
 #if defined(CONFIG_LGE_TOUCH_FOUR_BUTTON_SUPPORT)
 	/* Check prpoer FW */
 	if (strncmp(ts->fw_info.product_id , "PLG180" ,6)) {
@@ -1023,7 +1023,7 @@ static int RMI4ReadFirmwareHeader(struct synaptics_fw_data *fw, struct synaptics
 	}
 
 #endif
-/*LGE_CHANGE_E - Touch f/w upgrade defense byungyong.hwang@lge.com*/
+/*                                                                */
 
 	ret = RMI4ReadFirmwareInfo(fw, ts);	/* Determine firmware organization - read firmware block size and firmware size */
 	if (ret < 0) {

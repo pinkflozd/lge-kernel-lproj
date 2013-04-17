@@ -2466,11 +2466,11 @@ void mdp_set_blend_attr(MDPIBUF *iBuf,
 
 			bg_alpha = PPP_BLEND_BG_USE_ALPHA_SEL |
 				PPP_BLEND_BG_ALPHA_REVERSE;
-/* vinay.bhooma@lge.com TD Fix issue 261189
- * QUALCOMM Patch for SR#01078394 - Screen flickers on launching opera for 1st time.
- * Target : UO/P700 
- * Screen flickers for target which support MDP Composition.
- * With GPU Composition model e.g. V3 screen flickering issue is not observed.
+/*                                         
+                                                                                    
+                    
+                                                            
+                                                                              
 */ 
 			if ((perPixelAlpha) && !(iBuf->mdpImg.mdpOp &
 							MDPOP_LAYER_IS_FG)) {
@@ -2485,11 +2485,11 @@ void mdp_set_blend_attr(MDPIBUF *iBuf,
 			if (iBuf->mdpImg.mdpOp & MDPOP_TRANSP)
 				*pppop_reg_ptr |= PPP_BLEND_CALPHA_TRNASP;
 		} else if (perPixelAlpha) {
-/* vinay.bhooma@lge.com TD Fix issue 261189
- * QUALCOMM Patch for SR#01078394 - Screen flickers on launching opera for 1st time.
- * Target : UO/P700 
- * Screen flickers for target which support MDP Composition.
- * With GPU Composition model e.g. V3 screen flickering issue is not observed.
+/*                                         
+                                                                                    
+                    
+                                                            
+                                                                              
 */ 
 			    if (iBuf->mdpImg.mdpOp & MDPOP_LAYER_IS_FG)
                              *pppop_reg_ptr |= PPP_OP_ROT_ON |

@@ -4,10 +4,10 @@
 #include <linux/syscalls.h>
 
 #include <lg_diag_unifiedmsgtool.h>
-/*BEGIN: 0011452 kiran.kanneganti@lge.com 2010-11-26*/
+/*                                                  */
 /*ADD 0011452: Noice cancellation check support for testmode*/
 #include <mach/qdsp5v2/audio_def.h>
-/* END: 0011452 kiran.kanneganti@lge.com 2010-11-26 */
+/*                                                  */
 #include <linux/delay.h>
 
 #ifndef SKW_TEST
@@ -18,7 +18,7 @@
 
 //#include <mach/lg_backup_items.h>
 
-// BEGIN : munho.lee@lge.com 2011-01-15
+//                                     
 // ADD: 0013541: 0014142: [Test_Mode] To remove Internal memory information in External memory test when SD-card is not exist 
 #include <linux/gpio.h>
 

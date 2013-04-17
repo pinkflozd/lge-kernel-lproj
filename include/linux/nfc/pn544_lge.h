@@ -92,5 +92,5 @@ struct pn544_dev	{
 #define dprintk(fmt, args...) do{ } while(0)
 #endif
 
-#endif /* _PN544_LGE_H_ */
+#endif /*               */
 

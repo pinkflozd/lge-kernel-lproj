@@ -35,7 +35,7 @@
 #define SENSOR_IDENTIFICATION_ENABLE 	1
 
 #ifdef CONFIG_MACH_LGE
-/*#LGE_CHANGE : 2012-10-24 Sanghun,Lee(eee3114.@lge.com) sensor change from bmc150 to bmc050
+/*                                                                                          
 */
 #define BMA2X2_ACCEL_CALIBRATION 
 #include <linux/syscalls.h>
@@ -5357,7 +5357,7 @@ static ssize_t bma2x2_eeprom_writing_store(struct device *dev,
 
 
 
-#ifdef BMA2X2_ACCEL_CALIBRATION  // 2012-12-04 Sanghun,Lee(eee3114.@lge.com) cts test attrib change
+#ifdef BMA2X2_ACCEL_CALIBRATION  //                                                                
 static DEVICE_ATTR(eeprom_writing, S_IRUGO|S_IWUSR|S_IWGRP,
 		bma2x2_eeprom_writing_show, bma2x2_eeprom_writing_store);
 
@@ -5368,7 +5368,7 @@ static DEVICE_ATTR(eeprom_writing, S_IRUGO|S_IWUSR|S_IWGRP|S_IWOTH,
 #endif
 
 
-#ifdef BMA2X2_ACCEL_CALIBRATION  // 2012-12-04 Sanghun,Lee(eee3114.@lge.com) cts test attrib change
+#ifdef BMA2X2_ACCEL_CALIBRATION  //                                                                
 static DEVICE_ATTR(x, S_IRUGO|S_IWUSR|S_IWGRP,
 		bma2x2_x_show, NULL);
 static DEVICE_ATTR(y, S_IRUGO|S_IWUSR|S_IWGRP,
@@ -5398,7 +5398,7 @@ static DEVICE_ATTR(diag, S_IRUGO|S_IWUSR|S_IWGRP|S_IWOTH,
 #endif
 
 
-#ifdef BMA2X2_ACCEL_CALIBRATION  // 2012-12-04 Sanghun,Lee(eee3114.@lge.com) cts test attrib change
+#ifdef BMA2X2_ACCEL_CALIBRATION  //                                                                
 static DEVICE_ATTR(range, S_IRUGO|S_IWUSR|S_IWGRP,
 		bma2x2_range_show, bma2x2_range_store);
 static DEVICE_ATTR(bandwidth, S_IRUGO|S_IWUSR|S_IWGRP,
@@ -5842,19 +5842,12 @@ static irqreturn_t bma2x2_irq_handler(int irq, void *handle)
 }
 #endif /* defined(BMA2X2_ENABLE_INT1)||defined(BMA2X2_ENABLE_INT2) */
 
-#ifdef CONFIG_MACH_MSM7X25A_V1
-#ifndef CONFIG_MINIABB_REGULATOR
-extern int lge_rt8966a_ldo_set_level( int ldo_id, int level );
-extern int lge_rt8966a_ldo_control( int ldo_id, int onoff );
-#endif /* CONFIG_MINIABB_REGULATOR */
-#endif /* CONFIG_MACH_MSM7X25A_V1 */
-
 static int bma2x2_probe(struct i2c_client *client,
 		const struct i2c_device_id *id)
 {
 	int err = 0;
 	int tempvalue;
-#ifdef BMA2X2_ACCEL_CALIBRATION	//2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry
+#ifdef BMA2X2_ACCEL_CALIBRATION	//                                                                         
 	int retry_chipid = 0;
 #endif
 	unsigned char tmp_chip_id;
@@ -5864,13 +5857,6 @@ static int bma2x2_probe(struct i2c_client *client,
 	//omap_mux_init_gpio(145, OMAP_PIN_INPUT);
 	//omap_mux_init_gpio(146, OMAP_PIN_INPUT);
 	printk(KERN_INFO "bma2x2_probe\n");
-
-#ifdef CONFIG_MACH_MSM7X25A_V1		//jinseok.choi 2013-02-06 Always Turn on VREG_PROX_3.0V for Sensor working on RevA. 
-#ifndef CONFIG_MINIABB_REGULATOR
-	lge_rt8966a_ldo_set_level(1, 11); //11 -> 3V - modem rt8966a.h
-	lge_rt8966a_ldo_control( 1, 1 );
-#endif /* CONFIG_MINIABB_REGULATOR */
-#endif /* CONFIG_MACH_MSM7X25A_V1 */
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		printk(KERN_INFO "i2c_check_functionality error\n");
@@ -5882,7 +5868,7 @@ static int bma2x2_probe(struct i2c_client *client,
 		goto exit;
 	}
 
-#ifdef BMA2X2_ACCEL_CALIBRATION //2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry
+#ifdef BMA2X2_ACCEL_CALIBRATION //                                                                         
 do{	
 		mdelay(2);
 #endif	
@@ -5907,7 +5893,7 @@ do{
 		data->sensor_type = -1;
 		printk(KERN_INFO "Bosch Sensortec Device not found  retry_chipid = %d \n", retry_chipid);		
 	}
-#ifdef BMA2X2_ACCEL_CALIBRATION	//2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry
+#ifdef BMA2X2_ACCEL_CALIBRATION	//                                                                         
 	printk(KERN_INFO "i2c_smbus_read_word_data retry_chipid  = %d, tempvalue = %d\n",retry_chipid ,tempvalue);
 
 	retry_chipid++;
@@ -5926,7 +5912,7 @@ do{
 	} else{
 		printk(KERN_INFO "Bosch Sensortec Device not found"
 				"i2c error %d \n", tempvalue);
-#ifdef BMA2X2_ACCEL_CALIBRATION	//2013-01-30 Sanghun,Lee(eee3114.@lge.com) sensor probe check chip id retry		
+#ifdef BMA2X2_ACCEL_CALIBRATION	//                                                                           
 		data->sensor_type = BMA255_TYPE;
 #else		
 		err = -ENODEV;

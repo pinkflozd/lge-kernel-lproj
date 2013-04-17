@@ -37,9 +37,9 @@
 #include "mms128s_ISC_download.h"
 #include "mms128s_ioctl.h"
 
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START] */
+/*                                                                                                     */
 #include "MMS100S_ISC_Updater.h"
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END] */
+/*                                                                                                   */
 
 #include <linux/i2c-gpio.h>
 #include CONFIG_LGE_BOARD_HEADER_FILE
@@ -55,11 +55,11 @@ struct vreg {
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For the manual touchscreen downloading*/
+/*                                                                                             */
 extern void GetManual(void* wParam, void* lParam);
 extern void SetManual(void);
 extern void ResetManual(void);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For the manual touchscreen downloading*/ 
+/*                                                                                             */ 
 
 extern int mms100_ISP_download_binary_data(int dl_mode);
 extern void mms100_download(void);
@@ -69,15 +69,15 @@ static void mcs8000_early_suspend(struct early_suspend *h);
 static void mcs8000_late_resume(struct early_suspend *h);
 #endif
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */
+/*                                                     
+                                              */
 
 static int mcs8000_ts_off(void);
 int mcs8000_ts_on(void);
 static void mcs8000_Data_Clear(void);
 static void ResetTS(void);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */ 
+/*                                                     
+                                              */ 
 
 #if defined (CONFIG_MACH_LGE)
 #define SUPPORT_TOUCH_KEY 1
@@ -126,36 +126,36 @@ static void ResetTS(void);
 
 #define TS_READ_HW_VERSION_ADDR						0xF1	/* HW Revision Info Address */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-25] 
-: Changed the way in reading the public firmware version*/
+/*                                                     
+                                                        */
 
 
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-13] 
-: Changed the address in reading the firmware version*/
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START] */
+/*                                                   
+                                                     */
+/*                                                                                                     */
 #define TS_HW_VERSION_ADDR								0xC2	/* FW Version Info Address  mms-128s*/
 #define TS_READ_VERSION_ADDR							0xE3	/* FW Version Info Address  mms-128s*/
 #define TS_PRODUCT_VERSION_ADDR							0xF6	/* Product Version Info Address  mms-128s*/
 
-/* 2012-11-29 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s f/w version */
+/*                                                                              */
 #define MELFAS_HW_VERSION								0x02	/* HW Version mms-128s*/
 #define MELFAS_FW_VERSION								0x19 	/* FW Version mms-128s*/
 
-/* 2012-11-19 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s f/w version */
+/*                                                                              */
 #define MELFAS_HW_VERSION_SINGLE								0x01	/* HW Version mms-128s*/
 #define MELFAS_FW_VERSION_SINGLE								0x16	/* FW Version mms-128s*/
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END] */
-/* LGE_CHANGE_E: E1 eungjin.kim@lge.com [2012-02-13] 
-: Changed the address in reading the firmware version*/
+/*                                                                                                   */
+/*                                                   
+                                                     */
 
 
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-25] 
-: Changed the way in reading the public firmware version*/ 
+/*                                                     
+                                                        */ 
 
 #define TS_READ_HW_COMPATIBILITY_ADDR		0xF2	/* HW COMPATIBILITY Info Address */
 
 #define TS_READ_REGS_LEN 									66
-/* 2012-10-27 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s work function patch */
+/*                                                                                      */
 #define MELFAS_MAX_TOUCH									0x05
 
 #define I2C_RETRY_CNT											10
@@ -184,13 +184,13 @@ static void ResetTS(void);
 #define TS_LATEST_FW_VERSION_HW_10	6
 #define TS_LATEST_FW_VERSION_HW_11	7
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For the long delay in the case of booting without touchscreen */
+/*                                                     
+                                                                */
 #define GPIO_TS_ID										121
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For the long delay in the case of booting without touchscreen */
+/*                                                     
+                                                                */
 
-/* 2012-11-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s check INT */
+/*                                                                            */
 #define GPIO_TS_INT 39
 
 #if 0
@@ -200,7 +200,7 @@ static void ResetTS(void);
 #endif
 
 
-/*E1_Add the Touch power flag eungjin.kim@lge.com [2012-02-06]*/
+/*                                                            */
 int power_flag=0;
 
 
@@ -235,39 +235,39 @@ struct mcs8000_ts_device {
 	int (*power)(unsigned char onoff);
 	struct workqueue_struct *ts_wq;
 
-	/*20110607 seven.kim@lge.com for touch frimware download [START] */
+	/*                                                               */
 	struct wake_lock wakelock;
 	int irq_sync;
 	int fw_version;
 	int hw_version;
 	int status;
 	int tsp_type;
-	/*20110607 seven.kim@lge.com for touch frimware download [END] */
+	/*                                                             */
 };
 
 static struct input_dev *mcs8000_ts_input = NULL;
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START] */
+/*                                                                                                     */
 #if 0
 static struct mcs8000_ts_device mcs8000_ts_dev;
 #else
 struct mcs8000_ts_device mcs8000_ts_dev;
 #endif
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END] */
+/*                                                                                                   */
 static int is_downloading = 0;
 static int is_touch_suspend = 0;
 int fw_rev = 0;
 int Is_Release_Error[MELFAS_MAX_TOUCH]={0}; /* for touch stable */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For the long delay in the case of booting without touchscreen */
+/*                                                     
+                                                                */
 static unsigned char ucSensedInfo = 0;
 static int iLevel = 0;
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For the long delay in the case of booting without touchscreen */
+/*                                                     
+                                                                */
 
 #define READ_NUM 8 /* now, just using two finger data */
 
-/*20110607 seven.kim@lge.com for touch frimware download [START] */
+/*                                                               */
 enum {
 	MCS8000_DM_TRACE_NO   = 1U << 0,
 	MCS8000_DM_TRACE_YES  = 1U << 1,
@@ -280,10 +280,10 @@ enum {
 	MCS8000_DEV_SUSPEND,
 	MCS8000_DEV_DOWNLOAD
 };
-/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+/*                                                                                    */
 static unsigned char g_touchLogEnable = 0;
 static int irq_flag = 0;
-/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+/*                                                                                  */
 
 void mcs8000_firmware_info(unsigned char* fw_ver, unsigned char* hw_ver, unsigned char *comp_ver);
 	
@@ -513,7 +513,7 @@ int mcs8000_ts_ioctl_delay (unsigned int cmd)
 	return err;
 }
 
-/* 2012-11-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s check INT [START] */
+/*                                                                                    */
 int Ask_INT_Status(void)
 {
 	int value = 0;
@@ -523,10 +523,10 @@ int Ask_INT_Status(void)
 
     return value;
 }
-/* 2012-11-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s check INT [END] */
+/*                                                                                  */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For the long delay in the case of booting without touchscreen */
+/*                                                     
+                                                                */
 int AskTSisConnected(void)
 {
 	gpio_tlmm_config(GPIO_CFG(GPIO_TS_ID, 0, GPIO_CFG_INPUT, GPIO_CFG_PULL_UP, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
@@ -536,15 +536,15 @@ int AskTSisConnected(void)
 	else
 		return FALSE;
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For the long delay in the case of booting without touchscreen */
+/*                                                     
+                                                                */
 
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START] */
+/*                                                                                                     */
 static int firmware_update(struct mcs8000_ts_device *ts)
 {
     int ret = 0;
 	unsigned char fw_ver = 0, hw_ver = 0, comp_ver = 0;
-/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+/*                                                                                    */
 	int iValue = 0;
 
 	ret = AskTSisConnected();
@@ -565,8 +565,8 @@ static int firmware_update(struct mcs8000_ts_device *ts)
 		mcs8000_firmware_info(&fw_ver, &hw_ver, &comp_ver);
 		printk(KERN_INFO "Firmware ver : [%d],HW ver : [%d] \n", fw_ver, hw_ver);
 
-		/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */
-		#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
+		/*                                                                                */
+		#if defined(CONFIG_MACH_MSM7X25A_V3_DS)  
 	    if (((fw_ver < MELFAS_FW_VERSION)&&(comp_ver == 2))||(fw_ver == 0x0)||(fw_ver == 0xFF)||(comp_ver == 0)) 
 	    {
 			printk(KERN_INFO ".......MFS_ISC_update......... \n");
@@ -587,15 +587,15 @@ static int firmware_update(struct mcs8000_ts_device *ts)
 			printk(KERN_INFO ".......MFS_ISC_update SINGLE SKIP!! ....... \n");
 		}
 		#endif
-		/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [END] */ 
+		/*                                                                              */ 
 
 	}
-/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+/*                                                                                  */
     return ret;
 }
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END] */
+/*                                                                                                   */
 
-/* 2012-10-31 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s Sensitivity Debug [START] */
+/*                                                                                            */
 void intensity_extract(void)
 {
    int r;
@@ -653,11 +653,11 @@ void intensity_extract(void)
    ERROR_HANDLE: printk(KERN_DEBUG "ERROR!!! intensity_extract: i2c error \n");
    return;
 }
-/* 2012-10-31 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s Sensitivity Debug [END] */
+/*                                                                                          */
 
 static long mcs8000_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
-/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch */
+/*                                                                            */
 	struct mcs8000_ts_device *dev = &mcs8000_ts_dev;
   long lRet;
 	int err = 0;
@@ -672,7 +672,7 @@ static long mcs8000_ioctl(struct file *file, unsigned int cmd, unsigned long arg
 			break;
 		case MCS8000_TS_IOCTL_MAGIC :
 			switch(cmd) {
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
 				case MCS8000_TS_IOCTL_FW_VER:
 				{
 					if(is_touch_suspend)
@@ -697,13 +697,13 @@ static long mcs8000_ioctl(struct file *file, unsigned int cmd, unsigned long arg
 					}
 					break;
 				}
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */
 
 				case MCS8000_TS_IOCTL_MAIN_ON: 
 				case MCS8000_TS_IOCTL_MAIN_OFF:
 					break;
 
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
                 case MCS8000_TS_IOCTL_DEBUG:
                 {
                     if (g_touchLogEnable)
@@ -715,12 +715,12 @@ static long mcs8000_ioctl(struct file *file, unsigned int cmd, unsigned long arg
                     printk(KERN_INFO "<MELFAS> : Touch Log : %s \n", g_touchLogEnable ? "ENABLE" : "DISABLE");
                     break;
                 }
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */
 				
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
 			  	case MCS8000_TS_IOCTL_KERNEL_DOWN:
 	            {
-				/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen downloader */
+				/*                                                                                  */
 				    printk(KERN_INFO "Normal Touch Firmware Down Load\n");
 
 				    if(is_touch_suspend)
@@ -754,12 +754,12 @@ static long mcs8000_ioctl(struct file *file, unsigned int cmd, unsigned long arg
 	                    irq_flag = 0;
 	                }
 				    break;					
-				/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen downloader */
+				/*                                                                                  */
 	          }
-			  /* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+			  /*                                                                                  */
 			  
-			  /* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
-			  /* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen downloader */
+			  /*                                                                                    */
+			  /*                                                                                  */
 			  case MCS8000_TS_IOCTL_KERNEL_DOWN_MANUAL:
               {
                     printk(KERN_INFO "Manual Touch Firmware Down Load\n");
@@ -799,8 +799,8 @@ static long mcs8000_ioctl(struct file *file, unsigned int cmd, unsigned long arg
             		ResetManual();
                		break;
                 }
-				/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen downloader */				
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */				
+				/*                                                                                  */
 			}
 			break;
             
@@ -864,12 +864,12 @@ static int mcs8000_release(struct inode *inode, struct file *file)
 
 
 
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/
+		/*                                                      */
 		if(power_flag==1){
 			power_flag--;
 			ts->power(OFF);
 			}	
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/
+		/*                                                      */
 		
 
 
@@ -916,7 +916,7 @@ static struct miscdevice mcs8000_ts_misc_dev = {
 	.name = "tsmms128",
 	.fops = &mcs8000_ts_ioctl_fops,
 };
-/*20110607 seven.kim@lge.com for touch frimware download [END] */
+/*                                                             */
 
 void Send_Touch(unsigned int x, unsigned int y)
 {
@@ -963,8 +963,8 @@ static int melfas_init_panel(struct mcs8000_ts_device *ts)
 }
 */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */
+/*                                                     
+                                              */
 static void ResetTS(void)
 {
 	struct mcs8000_ts_device *dev;
@@ -975,12 +975,12 @@ static void ResetTS(void)
 	//disable_irq(dev->num_irq);
 
 
-	/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+	/*                                                      */	
 	if(power_flag==1){
 			power_flag--;
 			dev->power(OFF);
 	}	
-	/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+	/*                                                      */	
 
 
 
@@ -992,12 +992,12 @@ static void ResetTS(void)
 
 	//enable_irq(dev->num_irq);
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */ 
+/*                                                     
+                                              */ 
 
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */
+/*                                                     
+                                              */
 int CheckTSForESD(unsigned char ucData)
 {
 	unsigned char ucStatus;
@@ -1011,10 +1011,10 @@ int CheckTSForESD(unsigned char ucData)
 		return FALSE;
 	}
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */ 
+/*                                                     
+                                              */ 
 
-/* 2012-10-27 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s work function patch [START] */
+/*                                                                                              */
 static void mcs8000_work(struct work_struct *work)
 {
 	int read_num, FingerID;
@@ -1026,11 +1026,11 @@ static void mcs8000_work(struct work_struct *work)
     int keyID = 0;
 	int iTouchedCnt;
 	
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/
+	/*                                                     
+                                                                             */
 	int Is_Touch_Valid = 0;
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 
+	/*                                                     
+                                                                             */ 
 	
 	#if DEBUG_PRINT
 	printk(KERN_ERR "melfas_ts_work_func\n");
@@ -1038,23 +1038,23 @@ static void mcs8000_work(struct work_struct *work)
 		printk(KERN_ERR "melfas_ts_work_func : TS NULL\n");
 	#endif
 
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-	TD1416085584 :  After sleep on and off while sensing a touchscreen,
-	Touchscreen doesn't work*/
+	/*                                                       
+                                                                    
+                         */
 	if(is_touch_suspend == 1) 
 	{	
 		#if DEBUG_PRINT
 		printk(KERN_ERR "mcs8000_work : is_touch_suspend == 1, EXIT!! \n");
 		#endif
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-		: For an abnormal condition of touchscreen after the phone sleeps on and off*/				
+		/*                                                     
+                                                                              */				
 		msleep(20); 
 		enable_irq(ts->client->irq);
-		/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-		: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 		  
+		/*                                                     
+                                                                              */ 		  
 		return;
 	}
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+	/*                                                    */
 
 	for(i=0; i< I2C_RETRY_CNT; i++)
 	{
@@ -1073,7 +1073,7 @@ static void mcs8000_work(struct work_struct *work)
 		#if DEBUG_PRINT
 		printk(KERN_ERR "mcs8000_work: i2c failed\n");
 		#endif 
-		ResetTS(); /* 2012-11-06 JongWook-Park(blood9874@lge.com) [V3] i2c re-try fail, re-boot */
+		ResetTS(); /*                                                                           */
 		enable_irq(ts->client->irq);
 		return ;
 	}
@@ -1085,11 +1085,11 @@ static void mcs8000_work(struct work_struct *work)
 		#endif
 	}	
 
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-10-17] : 
-	TD1416085584 :  After sleeping on and off while sensing a touchscreen,
-	Touchscreen doesn't work*/
+	/*                                                       
+                                                                       
+                         */
 
-	/* 2012-11-27 JongWook-Park(blood9874@lge.com) mms-128s touch work function patch */ 
+	/*                                                                                */ 
 	iTouchedCnt = 6*5;
 	if(read_num > iTouchedCnt)
 	{	
@@ -1099,15 +1099,15 @@ static void mcs8000_work(struct work_struct *work)
 		enable_irq(ts->client->irq);
 		return ;
 	}
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+	/*                                                    */
 
 	if(read_num > 0)
 	{
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-		: For an abnormal condition of touchscreen after the phone sleeps on and off*/	
+		/*                                                     
+                                                                              */	
 	    Is_Touch_Valid = 1;
-		/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-		: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 
+		/*                                                     
+                                                                              */ 
 
         for (i = 0; i < I2C_RETRY_CNT; i++)
         {
@@ -1126,14 +1126,14 @@ static void mcs8000_work(struct work_struct *work)
 			#if DEBUG_PRINT
 			printk(KERN_ERR "mcs8000_work: i2c failed\n");
 			#endif	
-			ResetTS(); /* 2012-11-06 JongWook-Park(blood9874@lge.com) [V3] i2c re-try fail, re-boot */
+			ResetTS(); /*                                                                           */
 			enable_irq(ts->client->irq);
 			return ;	
 
 		}
 
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-28] 
-		: For an abnormal condition after getting ESD */
+		/*                                                     
+                                                */
 		ucSensedInfo  = buf[0];
 		if (CheckTSForESD(ucSensedInfo))
 		{
@@ -1143,8 +1143,8 @@ static void mcs8000_work(struct work_struct *work)
 			enable_irq(ts->client->irq);
 			return;
 		}
-		/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-28] 
-		: For an abnormal condition after getting ESD */ 
+		/*                                                     
+                                                */ 
 
 		for(i = 0; i < read_num; i = i + 6)
 		{
@@ -1177,15 +1177,15 @@ static void mcs8000_work(struct work_struct *work)
 				keyID = (buf[i] & 0x0F);
 				touchState = (buf[i] & 0x80);
 
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
 				#if 1
 				/* if(g_touchLogEnable) */
 					printk(KERN_INFO "keyID    : [%d]\n", keyID);
 				#endif
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */
 
-				#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
-				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
+				#if defined(CONFIG_MACH_MSM7X25A_V3_DS)
+				/*                                                                                     */ 
 				switch(keyID)
 				{
 					case 0x1:
@@ -1205,9 +1205,9 @@ static void mcs8000_work(struct work_struct *work)
 						//or printk msg
 						break;					
 				}
-				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [END] */ 
+				/*                                                                                   */ 
 				#else
-				/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */ 
+				/*                                                                                */ 
 				#if 0
 				if (keyID == 0x1)
 					input_report_key(ts->input_dev, KEY_MENU, touchState ? PRESS_KEY : RELEASE_KEY);
@@ -1219,25 +1219,25 @@ static void mcs8000_work(struct work_struct *work)
 				if (keyID == 0x2)
 					input_report_key(ts->input_dev, KEY_MENU, touchState ? PRESS_KEY : RELEASE_KEY);
 				#endif
-				/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [END] */ 
+				/*                                                                              */ 
 				#endif
-				/* LGE_CHANGE_E: E1 yongboem.kim@lge.com [2012-01-10] : for Rev.A Touch Key */
+				/*                                                                          */
 			}
 		}
 
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-19] : 
-		For the MIP Protocal*/
+		/*                                                       
+                      */
 
-		/* 2012-11-27 JongWook-Park(blood9874@lge.com) mms-128s touch work function patch [START] */ 
+		/*                                                                                        */ 
 		if (touchType == TOUCH_SCREEN){ 
 			for(j = 0; j < MELFAS_MAX_TOUCH; j++) 
 			{
 				if(g_Mtouch_info[j].strength== -1)
 					continue;
 
-				/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-				TD1416085584 :  After sleeping on and off while sensing a touchscreen,
-				Touchscreen doesn't work*/
+				/*                                                       
+                                                                          
+                            */
 				if(Is_Release_Error[j]==1) {			
 					input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, j);
 					input_report_abs(ts->input_dev, ABS_MT_POSITION_X, g_Mtouch_info[j].posX);
@@ -1246,10 +1246,10 @@ static void mcs8000_work(struct work_struct *work)
 					input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, g_Mtouch_info[j].width);
 	                input_report_abs(ts->input_dev, ABS_MT_PRESSURE, g_Mtouch_info[j].strength);                        
 					input_mt_sync(ts->input_dev);		  
-					//input_sync(ts->input_dev);/* LGE_CHANGE_S : wonsang.yoon@lge.com [2011-12-17]  blocking*/
+					//                                                                                         
 					Is_Release_Error[j]=0;
 				}		
-				/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+				/*                                                    */
 				
 				// DAJINIV [START]
 				if (g_Mtouch_info[j].strength > 0) {	// Press
@@ -1265,7 +1265,7 @@ static void mcs8000_work(struct work_struct *work)
 				}
 				// DAJINIV [END]
 				
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
 				#if 1
 				if(g_touchLogEnable)
 				{
@@ -1273,7 +1273,7 @@ static void mcs8000_work(struct work_struct *work)
 							j, (g_Mtouch_info[j].strength>0), g_Mtouch_info[j].posX, g_Mtouch_info[j].posY, g_Mtouch_info[j].strength, g_Mtouch_info[j].width);
 				}
 				#endif	
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */
 
 				if(g_Mtouch_info[j].strength == 0){
 					g_Mtouch_info[j].strength = -1;
@@ -1283,26 +1283,26 @@ static void mcs8000_work(struct work_struct *work)
 			#if 1
 			if(g_touchLogEnable)
 			{
-				/* 2012-10-31 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s Sensitivity Debug */
+				/*                                                                                    */
 				intensity_extract();
 			}
 			#endif	
 
 		}
-		/* 2012-11-27 JongWook-Park(blood9874@lge.com) mms-128s touch work function patch [END] */ 
+		/*                                                                                      */ 
 		
 		input_sync(ts->input_dev);
 
 	}			
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/
+	/*                                                     
+                                                                             */
 	if(Is_Touch_Valid){
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-20] 
-		: msleep function takes more than setting up delay time*/
+		/*                                                     
+                                                         */
 		//msleep(1);
 		usleep_range(1000,1000);	
-		/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-20] 
-		: msleep function takes more than setting up delay time*/
+		/*                                                     
+                                                         */
 	}
 	else{
 		#if DEBUG_PRINT
@@ -1310,16 +1310,16 @@ static void mcs8000_work(struct work_struct *work)
 		#endif
 		msleep(20); 
 	}
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/  
+	/*                                                     
+                                                                             */  
 
 	enable_irq(ts->client->irq);
 }
-/* 2012-10-27 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s work function patch [END] */
+/*                                                                                            */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-TD1416085584 :  After sleeping on and off while sensing a touchscreen,
-Touchscreen doesn't work*/
+/*                                                       
+                                                                      
+                        */
 static void mcs8000_Data_Clear(void) /* for touch stable */
 {
 	int i;
@@ -1334,7 +1334,7 @@ static void mcs8000_Data_Clear(void) /* for touch stable */
 
 	}
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+/*                                                    */
 
 static irqreturn_t mcs8000_ts_irq_handler(int irq, void *handle)
 {
@@ -1342,11 +1342,11 @@ static irqreturn_t mcs8000_ts_irq_handler(int irq, void *handle)
 
 		disable_irq_nosync(dev->num_irq);
 
-		/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-		: For Touch screen non response after wakeup*/
+		/*                                                   
+                                              */
 		//DMSG("%s: irq disable\n", __FUNCTION__);
-		/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-		: For Touch screen non response after wakeup*/
+		/*                                                   
+                                              */
 
 		/* schedule_delayed_work(&dev->work, 0); */
 		schedule_work(&dev->work);
@@ -1364,12 +1364,12 @@ static int mcs8000_ts_off(void)
 
 	dev = &mcs8000_ts_dev;
 
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 	if(power_flag==1){
 			power_flag--;
 			ret = dev->power(OFF);
 	}	
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 
 	if (ret < 0) {
 		printk(KERN_ERR "mcs8000_ts_on power on failed\n");
@@ -1381,48 +1381,48 @@ err_power_failed:
 	return ret;
 }
 
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: For Touch screen non response after wakeup*/
+/*                                                   
+                                            */
 int mcs8000_ts_on(void)
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: For Touch screen non response after wakeup*/
+/*                                                   
+                                            */
 {
 	struct mcs8000_ts_device *dev = NULL;
 	int ret = 0;
 
 	dev = &mcs8000_ts_dev;
 
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 		if(power_flag==0){
 			power_flag++;
 			ret = dev->power(ON);
 		}
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 
 	if (ret < 0) {
 		printk(KERN_ERR "mcs8000_ts_on power on failed\n");
 		goto err_power_failed;
 	}
 	
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-: For an abnormal condition of touchscreen after the phone sleeps on and off*/	
+/*                                                     
+                                                                            */	
 	msleep(30);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
+/*                                                     
 
-: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 
+                                                                            */ 
 err_power_failed:
 	return ret;
 }
 
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: For Touch screen non response after wakeup*/
+/*                                                   
+                                            */
 EXPORT_SYMBOL(mcs8000_ts_on);
-/* LGE_CHANGE_E: E0 eungjin.kim@lge.com [2012-02-16] 
-: For  For Touch screen non response after wakeup*/
+/*                                                   
+                                                 */
 
 void mcs8000_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver, unsigned char *comp_ver)
 {
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-17] : Amended the method of getting the FW version */
+/*                                                                                                    */
 	unsigned char ucTXBuf[1] = {0};
 	unsigned char ucRXBuf[10] = {0,};
 	int iRet = 0;
@@ -1430,7 +1430,7 @@ void mcs8000_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver, unsigne
 	dev = &mcs8000_ts_dev;
 
 	/* HW Version */
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START] */
+/*                                                                                                     */
 	ucTXBuf[0] = TS_HW_VERSION_ADDR;
 
 	iRet = i2c_master_send(dev->client, ucTXBuf, 1);
@@ -1451,7 +1451,7 @@ void mcs8000_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver, unsigne
 #endif 
 	}
 	*hw_ver = ucRXBuf[0];
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END] */
+/*                                                                                                   */
 	/* FW Version */
 	ucTXBuf[0] = TS_READ_VERSION_ADDR;
 
@@ -1474,7 +1474,7 @@ void mcs8000_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver, unsigne
 	}
 	*fw_ver = ucRXBuf[0];
 
-/* 2012-10-31 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s f/w version [START] */
+/*                                                                                      */
 	/* Product Version */
 	ucTXBuf[0] = TS_PRODUCT_VERSION_ADDR;
 
@@ -1504,10 +1504,10 @@ void mcs8000_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver, unsigne
 		*comp_ver = 0; /* V3 Unknown */
 
 	printk("Touch PRODUCT = %s, comp_ver = %d\n",ucRXBuf,*comp_ver);
-/* 2012-10-31 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s f/w version [START] */
+/*                                                                                      */
 
 
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-17] : Amended the method of getting the FW version */
+/*                                                                                                    */
 }
 /*
 static struct miscdevice mcs8000_ts_misc_dev = {
@@ -1518,8 +1518,8 @@ static struct miscdevice mcs8000_ts_misc_dev = {
 */
 
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: To check out the touchscreen version in AT command method */
+/*                                                     
+                                                            */
 static ssize_t read_touch_version(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	int iRet = 0;
@@ -1543,8 +1543,8 @@ static ssize_t read_touch_version(struct device *dev, struct device_attribute *a
 	}
 	return iRet;
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: To check out the touchscreen version in AT command method */
+/*                                                     
+                                                            */
 
 
 /*
@@ -1676,16 +1676,16 @@ static int mcs8000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 
 	ts_pdata = client->dev.platform_data;
 
-/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
+/*                                                                                     */ 
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_POSITION_X, 0, TS_MAX_X_COORD, 0, 0);
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_POSITION_Y, 0, TS_MAX_Y_COORD, 0, 0);
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_TOUCH_MAJOR, 0, TS_MAX_Z_TOUCH, 0, 0);
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_TRACKING_ID, 0, MELFAS_MAX_TOUCH-1, 0, 0);
-	/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+	/*                                                              */
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_PRESSURE, 0, 255, 0, 0);
-	/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+	/*                                                              */
 	/* input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, TS_MAX_W_TOUCH, 0, 0); */
-	/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [END] */ 
+	/*                                                                                   */ 
 
 #if DEBUG_PRINT
   printk(KERN_INFO "ABS_MT_POSITION_X :  ABS_MT_POSITION_Y = [%d] : [%d] \n", ts_pdata->ts_x_max, ts_pdata->ts_y_max);
@@ -1745,37 +1745,37 @@ static int mcs8000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 	mdelay(10);
 	mcs8000_ts_on();
 
-	/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] : add delay For touchscreen initialization  */
+	/*                                                                                               */
 	mcsdl_delay(MCSDL_DELAY_100MS);
 	mcsdl_delay(MCSDL_DELAY_100MS);
-	/* LGE_CHANGE_E: E1 eungjin.kim@lge.com [2012-02-16] : add delay For touchscreen initialization  */
+	/*                                                                                               */
 
-#if 0 /* LGE_CHANGE_S: V3 Bring-Up blood9874@lge.com */	
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen downloader */
+#if 0 /*                                             */	
+/*                                                                                  */
 	if (AskTSisConnected())
 	{
 		printk(KERN_INFO "Touchscreen is connected to the board\n");
 		mms100_download();
 	}
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For touchscreen downloader */
-#endif /* LGE_CHANGE_E: V3 Bring-Up blood9874@lge.com */	
+/*                                                                                  */
+#endif /*                                             */	
 
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [START] */
+/*                                                                                                     */
 	err = firmware_update(dev);
 
 	if (err < 0)
 	{
 		printk(KERN_ERR "[mms-128s]:firmware update fail\n");
 	}
-/* 2012-10-06 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s ISC Firmware upgrade patch [END] */
+/*                                                                                                   */
 
-	/*20110607 seven.kim@lge.com for touch frimware download [START] */
+	/*                                                               */
 	err = misc_register(&mcs8000_ts_misc_dev);
 	if (err < 0) {
 		printk(KERN_ERR "mcs8000_probe_ts: misc register failed\n");
 		return err;
 	}
-	/*20110607 seven.kim@lge.com for touch frimware download [END] */
+	/*                                                             */
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	ts_early_suspend.suspend = mcs8000_early_suspend;
@@ -1784,23 +1784,23 @@ static int mcs8000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 	register_early_suspend(&ts_early_suspend);
 #endif
 
-	/*20110607 seven.kim@lge.com for touch frimware download [START] */
+	/*                                                               */
 	mcs8000_ext_ts = dev;
 	wake_lock_init(&dev->wakelock, WAKE_LOCK_SUSPEND, "mcs8000");
-	/*20110607 seven.kim@lge.com for touch frimware download [END] */
+	/*                                                             */
 
 	//mcs8000_firmware_info(&fw_ver, &hw_ver, &comp_ver);
 	//printk(KERN_INFO "MCS8000 Touch Version HW:%02x FW:%02x CV:%02x\n", hw_ver, fw_ver, comp_ver);
 
 
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-	: To check out the touchscreen version in AT command method */
+	/*                                                     
+                                                             */
 	mcs8000_create_file(mcs8000_ts_input);  
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-	: To check out the touchscreen version in AT command method */
+	/*                                                     
+                                                             */
 
 	
-	/* [LGE_S] FW Upgrade function */
+	/*                             */
 	//mcs8000_firmware_info(&fw_ver, &hw_ver, &comp_ver);
 #if 0
 	if (hw_ver == TS_MODULE_B) {
@@ -1811,7 +1811,7 @@ static int mcs8000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 		}
 	}
 #endif
-	/* [LGE_E] */
+	/*         */
 	enable_irq(dev->num_irq);
 	return 0;
 }
@@ -1837,12 +1837,12 @@ static int mcs8000_ts_suspend(struct i2c_client *client, pm_message_t mesg)
 		DMSG("%s: irq disable\n", __FUNCTION__);
 
 
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/
+		/*                                                      */
 		if(power_flag==1){
 			power_flag--;
 			dev->power(OFF);
 			}	
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/		
+		/*                                                      */		
 
 
 	}
@@ -1858,12 +1858,12 @@ static int mcs8000_ts_resume(struct i2c_client *client)
 	if (is_downloading == 0) {
 		DMSG(KERN_INFO"%s: start! \n", __FUNCTION__);
 
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+		/*                                                      */	
 		if(power_flag==0){
 			power_flag++;
 			dev->power(ON);
 		}
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+		/*                                                      */	
 
 		enable_irq(dev->num_irq);
 		DMSG("%s: irq enable\n", __FUNCTION__);
@@ -1880,26 +1880,26 @@ static void mcs8000_early_suspend(struct early_suspend *h)
 	struct mcs8000_ts_device *dev = &mcs8000_ts_dev;
 
 	if (is_downloading == 0) {
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-TD1416085584 :  After sleeping on and off while sensing a touchscreen,
-Touchscreen doesn't work*/
+/*                                                       
+                                                                      
+                        */
 		mcs8000_Data_Clear(); 
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+/*                                                    */
 
 		DMSG(KERN_INFO"%s: start! \n", __FUNCTION__);
 		disable_irq(dev->num_irq);
 		DMSG("%s: irq disable\n", __FUNCTION__);
 		/* touch disable */
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : It's unnecessary*/
+/*                                                                       */
 //gpio_set_value(28, 0);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : It's unnecessary*/
+/*                                                                       */
 
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/
+		/*                                                      */
 		if(power_flag==1){
 			power_flag--;
 			dev->power(OFF);
 			}	
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/
+		/*                                                      */
 
 			}
 	is_touch_suspend = 1;
@@ -1912,23 +1912,23 @@ static void mcs8000_late_resume(struct early_suspend *h)
 	if (is_downloading == 0) {
 		DMSG(KERN_INFO"%s: start! \n", __FUNCTION__);
 
-		/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-		: For Touch screen non response after wakeup*/
+		/*                                                   
+                                              */
 		//mcs8000_ts_on();
-		/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-		: For Touch screen non response after wakeup*/
+		/*                                                   
+                                              */
 
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+		/*                                                      */	
 		if(power_flag==0){
 			power_flag++;
 			dev->power(ON);
 		}
-		/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+		/*                                                      */	
 
 		/* touch enable */
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : It's unnecessary*/
+/*                                                                       */
 //gpio_set_value(28, 0);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : It's unnecessary*/
+/*                                                                       */
 		
 		enable_irq(dev->num_irq);
 		DMSG("%s: irq enable\n", __FUNCTION__);
@@ -1963,7 +1963,7 @@ static int __devinit mcs8000_ts_init(void)
 	struct mcs8000_ts_device *dev;
 	dev = &mcs8000_ts_dev;
 
-	/* LGE_CHANGE [james.jang@lge.com] 2010-12-21, set gpio 28 config for touch enable */
+	/*                                                                                 */
 	/* gpio_tlmm_config(GPIO_CFG(28, 0, GPIO_CFG_OUTPUT, GPIO_CFG_PULL_UP, GPIO_CFG_2MA), GPIO_CFG_ENABLE); */
 	/* touch enable */
 	/*
@@ -1981,19 +1981,19 @@ static int __devinit mcs8000_ts_init(void)
 
 	mcs8000_ts_input->name = "touch_mcs8000";
 
-/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
+/*                                                                                     */ 
     set_bit(EV_ABS, mcs8000_ts_input->evbit);
     set_bit(EV_KEY, mcs8000_ts_input->evbit);
     /*set_bit(BTN_TOUCH, ts->input_dev->keybit); */
-    /* LGE_CHANGE_S : add touch device propbit
-     * 2012-01-17, mystery184.kim@lge.com
-     * not initialize propbit 
+    /*                                        
+                                         
+                              
      */
     set_bit(INPUT_PROP_DIRECT, mcs8000_ts_input->propbit);
-    /* LGE_CHANGE_E : add touch device propbit */ 
+    /*                                         */ 
     mcs8000_ts_input->evbit[0] = BIT_MASK(EV_ABS) | BIT_MASK(EV_KEY);
 
-	/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */
+	/*                                                                                */
 	#if 0
     mcs8000_ts_input->keybit[BIT_WORD(KEY_BACK)] |= BIT_MASK(KEY_BACK);
     mcs8000_ts_input->keybit[BIT_WORD(KEY_HOMEPAGE)] |= BIT_MASK(KEY_HOMEPAGE);
@@ -2004,14 +2004,14 @@ static int __devinit mcs8000_ts_init(void)
 	#else
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_BACK)] |= BIT_MASK(KEY_BACK);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_MENU)] |= BIT_MASK(KEY_MENU);
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3_DS)    
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_HOMEPAGE)] |= BIT_MASK(KEY_HOMEPAGE);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_SIM_SWITCH)] |= BIT_MASK(KEY_SIM_SWITCH);
 #endif
 	#endif	
-	/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [END] */ 
+	/*                                                                              */ 
 
-/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [END] */ 
+/*                                                                                   */ 
 
 	err = input_register_device(mcs8000_ts_input);
 	if (err < 0) {

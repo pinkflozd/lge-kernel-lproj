@@ -1,7 +1,7 @@
 // MELFAS HEX to C converter v1.6 [2008.05.25]
-/* LGE_CHANGE_S homin.jeon@lge.com - add touch firmware version for u0*/
+/*                                                                    */
 #ifndef CONFIG_MACH_MSM7X27A_U0
-/* LGE_CHANGE_E homin.jeon@lge.com - add touch firmware version for u0*/
+/*                                                                    */
 unsigned char lgit_fw_ver = 0x14;
 unsigned short lgit_MELFAS_binary_nLength = 0x7C00;			// 31.0 KBytes ( 31744 Bytes ) 
 
@@ -1996,7 +1996,7 @@ unsigned char  lgit_MELFAS_binary[] = {
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x43,0x14,
 };
-/* LGE_CHANGE_S homin.jeon@lge.com - add touch firmware version for u0*/
+/*                                                                    */
 #else
 unsigned char lgit_fw_ver=0x19;
 unsigned short lgit_MELFAS_binary_nLength = 0x7C00;			// 31.0 KBytes ( 31744 Bytes ) 
@@ -3993,4 +3993,4 @@ unsigned char  lgit_MELFAS_binary[] = {
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x43,0x19,
 };
 #endif
-/* LGE_CHANGE_E homin.jeon@lge.com - add touch firmware version for u0*/
+/*                                                                    */

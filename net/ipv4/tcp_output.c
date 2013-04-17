@@ -228,7 +228,7 @@ void tcp_select_initial_window(int __space, __u32 mss,
 		}
 	}
 
-// LGE_DATA_CHANGE_S, [120820_US_ATT_0039], http://dev.lge.com/wiki/datacop/patch_0039
+//                                                                                    
 #if defined(LGE_ATT) || defined(LGE_TRACFONE)
 		(*rcv_wnd) = space;
 #else
@@ -250,7 +250,7 @@ void tcp_select_initial_window(int __space, __u32 mss,
 			*rcv_wnd = min(*rcv_wnd, init_cwnd * mss);
 	}
 #endif
-// LGE_DATA_CHANGE_E, [120820_US_ATT_0039], http://dev.lge.com/wiki/datacop/patch_0039
+//                                                                                    
 
 	/* Set the clamp no higher than max representable value */
 	(*window_clamp) = min(65535U << (*rcv_wscale), *window_clamp);

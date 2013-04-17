@@ -348,7 +348,7 @@ static int msm_server_control(struct msm_cam_server_dev *server_dev,
 		if (rc < 0) {
 			if (++server_dev->server_evt_id == 0)
 				server_dev->server_evt_id++;
-			pr_err("%s: wait_event error %d ctrlcmd type : %d\n", __func__, rc, out->type);  /* LGE_CHANGE, Add ctrlcmd type info for debugging, 2012.08.17 jeongda.lee@lge.com */
+			pr_err("%s: wait_event error %d ctrlcmd type : %d\n", __func__, rc, out->type);  /*                                                                                 */
 			msm_cam_stop_hardware(pcam);
 			return rc;
 		}
@@ -2169,9 +2169,9 @@ void msm_release_ion_client(struct kref *ref)
 		struct msm_cam_media_controller, refcount);
 	pr_err("%s Calling ion_client_destroy\n", __func__);
 	ion_client_destroy(mctl->client);
-/*LGE_CHANGE_S QCT PATCH for kernel panic on IOMMU SR 01067319 2013-01-04 */
+/*                                                                        */
 	mctl->client = NULL;
-/*LGE_CHANGE_E QCT PATCH for kernel panic on IOMMU SR 01067319 2013-01-04 */
+/*                                                                        */
 }
 
 static int msm_close(struct file *f)
@@ -2541,15 +2541,15 @@ static int msm_close_server(struct file *fp)
 		mutex_lock(&g_server_dev.server_lock);
 		if (g_server_dev.pcam_active) {
 			struct v4l2_event v4l2_ev;
-/* LGE_CHANGE_S V3 Camera adapt early from QCT PATCH for stability of vfe & IOMMU hong.junki@lge.com*/ 
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
-			mutex_lock(&g_server_dev.pcam_active->vid_lock);	//QCT PATCH for ensure to lock sever closing hong.junki@lge.com 2012/11/12
+/*                                                                                                  */ 
+#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X27A_U0)
+			mutex_lock(&g_server_dev.pcam_active->vid_lock);	//                                                                        
 #endif
 			msm_cam_stop_hardware(g_server_dev.pcam_active);
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
-			mutex_unlock(&g_server_dev.pcam_active->vid_lock);	//QCT PATCH for ensure to lock sever closing hong.junki@lge.com 2012/11/12
+#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X27A_U0)
+			mutex_unlock(&g_server_dev.pcam_active->vid_lock);	//                                                                        
 #endif
-/* LGE_CHANGE_E V3 Camera adapt early from QCT PATCH for stability of vfe & IOMMU hong.junki@lge.com*/ 
+/*                                                                                                  */ 
 			v4l2_ev.type = V4L2_EVENT_PRIVATE_START
 				+ MSM_CAM_APP_NOTIFY_ERROR_EVENT;
 			v4l2_ev.id = 0;

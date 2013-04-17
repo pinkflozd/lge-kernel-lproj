@@ -1057,8 +1057,8 @@ struct mdp_blit_req *req, struct file *p_src_file, struct file *p_dst_file)
 		if (iBuf->mdpImg.mdpOp & MDPOP_ROT90) {
 			ppp_operation_reg |= PPP_OP_ROT_90;
 		}
-//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><START>		
-        #if (!defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X25A_V3_DS) && !defined(CONFIG_MACH_MSM7X25A_V3BR_REV_B) && !defined(CONFIG_MACH_MSM7X25A_V3BR_REV_C) && !defined(CONFIG_MACH_MSM7X25A_V1))
+//                                                                        
+        #if (!defined(CONFIG_MACH_MSM7X25A_V3) && !defined(CONFIG_MACH_MSM7X25A_V3_DS) && !defined(CONFIG_MACH_MSM7X25A_V3BR_REV_B) && !defined(CONFIG_MACH_MSM7X25A_V3BR_REV_C))
 		if((iBuf->mdpImg.mdpOp&MDPOP_ROTATION) == (MDPOP_LR|MDPOP_ROT90))
 		{
             ppp_operation_reg |= PPP_OP_FLIP_LR;
@@ -1068,7 +1068,7 @@ struct mdp_blit_req *req, struct file *p_src_file, struct file *p_dst_file)
             ppp_operation_reg |= PPP_OP_FLIP_LR|PPP_OP_FLIP_UD;
         }
         #endif
-//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><END>		
+//                                                                      
 		if (iBuf->mdpImg.mdpOp & MDPOP_LR) {
 			ppp_operation_reg |= PPP_OP_FLIP_LR;
 		}
@@ -1413,11 +1413,11 @@ static int mdp_ppp_blit_addr(struct fb_info *info, struct mdp_blit_req *req,
 
 	iBuf.mdpImg.mdpOp = MDPOP_NOP;
 
-/* vinay.bhooma@lge.com TD Fix issue 261189
- * QUALCOMM Patch for SR#01078394 - Screen flickers on launching opera for 1st time.
- * Target : UO/P700 
- * Screen flickers for target which support MDP Composition.
- * With GPU Composition model e.g. V3 screen flickering issue is not observed.
+/*                                         
+                                                                                    
+                    
+                                                            
+                                                                              
 */ 
 	if (req->flags & MDP_IS_FG)
 		iBuf.mdpImg.mdpOp |= MDPOP_LAYER_IS_FG;
@@ -1449,8 +1449,8 @@ static int mdp_ppp_blit_addr(struct fb_info *info, struct mdp_blit_req *req,
 		iBuf.mdpImg.mdpOp |= MDPOP_UD;
 	if (req->flags & MDP_ROT_90)
 		iBuf.mdpImg.mdpOp |= MDPOP_ROT90;
-//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><START>
-//LGE_S, jungrock.oh@lge.com 12-12-03, add U0 feature 	
+//                                                                      
+//                                                     
     #if defined (CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X27A_U0) 
 	if ((req->flags&(MDP_ROT_90|MDP_FLIP_UD|MDP_FLIP_LR)) == (MDP_FLIP_UD|MDPOP_ROT90)) // front camera preview
 	{
@@ -1460,8 +1460,8 @@ static int mdp_ppp_blit_addr(struct fb_info *info, struct mdp_blit_req *req,
 	else if (req->flags & MDPOP_ROT180) /* YOONSOO_TEMP 20111202 */
 		iBuf.mdpImg.mdpOp |= MDPOP_ROT180;
     #endif
-//LGE_E, jungrock.oh@lge.com 12-12-03, add U0 feature
-//<sinjo.mattappallil@lge.com><LCD 180 rotation patch><06Dec2011><END>		
+//                                                   
+//                                                                      
 	if (req->flags & MDP_DITHER)
 		iBuf.mdpImg.mdpOp |= MDPOP_DITHER;
 

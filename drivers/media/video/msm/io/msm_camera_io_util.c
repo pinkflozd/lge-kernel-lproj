@@ -374,9 +374,9 @@ int msm_camera_config_gpio_table(struct msm_camera_sensor_info *sinfo,
 		for (i = gpio_conf->cam_gpio_set_tbl_size - 1; i >= 0; i--) {
 			gpio_set_value_cansleep(
 				gpio_conf->cam_gpio_set_tbl[i].gpio,
-				/* LGE_CHANGE_S : 2012-12-01 hyungtae.lee@lge.com GPIO set low when camera off */
+				/*                                                                             */
 				GPIOF_OUT_INIT_LOW);
-				/* LGE_CHANGE_E : 2012-12-01 hyungtae.lee@lge.com GPIO set low when camera off */
+				/*                                                                             */
 		}
 	}
 	return rc;

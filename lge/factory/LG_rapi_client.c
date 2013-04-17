@@ -1,4 +1,4 @@
-/* LGE_CHANGES LGE_RAPI_COMMANDS  */
+/*                                */
 /* Created by khlee@lge.com  
  * arch/arm/mach-msm/lge/LG_rapi_client.c
  *
@@ -33,8 +33,8 @@
 #if defined(CONFIG_MACH_MSM7X27_ALOHAV)
 #include <mach/msm_battery_alohav.h>
 #elif defined(CONFIG_MACH_MSM7X27_THUNDERC)
-/* ADD THUNERC feature to use VS740 BATT DRIVER
- * 2010--5-13, taehung.kim@lge.com
+/*                                             
+                                  
  */
 #include <mach/msm_battery_thunderc.h>
 #else
@@ -43,26 +43,26 @@
 #endif 
 
 
-/* BEGIN: 0014166 jihoon.lee@lge.com 20110116 */
+/*                                            */
 /* MOD 0014166: [KERNEL] send_to_arm9 work queue */
 #include <linux/kmod.h>
 #include <linux/workqueue.h>
-/* END: 0014166 jihoon.lee@lge.com 20110116 */
+/*                                          */
 
 #undef LOCAL_RAPI_DBG
 
 
-/* BEGIN: 0014110 jihoon.lee@lge.com 20110115 */
+/*                                            */
 /* MOD 0014110: [FACTORY RESET] stability */
 /* sync up with oem_rapi */
 extern uint32_t get_oem_rapi_open_cnt(void);
 
 //static uint32_t open_count = 0; // confirm
-/* END: 0014110 jihoon.lee@lge.com 20110115 */
+/*                                          */
 
 static struct msm_rpc_client *client;
 
-/* BEGIN: 0014166 jihoon.lee@lge.com 20110116 */
+/*                                            */
 /* MOD 0014166: [KERNEL] send_to_arm9 work queue */
 extern void msleep(unsigned int msecs);
 
@@ -105,7 +105,7 @@ char *fs_err_to_string(int err_num, char *ret_buf)
 	return ret_buf;
 }
 //#endif
-/* END: 0013860 jihoon.lee@lge.com 20110111 */
+/*                                          */
 
 int LG_rapi_init(void)
 {
@@ -114,20 +114,20 @@ int LG_rapi_init(void)
 		pr_err("%s: couldn't open oem rapi client\n", __func__);
 		return PTR_ERR(client);
 	}
-/* BEGIN: 0014110 jihoon.lee@lge.com 20110115 */
+/*                                            */
 /* MOD 0014110: [FACTORY RESET] stability */
 /* sync up with oem_rapi */
 	//open_count++;
-/* END: 0014110 jihoon.lee@lge.com 20110115 */
+/*                                          */
 
 	return 0;
 }
 
 void Open_check(void)
 {
-/*[LGE_CHANGE_S] khyun.kim@lge.com [V7] If open count has value, occur kernel panic . */
+/*                                                                                    */
 #if 0
-/* BEGIN: 0014110 jihoon.lee@lge.com 20110115 */
+/*                                            */
 /* MOD 0014110: [FACTORY RESET] stability */
 /* sync up with oem_rapi */
 	uint32_t open_count;
@@ -143,13 +143,13 @@ void Open_check(void)
 		return;
 	}
 
-/* END: 0014110 jihoon.lee@lge.com 20110115 */
+/*                                          */
 #endif
-/*[LGE_CHANGE_E] khyun.kim@lge.com [V7] If open count has value, occur kernel panic . */
+/*                                                                                    */
 	LG_rapi_init();
 }
 
-/* BEGIN: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                            */
 /* MOD 0015327: [KERNEL] LG RAPI validity check */
 int lg_rapi_check_validity_and_copy_result(void* src, char* dest, uint32 size_expected)
 {
@@ -181,7 +181,7 @@ int lg_rapi_check_validity_and_copy_result(void* src, char* dest, uint32 size_ex
 	return result;
 
 }
-/* END: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                          */
 
 //#ifdef LG_SMS_PC_TEST
 static void unifiedmsgtool_send_to_arm9(void*	pReq, void* pRsp, int flag)
@@ -246,7 +246,7 @@ char output[LG_RAPI_CLIENT_MAX_OUT_BUFF_SIZE]={0,};
 
 	Open_check();
 
-/* LGE_CHANGES_S [younsuk.song@lge.com] 2010-09-06, Add error control code. Repeat 3 times if error occurs*/
+/*                                                                                                        */
 
 	do 
 	{
@@ -271,30 +271,30 @@ char output[LG_RAPI_CLIENT_MAX_OUT_BUFF_SIZE]={0,};
 
 	} while (rc < 0 && errCount++ < 3);
 
-/* LGE_CHANGES_E [younsuk.song@lge.com] */
+/*                                      */
 
-/* BEGIN: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                            */
 /* MOD 0015327: [KERNEL] LG RAPI validity check */
 	memset(output, 0, LG_RAPI_CLIENT_MAX_OUT_BUFF_SIZE);
 
 	rc = lg_rapi_check_validity_and_copy_result((void*)&ret, output, arg.output_size);
-/* END: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                          */
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 #endif 
 	return (GET_INT32(output));  
 
 
 }
 
-/* BEGIN: 0014166 jihoon.lee@lge.com 20110116 */
+/*                                            */
 /* MOD 0014166: [KERNEL] send_to_arm9 work queue */
 static void
 do_send_to_arm9(void*	pReq, void* pRsp, int flag)
@@ -349,7 +349,7 @@ do_send_to_arm9(void*	pReq, void* pRsp, int flag)
 	ret.output = NULL;
 	ret.out_len = NULL;
 
-/* BEGIN: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                            */
 /* MOD 0015327: [KERNEL] LG RAPI validity check */
 	rc= oem_rapi_client_streaming_function(client, &arg, &ret);
 
@@ -365,9 +365,9 @@ do_send_to_arm9(void*	pReq, void* pRsp, int flag)
 		if(rc == LG_RAPI_INVALID_RESPONSE)
 			((DIAG_TEST_MODE_F_rsp_type*)pRsp)->ret_stat_code = TEST_FAIL_S;
 	}
-/* END: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                          */
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 
@@ -376,7 +376,7 @@ do_send_to_arm9(void*	pReq, void* pRsp, int flag)
 	if (ret.out_len)
 		kfree(ret.out_len);
 
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 
 	printk(KERN_INFO "%s %s end\n", __func__, (flag==NORMAL_WORK_FLAG)?"[N]":"[WQ]");
 }
@@ -483,7 +483,7 @@ void send_to_arm9(void*	pReq, void* pRsp)
 
 	return;
 }
-/* END: 0014166 jihoon.lee@lge.com 20110116 */
+/*                                          */
 
 void set_operation_mode(boolean info)
 {
@@ -511,7 +511,7 @@ void set_operation_mode(boolean info)
 		pr_err("%s, rapi reqeust failed\r\n", __func__);
 	}
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 
@@ -520,7 +520,7 @@ void set_operation_mode(boolean info)
 	if (ret.out_len)
 		kfree(ret.out_len);
 
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 }
 
 
@@ -589,14 +589,14 @@ void pseudo_batt_info_set(struct pseudo_batt_info_type* info)
 		pr_err("%s, rapi reqeust failed\r\n", __func__);
 	}
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
@@ -626,14 +626,14 @@ void block_charging_set(int bypass)
 		pr_err("%s, rapi reqeust failed\r\n", __func__);
 	}
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
@@ -666,7 +666,7 @@ void msm_get_MEID_type(char* sMeid)
 	ret.output = NULL;
 	ret.out_len = NULL;
 
-/* BEGIN: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                            */
 /* MOD 0015327: [KERNEL] LG RAPI validity check */
 	rc = oem_rapi_client_streaming_function(client, &arg, &ret);
 	if (rc < 0)
@@ -682,23 +682,23 @@ void msm_get_MEID_type(char* sMeid)
 		else
 			printk(KERN_INFO "meid from modem nv : '%s'\n", sMeid);
 	}
-/* END: 0015327 jihoon.lee@lge.com 20110204 */
+/*                                          */
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 
 	return;  
 }
 
 
 
-//#ifdef CONFIG_LGE_DIAG_ERI
+//                          
 int eri_send_to_arm9(void* pReq, void* pRsp, unsigned int output_length)
 {
 	struct oem_rapi_client_streaming_func_arg arg;
@@ -743,7 +743,7 @@ int eri_send_to_arm9(void* pReq, void* pRsp, unsigned int output_length)
 
 
 // request eri.bin in case factory reset  
-//#ifndef CONFIG_LGE_ERI_DOWNLOAD
+//                               
 #if !defined(CONFIG_MACH_MSM7X27A_U0)
 #define ERI_FILE_PATH 	"/data/eri/eri.bin"
 char eri_data[1400];
@@ -801,22 +801,22 @@ void remote_eri_rpc(void)
 	
 		
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
 
 #endif
-/* END: 0013860 jihoon.lee@lge.com 20110111 */
+/*                                          */
 
-//DID BACKUP for dload   kabjoo.choi@lge.com  20110806
+//                                                    
 unsigned char pbuf_emmc[192]; // size of test_mode_emmc_direct_type
 unsigned char pbuf_emmc2[192]; // 
 void remote_did_rpc(void)
@@ -906,21 +906,21 @@ void remote_did_rpc(void)
 
 //=============================================================			
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
 
 
 
-/* BEGIN: 0016311 jihoon.lee@lge.com 20110217 */
+/*                                            */
 /* ADD 0016311: [POWER OFF] CALL EFS_SYNC */
 #ifdef CONFIG_LGE_SUPPORT_RAPI
 int remote_rpc_request(uint32_t command)
@@ -976,8 +976,8 @@ int remote_rpc_request(uint32_t command)
 	
 	return rc;
 }
-#endif /*CONFIG_LGE_SUPPORT_RAPI*/
-/* END: 0016311 jihoon.lee@lge.com 20110217 */
+#endif /*                       */
+/*                                          */
 
 
 #ifdef CONFIG_LGE_DLOAD_SRD 
@@ -1065,14 +1065,14 @@ void remote_rpc_with_mdm(uint32 in_len, byte *input, uint32 *out_len, byte *outp
 
 //=============================================================			
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
@@ -1112,14 +1112,14 @@ void remote_rpc_with_mdm_nv_write(uint32 in_len, byte *input, uint32 *out_len, b
 
 //=============================================================			
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
@@ -1159,21 +1159,21 @@ void remote_rpc_with_mdm_nv_sync(uint32 in_len, byte *input, uint32 *out_len, by
 
 //=============================================================			
 
-/* BEGIN: 0014591 jihoon.lee@lge.com 20110122 */
+/*                                            */
 /* MOD 0014591: [LG_RAPI] rpc request heap leakage bug fix */
 	// free received buffers if it is not empty
 	if (ret.output)
 		kfree(ret.output);
 	if (ret.out_len)
 		kfree(ret.out_len);
-/* END: 0014591 jihoon.lee@lge.com 2011022 */
+/*                                         */
 	
 	return;
 }
 
 #endif 
 
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                   
 static int remote_large_data_ntcode_read(unsigned int pkt_no, void* data, int* recv_len)
 {
 	struct oem_rapi_client_streaming_func_arg arg;
@@ -1525,9 +1525,9 @@ int vslt_rpc_command_string(char* in_data, int data_len, char* out_data)
 	pr_info(" *** vslt_rpc_command_string Done(%d bytes)..!!\n", total_len);
 	return total_len;
 }
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                 
 
-/*LGE_CHANGE_S 2012-11-28 khyun.kim@lge.com sw_version's value set to property via rapi.*/
+/*                                                                                      */
 unsigned char swv_buff[100];
 char* remote_get_sw_version(void)
 {
@@ -1570,5 +1570,5 @@ char* remote_get_sw_version(void)
 	
 	return swv_buff;
 }
-/*LGE_CHANGE_E 2012-11-28 khyun.kim@lge.com sw_version's value set to property via rapi.*/
+/*                                                                                      */
 

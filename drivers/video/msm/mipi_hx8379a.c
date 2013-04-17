@@ -18,9 +18,9 @@
 #include <mach/vreg.h>
 //#include <mach/board_lge.h>
 #include CONFIG_LGE_BOARD_HEADER_FILE
-//LGE_S, sohyun.name@lge.com porting tovis panel, 12-12-26
+//                                                        
 #include <linux/module.h> // export_symbol
-//LGE_E, sohyun.name@lge.com porting tovis panel, 12-12-26
+//                                                        
 
 #define HX8479A_CMD_DELAY  0
 
@@ -28,10 +28,10 @@
 //static boolean lglogo_firstboot = TRUE;
 #endif
 
-/*LGE_CHANGE_S: Kiran.kanneganti@lge.com 05-03-2012*/
+/*                                                 */
 /*LCD Reset After data pulled Down*/
 void mipi_ldp_lcd_hx8379a_panel_poweroff(void);
-/*LGE_CHANGE_E LCD Reset After Data Pulled Down*/
+/*                                             */
 
 static struct msm_panel_common_pdata *mipi_hx8379a_pdata;
 
@@ -75,7 +75,7 @@ static char config_set_gamma[] = {
 	0x13, 0x14, 0x15, 0x1A
 };
 static char config_set_panel_gip_forward_scan[] = {
-	0xCC, 0x02
+	0xCC, 0x02, 0xFF, 0xFF
 };
 static char config_set_vcom[] = {
 	0xB6, 0x00, 0xA0, 0x00, 0xA0
@@ -167,11 +167,11 @@ static int mipi_hx8379a_lcd_on(struct platform_device *pdev)
 		result=mipi_dsi_cmds_tx(&hx8379a_tx_buf, hx8379a_sleep_out_cmds,
 				ARRAY_SIZE(hx8379a_sleep_out_cmds));
 #if 0
-		/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com]: Sometimes display is blank or distorted during bootlogo*/
+		/*                                                                                                       */
 		if(lglogo_firstboot){
 			mdelay(120);
 		}
-		/*[LGSI_SP4_BSP_END] [kiran.jainapure@lge.com]*/
+		/*                                            */
 #endif	
 		result=mipi_dsi_cmds_tx(&hx8379a_tx_buf, hx8379a_disp_on_cmds,
 				ARRAY_SIZE(hx8379a_disp_on_cmds));
@@ -315,20 +315,20 @@ static int __init mipi_hx8379a_lcd_init(void)
 	else
 		return 0;
 }
-/*LGE_CHANGE_S: Kiran.kanneganti@lge.com 05-03-2012*/
+/*                                                 */
 /*LCD Reset After data pulled Down*/
 void mipi_ldp_lcd_hx8379a_panel_poweroff(void)
 {
 	printk("%s start \n", __func__);
-// LGE_S, bohyun.jung@lge.com, 12-11-28 without this U0 JB does not go 1.8mA
+//                                                                          
 #if 1
-	gpio_set_value(GPIO_U0_LCD_RESET, 0);  /* LGE_CHANGE  [yoonsoo.kim@lge.com] 20110906: LCD Pinname */
+	gpio_set_value(GPIO_U0_LCD_RESET, 0);  /*                                                         */
 	printk("%s LCD_RESET low.. \n", __func__);
 	msleep(20);
 #endif
-// LGE_E, bohyun.jung@lge.com, 12-11-28 without this U0 JB does not go 1.8mA
+//                                                                          
 	printk("%s end \n", __func__);
 }
 EXPORT_SYMBOL(mipi_ldp_lcd_hx8379a_panel_poweroff);
-/*LGE_CHANGE_E LCD Reset After Data Pulled Down*/
+/*                                             */
 module_init(mipi_hx8379a_lcd_init);

@@ -39,16 +39,16 @@
 #include <mach/msm_rpcrouter.h>
 #include <mach/msm_battery.h>
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
 #include <linux/delay.h>
 #include <linux/timer.h>
 #include <mach/pmic.h>
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 #endif
-#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined (CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION) ||defined (CONFIG_MACH_MSM7X25A_V3)
 #include <mach/msm_hsusb.h>
 #include <mach/lge/lge_boot_mode.h>
 #endif
@@ -320,13 +320,13 @@ static char *msm_power_supplied_to[] = {
 	"battery",
 };
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
 static unsigned int i_chg_current_change;
 static unsigned int i_chg_current_change_back_up;
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 #endif
 #ifdef CONFIG_LGE_CHARGER_TYPE_DETECTION
 
@@ -405,13 +405,13 @@ static enum power_supply_property msm_batt_power_props[] = {
 	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
 	POWER_SUPPLY_PROP_VOLTAGE_NOW,
 	POWER_SUPPLY_PROP_CAPACITY,
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add Vbatt temp prop
-/*LGE_CHANGE_S : 121110 [fe.kim@lge.com] to write battery temperature info on Android Native hidden menu*/
+//                                                          
+/*                                                                                                      */
 #if defined (CONFIG_LGE_BATTERY_TEMP) || defined (CONFIG_MACH_MSM7X27A_U0)
-/*LGE_CHANGE_E : 121110 [fe.kim@lge.com] to write battery temperature info on Android Native hidden menu*/
+/*                                                                                                      */
 	POWER_SUPPLY_PROP_TEMP,
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Add Vbatt temp prop
+//                                                          
 };
 
 static int msm_batt_power_get_property(struct power_supply *psy,
@@ -438,29 +438,25 @@ static int msm_batt_power_get_property(struct power_supply *psy,
 		val->intval = msm_batt_info.voltage_min_design;
 		break;
 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		/* 2012-11-01 dajin.kim@lge.com change unit mV -> uV */
+		/*                                                   */
 		val->intval = msm_batt_info.battery_voltage * 1000;
 		break;
 	case POWER_SUPPLY_PROP_CAPACITY:
 		val->intval = msm_batt_info.batt_capacity;
 		break;
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add Vbatt temp prop
-/*LGE_CHANGE_S : 121110 [fe.kim@lge.com] to write battery temperature info on Android Native hidden menu*/
+//                                                          
+/*                                                                                                      */
 #if defined (CONFIG_LGE_BATTERY_TEMP)
 	case POWER_SUPPLY_PROP_TEMP:
-#if defined (CONFIG_MACH_MSM7X25A_V1)
-	     	val->intval = msm_batt_info.battery_temp * 10;
-#else
 		val->intval = msm_batt_info.battery_temp;
-#endif
 		break;
 #elif defined (CONFIG_MACH_MSM7X27A_U0)
     case POWER_SUPPLY_PROP_TEMP:
         val->intval = msm_batt_info.battery_temp * 10;
 		break;
 #endif
-/*LGE_CHANGE_E : 121110 [fe.kim@lge.com] to write battery temperature info on Android Native hidden menu*/
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Add Vbatt temp prop
+/*                                                                                                      */
+//                                                          
 	default:
 		return -EINVAL;
 	}
@@ -475,11 +471,11 @@ static struct power_supply msm_psy_batt = {
 	.get_property = msm_batt_power_get_property,
 };
 
-/*2012-11-13 sungchul.jung@lge.com did not used 'CONFIG_BATTERY_MSM_FAKE' flag [START] */
+/*                                                                                     */
 #ifdef CONFIG_LGE_BATTERY_SUSPEND_RESUME
 //#ifndef CONFIG_BATTERY_MSM_FAKE
-#endif /*CONFIG_LGE_BATTERY_SUSPEND_RESUME*/
-/*2012-11-13 sungchul.jung@lge.com did not used 'CONFIG_BATTERY_MSM_FAKE' flag [END] */
+#endif /*                                 */
+/*                                                                                   */
 
 struct msm_batt_get_volt_ret_data {
 	u32 battery_voltage;
@@ -622,18 +618,18 @@ static void msm_batt_update_psy_status(void)
 #ifdef CONFIG_LGE_FUEL_GAUGE
 	u32	battery_capacity;
 #endif
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [START] */
+/*                                                                                                               */
 #ifdef LGE_DEV_CHARGING_CURRENT
 	u32	battery_charging_current;
 #endif
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [END] */
+/*                                                                                                             */
 	struct	power_supply	*supp;
 
         pr_info("%s: enter\n", __func__);
 
 #if defined(CONFIG_MACH_LGE)
-  /* 2010-12-14 by baborobo@lge.com
-   * to check the updating-status
+  /*                               
+                                 
    */
         if (msm_batt_info.is_run_batt_update == true){
 		  printk(KERN_ERR "BATT:EXIT %s \n",__func__);
@@ -660,11 +656,11 @@ static void msm_batt_update_psy_status(void)
 	//battery_capacity = msm_batt_get_vbatt_capacity();
 	battery_capacity = rep_batt_chg.v1.battery_capacity;
 #endif
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [START] */
+/*                                                                                                               */
 #ifdef LGE_DEV_CHARGING_CURRENT
 	battery_charging_current = rep_batt_chg.v1.charging_current;
 #endif
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [END] */
+/*                                                                                                             */
 
 #ifdef CONFIG_LGE_LOW_VOLTAGE_BATTERY_CHECK
 	if ((msm_batt_info.low_vbatt_check )
@@ -685,10 +681,10 @@ static void msm_batt_update_psy_status(void)
 	msm_batt_info.low_vbatt_check=false;
 #endif
 
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X27A_U0)
         if (battery_status == BATTERY_STATUS_REMOVED) {
-                /* LGE_CHANGE : 2011-02-17 baborobo@lge.com
-                 * for Battery Remove status
+                /*                                         
+                                            
                  */
                 battery_status = BATTERY_STATUS_INVALID;
                 battery_level = BATTERY_LEVEL_INVALID;
@@ -716,8 +712,8 @@ static void msm_batt_update_psy_status(void)
 		pr_info("BATT: same event count = %u\n",
 				 unnecessary_event_count);
 #if defined(CONFIG_MACH_LGE)
-    /* 2010-12-14 by baborobo@lge.com
-     * to check the updating-status
+    /*                               
+                                   
      */
           msm_batt_info.is_run_batt_update = false;
 #endif
@@ -727,20 +723,20 @@ static void msm_batt_update_psy_status(void)
 	unnecessary_event_count = 0;
 
 #ifdef CONFIG_LGE_FUEL_GAUGE
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [START] */
+/*                                                                                                               */
 	#ifdef LGE_DEV_CHARGING_CURRENT
 	pr_info("BATT: rcvd: %d, %d, %d, %d; %d, %d, %d, %d\n",
 		 charger_status, charger_type, battery_status,
 		 battery_level, battery_voltage, battery_temp, battery_capacity, battery_charging_current);
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [END] */
+/*                                                                                                             */
 	#endif
 #else
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [START] */
+/*                                                                                                               */
 	#ifdef LGE_DEV_CHARGING_CURRENT
 	pr_info("BATT: rcvd: %d, %d, %d, %d; %d, %d, %d\n",
 		 charger_status, charger_type, battery_status,
 		 battery_level, battery_voltage, battery_temp, battery_charging_current);
-/* 2012-12-18, jikhwan.jeong@lge.com, [V7][Power][Common] Add battery_charging_current kernel debug log. [END] */
+/*                                                                                                             */
 	#endif
 #endif
 
@@ -763,9 +759,9 @@ static void msm_batt_update_psy_status(void)
 			msm_batt_info.current_chg_source = AC_CHG;
 			supp = &msm_psy_ac;
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
                 	if( (1 == i_chg_current_change_back_up) && ( 0 == i_chg_current_change ) )
                 	{
@@ -775,7 +771,7 @@ static void msm_batt_update_psy_status(void)
                         	i_chg_current_change_back_up = 0;
                         	printk("Changing Chg I to 400mA. Youtube ON !! \n");
                 	}
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 #endif
 		} else {
 			if (msm_batt_info.current_chg_source & AC_CHG)
@@ -784,9 +780,9 @@ static void msm_batt_update_psy_status(void)
 #endif
 				DBG_LIMIT("BATT: AC Wall charger removed\n");
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
                                 if( 1 == i_chg_current_change )
                                 {
@@ -796,7 +792,7 @@ static void msm_batt_update_psy_status(void)
                                         i_chg_current_change = 0;
                                         i_chg_current_change_back_up = 1;
                                 }
-/* LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                        */
 			}
 #endif
 			else if (msm_batt_info.current_chg_source & USB_CHG)
@@ -821,7 +817,7 @@ static void msm_batt_update_psy_status(void)
 		if (charger_status == CHARGER_STATUS_GOOD ||
 		    charger_status == CHARGER_STATUS_WEAK) {
 			if (msm_batt_info.current_chg_source) {
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Full charging condition
+//                                                                   
 #ifdef CONFIG_LGE_FUEL_GAUGE
 				if (battery_capacity >= 100) {
 					DBG_LIMIT("BATT: FULL \n");
@@ -836,7 +832,7 @@ static void msm_batt_update_psy_status(void)
 				msm_batt_info.batt_status =
 					POWER_SUPPLY_STATUS_CHARGING;
 #endif
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Full charging condition
+//                                                                   
 
 				/* Correct when supp==NULL */
 				if (msm_batt_info.current_chg_source & AC_CHG)
@@ -844,10 +840,10 @@ static void msm_batt_update_psy_status(void)
 				else
 					supp = &msm_psy_usb;
 			}
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
-                        /* LGE_CHANGE
-                        * add for unpluged status of battery
-                        * 2010-04-28 baborobo@lge.com
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+                        /*           
+                                                            
+                                                     
                         */
                         if (battery_status == BATTERY_STATUS_INVALID
                                 && battery_level == BATTERY_LEVEL_INVALID) {
@@ -857,10 +853,10 @@ static void msm_batt_update_psy_status(void)
                         }
 #endif
 		} else {
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
-                        /* LGE_CHANGE
-                        * add for unpluged status of battery
-                        * 2011-02-17 baborobo@lge.com
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+                        /*           
+                                                            
+                                                     
                         */
                         if (battery_status == BATTERY_STATUS_INVALID
                                 && battery_level == BATTERY_LEVEL_INVALID) {
@@ -881,10 +877,10 @@ static void msm_batt_update_psy_status(void)
 		}
 	} else {
 		/* Correct charger status */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
-                /* LGE_CHANGE
-                 * add for unpluged status of battery
-                 * 2010-04-07 baborobo@lge.com
+#if defined(CONFIG_MACH_MSM7X27A_U0)
+                /*           
+                                                     
+                                              
                  */
                 if (battery_status == BATTERY_STATUS_INVALID
                         && battery_level == BATTERY_LEVEL_INVALID) {
@@ -896,7 +892,7 @@ static void msm_batt_update_psy_status(void)
 		if (charger_type != CHARGER_TYPE_INVALID &&
 		    charger_status == CHARGER_STATUS_GOOD) {
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Full charging condition
+//                                                                   
 #ifdef CONFIG_LGE_FUEL_GAUGE
 			if (battery_capacity >= 100) {
 				DBG_LIMIT("BATT: FULL \n");
@@ -911,7 +907,7 @@ static void msm_batt_update_psy_status(void)
 			msm_batt_info.batt_status =
 				POWER_SUPPLY_STATUS_CHARGING;
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Add Full charging condition
+//                                                                   
 
 		}
 	}
@@ -926,7 +922,7 @@ static void msm_batt_update_psy_status(void)
 			battery_voltage = msm_batt_info.battery_voltage;
 	}
 	if (battery_status == BATTERY_STATUS_INVALID) {
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)	
+#if defined(CONFIG_MACH_MSM7X27A_U0)
                 if (battery_level != BATTERY_LEVEL_INVALID
                   && battery_voltage >= msm_batt_info.voltage_min_design
                   && battery_voltage <= msm_batt_info.voltage_max_design) {
@@ -1001,17 +997,6 @@ static void msm_batt_update_psy_status(void)
 	msm_batt_info.battery_level = battery_level;
 	msm_batt_info.battery_temp = battery_temp;
 
-#if defined(CONFIG_MACH_MSM7X25A_V1)	
-    pr_info("******* battery info *******\n");
-	pr_info(" . charger_status   : %d\n", msm_batt_info.charger_status);
-	pr_info(" . charger_type     : %d\n", msm_batt_info.charger_type);
-	pr_info(" . battery_capacity : %d\n", msm_batt_info.batt_capacity);
-	pr_info(" . battery_voltage  : %d\n", msm_batt_info.battery_voltage);
-    pr_info(" . battery_temp     : %d\n", msm_batt_info.battery_temp);
-	pr_info(" . battery_status     : %d\n", msm_batt_info.batt_status);
-	pr_info(" . batt_health     : %d\n", msm_batt_info.batt_health);
-	pr_info("****************************\n");
-#endif	
 #ifdef CONFIG_LGE_FUEL_GAUGE
 	if (msm_batt_info.battery_voltage != battery_voltage) {
 		msm_batt_info.battery_voltage = battery_voltage;
@@ -1050,14 +1035,14 @@ static void msm_batt_update_psy_status(void)
 	}
 #endif
 
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
-	/* 2012-11-26, sungchul.jung@lge.com, fixed cut off voltage setting and update level */
+#if defined(CONFIG_MACH_MSM7X25A_V3)
+	/*                                                                                   */
 	if(msm_batt_info.batt_capacity == 0 && msm_batt_info.battery_voltage >= 3400)
 	{
 		printk("[JSC] cut off voltage check ========================\n");
 		msm_batt_info.batt_capacity = 1;
 	}
-	/* 2012-11-26, sungchul.jung@lge.com, fixed cut off voltage setting and update level */
+	/*                                                                                   */
 #endif /* CONFIG_MACH_MSM7X25A_V3 */
 
 	if (supp) {
@@ -1086,14 +1071,14 @@ static void msm_batt_update_psy_status(void)
 	pr_info("%s: exit\n", __func__);
 
 #if defined(CONFIG_MACH_LGE)
-  /* 2010-12-14 by baborobo@lge.com
-   * to check the updating-status
+  /*                               
+                                 
    */
         msm_batt_info.is_run_batt_update = false;
 #endif
 }
 
-#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION) || defined (CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined (CONFIG_LGE_CHARGER_TYPE_DETECTION)||defined (CONFIG_MACH_MSM7X25A_V3)
 void update_power_supply(int chg_type)
 {
 	struct	power_supply	*supp=NULL;
@@ -1103,7 +1088,7 @@ void update_power_supply(int chg_type)
 		
 	else if(chg_type == USB_CHG_TYPE__WALLCHARGER)
 		supp=&msm_psy_ac;
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#ifdef CONFIG_MACH_MSM7X25A_V3
 	else 
 		supp = &msm_psy_batt;
 #endif //CONFIG_MACH_MSM7X25A_V3	
@@ -1214,13 +1199,13 @@ static int msm_batt_modify_client(u32 client_handle, u32 desired_batt_voltage,
 	return 0;
 }
 
-/*2012-11-13 sungchul.jung@lge.com registration suspend and resume for v3 [START] */
+/*                                                                                */
 
-/* by baborobo@lge.com
-* it is notthing at early-suspend / msm_batt_late_resume
-* the rpc_client-setting is executed at suspend/resume
-* when the phone is wake up by charger(USB or Wall-chager),
-* the screen must be on-status. */
+/*                    
+                                                        
+                                                      
+                                                           
+                                */
 
 #ifdef CONFIG_LGE_BATTERY_SUSPEND_RESUME
 static int msm_batt_suspend(struct platform_device *pdev, pm_message_t state)
@@ -1272,11 +1257,11 @@ static int msm_batt_resume(struct platform_device *pdev)
 		return 0;
 	}
 
-/*2013-02-06 miracle.kim@lge.com add battery info update func. in resume [START] */
+/*                                                                               */
 #if defined(CONFIG_MACH_MSM8X25_V7)
 	msm_batt_update_psy_status();
 #endif
-/*2013-02-06 miracle.kim@lge.com add battery info update func. in resume [END] */
+/*                                                                             */
 
 	pr_debug("%s: exit\n", __func__);
 	return 0;
@@ -1332,8 +1317,8 @@ void msm_batt_late_resume(struct early_suspend *h)
 	msm_batt_update_psy_status();
 	pr_debug("%s: exit\n", __func__);
 }
-#endif /*CONFIG_LGE_BATTERY_SUSPEND_RESUME*/
-/*2012-11-13 sungchul.jung@lge.com registration suspend and resume for v3 [END] */
+#endif /*                                 */
+/*                                                                              */
 
 
 struct msm_batt_vbatt_filter_req {
@@ -1701,13 +1686,13 @@ static int msm_batt_cleanup(void)
 	}
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
-/*2012-11-13 sungchul.jung@lge.com did not used early_suspend and late_resume  [START] */
+/*                                                                                     */
 #ifdef CONFIG_LGE_BATTERY_SUSPEND_RESUME
 //	if (msm_batt_info.early_suspend.suspend == msm_batt_early_suspend)
 #else
 	if (msm_batt_info.early_suspend.suspend == msm_batt_early_suspend)
-#endif /*CONFIG_LGE_BATTERY_SUSPEND_RESUME*/
-/*2012-11-13 sungchul.jung@lge.com did not used early_suspend and late_resume [END] */
+#endif /*                                 */
+/*                                                                                  */
 		unregister_early_suspend(&msm_batt_info.early_suspend);
 #endif
 #endif
@@ -1847,7 +1832,7 @@ static int msm_batt_cb_func(struct msm_rpc_client *client,
 		break;
 	}
 
-//LGE_CHANGE_S [panchaxari.t@lge.com][to prevent vbatt dog timeout leading to modem crash][SR# 1049898]	
+//                                                                                                      
 #ifdef LGE_VBATT_MODEM_CRASH_FIX
 	msm_rpc_start_accepted_reply(client,
 			be32_to_cpu(req->xid), accept_status);
@@ -1859,7 +1844,7 @@ static int msm_batt_cb_func(struct msm_rpc_client *client,
 
 	rc = msm_rpc_send_accepted_reply(msm_batt_info.batt_client, 0);
 #endif	
-//LGE_CHANGE_E [panchaxari.t@lge.com][to prevent vbatt dog timeout leading to modem crash][SR# 1049898]	
+//                                                                                                      
 	if (rc)
 		pr_err("%s: FAIL: sending reply. rc=%d\n", __func__, rc);
 
@@ -1892,7 +1877,7 @@ ssize_t msm_chg_current_change_store(struct device *dev, struct device_attribute
 		if( 0 == i_chg_current_change_back_up )
 		{ /*If No CHG source,intialize chg_current_change to 0*/
 			i_chg_current_change = 0;
-			pmic_miniabb_charging_current_change(0);/* LGE_CHANGE  [yoonsoo.kim@lge.com]  20120508  : Charging Current Change Patch */
+			pmic_miniabb_charging_current_change(0);/*                                                                              */
 		}
 		printk("Not a TA charger.Returning!! \n");
 		return count;
@@ -1913,14 +1898,14 @@ ssize_t msm_chg_current_change_store(struct device *dev, struct device_attribute
 	return count;
 }
 DEVICE_ATTR(chg_current_change,S_IRUGO | S_IWUSR, msm_chg_current_change_show,msm_chg_current_change_store);
-/*LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                       */
 
-/* LGE_CHANGE_S: [murali.ramaiah@lge.com] 2012-01-19
-   sysfs interface is added to check the type of usb cable is connected to Handset.
-   0 - Unknown or No cable
-   1 - Normal Charger cable(180k)
-   2 - Factory USB cable (56k)
-   3 - Factory UART cable(130k)
+/*                                                  
+                                                                                   
+                          
+                                 
+                              
+                               
 */
 #ifdef CONFIG_LGE_DETECT_USB_CABLE_TYPE
 static unsigned char cable_type;
@@ -1932,18 +1917,18 @@ static ssize_t msm_batt_cable_type_show(struct device* dev, struct device_attrib
 
 static DEVICE_ATTR(usb_cable, S_IRUGO, msm_batt_cable_type_show, NULL);
 
-#endif /* CONFIG_LGE_DETECT_USB_CABLE_TYPE */
-/* LGE_CHANGE_E: [murali.ramaiah@lge.com] 2012-01-19 */
+#endif /*                                  */
+/*                                                   */
 
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-07-28
+//                                             
 static unsigned pif_value;
 //static unsigned low_power_mode;
 
 static ssize_t msm_batt_pif_show(struct device* dev, struct device_attribute* attr, char* buf)
 {
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-20
+//                                             
 	pif_value = lge_get_pif_info();
-//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-10-20
+//                                             
 	return sprintf(buf,"%d\n", pif_value);
 }
 
@@ -1954,12 +1939,12 @@ static struct attribute* dev_attrs[] = {
 #ifdef CONFIG_LGE_DETECT_USB_CABLE_TYPE
 	&dev_attr_usb_cable.attr,
 #endif
-/* LGE_CHANGE_S : U0 Heating and DoU Issue
- * 2012-01-26, yoonsoo.kim@lge.com,
- * When user enter the streaming service, change the charging current
+/*                                        
+                                   
+                                                                     
  */
 	&dev_attr_chg_current_change.attr,
-/*LGE_CHANGE_E : U0 Heating and DoU Issue*/
+/*                                       */
 	NULL,
 };
 
@@ -1976,9 +1961,9 @@ static unsigned batt_therm;
 static unsigned batt_volt_raw;
 static unsigned chg_stat_reg;
 static unsigned chg_en_reg;
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-10
+//                                             
 static unsigned batt_id;
-//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-10-10
+//                                             
 
 
 static ssize_t msm_batt_batt_volt_show(struct device* dev, struct device_attribute* attr, char* buf)
@@ -2038,14 +2023,14 @@ static ssize_t msm_batt_chg_en_reg_show(struct device* dev, struct device_attrib
 }
 static DEVICE_ATTR(chg_en_reg, S_IRUGO, msm_batt_chg_en_reg_show, NULL);
 
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-10
+//                                             
 static ssize_t msm_batt_batt_id_show(struct device* dev, struct device_attribute* attr, char* buf)
 {
 	batt_id = lge_get_batt_id();
 	return sprintf(buf,"%d\n", batt_id);
 }
 static DEVICE_ATTR(batt_id, S_IRUGO, msm_batt_batt_id_show, NULL);
-//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-10-10
+//                                             
 
 extern char* get_frst_mode(void);
 static ssize_t msm_batt_frst_show(struct device* dev, struct device_attribute* attr, char* buf)
@@ -2062,9 +2047,9 @@ static struct attribute* dev_attrs_lge_batt_info[] = {
 	&dev_attr_batt_volt_raw.attr,
 	&dev_attr_chg_stat_reg.attr,
 	&dev_attr_chg_en_reg.attr,
-	//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-10
+	//                                             
 	&dev_attr_batt_id.attr,
-	//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-10-10
+	//                                             
 	&dev_attr_frst.attr,
 	NULL,
 };
@@ -2074,7 +2059,7 @@ static struct attribute_group dev_attr_grp_lge_batt_info = {
 };
 
 #endif
-//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-07-28
+//                                             
 #endif //CONFIG_MACH_MSM7X27A_U0
 
 static int __devinit msm_batt_probe(struct platform_device *pdev)
@@ -2104,7 +2089,7 @@ static int __devinit msm_batt_probe(struct platform_device *pdev)
 		}
 		msm_batt_info.msm_psy_ac = &msm_psy_ac;
 		msm_batt_info.avail_chg_sources |= AC_CHG;
-        /* LGE_CHANGE,narasimha.chikka@lge.com,Add power supply register flag */
+        /*                                                                    */
 		msm_psy_ac.registered = true;
 	}
 
@@ -2119,7 +2104,7 @@ static int __devinit msm_batt_probe(struct platform_device *pdev)
 		}
 		msm_batt_info.msm_psy_usb = &msm_psy_usb;
 		msm_batt_info.avail_chg_sources |= USB_CHG;
-        /* LGE_CHANGE,narasimha.chikka@lge.com,Add power supply register flag */
+        /*                                                                    */
 		msm_psy_usb.registered = true;
 	}
 
@@ -2180,7 +2165,7 @@ static int __devinit msm_batt_probe(struct platform_device *pdev)
 		msm_batt_cleanup();
 		return rc;
 	}
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#ifdef CONFIG_MACH_MSM7X25A_V3
 	msm_psy_batt.registered = true;
 #endif //CONFIG_MACH_MSM7X25A_V3
 	rc =  msm_batt_enable_filter(VBATT_FILTER);
@@ -2195,15 +2180,15 @@ static int __devinit msm_batt_probe(struct platform_device *pdev)
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	msm_batt_info.early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN;
-/*2012-11-13 sungchul.jung@lge.com did not used early_suspend and late_resume [START] */
+/*                                                                                    */
 #ifdef CONFIG_LGE_BATTERY_SUSPEND_RESUME
 //	msm_batt_info.early_suspend.suspend = msm_batt_early_suspend;
 //	msm_batt_info.early_suspend.resume = msm_batt_late_resume;
 #else
 	msm_batt_info.early_suspend.suspend = msm_batt_early_suspend;
 	msm_batt_info.early_suspend.resume = msm_batt_late_resume;
-#endif /*CONFIG_LGE_BATTERY_SUSPEND_RESUME*/
-/*2012-11-13 sungchul.jung@lge.com did not used early_suspend and late_resume [END] */
+#endif /*                                 */
+/*                                                                                  */
 	register_early_suspend(&msm_batt_info.early_suspend);
 #endif
 	msm_batt_update_psy_status();
@@ -2213,7 +2198,7 @@ static int __devinit msm_batt_probe(struct platform_device *pdev)
 #endif  /* CONFIG_BATTERY_MSM_FAKE */
 
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-07-28
+//                                             
         rc = sysfs_create_group(&pdev->dev.kobj, &dev_attr_grp);
         if(rc < 0) {
                 dev_err(&pdev->dev,
@@ -2231,7 +2216,7 @@ static int __devinit msm_batt_probe(struct platform_device *pdev)
                                 "%s: fail to create sysfs for lge batt info rc=%d\n", __func__, rc);
                 }
 #endif
-//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-07-28
+//                                             
 #endif
 	return 0;
 }
@@ -2241,12 +2226,12 @@ static int __devexit msm_batt_remove(struct platform_device *pdev)
 	int rc;
 
 #if defined(CONFIG_MACH_MSM7X27A_U0)
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-07-28
+//                                             
         sysfs_remove_group(&pdev->dev.kobj,&dev_attr_grp);
 #ifdef CONFIG_MACH_LGE
         sysfs_remove_group(&pdev->dev.kobj,&dev_attr_grp_lge_batt_info);
 #endif
-//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-07-28
+//                                             
 #endif
 	rc = msm_batt_cleanup();
 
@@ -2261,14 +2246,14 @@ static int __devexit msm_batt_remove(struct platform_device *pdev)
 static struct platform_driver msm_batt_driver = {
 	.probe = msm_batt_probe,
 	.remove = __devexit_p(msm_batt_remove),
-/*2012-11-13 sungchul.jung@lge.com registration suspend and resume for v3 [START] */
+/*                                                                                */
 #ifdef CONFIG_LGE_BATTERY_SUSPEND_RESUME
 	.suspend = msm_batt_suspend,
 	.resume = msm_batt_resume,
 #else
 	/*nothing*/
-#endif /*CONFIG_LGE_BATTERY_SUSPEND_RESUME*/
-/*2012-11-13 sungchul.jung@lge.com registration suspend and resume for v3 [END] */
+#endif /*                                 */
+/*                                                                              */
 
 	.driver = {
 		   .name = "msm-battery",
@@ -2329,7 +2314,7 @@ static int __devinit msm_batt_init_rpc(void)
 	if (msm_batt_info.chg_api_version < 0)
 		msm_batt_info.chg_api_version = CHG_RPC_VER_1_1;
 #ifdef CONFIG_MACH_LGE
-        // LGE_CHANGE_S, set default vbatt rpc version 5.1
+        //                                                
 	msm_batt_info.batt_api_version =  BATTERY_RPC_VER_5_1;
 
 	msm_batt_info.batt_client =
@@ -2343,7 +2328,7 @@ static int __devinit msm_batt_init_rpc(void)
 		msm_rpc_register_client("battery", BATTERY_RPC_PROG,
 					BATTERY_RPC_VER_4_1,
 					1, msm_batt_cb_func);
-#endif /*CONFIG_MACH_LGE*/
+#endif /*               */
 
 	if (msm_batt_info.batt_client == NULL) {
 		pr_err("%s: FAIL: rpc_register_client. batt_client=NULL\n",
@@ -2377,7 +2362,7 @@ static int __devinit msm_batt_init_rpc(void)
 						BATTERY_RPC_VER_5_1,
 						1, msm_batt_cb_func);
 		msm_batt_info.batt_api_version =  BATTERY_RPC_VER_5_1;
-#endif /*CONFIG_MACH_LGE*/
+#endif /*               */
 	}
 	if (IS_ERR(msm_batt_info.batt_client)) {
 		rc = PTR_ERR(msm_batt_info.batt_client);

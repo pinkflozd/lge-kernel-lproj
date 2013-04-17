@@ -35,30 +35,25 @@
 #include <linux/workqueue.h>
 #include <linux/slab.h>
 
-//[2012-12-21][junghoon79.kim@lge.com] sleep current issue in cal&auto test[START]
+//                                                                                
 #ifdef CONFIG_LGE_SUPPORT_MINIOS
 #include <mach/lge/lge_proc_comm.h>
 #endif
-//[2012-12-21][junghoon79.kim@lge.com] sleep current issue in cal&auto test[START]
+//                                                                                
 
-/*[LGE_BSP_START] yunmo.yang@lge.com*/
-#if defined(CONFIG_MACH_MSM8X25_V7)
+/*                                  */
+#ifdef CONFIG_MACH_MSM8X25_V7
 #define LP5521_MAX_LED_CURRENT 217
 #define LP5521_R_INDEX 7
 #define LP5521_G_INDEX 4
 #define LP5521_B_INDEX 8
-#elif defined(CONFIG_MACH_MSM7X25A_V3)
-#define LP5521_MAX_LED_CURRENT 255
-#define LP5521_R_INDEX 20
-#define LP5521_G_INDEX 0
-#define LP5521_B_INDEX 2
 #else
 #define LP5521_MAX_LED_CURRENT 255
 #define LP5521_R_INDEX 1
 #define LP5521_G_INDEX 1
 #define LP5521_B_INDEX 1
 #endif
-/*[LGE_BSP_END] yunmo.yang@lge.com*/
+/*                                */
 
 #define LP5521_PROGRAM_LENGTH		32	/* in bytes */
 
@@ -145,13 +140,13 @@ enum lp5521_wait_type {
 	LP5521_CYCLE_MAX,
 };
 
-/*[LGE_BSP_START] yunmo.yang@lge.com*/
+/*                                  */
 enum lp5521_rgb {
 	LP5521_R = 0,
 	LP5521_G,
 	LP5521_B,
 };
-/*[LGE_BSP_END] yunmo.yang@lge.com*/
+/*                                */
 
 struct lp5521_engine {
 	int		id;
@@ -710,11 +705,11 @@ static void lp5521_run_led_pattern(int mode, struct lp5521_chip *chip)
 	struct i2c_client *cl = chip->client;
 	int num_patterns = chip->pdata->num_patterns;
 
-	/*[LGE_RCA_START]  Favorite Noti Added*/
+	/*                                    */
 		if (mode == PATTERN_FAVORITE_MISSED_NOTI) {
 			mode = num_patterns;
 		}
-	/*[LGE_RCA_END]*/
+	/*             */
 	
 	if (mode > num_patterns || !(chip->pdata->patterns))
 		return;
@@ -806,8 +801,7 @@ static ssize_t store_led_current_index(struct device *dev,
 		modify_current = get_led_current_value(val);
 		if (modify_current > LP5521_MAX_LED_CURRENT)
 			modify_current = LP5521_MAX_LED_CURRENT;
-		/*[LGE_BSP_START]yunmo.yang@lge.com*/
-      #if defined(CONFIG_MACH_MSM8X25_V7)
+		/*                                 */
 		switch(i)
 		{
 			case LP5521_R:/*Red*/
@@ -828,27 +822,7 @@ static ssize_t store_led_current_index(struct device *dev,
 				printk(KERN_INFO"[%s] This message should not print : %d", __func__, modify_current);
 				break;
 		}
-      #elif defined(CONFIG_MACH_MSM7X25A_V3)
-      switch(i)
-		{
-			case LP5521_R:/*Red*/
-				//printk(KERN_INFO"[%s][R] modify_current : %d", __func__,  modify_current + LP5521_R_INDEX);
-				ret = lp5521_set_led_current(chip, i, modify_current + LP5521_R_INDEX);
-				break;
-			case LP5521_G:/*Green*/
-				//printk(KERN_INFO"[%s][G] modify_current : %d", __func__,  modify_current + LP5521_G_INDEX);
-				ret = lp5521_set_led_current(chip, i, modify_current + LP5521_G_INDEX);
-				break;
-			case LP5521_B:/*Blue*/
-				//printk(KERN_INFO"[%s][B] modify_current : %d", __func__,  modify_current + LP5521_B_INDEX);
-				ret = lp5521_set_led_current(chip, i, modify_current + LP5521_B_INDEX);
-				break;
-			default:
-				printk(KERN_INFO"[%s] This message should not print : %d", __func__, modify_current);
-				break;
-		}
-      #endif
-		/*[LGE_BSP_ENDz]yunmo.yang@lge.com*/
+		/*                                */
 		
 		if (ret)
 			return ret;
@@ -1200,10 +1174,10 @@ static int __devinit lp5521_probe(struct i2c_client *client,
 		led++;
 	}
 
-/*[LGE_BSP_START]yunmo.yang@lge.com */
+/*                                  */
 	/* Initialize current index for auto brightness (max step) */
 	chip->current_index = chip->leds[0].led_current;
-/*[LGE_BSP_END]yunmo.yang@lge.com */	
+/*                                */	
 
 	ret = lp5521_register_sysfs(client);
 	if (ret) {
@@ -1213,7 +1187,7 @@ static int __devinit lp5521_probe(struct i2c_client *client,
 
    lp5521_run_led_pattern(1,chip); /* 1 : Power On pattern number of platform data */
 
-//[2013-01-03][junghoon79.kim@lge.com] sleep current issue in cal&auto test[START]
+//                                                                                
 #ifdef CONFIG_LGE_SUPPORT_MINIOS
      if(lge_get_cable_info()==0x04/*USB_130K*/)
      {
@@ -1223,7 +1197,7 @@ static int __devinit lp5521_probe(struct i2c_client *client,
 	      lp5521_run_led_pattern(PATTERN_OFF, chip);
      }
 #endif
-//[2013-01-03][junghoon79.kim@lge.com] sleep current issue in cal&auto test[END]
+//                                                                              
 	printk(KERN_INFO"LP5521: probe END");
 	
 	return ret;
@@ -1262,13 +1236,13 @@ static int __devexit lp5521_remove(struct i2c_client *client)
 		chip->pdata->enable(0);
 	if (chip->pdata->release_resources)
 		chip->pdata->release_resources();
-//LGE_STABILITY_KERNEL_PANIC_power_on_off_sudhakar.koppiset@lge.com_25DEC2012_START
+//                                                                                 
 /* Memory allocated with devm_kzalloc function is automatically freed on driver detach.
 Thus adding kfree calls here will introduce double free bug.*/	
 	//kfree(chip);
 //For error handling we can use the below devm_kfree		
 	devm_kfree(&(client->dev),chip);
-//LGE_STABILITY_KERNEL_PANIC_power_on_off_sudhakar.koppiset@lge.com_25DEC2012_END
+//                                                                               
 	return 0;
 }
 
@@ -1293,13 +1267,13 @@ static void lp5521_shutdown(struct i2c_client *client)
 		chip->pdata->enable(0);
 	if (chip->pdata->release_resources)
 		chip->pdata->release_resources();
-//LGE_STABILITY_KERNEL_PANIC_power_on_off_sudhakar.koppiset@lge.com_25DEC2012_START
+//                                                                                 
 /* Memory allocated with devm_kzalloc function is automatically freed on driver detach.
 Thus adding kfree calls here will introduce double free bug.*/	
 	//kfree(chip);
 //For error handling we can use the below devm_kfree	
 	devm_kfree(&(client->dev),chip);
-//LGE_STABILITY_KERNEL_PANIC_power_on_off_sudhakar.koppiset@lge.com_25DEC2012_END
+//                                                                               
 }
 static int lp5521_suspend(struct i2c_client *client, pm_message_t mesg)
 {

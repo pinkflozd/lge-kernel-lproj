@@ -107,12 +107,12 @@ int chip_power_qrf6285(bool on)
 {
 	static bool init_done;
 	int rc = 0, index = 0;
-/*LGE_CHANGE_S, [jaewoo.hwang@lge.com], 2012-12-07,
-<  Delete "unlikely" Macro. It make text.unlikely section in asm.
-   If Module has text.unlikely section and specific Kernel Config 
-   then print "unwind: Index not found" kernel log.
-   Specific Kernel Config is "CONFIG_SMP is not set, CONFIG_SLUB=y, CONFIG_STACKTRACE=y"
->*/
+/*                                                 
+                                                                 
+                                                                  
+                                                   
+                                                                                        
+ */
 	//if (unlikely(!init_done)) {
 	if (!init_done) {
 		rc = qrf6285_init_regs();

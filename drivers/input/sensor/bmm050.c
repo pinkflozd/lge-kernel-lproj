@@ -383,7 +383,7 @@ BMM050_RETURN_FUNCTION_TYPE bmm050_read_register(unsigned char addr,
 {
 
 #ifdef CONFIG_MACH_LGE
-//LGE_CHANGE : 2012-11-09 Sanghun,Lee(eee3114.@lge.com)wbt sanity check
+//                                                                     
 //wbt 412962 	'comres' is used uninitialized in this function.	
 	BMM050_RETURN_FUNCTION_TYPE comres = 0;
 #else

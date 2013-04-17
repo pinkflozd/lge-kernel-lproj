@@ -43,7 +43,7 @@ extern eMFSRet_t MFS_ISC_update(void);
 extern unsigned short MELFAS_binary_nLength;
 extern unsigned char MELFAS_binary[];
 
-/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up */ 
+/*                                                                        */ 
 extern unsigned short MELFAS_SINGLE_binary_nLength;
 extern unsigned char MELFAS_SINGLE_binary[];
 

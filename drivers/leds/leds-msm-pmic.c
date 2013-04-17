@@ -68,7 +68,7 @@ static void msm_keypad_bl_led_set(struct led_classdev *led_cdev,
 	case 40:
 		brightness = PM_MPP__I_SINK__LEVEL_40mA;
 		break;
-	default:/* LGE_CHANGE  [yoonsoo.kim@lge.com]  20120223  : LED Current Reduce 25 -> 5mA */
+	default:/*                                                                             */
 		brightness = PM_MPP__I_SINK__LEVEL_5mA;
 		break;
 	}
@@ -121,8 +121,8 @@ static int msm_pmic_led_probe(struct platform_device *pdev)
 		return rc;
 	}
 #if 0//defined(CONFIG_MACH_MSM7X27A_U0)
-	/* LGE_CHANGE_S: [murali.ramaiah@lge.com]: 2012-03-23,
-	Enabled key backlight leds till idle screen */
+	/*                                                    
+                                             */
 	msm_keypad_bl_led_set(&msm_kp_bl_led, 5); /* 5mA Brightness */
 #else//CONFIG_MACH_MSM7X27A_U0
 	msm_keypad_bl_led_set(&msm_kp_bl_led, LED_OFF);

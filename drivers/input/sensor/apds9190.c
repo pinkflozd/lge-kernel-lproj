@@ -42,8 +42,8 @@
 #include <linux/string.h>
 
 #ifdef CONFIG_MACH_LGE
-/*LGE_CHANGE : 2012-09-27 Sanghun,Lee(eee3114.@lge.com) apds9190 proximity sensor calibration
-define APDS9190_PROXIMITY_CAL
+/*                                                                                           
+                             
 */
 #define APDS9190_PROXIMITY_CAL
 #endif
@@ -549,7 +549,7 @@ static int apds9190_Run_Cross_talk_Calibration(struct i2c_client *client)
 	printk("%s Enter \n", __FUNCTION__);
 #endif
 
-#if defined(APDS9190_PROXIMITY_CAL) //2012-12-05 Sanghun,Lee(eee3114.@lge.com) apds9190 proximity sensor calibration bug calibration after set enable
+#if defined(APDS9190_PROXIMITY_CAL) //                                                                                                               
 	old_enable = data->enable;
 #endif
 
@@ -586,7 +586,7 @@ RE_CALIBRATION:
 		}
 		else
 		{
-#if defined(APDS9190_PROXIMITY_CAL) //2012-12-05 Sanghun,Lee(eee3114.@lge.com) apds9190 proximity sensor calibration bug calibration after set enable
+#if defined(APDS9190_PROXIMITY_CAL) //                                                                                                               
 			apds9190_set_enable(client,0x00);
 #endif			
 			apds9190_set_enable(client,old_enable); 
@@ -603,7 +603,7 @@ RE_CALIBRATION:
 	printk("%s Hysteresis_threshold : %d\n",__FUNCTION__, data->ps_hysteresis_threshold);
 #endif
 
-#if defined(APDS9190_PROXIMITY_CAL) //2012-12-05 Sanghun,Lee(eee3114.@lge.com) apds9190 proximity sensor calibration bug calibration after set enable
+#if defined(APDS9190_PROXIMITY_CAL) //                                                                                                               
 	apds9190_set_enable(client,0x00);
 #endif
 	apds9190_set_enable(client,old_enable); 
@@ -1491,7 +1491,7 @@ static int __devinit apds9190_probe(struct i2c_client *client,
 	data->ps_detection = PROX_INPUT_FAR;
 	data->input_dev_ps = input_allocate_device();		
 
-#if defined(APDS9190_PROXIMITY_CAL) // 2012-12-20Sanghun,Lee(eee3114.@lge.com) apds9190 probe wbt 313217 null check
+#if defined(APDS9190_PROXIMITY_CAL) //                                                                             
 		if (!data->input_dev_ps) {		
 		printk(KERN_ERR "%s: not enough memory for input device\n", __func__);
 		goto exit_kfree;
@@ -1565,9 +1565,6 @@ static int __devinit apds9190_probe(struct i2c_client *client,
 exit_input_register_device_failed:	
 exit_request_irq_failed:
 exit_kfree:
- 	/* LGE_CHANGE - bohyun.jung@lge.com [2013.02.08]
-	 * destory wakelock before kfree data, otherwise corrupted wakelock remains in inactive_locks. (kernel panic) */
-	wake_lock_destroy(&data->wakelock);
 	dev_info(&client->dev, "probe error\n");
 	kfree(data);
 exit:
@@ -1587,9 +1584,6 @@ static int __devexit apds9190_remove(struct i2c_client *client)
 	input_unregister_device(data->input_dev_ps);
 	input_free_device(data->input_dev_ps);
 
- 	/* LGE_CHANGE - bohyun.jung@lge.com [2013.02.08]
-	 * destory wakelock before kfree data, otherwise corrupted wakelock remains in inactive_locks. (kernel panic) */
-	wake_lock_destroy(&data->wakelock);
 	kfree(data);		
 	/* Power down the device */
 

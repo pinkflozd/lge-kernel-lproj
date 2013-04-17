@@ -25,7 +25,7 @@
 #define SENSOR_PREVIEW_WIDTH 640
 #define SENSOR_PREVIEW_HEIGHT 480
 
-//#define LGE_CAMERA_ANTIBAND_50HZ // @kernel/drivers/media/video/msm/sensors/Makefile
+//                                                                                    
 
 DEFINE_MUTEX(hi707_mut);
 static struct msm_sensor_ctrl_t hi707_s_ctrl;
@@ -68,7 +68,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 	//QQVGA : DISP_W/H, preview2 on, mipidiv 1/2, winr/c, MIPI(HS_TRAIL_TIME,LPWC,CLK_POST_TIME)
 	//BAYER : DISP_FORMAT, STMIPID02(0x17~18), mipidiv1/4, HBLANK, VSYNC,
 	//2012.09.25
-	//LGE SKT VT 
+	//           
 	//[SENSOR_INITIALIZATION]
 	//DISP_DATE = "2012-09-22"
 	//DISP_NAME = "STEVE_init"
@@ -102,13 +102,13 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0x03, 0x00}, 
 		{0x08, 0x0f}, //Parallel NO Output_PAD Out									   
 		{0x10, 0x00},	//VDOCTL1 [5:4]subsample:1,1/2,1/4, [0]preview_en
-	/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+	/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 		{0x11, 0x93},	// xy flip //VDOCTL2 , 90 : FFR off, 94 : FFR on
 #else
 		{0x11, 0x90},	// no flip //VDOCTL2 , 90 : FFR off, 94 : FFR on
 #endif
-	/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+	/*                                                                                                         */
 		{0x12, 0x00},	//CLK_CTL
 		{0x14, 0x88},	//[7]fix_frm_spd:prevent hounting, [3]fix_frm_opt:inc. exp.time
 		
@@ -123,7 +123,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0xc4, 0x01}, 
 
 		{0x03, 0x20},  //page 20
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 		{0x10, 0x1c},  //ae off
 #else
 		{0x10, 0x0c},  //ae off
@@ -416,7 +416,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		
 		///////////////////////////// Page 20	- Auto Exposure 
 		{0x03, 0x20},
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 		{0x10, 0x1c},	//AECTL
 #else
 		{0x10, 0x0c},	//AECTL
@@ -534,7 +534,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0x9b, 0x0b}, //0x07}, //09},
 		
 		////////////////////////////clock calculator//////////////////////////////
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 		{0x03, 0x00}, //Page 0
 		{0x40, 0x00}, //Hblank 144
 		{0x41, 0x90}, 
@@ -584,7 +584,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		
 		//BLC 
 		{0x03, 0x00}, //PAGE 0
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 		{0x90, 0x0a}, //BLC_TIME_TH_ON
 		{0x91, 0x0a}, //BLC_TIME_TH_OFF 
 
@@ -634,7 +634,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0x03, 0x22},
 		{0x10, 0xfb},
 		{0x03, 0x20},
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 		{0x10, 0x9c}, // 100hz first
 #else
 		{0x10, 0x8c}, // 120hz first
@@ -658,13 +658,13 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0x03, 0x00}, 
 		{0x08, 0x0f}, //Parallel NO Output_PAD Out									   
 		{0x10, 0x00},	//VDOCTL1 [5:4]subsample:1,1/2,1/4, [0]preview_en
-	/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+	/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 		{0x11, 0x93},	// xy flip //VDOCTL2 , 90 : FFR off, 94 : FFR on
 #else
 		{0x11, 0x90},	// no flip //VDOCTL2 , 90 : FFR off, 94 : FFR on
 #endif
-	/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+	/*                                                                                                         */
 		{0x12, 0x00},	//CLK_CTL
 		{0x14, 0x88},	//[7]fix_frm_spd:prevent hounting, [3]fix_frm_opt:inc. exp.time
 		
@@ -679,7 +679,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0xc4, 0x01}, 
 
 		{0x03, 0x20},  //page 20
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 		{0x10, 0x1c},  //ae off
 #else
 		{0x10, 0x0c},  //ae off
@@ -972,7 +972,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		
 		///////////////////////////// Page 20	- Auto Exposure 
 		{0x03, 0x20},
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 		{0x10, 0x1c},	//AECTL
 #else
 		{0x10, 0x0c},	//AECTL
@@ -1090,7 +1090,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0x9b, 0x0b}, //0x07}, //09},
 		
 		////////////////////////////clock calculator//////////////////////////////
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 		{0x03, 0x00}, //Page 0
 		{0x40, 0x00}, //Hblank 144
 		{0x41, 0x90}, 
@@ -1140,7 +1140,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		
 		//BLC 
 		{0x03, 0x00}, //PAGE 0
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 		{0x90, 0x0a}, //BLC_TIME_TH_ON
 		{0x91, 0x0a}, //BLC_TIME_TH_OFF 
 
@@ -1190,7 +1190,7 @@ static struct msm_camera_i2c_reg_conf hi707_recommend_settings[HI707_HZ_MAX_NUM]
 		{0x03, 0x22},
 		{0x10, 0xfb},
 		{0x03, 0x20},
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 		{0x10, 0x9c}, // 100hz first
 #else
 		{0x10, 0x8c}, // 120hz first
@@ -1518,7 +1518,7 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			//		{0x03, 0x00},                            
 			//		{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -1527,16 +1527,16 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                                 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -1592,20 +1592,20 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x9e, 0x00}, //EXP Unit                 
 			{0x9f, 0xc8},                            
 			                          
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x9c}, // AE ON  
 #else
 			{0x10, 0x8c}, // AE ON  
 #endif
 			                         
 			{0x03, 0x00},                            
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x93}, // xy flip Fixed OFF
 #else
 			{0x11, 0x90}, // Fixed OFF   
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			//		{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -1617,7 +1617,7 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			//		{0x03, 0x00},                            
 			//		{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -1626,16 +1626,16 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -1690,20 +1690,20 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x9e, 0x00}, //EXP Unit                 
 			{0x9f, 0xc8},                            
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x9c}, // AE ON  
 #else
 			{0x10, 0x8c}, // AE ON  
 #endif
 
 			{0x03, 0x00},                            
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x93}, // xy flip Fixed OFF
 #else
 			{0x11, 0x90}, // Fixed OFF   
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			//		{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -1717,7 +1717,7 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			//		{0x03, 0x00},                            
 			//		{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -1726,16 +1726,16 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                                 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -1791,20 +1791,20 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x9e, 0x00}, //EXP Unit                 
 			{0x9f, 0xc8},                            
 			                          
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x9c}, // AE ON  
 #else
 			{0x10, 0x8c}, // AE ON  
 #endif
 			                         
 			{0x03, 0x00},                            
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x93}, // xy flip Fixed OFF
 #else
 			{0x11, 0x90}, // Fixed OFF   
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			//		{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -1816,7 +1816,7 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			//		{0x03, 0x00},                            
 			//		{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -1825,16 +1825,16 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -1889,20 +1889,20 @@ static struct msm_camera_i2c_reg_conf hi707_night_mode[HI707_HZ_MAX_NUM][2][40] 
 			{0x9e, 0x00}, //EXP Unit                 
 			{0x9f, 0xc8},                            
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x9c}, // AE ON  
 #else
 			{0x10, 0x8c}, // AE ON  
 #endif
 
 			{0x03, 0x00},                            
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x93}, // xy flip Fixed OFF
 #else
 			{0x11, 0x90}, // Fixed OFF   
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			//		{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -1960,7 +1960,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},
 			{0x01, 0x71}, // SLEEP ON
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -1969,15 +1969,15 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2010,7 +2010,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2023,7 +2023,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x86, 0x00}, //EXPMin 7500.00 fps
 			{0x87, 0xc8}, 
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x88, 0x01}, //EXP Max(120Hz) 17.14 fps 
 			{0x89, 0x5f}, 
 			{0x8a, 0x90}, 
@@ -2052,20 +2052,20 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit 
 			{0x9f, 0xc8}, 
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x9c}, // AE ON
 #else
 			{0x10, 0x8c}, // AE ON
 #endif
 
 			{0x03, 0x00},
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x97}, // xy flip Fixed ON
 #else
 			{0x11, 0x94}, // Fixed ON
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -2077,7 +2077,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2086,16 +2086,16 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                                     
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2128,7 +2128,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2161,20 +2161,20 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit                 
 			{0x9f, 0xc8},                            
 			                              
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x9c}, // AE ON  
 #else
 			{0x10, 0x8c}, // AE ON  
 #endif
 			                             
 			{0x03, 0x00},                            
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x93}, // xy flip Fixed OFF
 #else
 			{0x11, 0x90}, // Fixed OFF   
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -2190,7 +2190,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2199,16 +2199,16 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                             
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2240,7 +2240,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2273,7 +2273,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit 
 			{0x9f, 0xc8}, 
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x9c}, // AE ON	
 #else
 			{0x10, 0x8c}, // AE ON  
@@ -2299,7 +2299,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2308,16 +2308,16 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                                         
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2351,7 +2351,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2384,7 +2384,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit 
 			{0x9f, 0xc8}, 
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 			{0x10, 0x9c}, // AE ON				  
 #else
 			{0x10, 0x8c}, // AE ON
@@ -2410,7 +2410,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2419,15 +2419,15 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 0 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2461,7 +2461,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 0 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2475,7 +2475,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x87, 0xc8}, 
 
 			{0x88, 0x00}, //EXP Max(120Hz) 40.00 fps 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 			{0x89, 0xaf}, 
 			{0x8a, 0xc8}, 
 #else
@@ -2504,20 +2504,20 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9f, 0xc8}, 
 
 
-#if 0 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 0 //                                
 			{0x10, 0x9c}, // AE ON
 #else
 			{0x10, 0x8c}, // AE ON
 #endif
 
 			{0x03, 0x00},
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x97}, // xy flip Fixed ON
 #else
 			{0x11, 0x94}, // Fixed ON
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			{0x01, 0x70}, // sleep OFF
 			{0x03, 0x20},                
 			{0x18, 0x30}, // AE reset OFF
@@ -2529,7 +2529,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},
 			{0x01, 0x71}, // SLEEP ON
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2538,15 +2538,15 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2579,7 +2579,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2592,7 +2592,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x86, 0x00}, //EXPMin 7500.00 fps
 			{0x87, 0xc8}, 
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x88, 0x01}, //EXP Max(120Hz) 17.14 fps 
 			{0x89, 0x5f}, 
 			{0x8a, 0x90}, 
@@ -2621,20 +2621,20 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit 
 			{0x9f, 0xc8}, 
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x9c}, // AE ON
 #else
 			{0x10, 0x8c}, // AE ON
 #endif
 
 			{0x03, 0x00},
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x97}, // xy flip Fixed ON
 #else
 			{0x11, 0x94}, // Fixed ON
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -2646,7 +2646,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2655,16 +2655,16 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                                     
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2697,7 +2697,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2730,20 +2730,20 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit                 
 			{0x9f, 0xc8},                            
 			                              
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x9c}, // AE ON  
 #else
 			{0x10, 0x8c}, // AE ON  
 #endif
 			                             
 			{0x03, 0x00},                            
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x93}, // xy flip Fixed OFF
 #else
 			{0x11, 0x90}, // Fixed OFF   
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			{0x01, 0x70}, // sleep OFF
 
 			{0x03, 0x20},                
@@ -2759,7 +2759,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2768,16 +2768,16 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                             
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2809,7 +2809,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2842,7 +2842,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit 
 			{0x9f, 0xc8}, 
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x9c}, // AE ON	
 #else
 			{0x10, 0x8c}, // AE ON  
@@ -2868,7 +2868,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2877,16 +2877,16 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
 			                                         
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -2920,7 +2920,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -2953,7 +2953,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9e, 0x00}, //EXP Unit 
 			{0x9f, 0xc8}, 
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 			{0x10, 0x9c}, // AE ON				  
 #else
 			{0x10, 0x8c}, // AE ON
@@ -2979,7 +2979,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x03, 0x00},                            
 			{0x01, 0x71}, // SLEEP ON                
 
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x03, 0x00}, 
 			{0x11, 0x93}, // xy flip Fixed OFF
@@ -2988,15 +2988,15 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x11, 0x90}, // Fixed OFF     
 #endif
 
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */       
+			/*                                                                                                         */       
 			{0x03, 0x20},		
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x10, 0x1c}, // AE OFF      
 #else
 			{0x10, 0x0c}, // AE OFF         
 #endif
 			{0x18, 0x38}, // AE reset ON 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ			
+#if 1 //                                   
 			{0x03, 0x00}, //Page 0
 			{0x40, 0x00}, //Hblank 144
 			{0x41, 0x90}, 
@@ -3030,7 +3030,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x2b, 0x34}, //0x34 : 1/100, 0xf5 : 2/100	   
 			{0x30, 0xf8},	//AE_Escape_CTL 0x78 1/100sec gain release at unlock0
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ	
+#if 1 //                                 
 			{0x83, 0x00}, //EXP Normal 33.33 fps 
 			{0x84, 0xaf}, 
 			{0x85, 0xc8}, 
@@ -3044,7 +3044,7 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x87, 0xc8}, 
 
 			{0x88, 0x00}, //EXP Max(120Hz) 40.00 fps 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 			{0x89, 0xaf}, 
 			{0x8a, 0xc8}, 
 #else
@@ -3073,20 +3073,20 @@ static struct msm_camera_i2c_reg_conf hi707_fps_range[HI707_HZ_MAX_NUM][5][49] =
 			{0x9f, 0xc8}, 
 
 
-#if 1 // #ifdef LGE_CAMERA_ANTIBAND_50HZ
+#if 1 //                                
 			{0x10, 0x9c}, // AE ON
 #else
 			{0x10, 0x8c}, // AE ON
 #endif
 
 			{0x03, 0x00},
-			/* LGE_CHANGE_S : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 #ifdef CONFIG_HI707_ROT_180	
 			{0x11, 0x97}, // xy flip Fixed ON
 #else
 			{0x11, 0x94}, // Fixed ON
 #endif
-			/* LGE_CHANGE_E : 2012-10-13 sungmin.cho@lge.com hi707 is ratated 180 degree. EVB2 no flip, others xy flip */
+			/*                                                                                                         */
 			{0x01, 0x70}, // sleep OFF
 			{0x03, 0x20},                
 			{0x18, 0x30}, // AE reset OFF
@@ -3429,12 +3429,12 @@ power_down:
 	if (rc > 0)
 		rc = 0;
 	s_ctrl->func_tbl->sensor_power_down(s_ctrl);
-/* LGE_CHANGE_S : 2013-02-20 sungmin.cho@lge.com for setting antibanding in runtime */
+/*                                                                                  */
 	rc = hi707_sysfs_add(&client->dev.kobj);
 	if (rc < 0){
 		pr_err("hi707: failed hi707_sysfs_add\n");
 	}
-/* LGE_CHANGE_E : 2013-02-20 sungmin.cho@lge.com for setting antibanding in runtime */
+/*                                                                                  */
 	return rc;
 }
 
@@ -3747,7 +3747,7 @@ int32_t hi707_match_id(struct msm_sensor_ctrl_t *s_ctrl)
 	return rc;
 }
 
-/* LGE_CHANGE_S : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/*                                                                   */
 #define AEC_ROI_DX (192) // (128)
 #define AEC_ROI_DY (192) // (128) // (96)
 /*
@@ -3831,9 +3831,9 @@ static int8_t hi707_set_aec_roi(struct msm_sensor_ctrl_t *s_ctrl, int32_t aec_ro
 	}
 	return rc;
 }
-/* LGE_CHANGE_E : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/*                                                                   */
 
-/* LGE_CHANGE_S : 2013-03-04 hyungtae.lee@lge.com Modified EXIF data for V7 */
+/*                                                                          */
 int8_t hi707_get_snapshot_data(struct msm_sensor_ctrl_t *s_ctrl, struct snapshot_soc_data_cfg *snapshot_data) {
 	int rc = 0;
 	u16 analogGain = 0;
@@ -3887,7 +3887,7 @@ int8_t hi707_get_snapshot_data(struct msm_sensor_ctrl_t *s_ctrl, struct snapshot
 	return 0;
 	
 }
-/* LGE_CHANGE_E : 2013-03-04 hyungtae.lee@lge.com Modified EXIF data for V7 */
+/*                                                                          */
 
 static struct v4l2_subdev_video_ops hi707_subdev_video_ops = {
 	.enum_mbus_fmt = msm_sensor_v4l2_enum_fmt,
@@ -3916,7 +3916,7 @@ static struct msm_sensor_fn_t hi707_func_tbl = {
 //	.sensor_set_soc_minmax_fps = hi707_set_fps,
 	.sensor_match_id = hi707_match_id,
 	.sensor_set_aec_roi = hi707_set_aec_roi,
-	.sensor_get_soc_snapshotdata = hi707_get_snapshot_data,	/* LGE_CHANGE: 2013-03-04 hyungtae.lee@lge.com Modified EXIF data for V7 */
+	.sensor_get_soc_snapshotdata = hi707_get_snapshot_data,	/*                                                                       */
 #endif
 };
 

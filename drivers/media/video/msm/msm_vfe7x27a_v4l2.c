@@ -581,7 +581,7 @@ static void vfe_7x_ops(void *driver_data, unsigned id, size_t len,
 				kfree(data);
 				return;
 			}
-			/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+			/*                                                                                             */
 			#if 1
 			if (vfe2x_ctrl->liveshot_enabled)
 				free_buf = vfe2x_check_free_buffer(
@@ -596,7 +596,7 @@ static void vfe_7x_ops(void *driver_data, unsigned id, size_t len,
 					VFE_MSG_OUTPUT_IRQ,
 					VFE_MSG_OUTPUT_PRIMARY);
 			#endif
-			/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+			/*                                                                                             */
 			CDBG("free_buf = %x\n",
 					(unsigned int) free_buf);
 			spin_lock_irqsave(
@@ -1110,26 +1110,26 @@ static struct msm_free_buf *vfe2x_check_free_buffer(int id, int path)
 
 	vfe2x_subdev_notify(id, path);
 	if (op_mode & SNAPSHOT_MASK_MODE) {
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		#if 1
 		if (path == VFE_MSG_OUTPUT_PRIMARY ||
 			path == VFE_MSG_V2X_LIVESHOT_PRIMARY)
 		#else // QCT original
 		if (path == VFE_MSG_OUTPUT_PRIMARY)
 		#endif
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */		
+		/*                                                                                             */		
 			outch = &vfe2x_ctrl->snap;
 		else if (path == VFE_MSG_OUTPUT_SECONDARY)
 			outch = &vfe2x_ctrl->thumb;
 	} else {
-	/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+	/*                                                                                             */
 	#if 1
 		if (path == VFE_MSG_OUTPUT_PRIMARY ||
 			path == VFE_MSG_V2X_LIVESHOT_PRIMARY) {
 	#else // QCT original
 		if (path == VFE_MSG_OUTPUT_PRIMARY) {
 	#endif	
-	/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+	/*                                                                                             */
 			if (vfe2x_ctrl->zsl_mode)
 				outch = &vfe2x_ctrl->zsl_prim;
 			else
@@ -1151,26 +1151,26 @@ static int vfe2x_configure_pingpong_buffers(int id, int path)
 	vfe2x_subdev_notify(id, path);
 	CDBG("Opmode = %d\n", op_mode);
 	if (op_mode & SNAPSHOT_MASK_MODE) {
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		#if 1
 		if (path == VFE_MSG_OUTPUT_PRIMARY ||
 			path == VFE_MSG_V2X_LIVESHOT_PRIMARY)
 		#else // QCT original
 		if (path == VFE_MSG_OUTPUT_PRIMARY)
 		#endif
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 			outch = &vfe2x_ctrl->snap;
 		else if (path == VFE_MSG_OUTPUT_SECONDARY)
 			outch = &vfe2x_ctrl->thumb;
 	} else {
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		#if 1
 		if (path == VFE_MSG_OUTPUT_PRIMARY ||
 			path == VFE_MSG_V2X_LIVESHOT_PRIMARY) {
 		#else // QCT original
 		if (path == VFE_MSG_OUTPUT_PRIMARY) {
 		#endif
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 			if (vfe2x_ctrl->zsl_mode)
 				outch = &vfe2x_ctrl->zsl_prim;
 			else
@@ -1198,24 +1198,24 @@ static struct buf_info *vfe2x_get_ch(int path)
 	if (op_mode & SNAPSHOT_MASK_MODE) {
 		if (path == VFE_MSG_OUTPUT_SECONDARY)
 			ch = &vfe2x_ctrl->thumb;
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		#if 1
 		else if (path == VFE_MSG_OUTPUT_PRIMARY ||
 			path == VFE_MSG_V2X_LIVESHOT_PRIMARY)
 		#else // QCT original
 		else if (path == VFE_MSG_OUTPUT_PRIMARY)
 		#endif
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 			ch = &vfe2x_ctrl->snap;
 	} else {
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		#if 1
 		if (path == VFE_MSG_OUTPUT_PRIMARY ||
 			path == VFE_MSG_V2X_LIVESHOT_PRIMARY) {
 		#else // QCT original
 		if (path == VFE_MSG_OUTPUT_PRIMARY) {
 		#endif
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 			if (vfe2x_ctrl->zsl_mode)
 				ch = &vfe2x_ctrl->zsl_prim;
 			else

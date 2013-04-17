@@ -393,14 +393,14 @@ Don't change previous defines and add new id at the end
 /* Send Optimized F3 messages */
 #define DIAG_QSR_EXT_MSG_TERSE_F   146
 
-/* LGE_CHANGES_S [minjong.gong@lge.com] 2010-06-11, LG_FW_DIAG_SCREEN_CAPTURE */
+/*                                                                            */
 #define DIAG_LGF_SCREEN_SHOT_F     150
-/* LGE_CHANGES_E [minjong.gong@lge.com] 2010-06-11, LG_FW_DIAG_SCREEN_CAPTURE */
-/* LGE_CHANGE_S [jihoon.lee@lge.com] 2010-02-07, LG_FW_MTC */
+/*                                                                            */
+/*                                                         */
 #if 1 //def LG_FW_MTC // defined (CONFIG_MACH_MSM7X27_THUNDERC) || defined (LG_FW_MTC)
 #define DIAG_MTC_F              240
 #endif /*LG_FW_MTC*/
-/* LGE_CHANGE_E [jihoon.lee@lge.com] 2010-02-07, LG_FW_MTC */
+/*                                                         */
 
 /* Number of packets defined. */
 #ifdef CONFIG_LGE_DIAG_WMC
@@ -423,11 +423,11 @@ Don't change previous defines and add new id at the end
 //#ifdef LG_SMS_PC_TEST
 #define DIAG_SMS_TEST_F	220
 //#endif
-/* LGE_MERGE_S [sunmyoung.lee@lge.com] 2010-07-16. SMS UTS Test */
+/*                                                              */
 #if 1 //defined (CONFIG_MACH_MSM7X27_THUNDERC) || defined (LG_FW_UDM)
 #define DIAG_UDM_SMS_MODE			252
 #endif
-/* LGE_MERGE_E [sunmyoung.lee@lge.com] 2010-07-16. SMS UTS Test */
+/*                                                              */
 
 #define DIAG_LCD_Q_TEST_F         253
 

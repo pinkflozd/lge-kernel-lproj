@@ -1066,18 +1066,18 @@ fb_blank(struct fb_info *info, int blank)
 		/* fb_notifier_call_chain(FB_EVENT_BLANK, &event); */
 #else /*qct original*/
 		fb_notifier_call_chain(FB_EVENT_BLANK, &event);
-#endif /*CONFIG_MACH_LGE*/
+#endif /*               */
 	}
 
  	return ret;
 }
 
-/* LGE_CHANGE_S, [20120615][youngbae.choi@lge.com]
-*  for testmode lcd kcal */
+/*                                                
+                         */
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 extern int k_cal_flag;
 #endif
-/* LGE_CHANGE_E, [20120609][youngbae.choi@lge.com] */
+/*                                                 */
 
 static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
 			unsigned long arg)
@@ -1092,13 +1092,13 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
 	void __user *argp = (void __user *)arg;
 	long ret = 0;
 
-/* LGE_CHANGE_S, [20120615][youngbae.choi@lge.com]
-*  for testmode lcd kcal */
+/*                                                
+                         */
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 		if(k_cal_flag == 1)
 			return 0;
 #endif
-/* LGE_CHANGE_E, [20120609][youngbae.choi@lge.com] */
+/*                                                 */
 
 	switch (cmd) {
 	case FBIOGET_VSCREENINFO:

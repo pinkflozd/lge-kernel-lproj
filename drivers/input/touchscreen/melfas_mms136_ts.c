@@ -26,17 +26,17 @@
 #include <linux/gpio.h> 
 #include CONFIG_LGE_BOARD_HEADER_FILE
 
-/*LGE_CHANGE_S : seven.kim@lge.com touch firmware manual download using ADB */
+/*                                                                          */
 #include <linux/miscdevice.h>
 #include <linux/wakelock.h>
 #include "melfas_mms136_ioctl.h"
-/*LGE_CHANGE_E : seven.kim@lge.com touch firmware manual download using ADB */
+/*                                                                          */
 
-/*LGE_CHANGE_S : mystery184.kim@lge.com */
+/*                                      */
 #include <linux/timer.h>
 #include "melfas_mms136_download_porting.h"
 #include <asm/atomic.h>
-/*LGE_CHANGE_E : mystery184.kim@lge.com */
+/*                                      */
 #define MIP_ENABLE 1
 
 #define TS_MAX_Z_TOUCH   255
@@ -47,14 +47,14 @@
 // #define FW_VERSION       0x00
 
 #define TS_READ_START_ADDR  0x10
-/* LGE_CHANGE_S : 
- * 2011-12-29, yuseok.kim@lge.com 
- * Added define HW_VER and changed FW_VER addr value. 
+/*                
+                                  
+                                                      
 */
 
 #define TS_READ_HW_VERSION_ADDR  0xF0
 #define TS_READ_FW_VERSION_ADDR  0xF5
-/* LGE_CHANGE_E : */
+/*                */
 #ifndef MIP_ENABLE
 #define TS_READ_REGS_LEN 5
 #else
@@ -67,25 +67,25 @@
 
 #define PRESS_KEY   1
 #define RELEASE_KEY 0
-/* LGE_CHANGE_S mystery184.kim@lge.com */
+/*                                     */
 #define CANCEL_KEY 0xff
-/* LGE_CHANGE_E mystery184.kim@lge.com */
+/*                                     */
 
 #define DEBUG_PRINT 0
 #define	SET_DOWNLOAD_BY_GPIO	0
-/* LGE_CHANGE_S : 
- * 2011-12-29, yuseok.kim@lge.com 
- * Added Melfas_FW_Download define value and MELFAS_ESD define value  
+/*                
+                                  
+                                                                      
 */
 #define	Melfas_FW_Download		1
 #define MELFAS_ESD	1
 static int ESD_check_flag = 0;
-/* LGE_CHANGE_E : */
+/*                */
 #if SET_DOWNLOAD_BY_GPIO
 #include <linux/melfas_download.h>
-/* LGE_CHANGE_S : 
- * 2011-12-29, yuseok.kim@lge.com 
- * Defined FW_VERSION as 0x05 for check the early FW_VERSION and current FW-VERSION
+/*                
+                                  
+                                                                                   
 */
 #endif
 #if Melfas_FW_Download
@@ -100,7 +100,7 @@ extern void ResetManual(void);
 extern unsigned char 	tovis_fw_ver;
 extern unsigned char 	lgit_fw_ver;
 extern int mms100_download(unsigned char hw_ver, unsigned char fw_ver,int is_probe);
-/* LGE_CHANGE_E : */
+/*                */
 #endif
 
 enum {
@@ -114,9 +114,9 @@ struct muti_touch_info {
 	int width;
 	int posX;
 	int posY;
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 	int status;
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 };
 
 struct melfas_ts_data {
@@ -126,15 +126,15 @@ struct melfas_ts_data {
 	struct melfas_tsi_platform_data *pdata;
 	struct work_struct  work;
 	uint32_t flags;
-	/*LGE_CHANGE_S : seven.kim@lge.com touch firmware manual download using ADB */
+	/*                                                                          */
 	struct wake_lock wakelock;
 	struct delayed_work init_delayed_work;
-	/*LGE_CHANGE_E : seven.kim@lge.com touch firmware manual download using ADB */
+	/*                                                                          */
 	int (*power)(int on);
 	int (*power_enable)(int en, bool log_en);
 	struct early_suspend early_suspend;
 };
-/*LGE_CHANGE_S : mystery184.kim@lge.com */
+/*                                      */
 
 static int is_key_pressed = 0;
 static int is_touch_pressed = 0;
@@ -149,16 +149,16 @@ static int current_key_time = 0;
 static int key_press_count = 0;
 
 static atomic_t mtx;
-/*LGE_CHANGE_E : mystery184.kim@lge.com */
+/*                                      */
 
-/*LGE_CHANGE_S : seven.kim@lge.com , at%touchfwver */
+/*                                                 */
 static int is_downloading = 0;
 static int is_touch_suspend = 0;
 static struct melfas_ts_data mms136_ts_data;
-/*LGE_CHANGE_E : seven.kim@lge.com , at%touchfwver */
+/*                                                 */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] : [U0] at%touchfwver
-: To check out the touchscreen version in AT command method */
+/*                                                                         
+                                                            */
 void mms136_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver, unsigned char *comp_ver)
 {
 	unsigned char ucTXBuf[1] = {0};
@@ -247,10 +247,10 @@ int mms136_create_file(struct input_dev *pdev)
 	
 	return ret;
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: To check out the touchscreen version in AT command method */
+/*                                                     
+                                                            */
 
-/*LGE_CHANGE_S : seven.kim@lge.com touch firmware manual download using ADB */
+/*                                                                          */
 static int misc_opened = 0;
 
 static int mms136_touch_id(void)
@@ -302,7 +302,7 @@ static long mms136_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 						printk(KERN_INFO "Firmware ver : [%d],HW ver : [%d] \n", fw_ver, hw_ver);
 						break;
 				}
-				case MMS136_TS_IOCTL_DEBUG : /*seven.kim@lge.com : touch log enable/disable*/
+				case MMS136_TS_IOCTL_DEBUG : /*                                            */
 				{
 						if (g_touchLogEnable)
 							g_touchLogEnable = 0;
@@ -439,15 +439,15 @@ static struct miscdevice mms136_ts_misc_dev = {
 	.name 						= "mms136",
 	.fops 						= &mms136_ts_ioctl_fops,
 };
-/*LGE_CHANGE_E : seven.kim@lge.com touch firmware manual download using ADB */
+/*                                                                          */
 
 
-/* LGE_CHANGE_S : 
- * 2011-12-29, yuseok.kim@lge.com 
- * Added release_all_fingers
+/*                
+                                  
+                            
 */
 static void release_all_fingers(struct melfas_ts_data *ts);
-/* LGE_CHANGE_E : */
+/*                */
 #ifdef CONFIG_HAS_EARLYSUSPEND
 static void melfas_ts_early_suspend(struct early_suspend *h);
 static void melfas_ts_late_resume(struct early_suspend *h);
@@ -457,9 +457,9 @@ static struct muti_touch_info g_Mtouch_info[MELFAS_MAX_TOUCH];
 
 int (*g_power_enable) (int en, bool log_en);
 
-/* LGE_CHANGE_S : 
- * 2011-12-29, yuseok.kim@lge.com 
- * Added ESD check flag and ESD check Function
+/*                
+                                  
+                                              
 */
 #ifdef MELFAS_ESD
 static void melfas_data_clear(void) 
@@ -518,9 +518,9 @@ static void melfas_ts_restart_ex(struct work_struct *work)
 	schedule_delayed_work(&ts->init_delayed_work, msecs_to_jiffies(HZ * 40)); 
 } */
 #endif
-/* LGE_CHANGE_E : */
+/*                */
 
-/*LGE_CHANGE_S mystery184.kim@lge.com timer handler */
+/*                                                  */
 static void send_key_event_forced(int keyID, unsigned int eventType)
 {
 	struct melfas_ts_data *ts = &mms136_ts_data;
@@ -552,10 +552,10 @@ static void melfas_ts_work_func(struct work_struct *work)
 	int posX = 0, posY = 0, width = 0, strength = 10;
 	int keyID = 0, reportID = 0;
 	uint8_t read_num = 0;
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 	int press_count = 0;
 	int is_touch_mix = 0;
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 
 
 #if DEBUG_PRINT
@@ -653,9 +653,9 @@ static void melfas_ts_work_func(struct work_struct *work)
 				g_Mtouch_info[touchID].posX = posX;
 				g_Mtouch_info[touchID].posY = posY;
 				g_Mtouch_info[touchID].width = width;
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 				g_Mtouch_info[touchID].status = touchState;
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 
 				if (touchState)
 					g_Mtouch_info[touchID].strength = strength;
@@ -676,22 +676,22 @@ static void melfas_ts_work_func(struct work_struct *work)
 				
 
 			} else if (touchType == TOUCH_KEY) {
-				/* LGE_CHANGE_S :
-				 * 2012-03-29,mystery184.kim@lge.com
-				 * For Debugging when discussing touch no action
-				 */
+				/*               
+                                        
+                                                    
+     */
 				key_press_count++;
 				if(key_press_count >= 5)
 				{
 					printk(KERN_ERR "<MELFAS> Key Event Dispatch!\n");
 					key_press_count = 0;
 				}
-				/* LGE_CHANGE_E mystery184.kim@lge.com */
+				/*                                     */
 
-				/* LGE_CHANGE_S :
-				 * 2012-03-29,mystery184.kim@lge.com
-				 * Add key event ignore condition(100ms) after touch event drivened
-				 */				
+				/*               
+                                        
+                                                                       
+     */				
 				current_key_time = jiffies_to_msecs(jiffies);
 
 				if(before_touch_time > 0)
@@ -712,7 +712,7 @@ static void melfas_ts_work_func(struct work_struct *work)
 				}
 				before_touch_time = 0;
 				current_key_time = 0;
-				/* LGE_CHANGE_E mystery184.kim@lge.com */
+				/*                                     */
 
 			
 				// Ignore Key event during touch event actioned
@@ -723,11 +723,11 @@ static void melfas_ts_work_func(struct work_struct *work)
 				}
 				if (keyID == 0x1)
 					input_report_key(ts->input_dev, KEY_BACK, touchState ? PRESS_KEY : RELEASE_KEY);
-				if (keyID == 0x2) /* LGE_CHANGE_S [yoonsoo.kim@lge.com] 20111109 : U0 Rev.B Touch Back Key Fixed */
+				if (keyID == 0x2) /*                                                                             */
 					input_report_key(ts->input_dev, KEY_MENU, touchState ? PRESS_KEY : RELEASE_KEY);
 				if (keyID == 0x3)
 					input_report_key(ts->input_dev, KEY_HOME, touchState ? PRESS_KEY : RELEASE_KEY);
-				if (keyID == 0x4)/* LGE_CHANGE_E  [yoonsoo.kim@lge.com]  20111109  : U0 Rev.B Touch Back Key Fixed */
+				if (keyID == 0x4)/*                                                                                */
 					input_report_key(ts->input_dev, KEY_SEARCH, touchState ? PRESS_KEY : RELEASE_KEY);
 				pressed_keycode = keyID;
 				if(touchState) is_key_pressed = PRESS_KEY;
@@ -748,7 +748,7 @@ static void melfas_ts_work_func(struct work_struct *work)
 		for (i = 0; i < MELFAS_MAX_TOUCH; i++) {
 			if (g_Mtouch_info[i].strength == -1)
 				continue;
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 			if (g_Mtouch_info[i].status == 0){
 				is_touch_pressed = 0;
 				g_Mtouch_info[i].status = -1;
@@ -756,19 +756,19 @@ static void melfas_ts_work_func(struct work_struct *work)
 			}
 
 			if(g_Mtouch_info[i].status == 1){
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 
 			input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, i);
 			input_report_abs(ts->input_dev, ABS_MT_POSITION_X, g_Mtouch_info[i].posX);
 			input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, g_Mtouch_info[i].posY);
 			input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, g_Mtouch_info[i].width);
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 			input_report_abs(ts->input_dev, ABS_MT_PRESSURE, g_Mtouch_info[i].strength);
 			input_mt_sync(ts->input_dev);
 			is_touch_pressed = 1;
 				press_count++;
 			}
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 			
 			if(g_touchLogEnable)
 			{
@@ -790,18 +790,18 @@ static void melfas_ts_work_func(struct work_struct *work)
 				g_Mtouch_info[i].strength = -1;
 
 		}
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 		if(press_count == 0) 
 			input_mt_sync(ts->input_dev);
 
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 
-		/* LGE_CHANGE_S :
-		 * 2012-03-29,mystery184.kim@lge.com
-		 * Add key event ignore condition(100ms) after touch event drivened
-		 */	
+		/*               
+                                      
+                                                                     
+   */	
 		before_touch_time = jiffies_to_msecs(jiffies);			
-		/* LGE_CHANGE_E mystery184.kim@lge.com */
+		/*                                     */
 		
 	}
 	is_touch_mix = 0;
@@ -849,13 +849,13 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		goto err_check_functionality_failed;
 	}
 
-	/*LGE_CHANGE_S : seven.kim@lge.com , at%touchfwver */
+	/*                                                 */
 	#if 0
 	ts = kmalloc(sizeof(struct melfas_ts_data), GFP_KERNEL);
 	#else
 	ts = &mms136_ts_data;
 	#endif
-	/*LGE_CHANGE_E : seven.kim@lge.com , at%touchfwver */
+	/*                                                 */
 	
 	if (ts == NULL) {
 		printk(KERN_ERR "<MELFAS> melfas_ts_probe: failed to create a state of melfas-ts\n");
@@ -863,12 +863,12 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		goto err_alloc_data_failed;
 	}
 	ts->pdata = client->dev.platform_data;
-	/*LGE_CHANGE_S : mystery184.kim@lge.com
-	  * Gpio setting before f/w downloading check
-	  */
+	/*                                     
+                                              
+   */
 	gpio_request(GPIO_TOUCH_SDA, "Melfas_I2C_SDA");
 	gpio_request(GPIO_TOUCH_SCL, "Melfas_I2C_SCL");
-	/*LGE_CHANGE_E : mystery184.kim@lge.com */ 
+	/*                                      */ 
 	if (ts->pdata->power_enable)
 		ts->power_enable = ts->pdata->power_enable;
 
@@ -878,11 +878,11 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	g_power_enable = ts->pdata->power_enable;
 
 	INIT_WORK(&ts->work, melfas_ts_work_func);
-	/*LGE_START_S : seven.kim@lge.com work around for ESD detection function*/
+	/*                                                                      */
 	#ifdef MELFAS_ESD
 	INIT_DELAYED_WORK(&ts->init_delayed_work, melfas_ts_restart_ex);
 	#endif
-	/*LGE_START_E : seven.kim@lge.com work around for ESD detection function*/
+	/*                                                                      */
 
 	ts->client = client;
 	i2c_set_clientdata(client, ts);
@@ -894,9 +894,9 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 			break;
 		} else{
 			printk(KERN_ERR "<MELFAS> melfas_ts_probe: i2c_master_send() failed[%d]\n", ret);
-			/*LGE_CHANGE_S : mystery184.kim@lge.com
-		            * Check No LCD and No touch status and FW abnormal case
-		            */
+			/*                                     
+                                                                     
+              */
 			if(i == I2C_RETRY_CNT - 1){		
 				g_melfasHWVer = mms136_touch_id();
 				/* generate crash */
@@ -911,25 +911,25 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 					return -ENODEV;				
 				}
 			}			
-			/*LGE_CHANGE_E : mystery184.kim@lge.com */     
+			/*                                      */     
 		}
 	}
-	/*LGE_CHANGE_S : seven.kim@lge.com
-            * Check No LCD and No touch status
+	/*                                
+                                              
             */
            //if (ret < 0 && i >= 10)
            //{
                    /*  printk("%s : No Touch !!!\n",__func__); */
              //     return -ENODEV;
            //}
-            /*LGE_CHANGE_S : seven.kim@lge.com */           
+            /*                                 */           
 
-/* LGE_CHANGE_S : 
- * 2011-12-29, yuseok.kim@lge.com, 
- * Read TS_READ_FW_VERSION_ADDR buffer address
+/*                
+                                   
+                                              
 */
 	buf = TS_READ_FW_VERSION_ADDR;
-/* LGE_CHANGE_E : */
+/*                */
 	ret = i2c_master_send(ts->client, &buf, 1);
 	buf = 0;
 	ret = i2c_master_recv(ts->client, &buf, 1); 
@@ -959,10 +959,10 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 			ret = mms100_download(g_melfasHWVer, g_melfasFWVer, 1);
 		}
 		else{
-			/* LGE_CHANGE_S :
-			 * 2012-03-29 mystery184.kim@lge.com 
-			 * check abnormal touch fw ver 
-			 */
+			/*               
+                                        
+                                  
+    */
 			if(g_melfasFWVer > lgit_fw_ver){
 				if(g_melfasFWVer >= 80 && lgit_fw_ver < 80){
 					/*download tovis fw image*/
@@ -977,7 +977,7 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 					printk(KERN_ERR "<MELFAS> melfas_probe : No Need LGIT FW Download(Test FW) \n");
 			}
 			else			
-			/* LGE_CHANGE_E mystery184.kim@lge.com */
+			/*                                     */
 				printk(KERN_ERR "<MELFAS> melfas_probe : No Need LGIT FW Download \n");
 		}
 	}
@@ -991,10 +991,10 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 			ret = mms100_download(g_melfasHWVer, g_melfasFWVer, 1);
 		}
 		else{
-			/* LGE_CHANGE_S :
-			 * 2012-03-29 mystery184.kim@lge.com 
-			 * check abnormal touch fw ver 
-			 */
+			/*               
+                                        
+                                  
+    */
 			if(g_melfasFWVer > tovis_fw_ver){
 				if(g_melfasFWVer >= 80 && tovis_fw_ver < 80){
 					/*download tovis fw image*/
@@ -1008,7 +1008,7 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 					printk(KERN_ERR "<MELFAS> melfas_probe : No Need TOVIS FW Download(Test FW) \n");
 			}
 			else			
-			/* LGE_CHANGE_E mystery184.kim@lge.com  */
+			/*                                      */
 			printk(KERN_ERR "<MELFAS> melfas_probe : No Need TOVIS FW Download \n");
 		}
 	} 
@@ -1034,12 +1034,12 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	set_bit(EV_ABS, ts->input_dev->evbit);
 	set_bit(EV_KEY, ts->input_dev->evbit);
 	/*set_bit(BTN_TOUCH, ts->input_dev->keybit); */
-	/* LGE_CHANGE_S : add touch device propbit
-	 * 2012-01-17, mystery184.kim@lge.com
-	 * not initialize propbit 
-	 */
+	/*                                        
+                                      
+                           
+  */
 	set_bit(INPUT_PROP_DIRECT, ts->input_dev->propbit);
-	/* LGE_CHANGE_E : add touch device propbit */ 
+	/*                                         */ 
 	ts->input_dev->evbit[0] = BIT_MASK(EV_ABS) | BIT_MASK(EV_KEY);
 
 
@@ -1052,9 +1052,9 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	input_set_abs_params(ts->input_dev, ABS_MT_POSITION_Y, 0, TS_MAX_Y_COORD, 0, 0);
 	input_set_abs_params(ts->input_dev, ABS_MT_TOUCH_MAJOR, 0, TS_MAX_Z_TOUCH, 0, 0);
 	input_set_abs_params(ts->input_dev, ABS_MT_TRACKING_ID, 0, MELFAS_MAX_TOUCH-1, 0, 0);
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 	input_set_abs_params(ts->input_dev, ABS_MT_PRESSURE, 0, 255, 0, 0);
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 	/* input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, TS_MAX_W_TOUCH, 0, 0); */
 
 	ret = input_register_device(ts->input_dev);
@@ -1084,7 +1084,7 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		goto err_request_irq;
 	}
 
-	/*LGE_CHANGE_S : seven.kim@lge.com touch firmware manual download using ADB */	
+	/*                                                                          */	
 	wake_lock_init(&ts->wakelock, WAKE_LOCK_SUSPEND, "mms136");
 	
 	ret = misc_register(&mms136_ts_misc_dev);
@@ -1092,20 +1092,20 @@ static int melfas_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		printk(KERN_ERR "mcs8000_probe_ts: misc register failed\n");
 		return ret;
 	}
-	/*LGE_CHANGE_S : seven.kim@lge.com touch firmware manual download using ADB */	
+	/*                                                                          */	
 		
 	for (i = 0; i < MELFAS_MAX_TOUCH ; i++)
 		g_Mtouch_info[i].strength = -1;
 
-	/*LGE_CHANGE_S : seven.kim@lge.com at%touchfwver */
+	/*                                               */
 	mms136_create_file(ts->input_dev);
-	/*LGE_CHANGE_E : seven.kim@lge.com at%touchfwver */
+	/*                                               */
 	
-	/*LGE_CHANGE_S : seven.kim@lge.com ESD Detection and recovery */
+	/*                                                            */
 	/* #ifdef MELFAS_ESD
 	schedule_delayed_work(&ts->init_delayed_work, msecs_to_jiffies(HZ * 40)); 8
 	#endif */
-	/*LGE_CHANGE_E : seven.kim@lge.com ESD Detection and recovery */
+	/*                                                            */
 
 	atomic_set(&mtx, 0);
 	
@@ -1130,13 +1130,13 @@ err_request_irq:
 	free_irq(client->irq, ts);
 err_input_register_device_failed:
 	printk(KERN_ERR "<MELFAS> melfas-ts: err_input_register_device failed\n");
-	/*LGE_CHANGE_S : mystery184.kim@lge.com
-	  * Gpio setting before f/w downloading check
-	  */
+	/*                                     
+                                              
+   */
 	gpio_free(GPIO_TOUCH_SDA);
 	gpio_free(GPIO_TOUCH_SCL);
 	gpio_free(GPIO_TOUCH_INT);	
-	/*LGE_CHANGE_E : mystery184.kim@lge.com  */
+	/*                                       */
 	input_free_device(ts->input_dev);
 err_input_dev_alloc_failed:
 	printk(KERN_ERR "<MELFAS> melfas-ts: err_input_dev_alloc failed\n");
@@ -1158,13 +1158,13 @@ static int melfas_ts_remove(struct i2c_client *client)
 
 	flush_work_sync(&ts->work);
 	ret = ts->power_enable(0, true);
-	/*LGE_CHANGE_S : mystery184.kim@lge.com
-	  * Gpio setting before f/w downloading check
-	  */
+	/*                                     
+                                              
+   */
 	gpio_free(GPIO_TOUCH_SDA);
 	gpio_free(GPIO_TOUCH_SCL);
 	gpio_free(GPIO_TOUCH_INT);	
-	/*LGE_CHANGE_E : mystery184.kim@lge.com  */
+	/*                                       */
 	input_unregister_device(ts->input_dev);
 
 /*	kfree(ts);*/
@@ -1189,10 +1189,10 @@ static void release_all_fingers(struct melfas_ts_data *ts)
 	/*	input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, g_Mtouch_info[i].strength); 
 		input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, g_Mtouch_info[i].width); 
 		input_report_key(ts->input_dev, BTN_TOUCH, 0);  */
-/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, g_Mtouch_info[i].width);
 		input_report_abs(ts->input_dev, ABS_MT_PRESSURE, 0);
-/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+/*                                                              */
 		input_mt_sync(ts->input_dev);
 
 		g_Mtouch_info[i].posX = 0;
@@ -1201,9 +1201,9 @@ static void release_all_fingers(struct melfas_ts_data *ts)
 		if (0 == g_Mtouch_info[i].strength)
 			g_Mtouch_info[i].strength = -1;
 	}
-/* LGE_CHANGE_S mystery184.kim@lge.com add release all finger */
+/*                                                            */
 	input_sync(ts->input_dev);
-	/* LGE_CHANGE_E mystery184.kim@lge.com add release all finger */
+	/*                                                            */
 }
 
 
@@ -1243,9 +1243,9 @@ static int melfas_ts_suspend(struct i2c_client *client, pm_message_t mesg)
 		if (ret < 0)
 			printk(KERN_ERR "<MELFAS> melfas_ts_suspend: i2c_smbus_write_byte_data failed\n");
 	}
-	/*LGE_CHANGE_S : seven.kim@lge.com at%touchfwver */
+	/*                                               */
 	is_touch_suspend = 1;
-	/*LGE_CHANGE_E : seven.kim@lge.com at%touchfwver */
+	/*                                               */
 	
 	return 0;
 }
@@ -1259,15 +1259,15 @@ static int melfas_ts_resume(struct i2c_client *client)
 	
 		ret = ts->power_enable(1, true);
 		msleep(50);
-/* LGE_CHANGE_S mystery184.kim@lge.com add release all finger */
+/*                                                            */
 		release_all_fingers(ts);
-		/* LGE_CHANGE_E mystery184.kim@lge.com add release all finger */
+		/*                                                            */
 		    enable_irq(client->irq);
 	}
 	
-	/*LGE_CHANGE_S : seven.kim@lge.com at%touchfwver */
+	/*                                               */
 	is_touch_suspend = 0;
-	/*LGE_CHANGE_E : seven.kim@lge.com at%touchfwver */
+	/*                                               */
 
 	/* #ifdef MELFAS_ESD
 	schedule_delayed_work(&ts->init_delayed_work, msecs_to_jiffies(HZ * 40)); 

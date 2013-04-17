@@ -1,7 +1,7 @@
 /* 
- *   LG_FW_POWER_COMMON
- *
- *   kiwone.seo@lge.com , this is for lge power common type
+                       
+  
+                                                           
 */
 
 #ifdef CONFIG_LGE_PM_CURRENT_CABLE_TYPE
@@ -17,9 +17,9 @@ typedef enum {
 	USB_CABLE_400MA,	
 	USB_CABLE_DTC_500MA,/* desk-top cradle */
 	ABNORMAL_USB_CABLE_400MA,	
-// START sungchae.koo@lge.com 2011/07/07 P1_LAB_BSP : 910K_DLOAD {
+//                                                                
 	LT_CABLE_910K,
-// END sungchae.koo@lge.com 2011/07/07 P1_LAB_BSP }
+//                                                 
     MAX_CABLE,
 }acc_cable_type;
 #endif

@@ -292,7 +292,7 @@ ssize_t  wake_unlock_store(struct kobject *kobj, struct kobj_attribute *attr,
 /* kernel/power/earlysuspend.c */
 void request_suspend_state(suspend_state_t state);
 suspend_state_t get_suspend_state(void);
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add pm suspend state check
+//                                                                 
 int check_suspend_state(void);
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Add pm suspend state check
+//                                                                 
 #endif

@@ -411,11 +411,11 @@ struct msm_acdb_cmd_device {
 	uint32_t     *phys_buf;           /* Physical Address of data */
 };
 
-/*LGE_CHANGE_S : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
-/* LGE_CHANGE_S :  2012-04-21, jaz.john@lge.com, Desc: Audio Part Merge From GB   */
-//#if defined (CONFIG_MACH_LGE)
+/*                                                                       */
+/*                                                                                */
+//                             
 #if 1
-/* Inherit LGE Android Definition from [junyoub.an@lge.com] */
+/*                                                          */
 typedef enum {
 	VOC_CODEC_DEFAULT,
 	VOC_CODEC_SPEAKER_MEDIA						= VOC_CODEC_DEFAULT + 0,	/* BT Intercom */
@@ -663,12 +663,12 @@ struct msm_snd_set_hook_mode_param {
 	int get_param;
 };
 
-/* LGE_CHANGE_S :  2011-12-30, gt.kim@lge.com, Description: Bluetooth NERC Cmd Support */
+/*                                                                                     */
 struct msm_snd_set_bt_nerc_param {
 	int32_t mode;
 	int get_param;
 };
-/* LGE_CHANGE_E :  Bluetooth NERC Cmd Support */
+/*                                            */
 
 
 #define SND_SET_VOCCAL_PARAM		_IOWR(SND_IOCTL_MAGIC, 6, struct msm_snd_set_voccal_param *)
@@ -688,13 +688,13 @@ struct msm_snd_set_bt_nerc_param {
 #define SND_SET_HOOK_MODE			_IOWR(SND_IOCTL_MAGIC, 20, struct msm_snd_set_hook_mode_param *)
 #define SND_SET_AMP_MODE			_IOWR(SND_IOCTL_MAGIC, 21, struct msm_snd_set_hook_mode_param *)
 #endif
-/*LGE_CHANGE_E : jaz.john@lge.com kernel3.0 porting based on kernel2.6.38*/
+/*                                                                       */
 
-/* LGE_CHANGE_S :  2011-12-30, gt.kim@lge.com, Description: function of BT NREC */
+/*                                                                              */
 #define SND_SET_NREC                _IOWR(SND_IOCTL_MAGIC, 22, struct msm_snd_set_hook_mode_param *)
-/* LGE_CHANGE_E :  function oft BT NREC */
-/* LGE_CHANGE_S :  2012-01-26, gt.kim@lge.com, Description:  Display Service Type */
+/*                                      */
+/*                                                                                */
 #define SND_GET_SERVICE_TYPE	_IOWR(SND_IOCTL_MAGIC, 23, struct msm_snd_get_service_type *)
-/* LGE_CHANGE_E :   Display Service Type*/
+/*                                      */
 
 #endif

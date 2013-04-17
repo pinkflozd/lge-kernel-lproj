@@ -695,7 +695,7 @@ struct msm_stats_buf {
 	(MSM_V4L2_EXT_CAPTURE_MODE_DEFAULT+7)
 #define MSM_V4L2_EXT_CAPTURE_MODE_RDI2 \
 	(MSM_V4L2_EXT_CAPTURE_MODE_DEFAULT+8)
-/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+/*                                                                                             */
 #if 1
 #define MSM_V4L2_EXT_CAPTURE_MODE_V2X_LIVESHOT \
 	(MSM_V4L2_EXT_CAPTURE_MODE_DEFAULT+9)
@@ -703,7 +703,7 @@ struct msm_stats_buf {
 #else
 #define MSM_V4L2_EXT_CAPTURE_MODE_MAX (MSM_V4L2_EXT_CAPTURE_MODE_DEFAULT+9)
 #endif
-/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+/*                                                                                             */
 
 #define MSM_V4L2_PID_MOTION_ISO              V4L2_CID_PRIVATE_BASE
 #define MSM_V4L2_PID_EFFECT                 (V4L2_CID_PRIVATE_BASE+1)
@@ -823,13 +823,13 @@ struct msm_snapshot_pp_status {
 #define CFG_START_STREAM              44
 #define CFG_STOP_STREAM               45
 #define CFG_GET_CSI_PARAMS            46
-/* LGE_CHANGE_S : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/*                                                                   */
 #define CFG_SET_AEC_ROI_PARAMS        47
-/* LGE_CHANGE_S : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+/*                                                                                           */
 #define CFG_GET_SOC_SNAPSHOT_DATA	  48
 #define CFG_MAX			49 //48 // 47
-/* LGE_CHANGE_E : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
-/* LGE_CHANGE_E : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/*                                                                                           */
+/*                                                                   */
 
 #define MOVE_NEAR	0
 #define MOVE_FAR	1
@@ -964,27 +964,27 @@ enum msm_v4l2_contrast_level {
 
 
 enum msm_v4l2_exposure_level {
-// LGE_CHANGE_S : 2012-09-24 sungmin.cho@lge.com V7 camera porting
+//                                                                
 #ifdef CONFIG_MACH_LGE
 	MSM_V4L2_EXPOSURE_N6,
 	MSM_V4L2_EXPOSURE_N5,
 	MSM_V4L2_EXPOSURE_N4,
 	MSM_V4L2_EXPOSURE_N3,
 #endif
-// LGE_CHANGE_E : 2012-09-24 sungmin.cho@lge.com V7 camera porting
+//                                                                
 	MSM_V4L2_EXPOSURE_N2,
 	MSM_V4L2_EXPOSURE_N1,
 	MSM_V4L2_EXPOSURE_D,
 	MSM_V4L2_EXPOSURE_P1,
 	MSM_V4L2_EXPOSURE_P2,
-// LGE_CHANGE_S : 2012-09-24 sungmin.cho@lge.com V7 camera porting
+//                                                                
 #ifdef CONFIG_MACH_LGE
 	MSM_V4L2_EXPOSURE_P3,
 	MSM_V4L2_EXPOSURE_P4,
 	MSM_V4L2_EXPOSURE_P5,
 	MSM_V4L2_EXPOSURE_P6,
 #endif
-// LGE_CHANGE_E : 2012-09-24 sungmin.cho@lge.com V7 camera porting
+//                                                                
 };
 
 enum msm_v4l2_sharpness_level {
@@ -1046,14 +1046,14 @@ enum msm_v4l2_power_line_frequency {
 	MSM_V4L2_POWER_LINE_AUTO,
 };
 
-/* LGE_CHANGE_S : 2012-10-04 sungmin.cho@lge.com vt camera night mode */
+/*                                                                    */
 enum msm_v4l2_night_mode {
 	MSM_V4L2_NIGHT_MODE_OFF = 0, // CAMERA_BESTSHOT_OFF (@camera.h)
 	MSM_V4L2_NIGHT_MODE_ON = 6, // CAMERA_BESTSHOT_NIGHT (@camera.h)
 };
-/* LGE_CHANGE_E : 2012-10-04 sungmin.cho@lge.com vt camera night mode */
+/*                                                                    */
 
-/* LGE_CHANGE_S : 2012-10-04 sungmin.cho@lge.com vt camera fps range */
+/*                                                                   */
 enum msm_v4l2_fps_range {
 	MSM_V4L2_FPS_15_15, 
 	MSM_V4L2_FPS_7P5_30, 
@@ -1063,9 +1063,9 @@ enum msm_v4l2_fps_range {
 	MSM_V4L2_FPS_24_30,
 	MSM_V4L2_FPS_30_30,
 };
-/* LGE_CHANGE_E : 2012-10-04 sungmin.cho@lge.com vt camera fps range */
+/*                                                                   */
 
-//LGE_CAMERA_S: V3 CAMERA Scene mode applied hong.junki@lge.com 2012/10/08
+//                                                                        
 enum msm_v4l2_bestshot_mode {
 	MSM_V4L2_BESTSHOT_OFF = 0,
 	MSM_V4L2_BESTSHOT_AUTO = 1,
@@ -1088,7 +1088,7 @@ enum msm_v4l2_bestshot_mode {
 	MSM_V4L2_BESTSHOT_AR,
 	MSM_V4L2_BESTSHOT_MAX
 };
-//LGE_CAMERA_E: V3 CAMERA Scene mode applied hong.junki@lge.com 2012/10/08
+//                                                                        
 
 #define CAMERA_ISO_TYPE_AUTO           0
 #define CAMEAR_ISO_TYPE_HJR            1
@@ -1103,12 +1103,12 @@ struct sensor_pict_fps {
 	uint16_t pictfps;
 };
 
-/* LGE_CHANGE_S : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+/*                                                                                           */
 struct snapshot_soc_data_cfg {
 	uint32_t iso_speed;
 	uint32_t exposure_time;
 };
-/* LGE_CHANGE_E : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+/*                                                                                           */
 
 struct exp_gain_cfg {
 	uint16_t gain;
@@ -1387,12 +1387,12 @@ struct sensor_cfg_data {
 		struct cord aec_cord;
 		int is_autoflash;
 		struct mirror_flip mirror_flip;
-/* LGE_CHANGE_S : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
+/*                                                                   */
         int32_t aec_roi_pos;
-/* LGE_CHANGE_E : 2012-10-09 sungmin.cho@lge.com vt camera touch aec */
-/* LGE_CHANGE_S : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */
+/*                                                                   */
+/*                                                                                           */
 		struct snapshot_soc_data_cfg snapshot_data;
-/* LGE_CHANGE_E : 2012-10-26 hong.junki@lge.com V3 need to get snapshot data from SOC sensor */	
+/*                                                                                           */	
 	} cfg;
 };
 

@@ -2305,10 +2305,10 @@ static void cfq_choose_cfqg(struct cfq_data *cfqd)
 {
 	struct cfq_group *cfqg = cfq_get_next_cfqg(cfqd);
 
-//V7_LGSI_S[panchaxari.t@lge.com][QCT-SR#1068475]	
+//                                                
 	if(!cfqg)
 		return;
-//V7_LGSI_E[panchaxari.t@lge.com][QCT-SR#1068475]	
+//                                                
 
 	cfqd->serving_group = cfqg;
 

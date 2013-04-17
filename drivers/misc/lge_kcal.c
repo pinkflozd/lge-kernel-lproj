@@ -25,12 +25,12 @@
 #include <linux/slab.h>
 #include <asm/uaccess.h>
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2012-01-04] 
-: For the calibration of LCD Color temperature */
+/*                                                     
+                                               */
 //#ifdef CONFIG_FB_MSM_MDP_LUT_ENABLE
-/* LGE_CHANGE_S jungrock.oh@lge.com 2013-01-05 change u0 featuring*/
+/*                                                                */
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
-/* LGE_CHANGE_E jungrock.oh@lge.com 2013-01-05 change u0 featuring */
+/*                                                                 */
 #define LCD_K_CAL_SIZE 6
 static unsigned char lcd_buf[LCD_K_CAL_SIZE]={255,};
 
@@ -171,10 +171,10 @@ read_fail:
 	return read_bytes;
 }
 EXPORT_SYMBOL(misc_read_block);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2012-01-07] 
-: For the calibration of LCD Color temperature */
+/*                                                     
+                                               */
 
-/* BEGIN: 0013860 jihoon.lee@lge.com 20110111 */
+/*                                            */
 /* ADD 0013860: [FACTORY RESET] ERI file save */
 
 

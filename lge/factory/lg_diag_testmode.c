@@ -21,9 +21,9 @@
 #include <linux/slab.h>
 #endif 
 
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 #include <linux/parser.h>
-// LGE_CHANGE_E, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include <lg_backup_items.h>
@@ -32,14 +32,14 @@
 #include <linux/mfd/pmic8058.h>
 #include <mach/irqs.h>
 
-/* 2012-10-18 dajin.kim@lge.com Headers for Sleep Mode & Flight Mode Test [Start] */
+/*                                                                                */
 #ifdef CONFIG_PM
 #include <linux/suspend.h>
 #include <../../kernel/power/power.h>
 #endif
-/* 2012-10-18 dajin.kim@lge.com Headers for Sleep Mode & Flight Mode Test [End]   */
+/*                                                                                */
 
-//[[ NFCDiag wongab.jeon@lge.com
+//                              
 #define NFC_RESULT_PATH 	"/data/misc/nfc/nfc_test_result"
 //]] NFCDiag
 
@@ -56,9 +56,9 @@
 
 #define PM8058_GPIO_BASE NR_MSM_GPIOS
 #define PM8058_GPIO_PM_TO_SYS(pm_gpio) (pm_gpio + PM8058_GPIO_BASE)
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 #define WL_IS_WITHIN(min,max,expr)         (((min)<=(expr))&&((max)>(expr)))
-// LGE_CHANGE_E, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
 static struct diagcmd_dev *diagpdev;
 
@@ -105,16 +105,16 @@ unsigned char * load_srd_base;	//CSFB SRD
 static int disable_check=0;
 //extern void disable_touch_key(int);
 
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 short mtsk_factory_mode = -1;
-//LGE_CHANGE_E 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 
-//[[ NFCDiag wongab.jeon@lge.com
+//                              
 void* LGF_TestModeNFC( test_mode_req_type*	pReq, DIAG_TEST_MODE_F_rsp_type	*pRsp);
 //]] NFCDiag
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-02-07 support test mode 8.9*/
+/*                                                                    */
 #define BUF_LEN 125
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-02-07 support test mode 8.9*/
+/*                                                                    */
 /* ==========================================================================
 ===========================================================================*/
 
@@ -137,7 +137,7 @@ struct statfs_local {
 
 
 
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 typedef struct _rx_packet_info 
 {
 	int goodpacket;
@@ -158,18 +158,18 @@ static const match_table_t param_tokens = {
 	{Param_end,	"END"},
 	{Param_err, NULL}
 };
-// LGE_CHANGE_E, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
 
 void CheckHWRev(byte *pStr)
 {
-/* LGE_CHANGE_S : PCB_Revision
- * 2012-04-04, jikhwan.jeong@lge.com
- * [M4][PCB_Revision][Common] Modify PCB Revision.
+/*                            
+                                    
+                                                  
  */
     char *rev_str[] = {"evb", "A", "B", "C", "D",
         "E", "F", "G", "1.0", "1.1", "1.2", "reserved"};
-/* LGE_CHANGE_E : PCB_Revision */
+/*                             */
 #ifdef CONFIG_LGE_HW_REVISION
     strcpy((char *)pStr ,(char *)rev_str[lge_get_board_revno()]);
 #endif
@@ -224,14 +224,14 @@ PACK (void *)LGF_TestMode (
             rsp_len = sizeof(DIAG_TEST_MODE_F_rsp_type) - sizeof(test_mode_rsp_type) + sizeof(test_mode_req_wifi_addr_type);
             break;
 
-/* 2011.07.22 woochang.chun@lge.com, to ignore key, touch event on sleep mode (250-42-0) */
-#if 1 //def CONFIG_LGE_DIAG_DISABLE_INPUT_DEVICES_ON_SLEEP_MODE
+/*                                                                                       */
+#if 1 //                                                       
         case TEST_MODE_SLEEP_MODE_TEST:
             rsp_len = sizeof(DIAG_TEST_MODE_F_rsp_type) - sizeof(test_mode_rsp_type) + sizeof(test_mode_sleep_mode_type);
             break;
 #endif
 
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
 #if 0
 	       case TEST_MODE_ORIENTATION_SENSOR:
        	     	rsp_len = sizeof(DIAG_TEST_MODE_F_rsp_type) - sizeof(test_mode_rsp_type) + sizeof(int);
@@ -252,18 +252,18 @@ PACK (void *)LGF_TestMode (
 			rsp_len = sizeof(DIAG_TEST_MODE_F_rsp_type) - sizeof(test_mode_rsp_type) + sizeof(int);
 			break;
 #endif			
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [Start]
+/*                                                                    */
+//                                                             
 		case TEST_MODE_MFT_AAT_SET: 
             rsp_len = sizeof(DIAG_TEST_MODE_F_rsp_type);
 			break;
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [End]
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                           
+//                                                                   
 		case TEST_MODE_NT_CODE_TEST:
 		case TEST_MODE_VSLT_TEST:
 			rsp_len =(sizeof(DIAG_TEST_MODE_F_rsp_type) - sizeof(test_mode_rsp_type) + NTCODE_MAX_STRING_SIZE); // for ntcode max string
 			break;
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                 
         default :
             rsp_len = sizeof(DIAG_TEST_MODE_F_rsp_type);
             break;
@@ -602,7 +602,7 @@ void* LGF_ExternalSocketMemory(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_t
 
 void* LGF_TestModeBattLevel(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-03
+//                                             
 
 	DIAG_TEST_MODE_F_req_type req_ptr;
 
@@ -611,7 +611,7 @@ void* LGF_TestModeBattLevel(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 
  	pRsp->ret_stat_code = TEST_FAIL_S;
 
-//#ifdef CONFIG_LGE_BATT_SOC_FOR_NPST
+//                                   
 #if 0
     int battery_soc = 0;
     extern int max17040_get_battery_capacity_percent(void);
@@ -653,7 +653,7 @@ void* LGF_TestModeBattLevel(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 	  	printk(KERN_ERR "[Testmode]send_to_arm9 response : %d\n", pRsp->ret_stat_code);
         pRsp->ret_stat_code = TEST_OK_S;
 	}
-//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-03
+//                                             
     return pRsp;
 }
 
@@ -671,11 +671,7 @@ void* LGF_TestModeKeyData(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type *
 
 void* LGF_TestModeLED(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
-// LGE_CHANGE_S, jinyoung3592.bae@lge.com, 2013.02.19 V1 model doesn't support any LEDs.
-#if defined(CONFIG_MACH_MSM7X25A_V1)
-	pRsp->ret_stat_code = TEST_NOT_SUPPORTED_S;
-	return pRsp;
-#else
+
     char *src = (void *)0;
     int fd;
 	DIAG_TEST_MODE_F_req_type req_ptr;
@@ -747,10 +743,9 @@ file_fail:
     sys_unlink((const char __user *)LED_BUTTON_BACKLIGHT);
 	
     return pRsp;
-#endif
 }
 
-/* 2011.07.22 woochang.chun@lge.com, to ignore key, touch event on sleep mode (250-42-0) */
+/*                                                                                       */
 #ifdef CONFIG_LGE_DIAG_DISABLE_INPUT_DEVICES_ON_SLEEP_MODE 
 static int test_mode_disable_input_devices = 0;
 void LGF_TestModeSetDisableInputDevices(int value)
@@ -768,10 +763,10 @@ extern void LGF_SendKey(word keycode);
 extern void set_operation_mode(boolean info);
 //extern int lm3530_get_state(void);
 
-/* LGE_CHANGE_S : flight test mode
- * 2012-06-29, peter.jung@lge.com, 
- * modification for flight test mode
- * [Start]
+/*                                
+                                   
+                                    
+          
  */
 static boolean testMode_sleepMode = FALSE;
 boolean LGF_TestMode_Is_SleepMode(void)
@@ -784,16 +779,16 @@ void LGF_SetTestMode(boolean b) {
 	testMode_sleepMode = b;
 }
 EXPORT_SYMBOL(LGF_SetTestMode);
-/* LGE_CHANGE_E : flight test mode 
- * 2012-06-29, peter.jung@lge.com, 
- * modification for flight test mode
- * [End]
+/*                                 
+                                   
+                                    
+        
  */
 
 void* LGF_TestModeSleepMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
 	DIAG_TEST_MODE_F_req_type req_ptr;
-/* 2012-10-18 dajin.kim@lge.com Support MiniOS 2.0 [Start] */
+/*                                                         */
 #ifdef CONFIG_PM
 #ifdef CONFIG_EARLYSUSPEND
 	suspend_state_t state = PM_SUSPEND_ON;
@@ -802,14 +797,14 @@ void* LGF_TestModeSleepMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 	int error = -EINVAL;
 #endif /* CONFIG_EARLYSUSPEND */
 #endif /* CONFIG_PM */
-/* 2012-10-18 dajin.kim@lge.com Support MiniOS 2.0 [End] */
+/*                                                       */
 
   	req_ptr.sub_cmd_code = TEST_MODE_SLEEP_MODE_TEST;
 
 	pRsp->ret_stat_code = TEST_OK_S;
 	req_ptr.test_mode_req.sleep_mode = (pReq->sleep_mode & 0x00FF); 	// 2011.06.21 biglake for power test after cal
 
-/* 2012-10-18 dajin.kim@lge.com Support MiniOS 2.0 [Start] */
+/*                                                         */
 	switch(req_ptr.test_mode_req.sleep_mode){	
 		case FLIGHT_MODE_ON:
 	  	case FLIGHT_KERNEL_MODE_ON:
@@ -826,7 +821,7 @@ void* LGF_TestModeSleepMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 			state = get_suspend_state();
 			if (state == PM_SUSPEND_ON)
 				LGF_SendKey(KEY_POWER);
-#endif /* CONFIG_LGE_SUPPORT_MINIOS */
+#endif /*                           */
 #else
 			error = pm_suspend(state);
 #endif /* CONFIG_EARLYSUSPEND */
@@ -845,7 +840,7 @@ void* LGF_TestModeSleepMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 			state = get_suspend_state();
 			if (state != PM_SUSPEND_ON)
 				LGF_SendKey(KEY_POWER);
-#endif /* CONFIG_LGE_SUPPORT_MINIOS */
+#endif /*                           */
 #else
 			error = pm_suspend(state);
 #endif /* CONFIG_EARLYSUSPEND */
@@ -853,25 +848,25 @@ void* LGF_TestModeSleepMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
             set_operation_mode(TRUE);
             testMode_sleepMode = FALSE;
             break;
-	// 2012-11-06 chiwon.son@lge.com [V3/V7][TestMode] Add Sleep mode check(250-42-4) and Flight mode check(250-42-5) [START]
+	//                                                                                                                       
 		case SLEEP_MODE_CHECK :
 		case FLIGHT_MODE_CHECK :
 			pRsp->test_mode_rsp.flight_sleep_mode_check = testMode_sleepMode;
 			break;			
-	// 2012-11-06 chiwon.son@lge.com [V3/V7][TestMode] Add Sleep mode check(250-42-4) and Flight mode check(250-42-5) [END]
+	//                                                                                                                     
 		default:
 			pRsp->ret_stat_code = TEST_NOT_SUPPORTED_S;
 			testMode_sleepMode = FALSE;
             break;
 	}
-/* 2012-10-18 dajin.kim@lge.com Support MiniOS 2.0 [End] */
+/*                                                       */
 
 	return pRsp;
 }
 
 void* LGF_TestModeVirtualSimTest(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
-/*2012-11-07 jeongwon.choi@lge.com [UICC_Pathch] VSIM : process using ARM11 [START]*/
+/*                                                                                 */
 	DIAG_TEST_MODE_F_req_type req_ptr;
 
 	req_ptr.sub_cmd_code = TEST_MODE_VIRTUAL_SIM_TEST;
@@ -916,7 +911,7 @@ void* LGF_TestModeVirtualSimTest(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp
 			pr_info("[Testmode]send_to_arm9 response : %d\n", pRsp->ret_stat_code);
 			break;
 			
-//LGE_UPDATE_S 2012/12/04 eunshin.cho@lge.com Testmode diag campreq
+//                                                                 
 		case CAMP_CHECK:
 		case CAMPREQ_EGSM:    
              case CAMPREQ_GSM850: 
@@ -951,13 +946,13 @@ void* LGF_TestModeVirtualSimTest(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp
                         pRsp->ret_stat_code = TEST_OK_S;
 	            }
 			break;
-//LGE_UPDATE_E 2012/12/04 eunshin.cho@lge.com Testmode diag campreq
+//                                                                 
 			
 		default:
 			pRsp->ret_stat_code = TEST_NOT_SUPPORTED_S;
 			break;
 	}	
-/*2012-11-07 jeongwon.choi@lge.com [UICC_Pathch] VSIM : process using ARM11 [END]*/
+/*                                                                               */
 	return pRsp;
 
 }
@@ -1104,9 +1099,9 @@ void* LGF_TestModeDBIntegrityCheck(test_mode_req_type * pReq, DIAG_TEST_MODE_F_r
 
                 msleep(100); // wait until the return value is written to the file
 
-/* 2012-12-03 adiyoung.lee@lge.com DBDump, DBCopy modified for factory [START] */
+/*                                                                             */
 				if (integrity_ret.ret[1] == '1')
-/* 2012-12-03 adiyoung.lee@lge.com DBDump, DBCopy modified for factory [END] */
+/*                                                                           */
                     pRsp->ret_stat_code = TEST_OK_S;
                 else
                     pRsp->ret_stat_code = TEST_FAIL_S;
@@ -1121,9 +1116,9 @@ void* LGF_TestModeDBIntegrityCheck(test_mode_req_type * pReq, DIAG_TEST_MODE_F_r
 
                 msleep(100); // wait until the return value is written to the file
 
-/* 2012-12-03 adiyoung.lee@lge.com DBDump, DBCopy modified for factory [START] */
+/*                                                                             */
 				if (integrity_ret.ret[1] == '1')
-/* 2012-12-03 adiyoung.lee@lge.com DBDump, DBCopy modified for factory [END] */
+/*                                                                           */
                     pRsp->ret_stat_code = TEST_OK_S;
                 else
                     pRsp->ret_stat_code = TEST_FAIL_S;
@@ -1146,7 +1141,7 @@ void* LGF_TestModeDBIntegrityCheck(test_mode_req_type * pReq, DIAG_TEST_MODE_F_r
     return pRsp;
 }
 
-// LGE_UPDATE_FOTA_S M3 bryan.oh@lge.com 2011/09/29
+//                                                 
  #define fota_id_length 15
 void* LGF_TestModeFotaIDCheck(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
@@ -1262,9 +1257,9 @@ fota_fail:
 
     return pRsp;
 }
-// LGE_UPDATE_FOTA_E M3 bryan.oh@lge.com 2011/09/29
+//                                                 
 
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 static char wifi_get_rx_packet_info(rx_packet_info_t* rx_info)
 {
 	const char* src = "/data/misc/wifi/diag_wifi_result";
@@ -1465,9 +1460,9 @@ void* LGF_TestModeWLAN(
         DIAG_TEST_MODE_F_rsp_type	*pRsp)
 {
 	int i;
-//LGE_CHANGE_S, moon-wifi@lge.com by wonho.ki 2012-05-03, "Patch for FM Radio Test : delay 10sec -> 5sec"
+//                                                                                                       
 	static int first_on_try = 10;	//2012.12.27, jaeshick: 5sec -> 10sec : wifi turn-off time needs minimum 6 sec in JB.
-//LGE_CHANGE_E, moon-wifi@lge.com by wonho.ki 2012-05-03, "Patch for FM Radio Test : delay 10sec -> 5sec"
+//                                                                                                       
 	test_mode_ret_wifi_ctgry_t wl_category;
 
 	if (diagpdev != NULL)
@@ -1564,14 +1559,14 @@ void* LGF_TestModeWLAN(
 	return pRsp;
 }
 
-// LGE_CHANGE_E, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
 
 
-// LGE_CHANGE_S, bill.jung@lge.com, 20110808, WiFi MAC R/W Function by DIAG
+//                                                                         
 void* LGF_TestModeWiFiMACRW(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 	DIAG_TEST_MODE_F_req_type req_ptr;
 
 	req_ptr.sub_cmd_code = TEST_MODE_WIFI_MAC_RW;
@@ -1601,7 +1596,7 @@ void* LGF_TestModeWiFiMACRW(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 	}
 
 	return pRsp;
-// LGE_CHANGE_E, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 #if 0
 	int fd=0; 
 	int i=0;
@@ -1711,16 +1706,16 @@ file_fail:
 	return pRsp;
 #endif
 }
-// LGE_CHANGE_E, bill.jung@lge.com, 20110808, WiFi MAC R/W Function by DIAG
+//                                                                         
 
 
 
 #ifndef SKW_TEST
-// [110919 kkh8318@lge.com M3_ALL]Added Factory Reset Test [START]
+//                                                                
 //static unsigned char test_mode_factory_reset_status = FACTORY_RESET_START;
-// [110919 kkh8318@lge.com M3_ALL] [END]
+//                                      
 #define BUF_PAGE_SIZE 2048
-// BEGIN: 0010090 sehyuny.kim@lge.com 2010-10-21
+//                                              
 // MOD 0010090: [FactoryReset] Enable Recovery mode FactoryReset
 
 #define FACTORY_RESET_STR       "FACT_RESET_"
@@ -1740,10 +1735,10 @@ struct MmcPartition {
     unsigned dfirstsec;
     unsigned dsize;
 };
-// END: 0010090 sehyuny.kim@lge.com 2010-10-21
+//                                            
 #endif
 
-// +s LG_BTUI_DIAGCMD_DUTMODE munho2.lee@lge.com 110915
+//                                                     
 void* LGF_TestModeBlueTooth(
         test_mode_req_type*	pReq,
         DIAG_TEST_MODE_F_rsp_type	*pRsp)
@@ -1832,7 +1827,7 @@ file_fail:
 	return pRsp;	
 }
 // +e LG_BTUI_DIAGCMD_DUTMODE
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
 void* LGF_TestModeProximity(
 		test_mode_req_type* pReq ,
 		DIAG_TEST_MODE_F_rsp_type	*pRsp)
@@ -1842,21 +1837,17 @@ void* LGF_TestModeProximity(
 	char buf;
 #ifdef CONFIG_MACH_LGE
 	int p_cal;
-	/* LGE_CHANGE : 2013-02-08 (woden.lee@lge.com) Sensor sysfs for diag
-	M4 same sensor sysfs. but changed sysfs.
-	*/ 
+	/*                                                                  
+                                         
+ */ 
 #ifdef CONFIG_MACH_MSM7X25A_M4
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/show";
 	const char* prox_calibration ="/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/run_calibration";
-#elif defined(CONFIG_MACH_MSM7X25A_V1) //jinseok.choi 2013-03-05 V1 Proxy Sensor Test
-	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/enable";
-	const char* prox_show= "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/show";
-	const char* prox_calibration ="/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/run_calibration";
 #else
-	/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-	V3&V7 same sensor sysfs. but changed sysfs.
-	*/
+	/*                                                                              
+                                            
+ */
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/show";
 	const char* prox_calibration ="/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/run_calibration";
@@ -1871,9 +1862,9 @@ void* LGF_TestModeProximity(
 	p_s = sys_open((const char __user *)prox_show, O_RDWR, 0666) ;
 	pw_s= sys_open((const char __user *)pw_state, O_RDWR, 0666) ;
 #ifdef CONFIG_MACH_LGE
-	/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-	V3&V7 same sensor sysfs. but changed sysfs.
-	*/
+	/*                                                                              
+                                            
+ */
 	p_cal= sys_open((const char __user *)prox_calibration, O_RDWR, 0666) ;
 	
 	if(p_e<0||p_s<0||pw_s<0||p_cal<0){
@@ -1900,8 +1891,8 @@ void* LGF_TestModeProximity(
 		case PROXI_SENSOR_ON:
 			sys_write(p_e, "1", 1);
 #ifdef CONFIG_MACH_LGE
-/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-V3&V7 same sensor sysfs. but changed sysfs.
+/*                                                                              
+                                           
 */				
 			msleep(1000); 
 			sys_lseek(p_s, 0, 0);			
@@ -1926,8 +1917,8 @@ V3&V7 same sensor sysfs. but changed sysfs.
 			break;
 		case PROXI_SENSOR_CAL:
 #ifdef CONFIG_MACH_LGE
-/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-V3&V7 same sensor sysfs. but changed sysfs.
+/*                                                                              
+                                           
 */			
 			sys_write(p_e, "1", 1);
 			sys_write(p_cal, "1", 1);		
@@ -1965,8 +1956,8 @@ file_fail:
 	sys_close(p_s);
 	sys_close(pw_s);	
 #ifdef CONFIG_MACH_LGE
-/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-V3&V7 same sensor sysfs. but changed sysfs.
+/*                                                                              
+                                           
 */
 	sys_close(p_cal);	
 #endif
@@ -1974,9 +1965,9 @@ V3&V7 same sensor sysfs. but changed sysfs.
 	sys_unlink((const char __user *)prox_show);
 	sys_unlink((const char __user *)pw_state);
 #ifdef CONFIG_MACH_LGE
-	/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-	V3&V7 same sensor sysfs. but changed sysfs.
-	*/
+	/*                                                                              
+                                            
+ */
 	sys_unlink((const char __user *)prox_calibration);
 #endif
 	return pRsp;
@@ -1989,18 +1980,15 @@ void* LGF_TestModeProximityMFT(
 
 	char buf;
 #ifdef CONFIG_MACH_LGE
-/*LGE_CHANGE : 2013-02-08 (woden.lee@lge.com) Sensor sysfs for diag
-M4 same sensor sysfs. but changed sysfs
+/*                                                                 
+                                       
 */
 #ifdef CONFIG_MACH_MSM7X25A_M4
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/enable";
 	const char* prox_show = "/sys/devices/platform/i2c-gpio.6/i2c-6/6-0044/show";
-#elif defined(CONFIG_MACH_MSM7X25A_V1) //jinseok.choi 2013-03-05 V1 Proxy Sensor Test
-	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/enable";
-	const char* prox_show= "/sys/devices/platform/i2c-gpio.4/i2c-4/4-0039/show";
 #else 
-/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-V3&V7 same sensor sysfs. but changed sysfs.
+/*                                                                              
+                                           
 */
 	const char* prox_enable =  "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/enable";
 	const char* prox_show= "/sys/devices/platform/i2c-gpio.5/i2c-5/5-0039/show";
@@ -2061,8 +2049,8 @@ void* LGF_TestModeAccelCal(
 	char buf_enable,buf_mode,buf_result;
 #ifdef CONFIG_MACH_LGE
 
-/*LGE_CHANGE : 2013-02-08 (woden.lee@lge.com) Sensor sysfs for diag
-M4 same sensor sysfs. but changed sysfs.
+/*                                                                 
+                                        
 */
 #ifdef CONFIG_MACH_MSM7X25A_M4
 	const char* fast_x =  "/sys/class/input/input3/fast_calibration_x";
@@ -2073,8 +2061,8 @@ M4 same sensor sysfs. but changed sysfs.
 	const char* sensor_mode =  "/sys/class/input/input3/mode";
 	const char* cal_result =  "/sys/class/input/input3/cal_result";
 #else
-/*LGE_CHANGE : 2012-10-08 Sanghun,Lee(eee3114.lee@lge.com) Sensor sysfs for diag
-V3&V7 same sensor sysfs. but changed sysfs.
+/*                                                                              
+                                           
 */
 	const char* fast_x =  "/sys/class/input/input2/fast_calibration_x";
 	const char* fast_y =  "/sys/class/input/input2/fast_calibration_y";
@@ -2141,7 +2129,7 @@ V3&V7 same sensor sysfs. but changed sysfs.
 			}else{
 
 #ifdef CONFIG_MACH_LGE 
-/*#LGE_CHANGE : 2012-10-24 Sanghun,Lee(eee3114.@lge.com) sensor change from bmc150 to bmc050
+/*                                                                                          
 */
 
 				if(sys_write(f_x, "0", 1)>0)
@@ -2213,14 +2201,14 @@ file_fail:
 	sys_unlink((const char __user *)cal_result);
 	return pRsp;
 }
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
-/* LGE_CHANGE_S [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+/*                                                                    */
+/*                                                                   */
 void* LGF_TestMotor(
 		test_mode_req_type* pReq ,
 		DIAG_TEST_MODE_F_rsp_type	*pRsp)
 {
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] //Motor On/Off Implementation for V7
-/* 2012-10-29 JongWook-Park(blood9874@lge.com) [V3] DIAG Vibrator ON/OFF Patch [START] */ 
+//                                                                                
+/*                                                                                     */ 
 #if 0
 	pRsp->ret_stat_code = TEST_OK_S;
 
@@ -2278,8 +2266,8 @@ open_fail:
 	sys_close(m_e);
 	sys_unlink((const char __user *)motor_enable);
 #endif
-/* 2012-10-29 JongWook-Park(blood9874@lge.com) [V3] DIAG MOTOR Patch [START] */ 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] //Motor On/Off Implementation for V7
+/*                                                                           */ 
+//                                                                                
 	return pRsp;
 }
 
@@ -2301,13 +2289,13 @@ void* LGF_TestLCD(
 	switch (mft_lcd->type_subcmd)
 	{
 	case LCD_GET_INFO:
-//LGE_S, sohyun.nam@lge.com, 2012-11-19, testmode 9.2		
+//                                                     
 #if defined(CONFIG_MACH_MSM8X25_V7)
 		sprintf(pRsp->test_mode_rsp.lcd_getinfo, "480,800,24");
 #else
 		sprintf(pRsp->test_mode_rsp.lcd_getinfo, "240,320,24");
 #endif
-//LGE_E, sohyun.nam@lge.com, 2012-11-19, testmode 9.2
+//                                                   
 
 		break;
 
@@ -2332,7 +2320,7 @@ void* LGF_TestLCD(
 		sprintf(temp, "LCD,%d,%d,%d,%d",
 			mft_lcd->data_lcd_get[0], mft_lcd->data_lcd_get[1], mft_lcd->data_lcd_get[2], mft_lcd->data_lcd_get[3]);
 		update_diagcmd_state(diagpdev, temp, mft_lcd->type_subcmd);
-//LGE_S, sohyun.nam@lge.com, 2012-11-19, testmode 9.2		
+//                                                     
 #if defined(CONFIG_MACH_MSM8X25_V7)		
 		if(480*800 < mft_lcd->data_lcd_get[2]*mft_lcd->data_lcd_get[3])
 			pRsp->test_mode_rsp.lcd_get= TEST_FAIL_S;
@@ -2341,7 +2329,7 @@ void* LGF_TestLCD(
 #else
 		pRsp->test_mode_rsp.lcd_get = mft_lcd->data_lcd_get[2]*mft_lcd->data_lcd_get[3]*3;
 #endif
-//LGE_E, sohyun.nam@lge.com, 2012-11-19, testmode 9.2
+//                                                   
 
 		break;
 
@@ -2370,14 +2358,14 @@ void* LGF_TestLCD_Cal(
 		pRsp->ret_stat_code = TEST_NOT_SUPPORTED_S;
 		return pRsp;
 	}
-//LGE_S, sohyun.nam@lge.com, 2012-11-19, testmode 9.2
+//                                                   
 	if(pReq->MaxRGB[0] == 6){
 		pRsp->ret_stat_code = TEST_NOT_SUPPORTED_S;
 		sprintf(ptr,"LCD_Cal,%s",&pReq->MaxRGB[1]);
 		printk("<6>" "%s \n", ptr);
 		return pRsp;
 	}
-//LGE_E, sohyun.nam@lge.com, 2012-11-19, testmode 9.2
+//                                                   
 
 	pRsp->ret_stat_code = TEST_OK_S;
 	printk("<6>" "pReq->lcd_cal:%d, (%x,%x)\n", pReq->lcd_cal, pReq->MaxRGB[0], pReq->MaxRGB[1]);
@@ -2757,7 +2745,7 @@ void* LGT_TestModeVolumeLevel (
 	}
 	return pRsp;
 }
-/* LGE_CHANGE_E [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+/*                                                                   */
 
 void* LGF_TestModeManualTestMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
@@ -2771,7 +2759,7 @@ void* LGF_TestModeManualTestMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp
 		pr_info(" *** LGF_TestModeManualTestMode return error \n");
 		return pRsp;
 	}
-/*LGE_CHANGE_S [khyun.kim@lge.com] 2012-10-13 AP manual mode process*/
+/*                                                                  */
 	switch (pReq->test_manual_mode) {
 		case MANUAL_TEST_ON:
 		case MANUAL_TEST_OFF:
@@ -2784,7 +2772,7 @@ void* LGF_TestModeManualTestMode(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp
 		default:
 			break;
 	}
-/*LGE_CHANGE_E [khyun.kim@lge.com] 2012-10-13 AP manual mode process*/
+/*                                                                  */
 	pr_info(" *** call Manualmode item : %d\n", pReq->test_manual_mode);
 	return pRsp;
 }
@@ -2835,7 +2823,7 @@ void* LGF_TestModeFactoryReset(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_t
 
 	return pRsp;
 }
-//[LGE_UPDATE_S] 20120215 minwoo.jung CP frst for HiddenMenu
+//                                                          
 int HiddenMenu_FactoryReset(void)
 {
 	DIAG_TEST_MODE_F_req_type req_ptr;
@@ -2860,7 +2848,7 @@ int HiddenMenu_FactoryReset(void)
 	lge_set_frst_flag(3);
 	return 0;
 }
-//[LGE_UPDATE_E] 20120215 minwoo.jung CP frst for HiddenMenu
+//                                                          
 
 void* LGF_TestScriptItemSet(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
@@ -2909,7 +2897,7 @@ void* LGF_TestScriptItemSet(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type
 	return pRsp;
 }
 
-//[[ NFCDiag wongab.jeon@lge.com
+//                              
 static int lg_diag_nfc_result_file_read(int i_testcode ,int *ptrRenCode, char *sz_extra_buff, DIAG_TEST_MODE_F_rsp_type *pRsp)
 {
 	int read;
@@ -3091,7 +3079,7 @@ void* LGF_TestModeNFC(
 }
 //]] NFCDiag
 
-// LGE_CHANGE_S, hoseong.kang@lge.com
+//                                   
 void* LGF_TestModeVolumeMftTest(
         test_mode_req_type* pReq ,
         DIAG_TEST_MODE_F_rsp_type   *pRsp)
@@ -3121,7 +3109,7 @@ void* LGF_TestModeVolumeMftTest(
 
     return pRsp;
 }
-// LGE_CHANGE_E, hoseong.kang@lge.com
+//                                   
 
 //====================================================================
 // Self Recovery Download Support  diag command 249-XX
@@ -3270,7 +3258,7 @@ PACK (void *)LGE_Dload_SRD (PACK (void *)req_pkt_ptr, uint16 pkg_len)
 EXPORT_SYMBOL(LGE_Dload_SRD);
 #endif
 
-// [LGE_UPDATE_S] minwoo.jung 20120207
+//                                    
 void* LGF_TestModeMLTEnableSet(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pRsp)
 {
     char *src = (void *)0;
@@ -3359,7 +3347,7 @@ void* LGF_TestModeMLTEnableSet(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_t
     return pRsp;
 }
 
-// LGE_CHANGE_S, narasimha.chikka@lge.com, Added for power reset
+//                                                              
 void* LGF_TestModePowerReset(test_mode_req_type* pReq, DIAG_TEST_MODE_F_rsp_type* pRsp)
 {
 	
@@ -3382,11 +3370,11 @@ void* LGF_TestModePowerReset(test_mode_req_type* pReq, DIAG_TEST_MODE_F_rsp_type
 	
 	return pRsp;
 }
-// LGE_CHANGE_E, narasimha.chikka@lge.com, Added for power reset
+//                                                              
 
-// [LGE_UPDATE_E] minwoo.jung 20120207 
+//                                     
 
-// +s LGBT_DIAG_BT_WIFI_FOR_MFT 250-136-0 / 250-136-1 sunmee.choi@lge.com 2012-10-18
+//                                                                                  
 void* LGF_BTWiFiForMFT(
 		test_mode_req_type* pReq ,
 		DIAG_TEST_MODE_F_rsp_type	*pRsp)
@@ -3405,7 +3393,7 @@ void* LGF_BTWiFiForMFT(
 }
 // +e LGBT_DIAG_BT_WIFI_FOR_MFT
 
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 void* LGF_MTS_OnOff(
 		test_mode_req_type* pReq ,
 		DIAG_TEST_MODE_F_rsp_type	*pRsp)
@@ -3430,9 +3418,9 @@ void* LGF_MTS_OnOff(
 	pRsp->test_mode_rsp.mts = mtsk_factory_mode;
 	return pRsp;
 }
-//LGE_CHANGE_E 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                   
 extern int ntcode_rpc_read_string(char* data);
 extern int ntcode_rpc_write_string(char* data, int data_len);
 extern int vslt_rpc_command_string(char* in_data, int data_len, char* out_data);
@@ -3540,7 +3528,7 @@ void* LGF_TestModeVSLT(test_mode_req_type * pReq, DIAG_TEST_MODE_F_rsp_type * pR
     return pRsp;
 }
 
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                 
 
 /*  USAGE
  *  1. If you want to handle at ARM9 side, you have to insert fun_ptr as NULL and mark ARM9_PROCESSOR
@@ -3559,7 +3547,7 @@ testmode_user_table_entry_type testmode_mstr_tbl[TESTMODE_MSTR_TBL_SIZE] =
     /* 21 ~ 30 */
     {TEST_MODE_KEY_TEST,                    LGT_TestModeKeyTest,              ARM11_PROCESSOR},
     {TEST_MODE_EXT_SOCKET_TEST,             LGF_ExternalSocketMemory,         ARM11_PROCESSOR},
-	// *s LG_BTUI_DIAGCMD_DUTMODE munho2.lee@lge.com 110915
+	//                                                     
 	/* Original
     {TEST_MODE_BLUETOOTH_TEST,              not_supported_command_handler,    ARM11_PROCESSOR},
 	*/
@@ -3570,10 +3558,10 @@ testmode_user_table_entry_type testmode_mstr_tbl[TESTMODE_MSTR_TBL_SIZE] =
 	{TEST_MODE_FMRADIO_TEST,                LGF_FmRadioTest,                  ARM11_PROCESSOR},
     
     /* 31 ~ 40 */
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
     {TEST_MODE_ORIENTATION_SENSOR,           linux_app_handler,               ARM11_PROCESSOR},
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
-    //[[ NFCDiag wongab.jeon@lge.com
+/*                                                                    */
+    //                              
     {TEST_MODE_NFC_TEST,                    LGF_TestModeNFC,                  ARM11_PROCESSOR},
     //]] NFCDiag
     {TEST_MODE_WIFI_TEST,                   LGF_TestModeWLAN,                 ARM11_PROCESSOR},
@@ -3584,9 +3572,9 @@ testmode_user_table_entry_type testmode_mstr_tbl[TESTMODE_MSTR_TBL_SIZE] =
     {TEST_MODE_MEMORY_CAPA_TEST,            LGF_MemoryVolumeCheck,            ARM11_PROCESSOR},
     {TEST_MODE_SLEEP_MODE_TEST,             LGF_TestModeSleepMode,            ARM11_PROCESSOR},
     {TEST_MODE_SPEAKER_PHONE_TEST,          LGF_TestModeSpeakerPhone,         ARM11_PROCESSOR},
-	/*2012-11-07 jeongwon.choi@lge.com [UICC_Pathch] VSIM : process using ARM11 [START]*/
+	/*                                                                                 */
     {TEST_MODE_VIRTUAL_SIM_TEST,            LGF_TestModeVirtualSimTest,       ARM11_PROCESSOR},	 
-	/*2012-11-07 jeongwon.choi@lge.com [UICC_Pathch] VSIM : process using ARM11 [END]*/
+	/*                                                                               */
     {TEST_MODE_PHOTO_SENSER_TEST,           not_supported_command_handler,    ARM11_PROCESSOR},
     {TEST_MODE_MRD_USB_TEST,                NULL,                             ARM9_PROCESSOR},
     {TEST_MODE_PROXIMITY_SENSOR_TEST,       LGF_TestModeProximity,            ARM11_PROCESSOR},
@@ -3613,9 +3601,9 @@ testmode_user_table_entry_type testmode_mstr_tbl[TESTMODE_MSTR_TBL_SIZE] =
     {TEST_MODE_UNLOCK_CODE_TEST,            NULL,                             ARM9_PROCESSOR},
     {TEST_MODE_IDDE_TEST,                   NULL,                             ARM9_PROCESSOR},
     {TEST_MODE_FULL_SIGNATURE_TEST,         NULL,                             ARM9_PROCESSOR},
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                   
     {TEST_MODE_NT_CODE_TEST,                LGF_TestModeNTCODE,               ARM11_PROCESSOR},
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                 
     {TEST_MODE_SIM_ID_TEST,                 NULL,                             ARM9_PROCESSOR},
     /* 81 ~ 90*/
     {TEST_MODE_CAL_CHECK,                   NULL,                             ARM9_PROCESSOR},
@@ -3626,51 +3614,54 @@ testmode_user_table_entry_type testmode_mstr_tbl[TESTMODE_MSTR_TBL_SIZE] =
     {TEST_MODE_DB_INTEGRITY_CHECK,          LGF_TestModeDBIntegrityCheck,     ARM11_PROCESSOR},
     {TEST_MODE_NVCRC_CHECK,                 NULL,                             ARM9_PROCESSOR},
     {TEST_MODE_RESET_PRODUCTION,            NULL,                             ARM9_PROCESSOR},
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                   
     {TEST_MODE_VSLT_TEST, 					LGF_TestModeVSLT, 				ARM11_PROCESSOR},
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
-// LGE_UPDATE_FOTA_S M3 bryan.oh@lge.com 2011/10/18
+//                                                                 
+//                                                 
     {TEST_MODE_FOTA_ID_CHECK,               LGF_TestModeFotaIDCheck,          ARM11_PROCESSOR},
-// LGE_UPDATE_FOTA_E M3 bryan.oh@lge.com 2011/10/18
+//                                                 
 	{TEST_MODE_KEY_LOCK_UNLOCK,               LGF_TestModeKeyLockUnlock,          ARM11_PROCESSOR},
-// [LGE_UPDATE_S] minwoo.jung 20120207
+//                                    
     {TEST_MODE_MLT_ENABLE,                  LGF_TestModeMLTEnableSet,         ARM11_PROCESSOR},
-// [LGE_UPDATE_E] minwoo.jung 20120207
-// LGE_CHANGE_S, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE] 
+//                                    
+//                                                                  
 	{TEST_MODE_GNSS_TEST, 					NULL, 							  ARM9_PROCESSOR},   
-// LGE_CHANGE_E, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE] 
+//                                                                  
 
-// LGE_CHANGE_S, narasimha.chikka@lge.com, Added for power reset
+//                                                              
     {TEST_MODE_POWER_RESET, 				LGF_TestModePowerReset,	ARM11_PROCESSOR},	
-// LGE_CHANGE_E, narasimha.chikka@lge.com, Added for power reset
-
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+//                                                              
+#ifdef CONFIG_MACH_MSM7X25A_M4 //                                                                 
+    {TEST_MODE_SENSOR_CALIBRATION_TEST,    LGF_TestModeAccelCal,            ARM11_PROCESSOR},
+#else
+/*                                                                    */
     {TEST_MODE_SENSOR_CALIBRATION_TEST,     NULL,             ARM11_PROCESSOR},
+#endif  //                                                                  
     {TEST_MODE_ACCEL_SENSOR_TEST,           linux_app_handler,                ARM11_PROCESSOR},
     {TEST_MODE_COMPASS_SENSOR_TEST,         linux_app_handler,    ARM11_PROCESSOR},
     {TEST_MODE_LCD,                         LGF_TestLCD,                      ARM11_PROCESSOR},
     {TEST_MODE_MFT_CAMERA,                  LGF_TestMFTCamera,                ARM11_PROCESSOR},
     {TEST_MODE_MFT_CAMCORDER,               LGF_TestMFTCamcorder,             ARM11_PROCESSOR},
     {TEST_MODE_PROXIMITY_MFT_SENSOR_TEST,   LGF_TestModeProximityMFT,         ARM11_PROCESSOR},
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
     {TEST_MODE_KEY_TEST_FOR_MFT,                         LGF_TestModeKeyMFT,                      ARM11_PROCESSOR},
 
-// LGE_CHANGE_S, hoseong.kang@lge.com
+//                                   
 	{TEST_MODE_VOLUME_TEST_FOR_MFT,			LGF_TestModeVolumeMftTest,		  ARM11_PROCESSOR},
-// LGE_CHANGE_E, hoseong.kang@lge.com
+//                                   
 	{TEST_MODE_TOUCH_DRAW_FOR_MFT,			LGF_TestTouchDraw,				  ARM11_PROCESSOR},
 
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [Start]
+//                                                             
     {TEST_MODE_MFT_AAT_SET, 					linux_app_handler, 							ARM11_PROCESSOR},
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [End]    
-/* LGE_CHANGE_S  : adiyoung.lee, Testmode : Model Name Read, 2012-12-20 */
+//                                                               
+/*                                                                      */
     {TEST_MODE_MODEL_NAME_READ,                     NULL,                  ARM9_PROCESSOR},
-/* LGE_CHANGE_E  : adiyoung.lee, Testmode : Model Name Read, 2012-12-20 */
-// +s LGBT_DIAG_BT_WIFI_FOR_MFT 250-136-0 / 250-136-1 sunmee.choi@lge.com 2012-10-18
+/*                                                                      */
+//                                                                                  
     {TEST_MODE_BT_WIFI_FOR_MFT, 					LGF_BTWiFiForMFT, 							ARM11_PROCESSOR},
 // +e LGBT_DIAG_BT_WIFI_FOR_MFT
     {TEST_MODE_XO_CAL_DATA_COPY,            NULL,                             ARM9_PROCESSOR},
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
     {TEST_MODE_MTS,							LGF_MTS_OnOff,								ARM11_PROCESSOR},
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 };

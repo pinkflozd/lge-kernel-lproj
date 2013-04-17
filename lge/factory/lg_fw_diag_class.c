@@ -46,11 +46,11 @@ void update_diagcmd_state(struct diagcmd_dev *sdev, char *cmd, int state)
 	int length;
 
 	/* 
-	 * 2010-08-12, jinkyu.choi@lge.com, Do not check the state
-	 * Now, each command has own state number which is the sub command number of testmode tools.
-	 * The sub commands can be same though the major commands are different.
-	 * It is result in not sending the commnad to Android Diag application
-	 */
+                                                           
+                                                                                             
+                                                                         
+                                                                       
+  */
 
 	//if (sdev->state != state) {
 		sdev->state = state;

@@ -117,13 +117,13 @@
 
 
 //============================================================
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/
+/*                                                                                         */
 enum
 {
 	MANUAL_DOWNLOAD_DISABLE = 0,
 	MANUAL_DOWNLOAD_ENABLE,
 };
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/ 
+/*                                                                                         */ 
 //============================================================
 //
 //	Porting factors for Baseband
@@ -134,7 +134,7 @@ enum
 extern const UINT16 MELFAS_TS_binary_nLength;
 extern const  UINT8 MELFAS_TS_binary[];
 
-/*LGE_CHANGE_S : seven.kim@lge.com U0 multiple touch panel support */
+/*                                                                 */
 extern unsigned char 	tovis_fw_ver;
 extern unsigned short 	tovis_MELFAS_binary_nLength;
 extern unsigned char 	tovis_MELFAS_binary[];
@@ -142,22 +142,22 @@ extern unsigned char 	tovis_MELFAS_binary[];
 extern unsigned char 	lgit_fw_ver;
 extern unsigned short 	lgit_MELFAS_binary_nLength;
 extern unsigned char 	lgit_MELFAS_binary[];
-/*LGE_CHANGE_E : seven.kim@lge.com U0 multiple touch panel support */
+/*                                                                 */
 //----------------------------------------------------
 //	Functions
 //----------------------------------------------------
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For abnormal condition of touchscreen downloading*/
+/*                                                                                                        */
 int mms100_ISP_download_binary_data(int dl_mode);			// with binary type .c   file.
 int mms100_ISP_download_binary_file(void);			// with binary type .bin file.
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For abnormal condition of touchscreen downloading*/
+/*                                                                                                        */
 int mms100_ISC_download_binary_data(unsigned char hw_ver, unsigned char fw_ver);
 int mms100_ISC_download_binary_file(void);
 
-/*LGE_CHANGE_S : mystery184.kim@lge.com
-  * recovery touch f/w
+/*                                     
+                      
   */
 int mms100_recv_download(void);
-/*LGE_CHANGE_E : mystery184.kim@lge.com */
+/*                                      */
 
 //---------------------------------
 //	Delay functions

@@ -208,7 +208,7 @@ suspend_state_t get_suspend_state(void)
 	return requested_suspend_state;
 }
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add pm suspend state check
+//                                                                 
 int  check_suspend_state(void)
 {
 	int supend_state = 0;
@@ -220,9 +220,9 @@ int  check_suspend_state(void)
 	
 	return  supend_state;
 }
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Add pm suspend state check
+//                                                                 
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add Blocking Monitor
+//                                                           
 #ifdef CONFIG_LGE_BLOCKING_MONITOR
 static int __init earlysuspend_blocking_monitor_init(void)
 {
@@ -241,4 +241,4 @@ static int __init earlysuspend_blocking_monitor_init(void)
 
 late_initcall(earlysuspend_blocking_monitor_init);
 #endif
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add Blocking Monitor
+//                                                           

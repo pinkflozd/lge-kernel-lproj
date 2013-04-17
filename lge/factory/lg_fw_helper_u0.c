@@ -123,12 +123,12 @@ static int handle_lg_fw_helper_misc_blk_write(struct msm_rpc_xdr *xdr)
 		return ret;
 
 	// write block data
-/*LGE_CHANGE_S: seunhang.lee@lge.com  02/01/2013:Bring up Emulator Error of ATCMD*/
+/*                                                                               */
 #if !defined(CONFIG_MACH_MSM7X27A_U0)
 	print_hex_dump(KERN_INFO, "data: ", DUMP_PREFIX_OFFSET, 16, 1, arg.data, 512, true);
 	printk(KERN_ERR "[sunny] block num = %d \n", arg.block_no);
 #endif	
-/*LGE_CHANGE_E: seunhang.lee@lge.com*/
+/*                                  */
 	ret = lge_emmc_wallpaper_write(arg.block_no, (unsigned char*) arg.data, 512);
 
 	ret = xdr_start_accepted_reply(xdr, RPC_ACCEPTSTAT_SUCCESS);

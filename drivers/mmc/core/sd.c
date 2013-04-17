@@ -1092,7 +1092,7 @@ static void mmc_sd_detect(struct mmc_host *host)
 	/*
 	 * Just check if our card has been removed.
 	 */
-// LGE_CHANGE_S [kh.tak@lge.com] 20121204 : prevent ESD shock 
+//                                                            
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
 	while(retries) {
 		err = mmc_send_status(host->card, NULL);
@@ -1179,7 +1179,7 @@ static int mmc_sd_resume(struct mmc_host *host)
 		err = mmc_sd_init_card(host, host->ocr, host->card);
 
 		if (err) {
-// LGE_UPDATE_S 20121130 kh.tak temporarily power off
+//                                                   
 #if defined (CONFIG_MACH_MSM8X25_V7)
 			printk(KERN_ERR "%s: Re-init card rc = %d (retries = %d)\n",
 			       mmc_hostname(host), err, retries);
@@ -1201,7 +1201,7 @@ static int mmc_sd_resume(struct mmc_host *host)
 			mmc_select_voltage(host, host->ocr);
 			continue;
 #endif
-// LGE_UPDATE_E 20121130
+//                      
 		}
 		break;
 	}
@@ -1331,7 +1331,7 @@ int mmc_attach_sd(struct mmc_host *host)
 	while (retries) {
 		err = mmc_sd_init_card(host, host->ocr, NULL);
 		if (err) {
-// LGE_UPDATE_S 20121130 kh.tak temporarily power off
+//                                                   
 #if defined (CONFIG_MACH_MSM8X25_V7)
 			g_sd_power_dircect_ctrl = 1;
 			retries--;
@@ -1349,7 +1349,7 @@ int mmc_attach_sd(struct mmc_host *host)
 			mmc_select_voltage(host, host->ocr);
 			continue;
 #endif
-// LGE_UPDATE_S 20121130
+//                      
 		}
 		break;
 	}

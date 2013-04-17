@@ -3,7 +3,7 @@
 
 #include <../../../lge/include/lg_comdef.h>
 
-/* LGE_CHANGE : hyungjoon.jeon@lge.com 2013-03-05 */
+/*                                                */
 #if defined(CONFIG_MACH_MSM7X25A_M4)
 #define LG_DIAG_DEBUG
 #endif
@@ -105,16 +105,16 @@ typedef struct
 	unsigned int size;        /* Size of usable buffer (diagpkt_q_type->pkt) */
 	unsigned int length;      /* Size of packet */
 
-	/* LGE_CHANGES_S [kyuhyung.lee@lge.com] 2010-02-08, LG_FW_DIAG_SCREEN_CAPTURE */
-	// BEGIN: 0010599 alan.park@lge.com 2010.11.07 
+	/*                                                                            */
+	//                                             
 	// MOD  0010599: [ETA/MTC] MTC capture, touch
 #if defined (CONFIG_MACH_LGE) || defined (CONFIG_LGE_DIAG_SCREENSHOT) || defined (LG_FW_MTC)
-	// END: 0010599 alan.park@lge.com 2010.11.07   
+	//                                             
 	byte pkt[4096];               /*LG_FW size up*/
 #else
 	byte pkt[1024];               /* Sized by 'length' field. */
 #endif
-	/* LGE_CHANGES_E [kyuhyung.lee@lge.com] 2010-02-08, LG_FW_DIAG_SCREEN_CAPTURE */
+	/*                                                                            */
 }diagpkt_rsp_type;
 
 typedef void (*diag_cmd_rsp) (const byte *rsp, unsigned int length, void *param);

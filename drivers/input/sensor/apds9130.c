@@ -172,7 +172,7 @@ struct apds9130_data {
 #if defined(APDS9130_PROXIMITY_CAL)
 	int cross_talk;
 	bool read_ps_cal_data;
-	int ps_cal_result;  //[LGSI_SP4_BSP][kirankumar.vm@lge.com] Proximity Testmode changes
+	int ps_cal_result;  //                                                                
 #endif
 };
 
@@ -287,13 +287,13 @@ void apds9130_swap(int *x, int *y)
 
 	set_fs(KERNEL_DS);
 
-/*[LGE_BSP_START][yunmo.yang@lge.com] 2012-11-08 change save path*/
+/*                                                               */
 #if defined(APDS9130_PROXIMITY_CAL)
     fd = sys_open("/mpt/prox_calibration.dat",O_WRONLY|O_CREAT, 0664);
 #else
     fd = sys_open("/persist/prox_calibration.dat",O_WRONLY|O_CREAT, 0664);
 #endif
-/*[LGE_BSP_END][yunmo.yang@lge.com] 2012-11-08 change save path*/
+/*                                                             */
 	if(fd >=0)
 	{
 		sys_write(fd, buf, sizeof(buf));
@@ -320,13 +320,13 @@ static int apds9130_read_crosstalk_data_fs(void)
 	printk(KERN_INFO"%s Enter\n", __FUNCTION__);
 	memset(read_buf, 0, sizeof(read_buf));
 	set_fs(KERNEL_DS);
-/*[LGE_BSP_START][yunmo.yang@lge.com] 2012-11-08 change save path*/
+/*                                                               */
 #if defined(APDS9130_PROXIMITY_CAL) 
 	fd = sys_open("/mpt/prox_calibration.dat",O_RDONLY, 0);
 #else
 	fd = sys_open("/persist/prox_calibration.dat",O_RDONLY, 0);
 #endif
-/*[LGE_BSP_END][yunmo.yang@lge.com] 2012-11-08 change save path*/
+/*                                                             */
     if(fd >=0)
 	{
 		printk(KERN_INFO"%s Success read Prox Cross-talk from FS\n", __FUNCTION__);
@@ -439,7 +439,7 @@ RE_CALIBRATION:
 	struct i2c_client *client = to_i2c_client(dev);
 	struct apds9130_data *data = i2c_get_clientdata(client);
 
-	return sprintf(buf, "%d\n", data->ps_cal_result); //[LGSI_SP4_BSP][kirankumar.vm@lge.com] Proximity Testmode changes
+	return sprintf(buf, "%d\n", data->ps_cal_result); //                                                                
 }
 
 static ssize_t apds9130_store_run_calibration(struct device *dev,
@@ -744,12 +744,12 @@ static int apds9130_enable_ps_sensor(struct i2c_client *client, int val)
 		apds9130_set_enable(client,0); /* Power Off */
 
 		apds9130_set_pilt(client, 0);		// init threshold for proximity
-		apds9130_set_piht(client, data->ps_threshold); //[LGSI_SP4_BSP][kirankumar.vm@lge.com] add calibrated threshold
+		apds9130_set_piht(client, data->ps_threshold); //                                                              
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] Report the Far Detection evertytime when u enable the sensor 07-11-2012
+//                                                                                                                   
 		input_report_abs(data->input_dev_ps, ABS_DISTANCE, PROX_INPUT_FAR);/* NEAR-to-FAR detection */
 		input_sync(data->input_dev_ps);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com] Report the Far Detection evertytime when u enable the sensor
+//                                                                                                      
 
 		apds9130_set_enable(client, 0x2D);	 /* enable PS interrupt */
 
@@ -808,7 +808,7 @@ static ssize_t apds9130_store_enable(struct device *dev,
 static DEVICE_ATTR(enable, S_IWUGO | S_IRUGO,
 		apds9130_show_enable, apds9130_store_enable);
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] 31-10-2012 Added sys Fs entry for PPcount
+//                                                                                     
 static ssize_t apds9130_show_ppcount(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
@@ -832,7 +832,7 @@ static ssize_t apds9130_store_ppcount(struct device *dev,
 	return count;
 }
 static DEVICE_ATTR(ppcount, S_IWUSR | S_IRUGO, apds9130_show_ppcount, apds9130_store_ppcount);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com] 31-10-2012 Added sys Fs entry for PPcount
+//                                                                                   
 #if defined(APDS9130_PROXIMITY_CAL)
 static ssize_t apds9130_show_control(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -866,7 +866,7 @@ static ssize_t apds9130_store_control(struct device *dev, struct device_attribut
 static DEVICE_ATTR(control,  S_IWUSR | S_IRUGO , apds9130_show_control, apds9130_store_control);
 #endif
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] Added Sys Fs access to show proximity status for Testmode
+//                                                                                                     
 static ssize_t apds9130_show_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	unsigned int show = PROX_INPUT_FAR;
@@ -888,7 +888,7 @@ static ssize_t apds9130_show_show(struct device *dev, struct device_attribute *a
 }
 
 static DEVICE_ATTR(show, S_IWUSR | S_IRUGO , apds9130_show_show, NULL);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
 static ssize_t apds9130_show_pdrive(struct device *dev,
 				struct device_attribute *attr, char *buf)
@@ -1001,9 +1001,9 @@ static struct attribute *apds9130_attributes[] = {
 	&dev_attr_run_calibration.attr,
 	&dev_attr_prox_cal_data.attr,
 #endif
-	&dev_attr_show.attr, //[LGSI_SP4_BSP][kirankumar.vm@lge.com] Added Sys Fs access to show proximity status for Testmode
-	&dev_attr_ppcount.attr, //[LGSI_SP4_BSP][kirankumar.vm@lge.com] Added ppcount sysfs Entry
-	&dev_attr_pdrive.attr,/*[LGE_BSP][yunmo.yang@lge.com]add pDrive sysfs Entry*/
+	&dev_attr_show.attr, //                                                                                               
+	&dev_attr_ppcount.attr, //                                                               
+	&dev_attr_pdrive.attr,/*                                                   */
 	&dev_attr_pilt.attr,
 	&dev_attr_piht.attr,
 	NULL
@@ -1063,14 +1063,14 @@ static int apds9130_init_client(struct i2c_client *client)
 	if (err < 0) return err;
 
 	// sensor is in disabled mode but all the configurations are preset
-/* Temp block the below code as no need to set cross talk threshold during proximity OFF state [LGSI_SP4_BSP][kirankumar.vm@lge.com]
-#if defined(APDS9130_PROXIMITY_CAL)
-	err = apds9130_set_enable(client,0);
-	if(err < 0){
-		printk(KERN_INFO "%s, enable set Fail\n",__func__);
-		return err;
-	}
-#endif
+/*                                                                                                                                  
+                                   
+                                     
+             
+                                                     
+             
+  
+      
 */
 	return 0;
 }
@@ -1173,7 +1173,7 @@ static int __devinit apds9130_probe(struct i2c_client *client,
 	return 0;
 
 
-//	sysfs_remove_group(&client->dev.kobj, &apds9130_attr_group);         //Need to disable this kirankumar.vm@lge.com
+//                                                                                                                  
 exit_unregister_dev_ps:
 	input_unregister_device(data->input_dev_ps);
 exit_free_dev_ps:
@@ -1181,10 +1181,10 @@ exit_free_dev_ps:
 exit_free_irq:
 	free_irq(client->irq, client);
 exit_kfree:
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] 30-11-2012 Destroy the mutex after its usage
+//                                                                                        
 	wake_lock_destroy(&data->ps_wlock);
 	mutex_destroy(&data->update_lock);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 	kfree(data);
 exit:
 	return err;
@@ -1209,9 +1209,9 @@ static int __devexit apds9130_remove(struct i2c_client *client)
 
 	wake_lock_destroy(&data->ps_wlock);
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com] 30-11-2012 Destroy the mutex after its usage
+//                                                                                        
 	mutex_destroy(&data->update_lock);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 	kfree(data);
 
 	return 0;

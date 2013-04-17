@@ -17,14 +17,14 @@
 
 static struct msm_panel_info pinfo;
 
-/* LGE_CHANGE_S : U0 Display Panel Framerate Control
- * 2012-01-14, yoonsoo@lge.com
- * U0 Display Panel Framerate Control 
+/*                                                  
+                              
+                                      
  */
 static struct mipi_dsi_phy_ctrl dsi_video_mode_phy_db =
 {
 
-#if 0//defined(CONFIG_MACH_MSM8X25_V7) //QCT reccomend, youngbae.choi@lge.com, 2012-12-29
+#if 0//                                                                                  
 	/*63fps*/
 	/* DSI Bit Clock at 335MHz, 2 lane, RGB888 */
 	/* regulator */
@@ -38,7 +38,7 @@ static struct mipi_dsi_phy_ctrl dsi_video_mode_phy_db =
 	/* pll control */
 	{0x00, 0x5d, 0x31, 0xD2, 0x00, 0x40, 0x37, 0x62, 0x01, 0x0F, 0x07, 
 	0x05, 0x14, 0x03, 0x0, 0x0, 0x0, 0x20, 0x0, 0x02, 0x0}, 
-#else //QCT reccomend, sohyun.nam@lge.com, 2012-11-16
+#else //                                             
 	/*60fps*/ 
 	/* DSI Bit Clock at 335MHz, 2 lane, RGB888 */ 
 	/* regulator */ 
@@ -103,7 +103,7 @@ static struct mipi_dsi_phy_ctrl dsi_video_mode_phy_db =
 	0x03, 0x1f, 0x0f, 
 	0x05, 0x14, 0x03, 0x0, 0x0, 0x0, 0x20, 0x0, 0x02, 0x0}, 
 #endif /* 30 fps parameter*/
-/* LGE_CHANGE_E : U0 Display Panel Framerate Control */ 
+/*                                                   */ 
 
 };
 
@@ -139,7 +139,7 @@ static int __init mipi_video_lg4573b_hvga_pt_init(void)
 
 	pinfo.mipi.mode = DSI_VIDEO_MODE;
 
-//LGE_CHANGE_S [Kiran] Change LCD sleep sequence
+//                                              
 #if 0 //for LP mode from jangsu
 	pinfo.mipi.pulse_mode_hsa_he = TRUE;
 	pinfo.mipi.hfp_power_stop = FALSE;
@@ -156,7 +156,7 @@ static int __init mipi_video_lg4573b_hvga_pt_init(void)
 	pinfo.mipi.bllp_power_stop = TRUE;
 	pinfo.mipi.force_clk_lane_hs = TRUE;
 #endif
-//LGE_CHANGE_S [Kiran] Change LCD sleep sequence
+//                                              
 
 	pinfo.mipi.traffic_mode = DSI_NON_BURST_SYNCH_EVENT;
 	pinfo.mipi.dst_format = DSI_VIDEO_DST_FORMAT_RGB888;
@@ -169,7 +169,7 @@ static int __init mipi_video_lg4573b_hvga_pt_init(void)
 	pinfo.mipi.stream = 0; /* dma_p */
 	pinfo.mipi.mdp_trigger = DSI_CMD_TRIGGER_NONE; /*DSI_CMD_TRIGGER_SW;*/
 	pinfo.mipi.dma_trigger = DSI_CMD_TRIGGER_SW;
-#if 0//defined(CONFIG_MACH_MSM8X25_V7) //QCT reccomend, youngbae.choi@lge.com, 2012-12-29
+#if 0//                                                                                  
 	pinfo.mipi.frame_rate = 63;	/* 60fps, 50fps, 30fps */
 #else
 	pinfo.mipi.frame_rate = 60;	/* 60fps, 50fps, 30fps */

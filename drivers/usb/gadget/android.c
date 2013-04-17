@@ -70,11 +70,11 @@
 #include "f_accessory.c"
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 #include "f_ecm.c"
-//[LGE_CHANGE_S], LGE AutoRun function
+//                                    
 #ifdef CONFIG_LGE_USB_AUTORUN_DRIVER
 #include "f_cdrom_storage.c"
 #endif
-//[LGE_CHANGE_E], LGE AutoRun function
+//                                    
 #else
 #define USB_ETH_RNDIS y
 #include "f_rndis.c"
@@ -87,13 +87,13 @@
 #include "f_uac1.c"
 
 
-/* LGE_CHANGE_S, for factory usb composition */
+/*                                           */
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 #include "u_lgeusb.h"
-// LGE_CHANGE,narasimha.chikka@lge.com, Add Charge only function
+//                                                              
 #include "f_charge_only.c"
 #endif
-/* LGE_CHANGE_E, for factory usb composition */
+/*                                           */
 
 MODULE_AUTHOR("Mike Lockwood");
 MODULE_DESCRIPTION("Android Composite USB Driver");
@@ -166,11 +166,11 @@ static struct class *android_class;
 static struct android_dev *_android_dev;
 static int android_bind_config(struct usb_configuration *c);
 static void android_unbind_config(struct usb_configuration *c);
-/* LGE_CHANGE_S, for factory usb composition */
+/*                                           */
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 static bool factory_mode_enabled = 0; 
 #endif
-/* LGE_CHANGE_E, for factory usb composition */
+/*                                           */
 /* string IDs are assigned dynamically */
 #define STRING_MANUFACTURER_IDX		0
 #define STRING_PRODUCT_IDX		1
@@ -297,13 +297,13 @@ static void android_work(struct work_struct *data)
 		    ((uevent_envp == configured) &&
 		      (last_uevent == USB_CONFIGURED))) {
 			pr_info("%s: sent missed DISCONNECT event\n", __func__);
-		/* 2013-01-10 lbh.lee@lge.com exception processing factory cable.[START]*/
+		/*                                                                      */
 		if(!factory_mode_enabled){
 			kobject_uevent_env(&dev->dev->kobj, KOBJ_CHANGE,
 								disconnected);
 			msleep(20);
 		       }
-		/* 2013-01-10 lbh.lee@lge.com exception processing factory cable.[END]*/
+		/*                                                                    */
 		}
 		/*
 		 * Before sending out CONFIGURED uevent give function drivers
@@ -311,13 +311,13 @@ static void android_work(struct work_struct *data)
 		 */
 		if (uevent_envp == configured)
 			msleep(50);
-		/* 2013-01-10 lbh.lee@lge.com exception processing factory cable.[START]*/
+		/*                                                                      */
 		if(!factory_mode_enabled){
 			kobject_uevent_env(&dev->dev->kobj, KOBJ_CHANGE, uevent_envp);
 			last_uevent = next_state;
 			pr_info("%s: sent uevent %s\n", __func__, uevent_envp[0]);
 		}
-		/* 2013-01-10 lbh.lee@lge.com exception processing factory cable.[END]*/
+		/*                                                                    */
 	} else {
 		pr_info("%s: did not send uevent (%d %d %p)\n", __func__,
 			 dev->connected, dev->sw_connected, cdev->config);
@@ -685,7 +685,7 @@ static int diag_function_bind_config(struct android_usb_function *f,
 		/* Allow only first diag channel to update pid and serial no */
 		if (_android_dev->pdata && !once++)
 		{
-		// 2012-10-04 ByungHo-Lee(lbh.lee@lge.com)[td:na] dload mode in iserial number not change 
+		//                                                                                        
 			notify = _android_dev->pdata->update_pid_and_serial_num;
 		}
 		if (name) {
@@ -1396,7 +1396,7 @@ static struct android_usb_function mass_storage_function = {
 	.attributes	= mass_storage_function_attributes,
 };
 
-//[LGE_CHANGE_S], LGE AutoRun function
+//                                    
 #ifdef CONFIG_LGE_USB_AUTORUN_DRIVER
 struct cdrom_storage_function_config {
 	struct cdrom_fsg_config fsg;
@@ -1492,9 +1492,9 @@ static struct android_usb_function cdrom_storage_function = {
 	.attributes	= cdrom_storage_function_attributes,
 };
 #endif
-//[LGE_CHANGE_E], LGE AutoRun function
+//                                    
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Charge only function
+//                                                                
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 /* charge only mode */
 static int charge_only_function_init(struct android_usb_function *f, struct usb_composite_dev *cdev)
@@ -1519,7 +1519,7 @@ static struct android_usb_function charge_only_function = {
 	.bind_config	= charge_only_function_bind_config,
 };
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Add Charge only function
+//                                                                
 
 static int accessory_function_init(struct android_usb_function *f,
 					struct usb_composite_dev *cdev)
@@ -1637,7 +1637,7 @@ static struct android_usb_function *supported_functions[] = {
 #endif
 	&mass_storage_function,
 	&accessory_function,
-//[LGE_CHANGE_S], LGE AutoRun function
+//                                    
 #ifdef CONFIG_LGE_USB_AUTORUN_DRIVER
 	&cdrom_storage_function,
 #endif
@@ -1645,7 +1645,7 @@ static struct android_usb_function *supported_functions[] = {
        &charge_only_function,
 #endif
        &audio_source_function,
-//[LGE_CHANGE_E], LGE AutoRun function
+//                                    
 	NULL
 };
 
@@ -1845,13 +1845,13 @@ functions_store(struct device *pdev, struct device_attribute *attr,
 		return -EBUSY;
 	}
 
-	// 2012-11-27 ByungHo-Lee(lbh.lee@lge.com)[td:na] for USB debuging
+	//                                                                
 	pr_info("%s: request function list: %s\n", __func__,buff);
 
 
 	INIT_LIST_HEAD(&dev->enabled_functions);
 
-	// 2013-01-09 lbh.lee@lge.com Factory mode state in, normal usb mode does not change [START]
+	//                                                                                          
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 		if (factory_mode_enabled) {
 				err = android_enable_function(dev, "serial");
@@ -1864,7 +1864,7 @@ functions_store(struct device *pdev, struct device_attribute *attr,
 				return size;
 		}
 #endif
-	// 2013-01-09 lbh.lee@lge.com Factory mode state in, normal usb mode does not change [END]
+	//                                                                                        
 
 	strlcpy(buf, buff, sizeof(buf));
 	b = strim(buf);
@@ -1904,13 +1904,13 @@ static ssize_t enable_store(struct device *pdev, struct device_attribute *attr,
 	if (!cdev)
 		return -ENODEV;
 
-// 2013-01-09 lbh.lee@lge.com Factory mode state in, normal usb mode does not change. [START]
+//                                                                                           
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 	if (factory_mode_enabled) {
 		return size;
 	}
 #endif
-// 2013-01-09 lbh.lee@lge.com Factory mode state in, normal usb mode does not change [END]
+//                                                                                        
 
 
 	mutex_lock(&dev->mutex);
@@ -2020,7 +2020,7 @@ static ssize_t state_show(struct device *pdev, struct device_attribute *attr,
 out:
 	return snprintf(buf, PAGE_SIZE, "%s\n", state);
 }
-// 2012-12-05 ByungHo-Lee(lbh.lee@lge.com)[td:na] for factory USB cable Exception handling. [START]
+//                                                                                                 
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 static ssize_t factory_cable_show(struct device *pdev,
 				struct device_attribute *attr, char *buf)
@@ -2033,7 +2033,7 @@ static ssize_t factory_cable_show(struct device *pdev,
 
 }
 static DEVICE_ATTR(factory_cable, S_IRUGO, factory_cable_show, NULL);
-// 2012-12-05 ByungHo-Lee(lbh.lee@lge.com)[td:na] for factory USB cable Exception handling. [END]
+//                                                                                               
 
 #endif
 
@@ -2113,25 +2113,25 @@ static struct device_attribute *android_usb_attributes[] = {
 	&dev_attr_pm_qos,
 	&dev_attr_state,
 	&dev_attr_remote_wakeup,
-#ifdef CONFIG_LGE_USB_GADGET_DRIVER // 2012-12-05 ByungHo-Lee(lbh.lee@lge.com)[td:na] for factory USB cable Exception handling.
+#ifdef CONFIG_LGE_USB_GADGET_DRIVER //                                                                                         
        &dev_attr_factory_cable,
 #endif
 	NULL
 };
 
-/* LGE_CHANGE_S, for factory usb composition */
+/*                                           */
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Support PMIC and MUIC Cable detection
-/* LGE_CHANGE_S jongjin7.park 2012.12.08 U0 used the same value as V3/V7 */
+//                                                                            
+/*                                                                       */
 #if defined(CONFIG_LGE_PMIC_CABLE_DETECTION) || defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E jongjin7.park 2012.12.08 U0 used the same value as V3/V7 */
+/*                                                                       */
 int android_set_factory_mode(void)
 {
 	ECableUsbType cable = USB_UNKOWN;
 
 	cable = (ECableUsbType)lge_get_cable_info();
-/*[LGE_BSP_S][indeok1.han@lge.com] 2013-01-23 add_u0_uart TO NO BATT BOOT */
+/*                                                                        */
 	if ((cable == USB_56K) 
 			|| (cable == USB_130K)
 			|| (cable == USB_910K)) {
@@ -2140,7 +2140,7 @@ int android_set_factory_mode(void)
 		android_factory_desc(0);
 		android_factory_desc(1);
 		return cable;
-/*[LGE_BSP_E][indeok1.han@lge.com] 2013-01-23 add_u0_uart TO NO BATT BOOT */
+/*                                                                        */
 	} else {
 		printk(KERN_INFO " %s : Using Normal Cable (%d)\n", __func__, cable);
 		factory_mode_enabled = false;
@@ -2165,9 +2165,9 @@ int android_set_factory_mode(void)
 		return 0;
 	}
 }
-#endif	//CONFIG_LGE_PMIC_CABLE_DETECTION
+#endif	//                               
 
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Support PMIC and MUIC Cable detection
+//                                                                            
 
 EXPORT_SYMBOL(android_set_factory_mode);
 
@@ -2229,7 +2229,7 @@ void android_factory_desc(int enable)
 }
 EXPORT_SYMBOL(android_factory_desc);
 #endif
-/* LGE_CHANGE_E, for factory usb composition */
+/*                                           */
 
 /*-------------------------------------------------------------------------*/
 /* Composite driver */
@@ -2310,11 +2310,11 @@ static int android_bind(struct usb_composite_dev *cdev)
 
 	dev->cdev = cdev;
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Check booting with Factory cable
+//                                                                        
 #ifdef CONFIG_LGE_USB_GADGET_DRIVER
 	android_set_factory_mode();
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Check booting with Factory cable
+//                                                                        
 	return 0;
 }
 

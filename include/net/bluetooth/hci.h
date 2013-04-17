@@ -412,7 +412,7 @@ struct hci_cp_read_remote_version {
 	__le16   handle;
 } __packed;
 
-// +s LGBT_COMMON_PATCH_SR01017282 sunmee.choi@lge.com 2012-11-26 performance issue (opp request time)
+//                                                                                                    
 #define HCI_OP_READ_CLOCK_OFFSET	0x041f
 struct hci_cp_read_clock_offset {
 	__le16   handle;

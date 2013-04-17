@@ -333,7 +333,6 @@ int mdp_lcdc_on(struct platform_device *pdev)
 		pr_debug("%s: kobject_uevent(KOBJ_ADD)\n", __func__);
 		vsync_cntrl.sysfs_created = 1;
 	}
-	mdp_histogram_ctrl_all(TRUE);
 
 	return ret;
 }
@@ -353,7 +352,6 @@ int mdp_lcdc_off(struct platform_device *pdev)
 		timer_base = DTV_BASE;
 	}
 #endif
-	mdp_histogram_ctrl_all(FALSE);
 
 	down(&mfd->dma->mutex);
 	/* MDP cmd block enable */
@@ -375,7 +373,7 @@ int mdp_lcdc_off(struct platform_device *pdev)
 	return ret;
 }
 
-// QCT_PATCH_S, SR#01031271 bohyun.jung@lge.com
+//                                             
 // SR 01031271 - 'mdp_disable_irq_nosync: MDP IRQ term-0x1000 is NOT set, mask=1 irq=1' 
 #if 1
 void mdp_dma_lcdc_vsync_ctrl(int enable)
@@ -443,7 +441,7 @@ void mdp_dma_lcdc_vsync_ctrl(int enable)
 		atomic_set(&vsync_cntrl.vsync_resume, 1);
 }
 #endif
-// QCT_PATCH_E, SR#01031271 bohyun.jung@lge.com
+//                                             
 
 void mdp_lcdc_update(struct msm_fb_data_type *mfd)
 {

@@ -24,11 +24,11 @@
 #include <linux/slab.h>		//samjinjang
 #include <linux/leds-as364x.h>
 
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
- * camera flash device/driver naming match 
+/*                                                  
+                                           
  */
 #include CONFIG_LGE_BOARD_HEADER_FILE
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting*/
+/*                                                  */
 
 #ifdef CONFIG_AS3648
 #define AS364X_CURR_STEP 3529 /* uA */
@@ -80,10 +80,10 @@ enum {
 	AS3647_LED_OFF,
 	AS3647_LED_LOW,
 	AS3647_LED_HIGH,
-	/* LGE_CHANGE_S : 2012-11-14 hyungtae.lee@lge.com flash off when camera is off by back key */
+	/*                                                                                         */
 	AS3647_LED_INIT,
 	AS3647_LED_RELEASE,
-	/* LGE_CHANGE_E : 2012-11-14 hyungtae.lee@lge.com flash off when camera is off by back key */
+	/*                                                                                         */
 	AS3647_LED_MAX
 };
 
@@ -136,13 +136,13 @@ static const struct as364x_data as364x_default_data = {
 #endif
 		AS364X_REG(TXMask, 0x68),
 		AS364X_REG(Low_Voltage, 0x2C),
-/*LGE_CHANGE_S : as3647 flash reg setting
-  2011-12-20, suk.kitak@lge.com, 
-  adjust light intensity and timing   */
+/*                                       
+                                 
+                                      */
 		AS364X_REG(Flash_Timer, 0xC0),	//0x23->0xC0
 		AS364X_REG(Control, 0x00),
 		AS364X_REG(Strobe_Signalling, 0x00),	//0xc0->0x00
-/* LGE_CHANGE_E : as3647 flash reg setting */
+/*                                         */
 		AS364X_REG(Fault, 0x00),
 		AS364X_REG(PWM_and_Indicator, 0x00),
 		AS364X_REG(min_LED_Current, 0x00),
@@ -154,9 +154,9 @@ static const struct as364x_data as364x_default_data = {
 	},
 };
 
-/* LGE_CHANGE_S :  current issue fixed 2011.12.16, samjinjang@lge.com  */
+/*                                                                     */
 #if 0  //#ifdef CONFIG_PM
-/* LGE_CHANGE_E :  current issue fixed  */
+/*                                      */
 static int as364x_suspend(struct i2c_client *client, pm_message_t msg)
 {
 	dev_info(&client->dev, "Suspending AS364X\n");
@@ -250,17 +250,17 @@ int as3647_flash_set_led_state(int state)
 	switch (state) {
 
 	case AS3647_LED_OFF:
-	/* LGE_CHANGE_S : 2012-11-14 hyungtae.lee@lge.com flash off when camera is off by back key */
+	/*                                                                                         */
 	case AS3647_LED_INIT:
 	case AS3647_LED_RELEASE:
-	/* LGE_CHANGE_E : 2012-11-14 hyungtae.lee@lge.com flash off when camera is off by back key */
+	/*                                                                                         */
 		as364x_set_leds(as3647_data, 0,0,0);
 		printk("[JEONGHOON]as3647_flash_set_led_state -> off \n");
 		break;
 
-/*LGE_CHANGE_S : as3647 flash reg setting
-  2011-12-20, suk.kitak@lge.com, 
-  adjust light intensity and timing   */
+/*                                       
+                                 
+                                      */
 	case AS3647_LED_LOW:
             as364x_set_leds(as3647_data, 1,0x0d,0x3F);	//0xb0
 		printk("[JEONGHOON]as3647_flash_set_led_state -> torch mode\n");
@@ -268,7 +268,7 @@ int as3647_flash_set_led_state(int state)
 	case AS3647_LED_HIGH:
 	      as364x_set_leds(as3647_data, 1,0x0b,0x80);	//0x9c
 		printk("[JEONGHOON]as3647_flash_set_led_state -> Strobe on \n");
-		/* LGE_CHANGE_E : as3647 flash reg setting */	
+		/*                                         */	
 		break;
 
 	default:
@@ -718,11 +718,11 @@ static int as364x_configure(struct i2c_client *client,
 
 	AS364X_WRITE_REG(1, 1);
 	AS364X_WRITE_REG(2, 2);
-/*LGE_CHANGE_S : as3647 flash reg setting
-  2011-12-20, suk.kitak@lge.com, 
-  adjust light intensity and timing   */
+/*                                       
+                                 
+                                      */
 	AS364X_WRITE_REG(5, 0xC0); 
-/* LGE_CHANGE_E : as3647 flash reg setting */	
+/*                                         */	
 #ifdef CONFIG_AS3647
 	if (i2c_smbus_read_byte_data(client, 2) != 0) {
 		dev_err(&client->dev, "Not AS3647, maybe AS3648, exiting\n");
@@ -755,11 +755,11 @@ static int as364x_configure(struct i2c_client *client,
 	AS364X_WRITE_REG(AS364X_REG_PWM_and_Indicator,
 			pdata->freq_switch_on ? 0x04 : 0);
 
-/*LGE_CHANGE_S : as3647 flash reg setting
-  2011-12-20, suk.kitak@lge.com, 
-  adjust light intensity and timing   */
+/*                                       
+                                 
+                                      */
 	data->strobe_reg = 0x00;	//data->strobe_reg = pdata->strobe_type ? 0xc0 : 0x80;
-/* LGE_CHANGE_E : as3647 flash reg setting */
+/*                                         */
 	
 	AS364X_WRITE_REG(AS364X_REG_Strobe_Signalling, data->strobe_reg);
 
@@ -895,11 +895,11 @@ static int as364x_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id as364x_id[] = {
-	/*LGE_CHANGE_S : samjinjang@lge.com kernel3.0 porting
- 	 * camera flash device/driver naming match 
- 	 */
+	/*                                                   
+                                             
+   */
 	{ LEDS_CAMERA_FLASH_NAME, 0 },
-	/*LGE_CHANGE_E : samjinjang@lge.com kernel3.0 porting*/
+	/*                                                   */
 	{ }
 };
 
@@ -907,17 +907,17 @@ MODULE_DEVICE_TABLE(i2c, as364x_id);
 
 static struct i2c_driver as364x_driver = {
 	.driver = {
-		/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
- 		 * camera flash device/driver naming match 
- 		 */
+		/*                                                  
+                                              
+    */
 		.name   = LEDS_CAMERA_FLASH_NAME,
-		/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting*/
+		/*                                                  */
 	},
 	.probe  = as364x_probe,
 	.remove = as364x_remove,
-/* LGE_CHANGE_S :  current issue fixed 2011.12.16, samjinjang@lge.com  */
+/*                                                                     */
 #if 0  //#ifdef CONFIG_PM
-/* LGE_CHANGE_E :  current issue fixed	*/
+/*                                     */
 	.shutdown = as364x_shutdown,
 	.suspend  = as364x_suspend,
 	.resume   = as364x_resume,

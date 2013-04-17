@@ -53,13 +53,13 @@ int32_t msm_camera_i2c_txdata(struct msm_camera_i2c_client *dev_client,
 	rc = i2c_transfer(dev_client->client->adapter, msg, 1);
 	if (rc < 0)
 		S_I2C_DBG("msm_camera_i2c_txdata faild 0x%x\n", saddr);
-/*LGE_CHANGE_S change to return current state for V3 hong.junki@lge.com 2012-12-28 */
+/*                                                                                 */
 #ifdef CONFIG_HI351
 	return rc;
 #else
 	return 0;
 #endif
-/*LGE_CHANGE_E change to return current state for V3 hong.junki@lge.com 2012-12-28 */
+/*                                                                                 */
 
 }
 

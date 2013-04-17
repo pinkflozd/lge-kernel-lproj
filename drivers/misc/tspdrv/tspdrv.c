@@ -30,11 +30,11 @@
 #define __KERNEL__
 #endif
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 //#ifndef MODULE
 //#define MODULE
 //#endif
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -157,9 +157,9 @@ MODULE_AUTHOR("Immersion Corporation");
 MODULE_DESCRIPTION("TouchSense Kernel Module");
 MODULE_LICENSE("GPL v2");
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 int __init tspdrv_init(void)
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 {
     int nRet, i;   /* initialized below */
 
@@ -219,9 +219,9 @@ int __init tspdrv_init(void)
     return 0;
 }
 
-//[LGSI_SP4_BSP_START][kirankumar.vm@lge.com]
+//                                           
 void __exit tspdrv_exit(void)
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 {
     DbgOut((KERN_INFO "tspdrv: cleanup_module.\n"));
 
@@ -505,7 +505,7 @@ static void platform_release(struct device *dev)
     DbgOut((KERN_INFO "tspdrv: platform_release.\n"));
 }
 
-//[LGSI_SP4_BSP_START][kirankumar.vm@lge.com]
+//                                           
 module_init(tspdrv_init);
 module_exit(tspdrv_exit);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         

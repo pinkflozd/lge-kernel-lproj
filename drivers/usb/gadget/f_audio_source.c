@@ -825,13 +825,13 @@ int audio_source_bind_config(struct usb_configuration *c,
 	config->card = -1;
 	config->device = -1;
 
-/* lbh.lee@lge.com  Memory leak. Dynamic memory stored in 'audio' allocated through function 'kzalloc [START]*/
+/*                                                                                                           */
 #ifndef CONFIG_LGE_USB_GADGET_DRIVER
 	audio = kzalloc(sizeof *audio, GFP_KERNEL);
 	if (!audio)
 		return -ENOMEM;
 #endif
-/* lbh.lee@lge.com	Memory leak. Dynamic memory stored in 'audio' allocated through function 'kzalloc [END]*/
+/*                                                                                                        */
 
 	audio = &_audio_dev;
 

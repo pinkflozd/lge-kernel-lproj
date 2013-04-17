@@ -49,19 +49,19 @@
 /* 18.0, 18.9, 19.8, 20.7, 21.6, 22.5, 23.4, 24.3, 25.2, 26.1, */
 /* 27.0, 27.9 */
 
-/* LGE_CHANGE
-  * AAT2862 has two parts of LEDs(Main and Sub)
-  * Added some definitions and modified I2C write command to control both Main and Sub LEDs.
-  * Added 'AAT2862BL_REG_BLS', changed members of structure 'lm3530_reg_addrs'
-  * and modified 'lm3530_write' to control two registers(AAT2862BL_REG_BLM and AAT2862BL_REG_BLS)
-  * 2010-04-22, minjong.gong@lge.com
+/*           
+                                               
+                                                                                            
+                                                                              
+                                                                                                 
+                                    
   */
 
-/* LGE_CHANGE
-  * If MEQS bit in AAT2862BL_REG_BLM is set, we don't need to write command to AAT2862BL_REG_BLS.
-  * So modify command array for AAT2862 and related functions. 
-  * And change default brightness and maximum brightness.
-  * 2010-05-18, minjong.gong@lge.com
+/*           
+                                                                                                 
+                                                               
+                                                         
+                                    
   */
 
 #define LCD_LED_MAX 					0x7F
@@ -69,8 +69,8 @@
 
 #define DEFAULT_BRIGHTNESS 			0x6D
 
-#define LM3530_MIN_VALUE_SETTINGS 	0x6E//30 [kiran.jainapure@lge.com] /* value for LM3530_MIN_BRIGHTNESS in leds_brightness_set*/
-#define LM3530_MAX_VALUE_SETTINGS 	0xFF //102[kiran.jainapure@lge.com] /* value for LM3530_DEFAULT_BRIGHTNESS in leds_brightness_set*/
+#define LM3530_MIN_VALUE_SETTINGS 	0x6E//                                                                                        
+#define LM3530_MAX_VALUE_SETTINGS 	0xFF //                                                                                            
 
 #define AAT2862BL_REG_BLS   			0x04  /* Register address for Main BL brightness */
 #define AAT2862BL_REG_FADE			0x07  /* Register address for Backlight Fade control */
@@ -190,15 +190,15 @@ struct lm3530_driver_data {
 static unsigned int debug = 0;
 module_param(debug, uint, 0644);
 
-/*LGE_CHANGE_S, youngbae.choi@lge.com, 13-01-03, for V7 lcd backlight timing code*/
+/*                                                                               */
 //#if defined(CONFIG_MACH_MSM8X25_V7)
-/*LGE_CHANGE_S, hyungjoon.jeon@lge.com 13-02-06, for M4 lcd backlight timing code */
+/*                                                                                */
 #if defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_M4)
 int lcd_on_completed =0;
 #endif
-/*LGE_CHANGE_E, youngbae.choi@lge.com, 13-01-03, for V7 lcd backlight timing code*/
+/*                                                                               */
 
-/*LGE_CHANGE hyungjoon.jeon@lge.com 13-02-07 */
+/*                                           */
 #if defined(CONFIG_MACH_MSM7X25A_M4)
 static int bl_chargerlogo = 0;
 #endif
@@ -227,9 +227,9 @@ static struct aat28xx_ctrl_tbl lm3530_sleep_tbl[] = {
 	{ 0xFF, 0xFE },  /* end of command */	
 };
 
-/*[LGE_CHANGE][kiran.jainapure@lge.com]*/
+/*                                     */
 
-#define MAX_BRIGHTNESS_LEVEL			127 /* should be 127 for lm3530, sohyun.nam@lge.com, 12-11-16 */
+#define MAX_BRIGHTNESS_LEVEL			127 /*                                                        */
 #define MIN_BRIGHTNESS_LEVEL			54
 #define DEFAULT_BRIGHTNESS_LEVEL		109
 
@@ -255,7 +255,7 @@ static char mapped_value[MAPPING_VALUE_STEPS] = {
 /*14 */	123,123,124,125,126,127
 #endif
 
-//LEG_CHANGE_S, sohyun.nam@lge.com, 12-11-16, brightness tuning
+//                                                             
 #if 1 
 //            0,    1,     2,    3,    4,    5 ,   6,    7,    8,    9
 /*0 */	0, 54, 54, 55, 55, 55, 56, 56, 56, 56, 
@@ -273,10 +273,10 @@ static char mapped_value[MAPPING_VALUE_STEPS] = {
 /*12 */	119,119,119,120,120,120,121,121,121,122,
 /*13 */	122,122,123,123,123,124,124,124,124,125,
 /*14 */	125,125,125,125,126,127
-//LEG_CHANGE_E, sohyun.nam@lge.com, 12-11-16, brightness tuning
+//                                                             
 #endif
 };
-/*[LGE_CHANGE][kiran.jainapure@lge.com]*/
+/*                                     */
 
 /********************************************
  * Functions
@@ -388,10 +388,10 @@ static void lm3530_go_opmode(struct lm3530_driver_data *drvdata)
 			drvdata->state = NORMAL_STATE;
 			break;
 		case ALC_MODE:
-			/* LGE_CHANGE
-			 * Remove ALC mode
-			 * 2010-07-26. minjong.gong@lge.com
-			 */
+			/*           
+                     
+                                      
+    */
 			//lm3530_set_table(drvdata, drvdata->cmds.alc);
 			//drvdata->state = NORMAL_STATE;
 			//break;
@@ -403,9 +403,9 @@ static void lm3530_go_opmode(struct lm3530_driver_data *drvdata)
 
 static void lm3530_device_init(struct lm3530_driver_data *drvdata)
 {
-/* LGE_CHANGE.
-  * Do not initialize aat28xx when system booting. The aat28xx is already initialized in oemsbl or LK !!
-  * 2010-08-16, minjong.gong@lge.com
+/*            
+                                                                                                        
+                                    
   */
 	if (system_state == SYSTEM_BOOTING) {
 		lm3530_go_opmode(drvdata);
@@ -450,10 +450,10 @@ static void lm3530_sleep(struct lm3530_driver_data *drvdata)
 			break;
 
 		case ALC_MODE:
-			/* LGE_CHANGE
-			 * Remove ALC mode
-			 * 2010-07-26. minjong.gong@lge.com
-			 */
+			/*           
+                     
+                                      
+    */
 			//drvdata->state = SLEEP_STATE;
 			//lm3530_set_table(drvdata, drvdata->cmds.sleep);
 			//udelay(500);
@@ -464,7 +464,7 @@ static void lm3530_sleep(struct lm3530_driver_data *drvdata)
 			break;
 	}
 	
-	// daewon.seo@lge.com 20111024 set lcd_bl_en low for sleep current
+	//                                                                
 	//#define LCD_BL_EN 124
 	gpio_tlmm_config(GPIO_CFG(124, 0, GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
     	gpio_set_value(124, 0);    
@@ -477,14 +477,14 @@ static void lm3530_wakeup(struct lm3530_driver_data *drvdata)
 	if (!drvdata || drvdata->state == NORMAL_STATE)
 		return;
 
-	// daewon.seo@lge.com 20111024 set lcd_bl_en & sub_pm_en high when wake up
+	//                                                                        
 	//#define LCD_BL_EN 124
     gpio_tlmm_config(GPIO_CFG(124, 0, GPIO_CFG_OUTPUT, GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
     gpio_set_value(124, 1); 
 	
-	/*LGE_CHANGE_S, youngbae.choi@lge.com, 13-01-03, for V7 lcd backlight timing code*/
+	/*                                                                               */
 	//#if defined(CONFIG_MACH_MSM8X25_V7)
-	/*LGE_CHANGE_S, hyungjoon.jeon@lge.com, 13-02-06,for M4 lcd backlight timing code*/
+	/*                                                                               */
 	#if defined(CONFIG_MACH_MSM8X25_V7) || defined(CONFIG_MACH_MSM7X25A_M4)
 	while(1){		
 		msleep(50);
@@ -495,9 +495,9 @@ static void lm3530_wakeup(struct lm3530_driver_data *drvdata)
 	msleep(50);
 	lcd_on_completed = 0;
 	#endif
-	/*LGE_CHANGE_E, youngbae.choi@lge.com, 13-01-03, for V7 lcd backlight timing code*/	
+	/*                                                                               */	
 
-	//LGE_CHANGE, [hyungjoon.jeo@lge.com] , 2013-02-07
+	//                                                
 	#if defined(CONFIG_MACH_MSM7X25A_M4)
 	//For backlight timing
 	if(bl_chargerlogo == 1){
@@ -508,20 +508,20 @@ static void lm3530_wakeup(struct lm3530_driver_data *drvdata)
 
 	if (drvdata->state == POWEROFF_STATE) {
 		lm3530_poweron(drvdata);
-		/* LGE_CHANGE
-		 * Because the lm3530_go_opmode is called in the lm3530_poweron above, so I remove below function.
-		 * If it is called two times when the previous state of AAT2862 is POWEROFF_STATE, it causes malfucction.
-		 * 2010-07-31. minjong.gong@lge.com
-		 */
+		/*           
+                                                                                                    
+                                                                                                           
+                                     
+   */
 		//lm3530_go_opmode(drvdata);
 	} else if (drvdata->state == SLEEP_STATE) {
 		if (drvdata->mode == NORMAL_MODE) {
 
-				/* LGE_CHANGE
-		 		 * [V7] Backlight setting value is coming lately than late_resume, please wait the non zero value.
-		 		 * wait the max 2000ms.
-		 		 * 2013-02-06. youngbae.choi@lge.com
-		 		 */
+				/*           
+                                                                                                       
+                            
+                                         
+      */
 		 		late_resume_count = 0;
 				if(late_resume_value == 0){
 					while(1){	
@@ -537,10 +537,10 @@ static void lm3530_wakeup(struct lm3530_driver_data *drvdata)
 				
 				lm3530_set_table(drvdata, drvdata->cmds.normal);				
 
-				/* LGE_CHANGE_S : seven.kim@lge.com work around code in case miss the brightness level value from android
-				 *  if brightness value be a zero, then set to default value.
-				 *  Atherwise the change is not zero, then set the brightness value received from android
-				 */
+				/*                                                                                                       
+                                                                 
+                                                                                             
+     */
 				if(drvdata->intensity > 0)
 				{
 					printk("%s : brightness : SET VALUE : %d\n",__func__, drvdata->intensity);
@@ -548,14 +548,14 @@ static void lm3530_wakeup(struct lm3530_driver_data *drvdata)
 				}
 				else
 					printk("%s : brightness : SET DEFAULT \n",__func__);
-				/*LGE_CHANGE_E : seven.kim@lge.com work around code in case miss the brightness level value from android */
+				/*                                                                                                       */
 				
 			drvdata->state = NORMAL_STATE;
 		} else if (drvdata->mode == ALC_MODE) {
-			/* LGE_CHANGE
-			 * Remove ALC mode
-			 * 2010-07-26. minjong.gong@lge.com
-			 */
+			/*           
+                     
+                                      
+    */
 			//lm3530_set_table(drvdata, drvdata->cmds.alc);
 			//drvdata->state = NORMAL_STATE;
 		}
@@ -649,10 +649,10 @@ void aat28xx_switch_mode(struct device *dev, int next_mode)
 		return;
 
 	if (next_mode == ALC_MODE) {
-		/* LGE_CHANGE
-		 * Remove ALC mode
-		 * 2010-07-26. minjong.gong@lge.com
-		 */
+		/*           
+                    
+                                     
+   */
 		//lm3530_set_table(drvdata, drvdata->cmds.alc);
 	}
 	else if (next_mode == NORMAL_MODE) {
@@ -749,7 +749,7 @@ ssize_t lm3530_show_drvstat(struct device *dev, struct device_attribute *attr, c
 }
 
 
-//LGE_CHANGE, [hyungjoon.jeo@lge.com] , 2013-02-07
+//                                                
 #if defined(CONFIG_MACH_MSM7X25A_M4)
 ssize_t lm3530_store_chargerlogo(struct device *dev, struct device_attribute *attr, const char *buf, size_t count)
 {
@@ -769,7 +769,7 @@ ssize_t lm3530_store_chargerlogo(struct device *dev, struct device_attribute *at
 DEVICE_ATTR(alc, 0664, lm3530_show_alc, lm3530_store_alc);
 DEVICE_ATTR(reg, 0664, lm3530_show_reg, lm3530_store_reg);
 DEVICE_ATTR(drvstat, 0444, lm3530_show_drvstat, NULL);
-//LGE_CHANGE, [hyungjoon.jeo@lge.com] , 2013-02-07
+//                                                
 #if defined(CONFIG_MACH_MSM7X25A_M4)
 DEVICE_ATTR(chargerlogo, 0664, NULL, lm3530_store_chargerlogo);
 #endif
@@ -901,7 +901,7 @@ static int __init lm3530_probe(struct i2c_client *i2c_dev, const struct i2c_devi
 		err = device_create_file(drvdata->led->dev, &dev_attr_alc);
 		err = device_create_file(drvdata->led->dev, &dev_attr_reg);
 		err = device_create_file(drvdata->led->dev, &dev_attr_drvstat);
-		//LGE_CHANGE, [hyungjoon.jeo@lge.com] , 2013-02-07
+		//                                                
 		#if defined(CONFIG_MACH_MSM7X25A_M4)			
 		err = device_create_file(drvdata->led->dev, &dev_attr_chargerlogo);		
 		#endif

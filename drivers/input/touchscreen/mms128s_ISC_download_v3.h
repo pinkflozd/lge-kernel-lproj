@@ -22,14 +22,14 @@
 #define MELFAS_ISP_DOWNLOAD                         0       // 0: ISC mode   1:ISP mode   
 #define MELFAS_2CHIP_DOWNLOAD_ENABLE                0       // 0 : 1Chip Download, 1: 2Chip Download
 
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-03-20] 
-: Changed the way in reading the firmware version*/
+/*                                                   
+                                                 */
 #define MELFAS_DOWNLAOD_FIRMWARE_VERSION     0x05	/* 0x04 -> 0x05 F/W download check parameter*/
 #define MELFAS_DOWNLAOD_CORE_VERSION              0x43	/*0x43*/
 #define MELFAS_DOWNLAOD_PRIVATE_VERSION         0x05	/*0x04 -> 0x05*/    
 #define MELFAS_DOWNLAOD_PUBLIC_VERSION           0x05	/*0x04 -> 0x05*/
-/* LGE_CHANGE_E: E1 eungjin.kim@lge.com [2012-03-20] 
-: Changed the way in reading the firmware version*/
+/*                                                   
+                                                 */
 
 //----------------------------------------------------
 // ISC download pharameters
@@ -66,11 +66,11 @@
 //   Register Information
 //----------------------------------------------------
 
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: Changed the way in reading the firmware version*/
+/*                                                   
+                                                 */
 #define MELFAS_FIRMWARE_VER_REG_FIRMWARE_VERSION	0xF0 // FIRMWARE VERSION	
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: Changed the way in reading the firmware version*/
+/*                                                   
+                                                 */
 
 #define MELFAS_FIRMWARE_VER_REG_CORE  			0xF3 //CORE F/W Version
 #define MELFAS_FIRMWARE_VER_REG_PRIVATE_CUSTOM  0xF4 //PRIVATE_CUSTOM F/W Version
@@ -129,13 +129,13 @@
 #define MCSDL_USE_RESETB_CONTROL       1
 
 //============================================================
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/
+/*                                                                                         */
 enum
 {
 	MANUAL_DOWNLOAD_DISABLE = 0,
 	MANUAL_DOWNLOAD_ENABLE,
 };
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/ 
+/*                                                                                         */ 
 //============================================================
 //
 //	Porting factors for Baseband
@@ -150,10 +150,10 @@ extern const  UINT8 MELFAS_TS_binary[];
 //----------------------------------------------------
 //	Functions
 //----------------------------------------------------
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For abnormal condition of touchscreen downloading*/
+/*                                                                                                        */
 int mms100_ISP_download_binary_data(int dl_mode);			// with binary type .c   file.
 int mms100_ISP_download_binary_file(void);			// with binary type .bin file.
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For abnormal condition of touchscreen downloading*/
+/*                                                                                                        */
 int mms100_ISC_download_binary_data(void);
 int mms100_ISC_download_binary_file(void);
 

@@ -9,10 +9,10 @@
 #include <linux/gpio.h>
 #include <linux/delay.h>
 #include <linux/irq.h>
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue*/
+/*                                                                                  */
 #include <linux/time.h>
 #include <linux/timer.h>
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue*/
+/*                                                                                  */
 #include <asm/gpio.h>
 #include <asm/io.h>
 
@@ -39,22 +39,22 @@
 UINT8  ucSlave_addr = ISC_MODE_SLAVE_ADDRESS;
 UINT8 ucInitial_Download = FALSE;
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/
+/*                                                                                         */
 static int iManual = 0;
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/ 
+/*                                                                                         */ 
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in ISP mode*/
+/*                                                                                              */
 static struct timer_list sReadTimer;
 static int iExpiredFlag;
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in ISP mode*/
+/*                                                                                              */
 
 //---------------------------------
 //	Downloading functions
 //---------------------------------
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/
+/*                                                                                         */
 void GetManual(void* wParam, void* lParam);
 void setManual(void);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/
+/*                                                                                         */
 
 static int mms100_ISC_download(const UINT8 *pBianry, const UINT16 unLength, const UINT8 nMode);
 
@@ -101,7 +101,7 @@ void melfas_send_download_enable_command(void)
 }
 
 #endif
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/
+/*                                                                                         */
 void GetManual(void* wParam, void* lParam)
 {
 	int* piData;
@@ -117,7 +117,7 @@ void ResetManual(void)
 {
 	iManual = MANUAL_DOWNLOAD_DISABLE;
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For manual touchscreen downloading*/ 
+/*                                                                                         */ 
 #if 0
 int mms100_download(unsigned char hw_ver, unsigned char fw_ver, int is_probe)
 {
@@ -142,15 +142,15 @@ int mms100_download(unsigned char hw_ver, unsigned char fw_ver, int is_probe)
 
 #if MELFAS_ISP_DOWNLOAD
 	//-----------------------------------------------------
-	//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.10.23]
+	//                                                    
 	//ret = mms100_ISP_download_binary_data(MELFAS_ISP_DOWNLOAD);
 
 	if (ret)
 		printk("<MELFAS> SET Download ISP Fail\n");
 #else
-	/*LGE_CHANGE_S : mystery184.kim@lge.com
-	  * Check No LCD and No touch status and FW abnormal case
-	  */
+	/*                                     
+                                                          
+   */
 	if(is_probe == 2){
 		#if 0
 		ret = mms100_recv_download();  // test mode download (16byte)
@@ -165,7 +165,7 @@ int mms100_download(unsigned char hw_ver, unsigned char fw_ver, int is_probe)
 		#endif
 	}
 	else{
-	/*LGE_CHANGE_E : mystery184.kim@lge.com */
+	/*                                      */
 	ret = mms100_ISC_download_binary_data(hw_ver, fw_ver);
 	if (ret)
 	{
@@ -197,11 +197,11 @@ int mms100_download(unsigned char hw_ver, unsigned char fw_ver, int is_probe)
 	{
 		Return_value = 0;
 	}
-	/*LGE_CHANGE_S : mystery184.kim@lge.com
-	  * Check No LCD and No touch status and FW abnormal case
-	  */	
+	/*                                     
+                                                          
+   */	
 	}
-	/*LGE_CHANGE_E : mystery184.kim@lge.com */
+	/*                                      */
 #endif
 	//gpio_free(GPIO_TOUCH_INT);
 #if 0		
@@ -236,7 +236,7 @@ int mms100_ISC_download_binary_data(unsigned char hw_ver, unsigned char fw_ver,u
 
 	int nRet;
  // INT8 dl_enable_bit = 0x00;
-#if 0 //seven.kim@lge.com : multiple touch panel support  
+#if 0 //                                                  
   INT8 version_info = 0;
 #endif // end of seven  
 	
@@ -1012,7 +1012,7 @@ static void mcsdl_ISC_read_32bits( UINT8 *pData )
 
 }
 */
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in */
+/*                                                                                      */
 //static timer_list sReadTimer;
 static void ReadISR(unsigned long ulParam)
 {
@@ -1032,22 +1032,22 @@ static void InitializeReadtimer(void)
 
 	add_timer(&sReadTimer);
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in */
+/*                                                                                      */
 
 static UINT8 mcsdl_read_byte(void)
 {
 	int i;
   UINT8 pData = 0x00;
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in */
+/*                                                                                      */
 	InitializeReadtimer();
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in */
+/*                                                                                      */
 
 	MCSDL_GPIO_SDA_SET_LOW();
 	MCSDL_GPIO_SDA_SET_INPUT();
 
 	MCSDL_GPIO_SCL_SET_INPUT();
 	
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in */
+/*                                                                                      */
 	while(!MCSDL_GPIO_SCL_IS_HIGH())
 	{
 		if(iExpiredFlag == 1)
@@ -1057,7 +1057,7 @@ static UINT8 mcsdl_read_byte(void)
 			break;
 		}
 	}
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-14] : For unlimited waiting issue in */
+/*                                                                                      */
 
     MCSDL_GPIO_SCL_SET_HIGH();
 	MCSDL_GPIO_SCL_SET_OUTPUT(1);

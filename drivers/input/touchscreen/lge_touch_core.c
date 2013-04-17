@@ -1781,10 +1781,10 @@ static void touch_work_func_a(struct work_struct *work)
 		goto err_out_critical;
 	else if (ret == -EAGAIN)
 		goto out;
-/*LGE_CHANGE_S : byungyong.hwang@lge.com touch - Touch event ignore when interrupt reg is 0x0 */
+/*                                                                                            */
 	else if (ret == -IGNORE_INTERRUPT)
 		return ;
-/*LGE_CHANGE_E : byungyong.hwang@lge.com touch - Touch event ignore when interrupt reg is 0x0 */
+/*                                                                                            */
 
 #ifdef CUST_G_TOUCH
 	/* Ghost detection solution */
@@ -3552,7 +3552,7 @@ static int touch_probe(struct i2c_client *client, const struct i2c_device_id *id
 	/* Specific device initialization */
 	touch_ic_init(ts);
 #if 1
-/*LGE_CHANGE_S : byungyong.hwang@lge.com touch - Unknown touch issue in first booting time, add soft-reset */
+/*                                                                                                         */
 		
 	if (ts->pdata->role->operation_mode){
 		disable_irq_nosync(ts->client->irq);
@@ -3576,7 +3576,7 @@ static int touch_probe(struct i2c_client *client, const struct i2c_device_id *id
 	enable_irq(ts->client->irq);
 	ts->gf_ctrl.probe = 1;
 	touch_ic_init(ts);
-/*LGE_CHANGE_E : byungyong.hwang@lge.com touch - Unknown touch issue in first booting time, add soft-reset */
+/*                                                                                                         */
 #endif
 	
 	/* Firmware Upgrade Check - use thread for booting time reduction */

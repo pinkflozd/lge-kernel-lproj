@@ -93,7 +93,7 @@ static struct hidp_session *__hidp_get_session(bdaddr_t *bdaddr)
 	return NULL;
 }
 
-// +s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 #if 0
 static struct device *hidp_get_device(struct hidp_session *session)
 {
@@ -122,7 +122,7 @@ static void __hidp_link_session(struct hidp_session *session)
 	__module_get(THIS_MODULE);
 	list_add(&session->list, &hidp_session_list);
 
-// -s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 /* Google Original
 	hci_conn_hold_device(session->conn);
 */
@@ -132,7 +132,7 @@ static void __hidp_link_session(struct hidp_session *session)
 // +s QCT_BT_COMMON_PATCH_01039341 
 static void __hidp_unlink_session(struct hidp_session *session)
 {
-	//*s QCT_BT_PATCH_SR01110096 fix not to reset the device when a HID is turned on and off repeatedly kyuseok.kim@lge.com 2013-02-20
+	//                                                                                                                                
 	/* Original
 	bdaddr_t *dst = &session->bdaddr;
 	struct hci_dev *hdev; 
@@ -156,22 +156,22 @@ static void __hidp_unlink_session(struct hidp_session *session)
 	module_put(THIS_MODULE); 
 } 
 /*
-static void __hidp_unlink_session(struct hidp_session *session)
-{
-// *s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
-// Google Original
-//	struct device *dev;
+                                                               
+ 
+                                                                               
+                  
+                      
 
-//	dev = hidp_get_device(session);
-//	if (dev)
-//
-	if (session->conn)
-// *e QCT_PATCH
-		hci_conn_put_device(session->conn);
+                                  
+           
+  
+                   
+               
+                                     
 
-	list_del(&session->list);
-	module_put(THIS_MODULE);
-}
+                          
+                         
+ 
 */ 
 // +e QCT_BT_COMMON_PATCH_01039341 
 
@@ -702,7 +702,7 @@ static int hidp_session(void *arg)
 	return 0;
 }
 
-// +s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 //static struct hci_conn *hidp_find_connection(struct hidp_session *session)
 static struct hci_conn *hidp_get_connection(struct hidp_session *session)
 {
@@ -774,7 +774,7 @@ static int hidp_setup_input(struct hidp_session *session,
 		input->relbit[0] |= BIT_MASK(REL_WHEEL);
 	}
 
-// *s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 /* Google Original
 	input->dev.parent = hidp_get_device(session);
 */
@@ -880,7 +880,7 @@ static int hidp_setup_hid(struct hidp_session *session,
 	strncpy(hid->phys, batostr(&bt_sk(session->ctrl_sock->sk)->src), 64);
 	strncpy(hid->uniq, batostr(&bt_sk(session->ctrl_sock->sk)->dst), 64);
 
-// *s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 /* Google Original
 	hid->dev.parent = hidp_get_device(session);
 */
@@ -943,7 +943,7 @@ int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, 
 	session->intr_sock = intr_sock;
 	session->state     = BT_CONNECTED;
 
-// +s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 	session->conn = hidp_get_connection(session);
 	if (!session->conn) {
 		err = -ENOTCONN;
@@ -959,7 +959,7 @@ int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, 
 	session->flags   = req->flags & (1 << HIDP_BLUETOOTH_VENDOR_ID);
 	session->idle_to = req->idle_to;
 
-// +s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 	__hidp_link_session(session);
 // +e QCT_PATCH
 
@@ -975,7 +975,7 @@ int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, 
 			goto purge;
 	}
 
-// -s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 /* Google Original
 	__hidp_link_session(session);
 */
@@ -1001,7 +1001,7 @@ int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, 
 unlink:
 	hidp_del_timer(session);
 
-// -s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 /* Google Original
 	__hidp_unlink_session(session);
 */
@@ -1021,7 +1021,7 @@ unlink:
 	session->rd_data = NULL;
 
 purge:
-// +s QCT_PATCH for bluetooth HID reconnection fail issue dongtaek.lee@lge.com 
+//                                                                             
 	__hidp_unlink_session(session);
 // +e QCT_PATCH
 

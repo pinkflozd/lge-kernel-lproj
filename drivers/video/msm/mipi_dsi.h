@@ -350,14 +350,14 @@ void mipi_dsi_cmd_mdp_busy(void);
 void update_lane_config(struct msm_panel_info *pinfo);
 #endif
 
-/* LGE_CHANGE_S : LCD ESD Protection 
- * 2012-01-30, yoonsoo@lge.com
- * LCD ESD Protection
+/*                                   
+                              
+                     
  */
 #ifdef CONFIG_LGE_LCD_ESD_DETECTION
 void esd_sw_test_lcd_panel_power_off(void);
 void esd_sw_test_lcd_panel_power_on(void);
 #endif
-/* LGE_CHANGE_E : LCD ESD Protection*/ 
+/*                                  */ 
 
 #endif /* MIPI_DSI_H */

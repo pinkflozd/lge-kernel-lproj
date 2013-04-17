@@ -63,9 +63,9 @@ static unsigned long lowmem_deathpending_timeout;
 	} while (0)
 
 
-/* LGE_CHANGE : bohyun.jung@lge.com 
- * reduce burden of lowmme_shrink() divide is expensive routine for mass-tier chipset.
- * compiler does take divide burden and use constant value. kernel/fs/proc/base.c together. */
+/*                                  
+                                                                                      
+                                                                                            */
 #if defined (CONFIG_LGE_DEATHPENDING_LMK)
 
 #ifndef OOM_SCORE_CAL 
@@ -92,7 +92,7 @@ task_notify_func(struct notifier_block *self, unsigned long val, void *data)
 
 	return NOTIFY_OK;
 }
-#endif	// end of CONFIG_LGE_DEATHPENDING_LMK
+#endif	//                                   
 
 static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 {
@@ -109,8 +109,8 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 	int other_file = global_page_state(NR_FILE_PAGES) -
 						global_page_state(NR_SHMEM);
 
-	/* LGE_CHANGE : bohyun.jung@lge.com 
-	 * return if victim is already selected to kill. prevent nested lowmem_shrink() */
+	/*                                  
+                                                                                 */
 #if defined (CONFIG_LGE_DEATHPENDING_LMK)
 	/*
 	 * If we already have a death outstanding, then bail out right away; 
@@ -129,7 +129,7 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 	for (i = 0; i < array_size; i++) {
 		if (other_free < lowmem_minfree[i] &&
 		    other_file < lowmem_minfree[i]) {
-		   /*LGE_CHANGE_S : seven.kim@lge.com low memory killer bug patch */
+		   /*                                                             */
 #ifdef CONFIG_MACH_LGE
 		   	if (lowmem_adj[i] == OOM_ADJUST_MAX)
     			min_score_adj = OOM_SCORE_ADJ_MAX;
@@ -142,7 +142,7 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 #else /*qct original*/
 			min_score_adj = lowmem_adj[i];
 #endif
-			/*LGE_CHANGE_E : seven.kim@lge.com low memory killer bug patch */
+			/*                                                             */
 			break;
 		}
 	}
@@ -176,10 +176,10 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		if (!p)
 			continue;
 
-		/* LGE_CHANGE : bohyun.jung@lge.com 2013.02.14 
-	 	 * Skip a task if it is already terminating by oom-killer.
-		 * A Signal does not reach in issued condition, and lmk continously select & kill same process repeatly.
-		 * Possible Modem crash (watchdog) due to kernel get stuck */
+		/*                                             
+                                                             
+                                                                                                          
+                                                             */
 #if defined (CONFIG_LGE_DEATHPENDING_LMK)
 		if (test_tsk_thread_flag(p, TIF_MEMDIE) || (p->flags & PF_EXITING))
 		{

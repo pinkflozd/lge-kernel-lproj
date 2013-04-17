@@ -99,11 +99,11 @@ static int suspend_prepare(void)
 	if (!suspend_ops || !suspend_ops->enter)
 		return -EPERM;
 
-/*LGE_CHANGE_S : seven.kim@lge.com patch for suspend queue corruption*/  
+/*                                                                   */  
 #ifndef CONFIG_FB_EARLYSUSPEND  
 	pm_prepare_console();
 #endif  
-/*LGE_CHANGE_E : seven.kim@lge.com patch for suspend queue corruption*/  
+/*                                                                   */  
 
 	error = pm_notifier_call_chain(PM_SUSPEND_PREPARE);
 	if (error)
@@ -117,11 +117,11 @@ static int suspend_prepare(void)
 	dpm_save_failed_step(SUSPEND_FREEZE);
  Finish:
 	pm_notifier_call_chain(PM_POST_SUSPEND);
-/*LGE_CHANGE_S : seven.kim@lge.com patch for suspend queue corruption*/  
+/*                                                                   */  
 #ifndef CONFIG_FB_EARLYSUSPEND  	
 	pm_restore_console();
 #endif  
-/*LGE_CHANGE_E : seven.kim@lge.com patch for suspend queue corruption*/  	
+/*                                                                   */  	
 	return error;
 }
 

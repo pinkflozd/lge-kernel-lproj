@@ -148,10 +148,10 @@ int msm_isp_vfe_msg_to_img_mode(struct msm_cam_media_controller *pmctl,
 			image_mode = MSM_V4L2_EXT_CAPTURE_MODE_RDI1;
 		else
 			image_mode = -1;
-	/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */	
+	/*                                                                                             */	
 	} else if (VFE_MSG_V2X_LIVESHOT_PRIMARY == vfe_msg) {
 		image_mode = MSM_V4L2_EXT_CAPTURE_MODE_V2X_LIVESHOT;
-	/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+	/*                                                                                             */
 	} else
 		image_mode = -1;
 

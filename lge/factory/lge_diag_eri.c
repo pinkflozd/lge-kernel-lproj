@@ -43,7 +43,7 @@ extern PACK(void *) diagpkt_free(PACK(void *)pkt);
 extern int eri_send_to_arm9(void* pReq, void* pRsp, unsigned int output_length);
 //extern int eri_send_to_arm9(void* pReq, void* pRsp, unsigned int output_length);
 
-/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS AP Write Test  [START]*/
+/*                                                                                */
 static int write_eri(const char *path, eri_write_req_type* write_req_ptr, eri_write_rsp_type* write_rsp_ptr)
 {
 	int write;
@@ -91,8 +91,8 @@ static int write_eri(const char *path, eri_write_req_type* write_req_ptr, eri_wr
 
 	return 1;
 }
-/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS AP Write Test  [END]*/
-/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS AP Read Test  [START]*/
+/*                                                                              */
+/*                                                                               */
 byte eri_buf[1400];
 static int read_eri(const char *path, eri_read_req_type* read_req_ptr, eri_read_rsp_type* read_rsp_ptr)
 {
@@ -152,8 +152,8 @@ static int read_eri(const char *path, eri_read_req_type* read_req_ptr, eri_read_
 	sys_close(read);
 	return read_size;
 }
-/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS AP Read Test  [END]*/
-/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS Test  [START]*/
+/*                                                                             */
+/*                                                                       */
 PACK (void *)LGE_ERI (
         PACK (void	*)req_pkt_ptr,	/* pointer to request packet  */
         uint16		pkt_len )		      /* length of request packet   */
@@ -187,9 +187,9 @@ PACK (void *)LGE_ERI (
 			write_req_ptr = (eri_write_req_type *)req_pkt_ptr;
 			write_rsp_ptr = (eri_write_rsp_type*) diagpkt_alloc (DIAG_ERI_CMD_F, sizeof(eri_write_rsp_type));
 			//for writting EFS
-			/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS Write Test EFS /eri/eri.bin   [START]*/
+			/*                                                                                               */
 			eri_send_to_arm9((void *)write_req_ptr, (void *)write_rsp_ptr, rsp_ptr_len);
-			/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS Write Test EFS /eri/eri.bin   [END]*/
+			/*                                                                                             */
 			//AP /data/eri/eri.bin write
 			err = write_eri(ERI_FILE_PATH, write_req_ptr, write_rsp_ptr);
 			if(err < 0) {
@@ -238,4 +238,4 @@ int eri_factory_direct_write(const char *path , char *eri_data, int size )
 
 	return 1;
 }
-/* LGE_CHANGE_ [jaekyung83.lee@lge.com] 2011-04-06. ERI UTS Test  [END]*/
+/*                                                                     */

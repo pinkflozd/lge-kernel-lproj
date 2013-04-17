@@ -96,7 +96,7 @@ int mms100_ISP_download_binary_data(int dl_mode)
 	int nRet = 0;
 
 	//-----------------------------------------------------
-	//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.11.08]
+	//                                                    
 	int retry_cnt = 0;
 
 #if 0
@@ -118,7 +118,7 @@ int mms100_ISP_download_binary_data(int dl_mode)
 	//------------------------
 
 	//-----------------------------------------------------
-	//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.11.08]
+	//                                                    
 	for (retry_cnt = 0; retry_cnt < 5; retry_cnt++) {
         if(dl_mode == 0x01) //MELFAS_ISP_DOWNLOAD
     		nRet = mcsdl_download( (const UINT8*) MELFAS_TS_binary, (const UINT16)MELFAS_TS_binary_nLength , 0);
@@ -308,7 +308,7 @@ static int mcsdl_download(const UINT8 *pBianry, const UINT16 unLength, INT8 IdxN
 	//printk(" ------ mcsdl_erase_flash is ...%d ------\n ", nRet);
 
 	//-----------------------------------------------------
-	//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.11.08]
+	//                                                    
 	//return nRet;
 	//-----------------------------------------------------
 
@@ -438,7 +438,7 @@ static int mcsdl_program_flash( UINT8 *pDataOriginal, UINT16 unLength, INT8 IdxN
 			//--------------------------------------
 			// start ADD DELAY
 
-			/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] :	*/
+			/*                                                       */
 			mcsdl_delay(MCSDL_DELAY_40US);
 
 			//end ADD DELAY
@@ -469,7 +469,7 @@ static int mcsdl_program_flash( UINT8 *pDataOriginal, UINT16 unLength, INT8 IdxN
             addr +=1;
 
 		//-----------------------------------------------------
-		//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.11.07]
+		//                                                    
 		#if 0 // MELFAS_ENABLE_DBG_PROGRESS_PRINT
 		printk("#");
 		#endif
@@ -505,7 +505,7 @@ static int mcsdl_program_flash( UINT8 *pDataOriginal, UINT16 unLength, INT8 IdxN
     	mcsdl_unselect_isp_mode();
 //start ADD DELAY
 //-----------------------------------------------------
-//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.11.07]
+//                                                    
 mcsdl_delay(MCSDL_DELAY_300US);
 
 //end ADD DELAY
@@ -776,9 +776,9 @@ static void mcsdl_set_ready(void)
 	MCSDL_RESETB_SET_OUTPUT();
 	MCSDL_RESETB_SET_LOW();
 
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-	TD1416085584 :	After sleeping on and off while sensing a touchscreen,
-	Touchscreen doesn't work*/
+	/*                                                       
+                                                                      
+                         */
 	mcsdl_delay(MCSDL_DELAY_25MS);						// Delay for Stable VDD
 	mcsdl_delay(MCSDL_DELAY_25MS);						// Delay for Stable VDD
 
@@ -858,7 +858,7 @@ static void mcsdl_select_isp_mode(UINT8 ucMode)
 
 
 //-----------------------------------------------------
-//@@@ [WONJINHAN : kevinzone.han@lge.com - 2011.11.08]
+//                                                    
 		//printk("%d \n", ucMode);
 
 
@@ -976,7 +976,7 @@ static void mcsdl_write_bits(UINT32 wordData, int nBits)
 					MCSDL_GPIO_SDA_SET_LOW();
 				}
 
-				/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] */
+				/*                                                     */
 				
         mcsdl_delay(MCSDL_DELAY_3US);
 				MCSDL_GPIO_SCL_SET_HIGH();		

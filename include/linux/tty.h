@@ -670,8 +670,8 @@ do {									\
 	finish_wait(&wq, &__wait);					\
 } while (0)
 
-/* LGE_CHANGE_S : wait on timeout tty function
- * 2013-01-07, [jyothishre.nk@lge.com]*/
+/*                                            
+                                      */
 
 /*
  * wait_event_interruptible_timeout_tty -- wait for a condition with the tty lock held or timeout elapses
@@ -721,7 +721,7 @@ do {									\
 	finish_wait(&wq, &__wait);					\
 } while (0)
 #endif
-/*LGE_CHANGE_E*/
+/*            */
 
 #endif /* __KERNEL__ */
 #endif

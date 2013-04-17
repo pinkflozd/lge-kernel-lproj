@@ -64,9 +64,9 @@ struct op_mode_map {
 };
 
 #ifdef CONFIG_MACH_LGE
-	/*LGE_CHANGE : 2012-10-08 Jiyeon.park(jiyeon.park@lge.com)
-	* sensor for diag bmm050
-	*/
+	/*                                                        
+                         
+ */
 static atomic_t bmm_diag = ATOMIC_INIT(0);
 static atomic_t bmm_cnt = ATOMIC_INIT(0);
 #endif
@@ -158,7 +158,7 @@ static void bmm_dump_reg(struct i2c_client *client)
 {
 	int i;
 #ifdef CONFIG_MACH_LGE
-//LGE_CHANGE : 2012-11-09 Sanghun,Lee(eee3114.@lge.com)wbt sanity check
+//                                                                     
 //wbt 412964 	'dbg_buf' array elements are used uninitialized in this function with index range: [16,63].
 	u8 dbg_buf[64] = "";
 #else
@@ -928,9 +928,9 @@ static ssize_t bmm_store_test(struct device *dev,
 }
 
 #ifdef CONFIG_MACH_LGE
-	/*LGE_CHANGE : 2012-10-08 Jiyeon.park(jiyeon.park@lge.com)
-	* sensor for diag bmm050
-	*/
+	/*                                                        
+                         
+ */
 static ssize_t bmm_x_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -1046,9 +1046,9 @@ static DEVICE_ATTR(test, S_IRUGO|S_IWUSR,
 
 static struct attribute *bmm_attributes[] = {
 #ifdef CONFIG_MACH_LGE
-	/*LGE_CHANGE : 2012-10-08 Jiyeon.park(jiyeon.park@lge.com)
-	* sensor for diag bmm050
-	*/
+	/*                                                        
+                         
+ */
 	&dev_attr_x.attr,
 	&dev_attr_y.attr,
 	&dev_attr_z.attr,
@@ -1114,7 +1114,7 @@ static int bmm_restore_hw_cfg(struct i2c_client *client)
 {
 	int err = 0;
 #ifdef CONFIG_MACH_LGE
-	//LGE_CHANGE : 2012-11-09 Sanghun,Lee(eee3114.@lge.com)wbt sanity check
+	//                                                                     
 	//wbt 412963	'value' is used uninitialized in this function.	
 	u8 value = 0;
 #else

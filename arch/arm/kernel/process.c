@@ -411,11 +411,11 @@ void __show_regs(struct pt_regs *regs)
 {
 	unsigned long flags;
 	char buf[64];
-/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+/*                                                      */
 #ifdef CONFIG_LGE_HANDLE_PANIC
 	set_crash_store_enable();
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
+/*                                                      */
 	printk("CPU:%d,%s,(%s %.*s)\n",
 		raw_smp_processor_id(), print_tainted(),
 		init_utsname()->release,
@@ -423,7 +423,7 @@ void __show_regs(struct pt_regs *regs)
 		init_utsname()->version);
 	print_symbol("PC: at %s\n", instruction_pointer(regs));
 	print_symbol("LR: at %s\n", regs->ARM_lr);
-/*LGE_CHANGE_S : seven.kim@lge.com Demigot Crash Handler*/
+/*                                                      */
 #ifdef CONFIG_LGE_HANDLE_PANIC
 #ifndef CONFIG_MACH_MSM7X25A_V3
 	printk("pc :%05lx    lr :%05lx    psr:%05lx\n"
@@ -456,7 +456,7 @@ void __show_regs(struct pt_regs *regs)
 		regs->ARM_r3, regs->ARM_r2,
 		regs->ARM_r1, regs->ARM_r0);
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com Demigot Crash Handler*/
+/*                                                      */
 
 	flags = regs->ARM_cpsr;
 	buf[0] = flags & PSR_N_BIT ? 'N' : 'n';

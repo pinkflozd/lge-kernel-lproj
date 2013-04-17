@@ -381,7 +381,7 @@ extern rwlock_t hci_cb_list_lock;
 
 /* ----- Inquiry cache ----- */
 #define INQUIRY_CACHE_AGE_MAX   (HZ*30)   /* 30 seconds */
-// *s LGBT_COMMON_PATCH_SR01017282 sunmee.choi@lge.com 2012-11-26 performance issue (opp request time)
+//                                                                                                    
 // Google Original
 //#define INQUIRY_ENTRY_AGE_MAX   (HZ*60)   /* 60 seconds */
 #define INQUIRY_ENTRY_AGE_MAX   (HZ*60*60)   /* 60 seconds */

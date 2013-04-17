@@ -128,7 +128,7 @@ static ssize_t wait_for_fb_status_show(struct kobject *kobj,
 	return ret;
 }
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Fb State Sysfs
+//                                                          
 static ssize_t fb_status_show(struct kobject *kobj,
 				       struct kobj_attribute *attr, char *buf)
 {
@@ -142,7 +142,7 @@ static ssize_t fb_status_show(struct kobject *kobj,
 	return snprintf(buf, PAGE_SIZE, "%d\n",ret_fb_state);
 }
 
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Add Fb State Sysfs
+//                                                          
 
 #define power_ro_attr(_name)				\
 	static struct kobj_attribute _name##_attr = {	\
@@ -157,17 +157,17 @@ static ssize_t fb_status_show(struct kobject *kobj,
 power_ro_attr(wait_for_fb_sleep);
 power_ro_attr(wait_for_fb_wake);
 power_ro_attr(wait_for_fb_status);
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Fb State Sysfs
+//                                                          
 power_ro_attr(fb_status);
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Add Fb State Sysfs
+//                                                          
 
 static struct attribute *g[] = {
 	&wait_for_fb_sleep_attr.attr,
 	&wait_for_fb_wake_attr.attr,
 	&wait_for_fb_status_attr.attr,
-// LGE_CHANGE_S,narasimha.chikka@lge.com, Add Fb State Sysfs
+//                                                          
 	&fb_status_attr.attr,
-// LGE_CHANGE_E,narasimha.chikka@lge.com, Add Fb State Sysfs
+//                                                          
 	NULL,
 };
 

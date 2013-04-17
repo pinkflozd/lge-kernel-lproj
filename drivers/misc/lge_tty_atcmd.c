@@ -63,9 +63,9 @@ static struct tty_driver *atcmd_tty_driver;
 static struct buf_fifo down_stream_buffer;
 static struct buf_fifo up_stream_buffer;
 
-/* Shared line status between frond and back end atcmd-tty,
- * and global mutex for synchronization.
- * 2011-05-13, hyunhui.park@lge.com
+/*                                                         
+                                        
+                                   
  */
 static int shared_line_status;
 static struct mutex atcmd_status_lock;
@@ -261,8 +261,8 @@ static int atcmd_tty_chars_in_buffer(struct tty_struct *tty)
 	return n_read;
 }
 
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
- * temporally blocked.
+/*                                                  
+                      
  */
  #if 0 /*please remove #if 0, when you porting*/
 static int atcmd_tty_tiocmget(struct tty_struct *tty, struct file *file)
@@ -355,7 +355,7 @@ static int atcmd_tty_tiocmset(struct tty_struct *tty, struct file *file,
 	return 0;
 }
 #endif
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting*/
+/*                                                  */
 
 static void atcmd_tty_unthrottle(struct tty_struct *tty)
 {
@@ -437,15 +437,15 @@ static struct tty_operations atcmd_tty_ops = {
 	.write_room = atcmd_tty_write_room,
 	.chars_in_buffer = atcmd_tty_chars_in_buffer,
 	.unthrottle = atcmd_tty_unthrottle,
-/*LGE_CHANGE_S : seven.kim@lge.com kernel3.0 porting
- * function parameter was different from kernel2.6.38
- * temporally blocked, please check this
+/*                                                  
+                                                     
+                                        
  */
 #if 0	
 	.tiocmget = atcmd_tty_tiocmget,
 	.tiocmset = atcmd_tty_tiocmset,
 #endif	
-/*LGE_CHANGE_E : seven.kim@lge.com kernel3.0 porting	*/
+/*                                                   */
 };
 
 static int __init lge_tty_atcmd_init(void)

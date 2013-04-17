@@ -65,10 +65,10 @@ static void mdp_dma2_update_lcd(struct msm_fb_data_type *mfd)
 	struct msm_fb_panel_data *pdata =
 	    (struct msm_fb_panel_data *)mfd->pdev->dev.platform_data;
 #else
-	/* LGE_CHANGE
-	 * FIXME: EBI2 LCD support. If QCT is implement, should be removed.
-	 * 2011-06-17, bongkyu.kim@lge.com
-	 */
+	/*           
+                                                                    
+                                   
+  */
 #ifdef CONFIG_FB_MSM_EBI2
 	struct msm_fb_panel_data *pdata =
 		(struct msm_fb_panel_data *)mfd->pdev->dev.platform_data;
@@ -227,10 +227,10 @@ static void mdp_dma2_update_lcd(struct msm_fb_data_type *mfd)
 		 MDP_OUTP(MDP_BASE + 0xF1004, 0x01);
 	}
 #ifdef CONFIG_FB_MSM_EBI2
-	/* LGE_CHANGE
-	 * FIXME: EBI2 LCD support. If QCT is implement, should be removed.
-	 * 2011-06-17, bongkyu.kim@lge.com
-	 */
+	/*           
+                                                                    
+                                   
+  */
 	else if (mfd->panel_info.type == EBI2_PANEL) {
 		/* setting EBI2 LCDC write window */
 		pdata->set_rect(iBuf->dma_x, iBuf->dma_y, iBuf->dma_w,

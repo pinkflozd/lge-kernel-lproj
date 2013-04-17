@@ -17,9 +17,9 @@
 
 static struct msm_panel_info pinfo;
 
-/* LGE_CHANGE_S : U0 Display Panel Framerate Control
- * 2012-01-14, yoonsoo@lge.com
- * U0 Display Panel Framerate Control 
+/*                                                  
+                              
+                                      
  */
 static struct mipi_dsi_phy_ctrl dsi_video_mode_phy_db =
 {
@@ -34,6 +34,7 @@ static struct mipi_dsi_phy_ctrl dsi_video_mode_phy_db =
 	/* strength */
 	{0xbb, 0x02, 0x06, 0x00},
 	/* pll control */
+	/*0x7C*/
 	{0x00, 0x7C, 0x31, 0xD2, 0x00, 0x40, 0x37, 0x62, 0x01, 0x0F, 0x07, 0x05, 0x14, 0x03, 0x0, 0x0, 0x0, 0x20, 0x0, 0x02, 0x0}
 };
 
@@ -52,10 +53,10 @@ static int __init mipi_video_hx8379a_hvga_pt_init(void)
 	pinfo.pdest = DISPLAY_1;
 	pinfo.wait_cycle = 0;
 	pinfo.bpp = 24;
-	pinfo.lcdc.h_back_porch = 118; //60;
+	pinfo.lcdc.h_back_porch = 60;
 	pinfo.lcdc.h_front_porch = 47;
-	pinfo.lcdc.h_pulse_width = 1; //60;
-	pinfo.lcdc.v_back_porch = 10; //9;
+	pinfo.lcdc.h_pulse_width = 60;
+	pinfo.lcdc.v_back_porch = 9;
 	pinfo.lcdc.v_front_porch = 14;
 	pinfo.lcdc.v_pulse_width = 4;
 	pinfo.clk_rate = 385249680;
@@ -70,7 +71,7 @@ static int __init mipi_video_hx8379a_hvga_pt_init(void)
 
 	pinfo.mipi.mode = DSI_VIDEO_MODE;
 
-//LGE_CHANGE_S [Kiran] Change LCD sleep sequence
+//                                              
 #if 0 //for LP mode from jangsu
 	pinfo.mipi.pulse_mode_hsa_he = TRUE;
 	pinfo.mipi.hfp_power_stop = FALSE;
@@ -87,7 +88,7 @@ static int __init mipi_video_hx8379a_hvga_pt_init(void)
 	pinfo.mipi.bllp_power_stop = TRUE;
 
 #endif
-//LGE_CHANGE_S [Kiran] Change LCD sleep sequence
+//                                              
 
 	pinfo.mipi.traffic_mode = DSI_NON_BURST_SYNCH_EVENT;//DSI_NON_BURST_SYNCH_PULSE;//DSI_NON_BURST_SYNCH_EVENT;
 	pinfo.mipi.dst_format = DSI_VIDEO_DST_FORMAT_RGB888;
@@ -98,7 +99,7 @@ static int __init mipi_video_hx8379a_hvga_pt_init(void)
 	pinfo.mipi.t_clk_post = 0x04;
 	pinfo.mipi.t_clk_pre = 0x17;
 	pinfo.mipi.stream = 0; /* dma_p */
-	pinfo.mipi.mdp_trigger = DSI_CMD_TRIGGER_NONE; /*DSI_CMD_TRIGGER_SW;*/
+	pinfo.mipi.mdp_trigger = DSI_CMD_TRIGGER_SW; /*DSI_CMD_TRIGGER_SW;*/
 	pinfo.mipi.dma_trigger = DSI_CMD_TRIGGER_SW;
 	pinfo.mipi.frame_rate = 60;	/* 60fps, 50fps, 30fps */
 

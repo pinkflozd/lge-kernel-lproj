@@ -952,10 +952,10 @@ int bdi_writeback_thread(void *data)
 	while (!kthread_freezable_should_stop(NULL)) {
 #ifdef CONFIG_LGE_BDI_TIMER_BUG_PATCH
 #ifdef CONFIG_LGE_BDI_TIMER_BUG_PATCH_LOG
-		/* FIXME : for getting debugging information
-		 * this should be removed after debugging.
-		 * 2011-08-01, cleaneye.kim@lge.com
-		 */
+		/*                                          
+                                            
+                                     
+   */
 		if (wb->wakeup_timer.entry.prev == NULL) {
 			printk(KERN_INFO"%s: wakeup timer is already removed\n", __func__);
 			printk(KERN_INFO"%s: current jiffies %lu\n", __func__, jiffies);
@@ -970,23 +970,23 @@ int bdi_writeback_thread(void *data)
 		}
 #endif
 		/*
-		 * This patch is added for preventing from kernel panic which is
-		 * generated during executing bdi_writeback_thread(). Root cause of
-		 * this kernel panic starts from the synchronization problem between
-		 * kernel threads. When mmc card is once removed, kernel tries to
-		 * unregister data structures of bdi and delete bdi timer in kthread
-		 * context. But, if bdi writeback kthread is already in execution,
-		 * there is a probablity that that kthread tries to delete bdi timer
-		 * which has been deleted already.
-		 * In some cases, timer list data are abnormal. "prev" pointer
-		 * has NULL, but "next" pointer has non-NULL. This case is very
-		 * abnormal. I think that this case is caused by synchronization
-		 * problem between kernel threads.
-		 * In that case, "del_timer(&wb->wakeup_timer)" code can generate
-		 * kernel panic. So, I add the codes which checks whether abnormal
-		 * timer list data. If so, force timer list to be initialized.
-		 * 2011-08-11, cleaneye.kim@lge.com
-		 */
+                                                                  
+                                                                     
+                                                                      
+                                                                   
+                                                                      
+                                                                    
+                                                                      
+                                    
+                                                                
+                                                                 
+                                                                  
+                                    
+                                                                   
+                                                                    
+                                                                
+                                     
+   */
 		if (wb->wakeup_timer.entry.prev == NULL &&
 			wb->wakeup_timer.entry.next != NULL) {
 #ifdef CONFIG_LGE_BDI_TIMER_BUG_PATCH_LOG

@@ -42,65 +42,65 @@ static struct msm_camera_i2c_reg_conf hi542_groupoff_settings[] = {
 };
 
 static struct msm_camera_i2c_reg_conf hi542_prev_settings[] = {
-	/* LGE_CHANGE_S : modify for purple captured image, patch by hynix.
-	 * 2012-08-02, jisun.no@lge.com, 
-	 * remove windowing register
-	 */
+	/*                                                                 
+                                  
+                             
+  */
 	//{0x0020, 0x00},
 	//{0x0021, 0x00},
 	//{0x0022, 0x00},
 	//{0x0023, 0x00},						
-	/* LGE_CHANGE_E : modify for purple captured image, patch by hynix. */
+	/*                                                                  */
 	{0x0119, 0x00},
 	{0x011A, 0x15},
 	{0x011B, 0xC0},
 
 	{0x0010, 0x01},
 
-	/* LGE_CHANGE_S : Rotate preview frame
-	 * 2011-11-29, donghyun.kwon@lge.com, 
-	 * Rotate frame 180 degrees -> no flip, no mirror
-	 */
+	/*                                    
+                                       
+                                                  
+  */
 	{0x0011, 0x00},
-	/* LGE_CHANGE_E : Rotate preview frame */
+	/*                                     */
 	{0x0500, 0x19}, //1B}, LSC OFF
 
 	{0x0630, 0x05},
 	{0x0631, 0x08},
 	{0x0632, 0x03},
 	{0x0633, 0xC8},
-//	{0x0674, 0x03},   /* LGE_CHANGE : donghyun.kwon@lge.com, skip frame patch by qct */
+//                                                                                    
 	{0x0901, 0x22},//,-/-/H_ANABIN[1:0]/V_MONI[3:0]  ;
 };
 
 static struct msm_camera_i2c_reg_conf hi542_snap_settings[] = {
-	/* LGE_CHANGE_S : modify for purple captured image, patch by hynix.
-	 * 2012-08-02, jisun.no@lge.com, 
-	 * remove windowing register
-	 */
+	/*                                                                 
+                                  
+                             
+  */
 	//{0x0020, 0x00},
 	//{0x0021, 0x0c},
 	//{0x0022, 0x00},
 	//{0x0023, 0x00},
-	/* LGE_CHANGE_E : modify for purple captured image, patch by hynix. */
+	/*                                                                  */
 	{0x0119, 0x00},
 	{0x011A, 0x2b},
 	{0x011B, 0x80},
 
 	{0x0010, 0x00},
-	/* LGE_CHANGE_S : Rotate preview frame
-	 * 2011-11-29, donghyun.kwon@lge.com, 
-	 * Rotate frame 180 degrees -> no flip, no mirror
-	 */
+	/*                                    
+                                       
+                                                  
+  */
 	{0x0011, 0x00},
-	/* LGE_CHANGE_E : Rotate preview frame */
+	/*                                     */
 	{0x0500, 0x11}, //13}, LSC OFF
 
 	{0x0630, 0x0A},
 	{0x0631, 0x10},//30},
 	{0x0632, 0x07},
 	{0x0633, 0x90},//A8},
-//	{0x0674, 0x03},  /* LGE_CHANGE : donghyun.kwon@lge.com, skip frame patch by qct */
+//                                                                                   
 };
 
 static struct msm_camera_i2c_reg_conf hi542_recommend_settings[] = {	
@@ -146,7 +146,7 @@ static struct msm_camera_i2c_reg_conf hi542_recommend_settings[] = {
 	{0x0058, 0x08}, /* man_spec_edof_ctrl_edof_fw_spare_0 Gain x7 */
 	{0x0059, 0x08}, /* man_spec_edof_ctrl_edof_fw_spare_0 Gain x7 */
 	{0x005A, 0x08}, /* man_spec_edof_ctrl_edof_fw_spare_0 Gain x7 */
-	{0x005B, 0x08}, /* man_spec_edof_ctrl_edof_fw_spare_0 Gain x7 */ /* LGE_CHANGE : jisun.no@lge.com, 02->08 modify for purple captured image, patch by hynix. */
+	{0x005B, 0x08}, /* man_spec_edof_ctrl_edof_fw_spare_0 Gain x7 */ /*                                                                                         */
 	{0x0070, 0x00}, //03}, EMI OFF
 //	{0x0080, 0xC0}, /* man_spec_edof_ctrl_edof_fw_spare_0 Gain x7 */
 	{0x0081, 0x01},//09}, //0B}, BLC scheme
@@ -864,15 +864,15 @@ int32_t hi542_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 	int32_t rc = 0;
 	static int csi_config;
 
-	pr_err("%s : E\n", __func__); // sungmin.cho@lge.com
+	pr_err("%s : E\n", __func__); //                    
 	// s_ctrl->func_tbl->sensor_stop_stream(s_ctrl);
 	msleep(50);
 	if (update_type == MSM_SENSOR_REG_INIT) {
 		CDBG("Register INIT\n");
 		s_ctrl->curr_csi_params = NULL;
 		msm_sensor_enable_debugfs(s_ctrl);
-/*LGE_CHANGE_S : 2012-12-05 mjoh@lge.com, Hi542 sensor stabilization from ICS,
-  apply X-shutdown mode,sensor reset stabilization*/
+/*                                                                            
+                                                  */
 		msm_camera_i2c_write(s_ctrl->sensor_i2c_client,
 			0x0001, 0x02,MSM_CAMERA_I2C_BYTE_DATA);/* SW reset */
 		msm_camera_i2c_write(s_ctrl->sensor_i2c_client,
@@ -880,7 +880,7 @@ int32_t hi542_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 		msm_camera_i2c_write(s_ctrl->sensor_i2c_client,
 			0x03d4, 0x18,MSM_CAMERA_I2C_BYTE_DATA);/* LDO level */
 		msleep(50);
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com, Hi542 sensor stabilization from ICS */
+/*                                                                             */
 		msm_sensor_write_init_settings(s_ctrl);
 		csi_config = 0;
 	} else if (update_type == MSM_SENSOR_UPDATE_PERIODIC) {
@@ -913,7 +913,7 @@ int32_t hi542_sensor_setting(struct msm_sensor_ctrl_t *s_ctrl,
 		s_ctrl->func_tbl->sensor_start_stream(s_ctrl);
 //		msleep(50);
 	}
-	printk("%s : X\n", __func__); // sungmin.cho@lge.com
+	printk("%s : X\n", __func__); //                    
 	return rc;
 }
 int32_t hi542_sensor_write_exp_gain1(struct msm_sensor_ctrl_t *s_ctrl,

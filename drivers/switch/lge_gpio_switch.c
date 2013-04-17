@@ -26,9 +26,9 @@
 #include <linux/wakelock.h>
 #include CONFIG_LGE_BOARD_HEADER_FILE
 
-/* LGE_CHANGE_S [yangwook.lim@lge.com] 2012-02-03 : HOOK KEY ISSUE */
+/*                                                                 */
 #include <linux/delay.h>
-/* LGE_CHANGE_E [yangwook.lim@lge.com] 2012-02-03 : HOOK KEY ISSUE */
+/*                                                                 */
 
 static LIST_HEAD(switchs);
 
@@ -76,30 +76,30 @@ static void gpio_switch_work(struct work_struct *work)
 	if (data->work_func) {
 		state = data->work_func(&value);
 		if (state) {
-/* LGE_CHANGE_S :	yangwook.lim@lge.com 2012.02.02, Desc: Earjack 4pole hook key issue when it is clicked twice.  */
+/*                                                                                                               */
 			headset_type = value;
 			input_report_switch(data->ipdev, headset_type, state);
-/* LGE_CHANGE_S [yangwook.lim@lge.com] 2012-03-01 : irq issue */
+/*                                                            */
 #if 0
 			if (value == SW_MICROPHONE_INSERT) {
 				for (i = 0; i < data->num_key_gpios; ++i)
 					enable_irq(gpio_to_irq(data->key_gpios[i]));
 			}
 #endif
-/* LGE_CHANGE_E [yangwook.lim@lge.com] 2012-03-01 : irq issue */
+/*                                                            */
 
 		} else {
-/* LGE_CHANGE_S [yangwook.lim@lge.com] 2012-03-01 : irq issue */
+/*                                                            */
 #if 0
 			if (headset_type == SW_MICROPHONE_INSERT) {
 				for (i = 0; i < data->num_key_gpios; ++i)
 					disable_irq(gpio_to_irq(data->key_gpios[i]));
 			}
 #endif
-/* LGE_CHANGE_E [yangwook.lim@lge.com] 2012-03-01 : irq issue */
+/*                                                            */
 			headset_type = value;
 			input_report_switch(data->ipdev, headset_type, state);
-/* LGE_CHANGE_S :	yangwook.lim@lge.com 2012.02.02, Desc: Earjack 4pole hook key issue when it is clicked twice.  */
+/*                                                                                                               */
 		}
 
 		switch_set_state(&data->sdev, value);
@@ -137,13 +137,13 @@ static irqreturn_t key_gpio_irq_handler(int irq, void *dev_id)
 	struct lge_gpio_switch_data *switch_data =
 	    (struct lge_gpio_switch_data *)dev_id;
 
-	/*LGE_CHANGE_S : jaewoo1.park@lge.com - hook-key event handled in android on sleep status*/
+	/*                                                                                       */
         if (switch_data->wakeup_flag) {
                 if(wake_lock_active(&switch_data->event_wakelock))
                         wake_unlock(&switch_data->event_wakelock);
                 wake_lock_timeout(&switch_data->event_wakelock, 3 * HZ);
         }
-	/*LGE_CHANGE_E*/
+	/*            */
 
 	schedule_work(&switch_data->key_work);
 	return IRQ_HANDLED;
@@ -348,9 +348,9 @@ static int lge_gpio_switch_probe(struct platform_device *pdev)
 		if (switch_data->wakeup_flag)
 			irq_set_irq_wake(gpio_to_irq(switch_data->key_gpios[index]), 1);
 
-/*LGE_CHANGE_S : jaewoo1.park@lge.com - remove disable_irq(because occured irq pending problem)*/
+/*                                                                                             */
 //		disable_irq(gpio_to_irq(switch_data->key_gpios[index]));
-/*LGE_CHANGE_S */
+/*             */
 	}
 	printk("lge_gpio_switch_probe :: 9 %d\n", ++k);
 

@@ -72,11 +72,11 @@ extern uint32 mdp_intr_mask;
 #define MDPOP_SHARPENING	BIT(11) /* enable sharpening */
 #define MDPOP_BLUR		BIT(12) /* enable blur */
 #define MDPOP_FG_PM_ALPHA       BIT(13)
-/* vinay.bhooma@lge.com TD Fix issue 261189
- * QUALCOMM Patch for SR#01078394 - Screen flickers on launching opera for 1st time.
- * Target : UO/P700 
- * Screen flickers for target which support MDP Composition.
- * With GPU Composition model e.g. V3 screen flickering issue is not observed.
+/*                                         
+                                                                                    
+                    
+                                                            
+                                                                              
 */ 
 #define MDPOP_LAYER_IS_FG       BIT(14)
 /**End of QUALCOMM Patch for SR#01078394 - Screen flickers on launching opera for 1st time */
@@ -622,9 +622,9 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define DMA_DSTC2R_5BITS BIT(4)
 
 #ifdef CONFIG_FB_MSM_EBI2
-/* LGE_CHANGE
- * FIXME: EBI2 LCD support. If QCT is implement, should be removed.
- * 2011-06-17, bongkyu.kim@lge.com
+/*           
+                                                                   
+                                  
  */
 #define DMA_PACK_TIGHT                      0
 #else
@@ -826,15 +826,15 @@ static inline int mdp4_lcdc_on(struct platform_device *pdev)
 }
 #endif
 
-/* LGE_CHANGE_S : LCD ESD Protection 
- * 2012-01-30, yoonsoo@lge.com
- * LCD ESD Protection
+/*                                   
+                              
+                     
  */
 #ifdef CONFIG_LGE_LCD_ESD_DETECTION
 void esd_dma_dsi_panel_off(void);
 void esd_dma_dsi_panel_on(void);
 #endif
-/* LGE_CHANGE_E : LCD ESD Protection*/
+/*                                  */
 
 void set_cont_splashScreen_status(int);
 

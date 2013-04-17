@@ -27,11 +27,11 @@
 ** =========================================================================
 */
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 #include <mach/gpio.h>
 #include <linux/io.h>
 #include <linux/gpio.h>
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
 #ifdef IMMVIBESPIAPI
 #undef IMMVIBESPIAPI
@@ -46,7 +46,7 @@
 
 #define PWM_DUTY_MAX    579 /* 13MHz / (579 + 1) = 22.4kHz */
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 #define GPIO_VIBE_PWM	96 
 #define GPIO_VIBE_EN	85
 
@@ -120,11 +120,11 @@ volatile void __iomem *MSM_CLK_BASE ;
 #define HWIO_GP_NS_REG_CNTL_VAL_BMSK  0xfff
 
 
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
 static bool g_bAmpEnabled = false;
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 
 static void GP_CLK_EN(bool en_gp_clk)
 {
@@ -269,7 +269,7 @@ static int vibrator_gpio_config(int enable)
 
 }
 
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
 /*
 ** Called to disable amp (disable output force)
@@ -282,13 +282,13 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpDisable(VibeUInt8 nActuatorIndex
 
         g_bAmpEnabled = false;
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 		gpio_set_value(GPIO_VIBE_EN,GPIO_LEVEL_LOW);
 	
 		vibrator_pwm_set(0,0);
 		vibrator_power_set(0);
 
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
     }
 
     return VIBE_S_SUCCESS;
@@ -306,7 +306,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpEnable(VibeUInt8 nActuatorIndex)
 
         g_bAmpEnabled = true;
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 		vibrator_power_set(1);
 		vibrator_pwm_set(1,0);  
 
@@ -315,7 +315,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpEnable(VibeUInt8 nActuatorIndex)
     else{
 		DbgOut(("ImmVibeSPI_ForceOut_AmpEnabled [%d]\n",g_bAmpEnabled));
     }
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
     return VIBE_S_SUCCESS;
 }
@@ -337,7 +337,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_Initialize(void)
     ** ImmVibeSPI_ForceOut_AmpDisable for each actuator (provide the actuator index as
     ** input argument).
     */
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
     MSM_CLK_BASE = ioremap(MSM_CLK_PHYS,MSM_CLK_SIZE);	
 	
 	if(!MSM_CLK_BASE){
@@ -346,7 +346,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_Initialize(void)
 	}
 
 	vibrator_gpio_config(CONFIG_ON);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
 	ImmVibeSPI_ForceOut_AmpDisable(0);
 
@@ -372,7 +372,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_Terminate(void)
 	
     ImmVibeSPI_ForceOut_AmpDisable(0);
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
 
     vibrator_gpio_config(CONFIG_OFF);
     
@@ -380,7 +380,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_Terminate(void)
 	    iounmap(MSM_CLK_BASE);
     	MSM_CLK_BASE = 0 ;
     }	
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
 
     return VIBE_S_SUCCESS;
 }
@@ -415,7 +415,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex
 
     /* Check the Force value with Max and Min force value */
 
-//[LGSI_SP4_BSP_BEGIN][kirankumar.vm@lge.com]
+//                                           
     if (nForce > 127){
     	nForce = 127;
 	goto set;
@@ -431,7 +431,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex
 
 set:
     vibrator_pwm_set(1, nForce);
-//[LGSI_SP4_BSP_END][kirankumar.vm@lge.com]
+//                                         
     return VIBE_S_SUCCESS;
 }
 

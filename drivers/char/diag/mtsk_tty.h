@@ -94,7 +94,7 @@
 #define LT_CABLE_130K	7
 #define LT_CABLE_910K	11
 
-/* Use SMEM_ID_VENDOR1 for LGE pif detect information. */
+/*                                                     */
 #define SMEM_ID_VENDOR1	135
 
 /* TTY driver status */

@@ -481,17 +481,17 @@ error:
 
 DEFINE_MUTEX(mdp_lut_push_sem);
 static int mdp_lut_i;
-// LGE_CHANGE_S, sohyun.nam@lge.com
+//                                 
 //#define LCDCal_LUT_enable	1 //sohyun.nam
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 extern int g_lge_lcd_k_cal[6];
 
 uint32 lge_gc_lut[] = {	
 
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 12-11-26, for V7 HW_PP2st */
-/* LGE_CHANGE_S, jungrock.oh@lge.com, 2012-12-07, add U0_featuring for at_cmd*/
-#if defined(CONFIG_MACH_MSM8X25_V7)||defined(CONFIG_MACH_MSM7X27A_U0) //sohyun.nam@lge.com, 12-11-26, for V7 HW_PP2st lut_test_tune_25
-/* LGE_CHANGE_E, jungrock.oh@lge.com, 2012-12-07, add U0_featuring for at_cmd*/
+/*                                                             */
+/*                                                                           */
+#if defined(CONFIG_MACH_MSM8X25_V7)||defined(CONFIG_MACH_MSM7X27A_U0) //                                                              
+/*                                                                           */
 0x00000000,
 0x00010101,
 0x00010101,
@@ -748,9 +748,9 @@ uint32 lge_gc_lut[] = {
 0x00FDFDFD,
 0x00FEFEFE,
 0x00FFFFFF,
-/* LGE_CHANGE_E, sohyun.nam@lge.com, 12-11-26, for V7 HW_PP2st */	
-#elif defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
-#if 1/*2013-01-03 junghoon.kim(junghoon79.kim@lge.com) V3 LUT: 01/03 tune*/
+/*                                                             */	
+#elif defined(CONFIG_MACH_MSM7X25A_V3)
+#if 1/*                                                                  */
 0x00000000,0x00010001,0x00020102,0x00030203,0x00040304,0x00050405,0x00060506,0x00070607,
 0x00080708,0x00090809,0x000a090a,0x000b0a0b,0x000c0b0c,0x000d0c0d,0x000e0d0e,0x000f0e0f,
 0x00100f10,0x00111011,0x00121112,0x00131213,0x00141314,0x00151415,0x00161516,0x00171617,
@@ -783,7 +783,7 @@ uint32 lge_gc_lut[] = {
 0x00e8e3e8,0x00e9e4e9,0x00eae5ea,0x00ebe7eb,0x00ece9ec,0x00edebed,0x00eeedee,0x00efeeef,
 0x00f0f0f0,0x00f1f1f1,0x00f2f2f2,0x00f3f3f3,0x00f4f4f4,0x00f5f5f5,0x00f6f6f6,0x00f7f7f7,
 0x00f8f8f8,0x00f9f9f9,0x00fafafa,0x00fbfbfb,0x00fcfcfc,0x00fdfdfd,0x00fefefe,0x00ffffff,
-#else/*2012-11-29 junghoon.kim(junghoon79.kim@lge.com) V3 LUT: linear lut*/
+#else/*                                                                  */
 0x00000000, 0x00010101, 0x00020202, 0x00030303,0x00040404, 0x00050505, 0x00060606, 0x00070707,
 0x00080808, 0x00090909, 0x000a0a0a, 0x000b0b0b,0x000c0c0c, 0x000d0d0d, 0x000e0e0e, 0x000f0f0f,
 0x00101010, 0x00111111, 0x00121212, 0x00131313,0x00141414, 0x00151515, 0x00161616, 0x00171717,
@@ -817,8 +817,8 @@ uint32 lge_gc_lut[] = {
 0x00f0f0f0, 0x00f1f1f1, 0x00f2f2f2, 0x00f3f3f3,0x00f4f4f4, 0x00f5f5f5, 0x00f6f6f6, 0x00f7f7f7,
 0x00f8f8f8, 0x00f9f9f9, 0x00fafafa, 0x00fbfbfb,0x00fcfcfc, 0x00fdfdfd, 0x00fefefe, 0x00ffffff,
 #endif
-#else  //  yangwook.lim@lge.com [2012-02-20] 
-/* LGE_CHANGE_S, sohyun.nam@lge.com, porting U0 LUT value */
+#else  //                                    
+/*                                                        */
 0x00000000,
 0x00010101,
 0x00020202,
@@ -1075,7 +1075,7 @@ uint32 lge_gc_lut[] = {
 0x00FDFFEB,
 0x00FEFFEC,
 0x00FFFFED,
-/* LGE_CHANGE_E, sohyun.nam@lge.com, porting U0 LUT value */
+/*                                                        */
 
 #endif
 };
@@ -1372,10 +1372,10 @@ static int mdp_lut_initial_hw_update(void )
 		g = lge_gc_lut[i];
 		b = lge_gc_lut[i];
 
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 2012-11-07, to swap cal_R and cal_B for V7 for lut tuing*/
-/* LGE_CHANGE_S, jungrock.oh@lge.com, 2012-12-07, add U0_featuring for at_cmd*/
+/*                                                                                           */
+/*                                                                           */
 #if defined(CONFIG_MACH_MSM8X25_V7)||defined(CONFIG_MACH_MSM7X27A_U0)
-/* LGE_CHANGE_E, jungrock.oh@lge.com, 2012-12-07, add U0_featuring for at_cmd*/
+/*                                                                           */
 		cal_B = (uint32)((((r & 0xff0000) >> 16) * gain_R) / 100000);
 		cal_G = (uint32)((((g & 0x00ff00) >> 8)  * gain_G) / 100000);
 		cal_R = (uint32) (((b & 0x0000ff)        * gain_B) / 100000);
@@ -1384,7 +1384,7 @@ static int mdp_lut_initial_hw_update(void )
 		cal_G = (uint32)((((g & 0x00ff00) >> 8)  * gain_G) / 100000);
 		cal_B = (uint32) (((b & 0x0000ff)        * gain_B) / 100000);
 #endif
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 2012-11-07, to swap cal_R and cal_B for V7 for lut tuing*/
+/*                                                                                           */
 
 #ifdef CONFIG_FB_MSM_MDP40
 		MDP_OUTP(MDP_BASE + 0x94800 + (0x400*mdp_lut_i) + i*4, ((cal_G & 0xff) | ((cal_B & 0xff) << 8) | (cal_R << 16)));
@@ -1397,7 +1397,7 @@ static int mdp_lut_initial_hw_update(void )
 	return 0;
 }
 
-/*sohyun.nam@lge.com 12-02-10, add lut parsing*/
+/*                                            */
 int mdp_lut_init_update_lcdc(void)
 {
 	int ret;
@@ -1422,8 +1422,8 @@ int mdp_lut_init_update_lcdc(void)
 	return 0;
 }
 
-#endif /* CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE */
-// LGE_CHANGE_E, sohyun.nam@lge.com
+#endif /*                                  */
+//                                 
 
 static int mdp_lut_hw_update(struct fb_cmap *cmap)
 {
@@ -1832,10 +1832,12 @@ int _mdp_histogram_ctrl(boolean en, struct mdp_hist_mgmt *mgmt)
 	int ret = 0;
 
 	mutex_lock(&mgmt->mdp_hist_mutex);
-	if (mgmt->mdp_is_hist_start && !mgmt->mdp_is_hist_data && en)
-		ret = mdp_histogram_enable(mgmt);
-	else if (mgmt->mdp_is_hist_data && !en)
-		ret = mdp_histogram_disable(mgmt);
+	if (mgmt->mdp_is_hist_start == TRUE) {
+		if (en)
+			ret = mdp_histogram_enable(mgmt);
+		else
+			ret = mdp_histogram_disable(mgmt);
+	}
 	mutex_unlock(&mgmt->mdp_hist_mutex);
 
 	if (en == false)
@@ -2800,20 +2802,20 @@ irqreturn_t mdp_isr(int irq, void *ptr)
 			dma = &dma2_data;
 			spin_lock_irqsave(&mdp_spin_lock, flag);
 			vsync_isr = vsync_cntrl.vsync_irq_enabled;
-			// QCT_PATCH_S, SR#01031271 bohyun.jung@lge.com
+			//                                             
 			// SR 01031271 - 'mdp_disable_irq_nosync: MDP IRQ term-0x1000 is NOT set, mask=1 irq=1' 
 			disabled_clocks = vsync_cntrl.disabled_clocks;
-			// QCT_PATCH_E, SR#01031271 bohyun.jung@lge.com
+			//                                             
 			/* let's disable LCDC interrupt */
 			if (dma->waiting) {
 				dma->waiting = FALSE;
 				complete(&dma->comp);
 			}
 
-			// QCT_PATCH_S, SR#01031271 bohyun.jung@lge.com
+			//                                             
 			if (!vsync_isr && !vsync_cntrl.disabled_clocks) {
 			//if (!vsync_isr) {
-			// QCT_PATCH_E, SR#01031271 bohyun.jung@lge.com
+			//                                             
 				mdp_intr_mask &= ~LCDC_FRAME_START;
 				outp32(MDP_INTR_ENABLE, mdp_intr_mask);
 				mdp_disable_irq_nosync(MDP_VSYNC_TERM);
@@ -2823,10 +2825,10 @@ irqreturn_t mdp_isr(int irq, void *ptr)
 			}
 			spin_unlock_irqrestore(&mdp_spin_lock, flag);
 
-			// QCT_PATCH_S, SR#01031271 bohyun.jung@lge.com
+			//                                             
 			if (!vsync_isr && !disabled_clocks)
 			//if (!vsync_isr)
-			// QCT_PATCH_E, SR#01031271 bohyun.jung@lge.com
+			//                                             
 				mdp_pipe_ctrl(MDP_CMD_BLOCK,
 					MDP_BLOCK_POWER_OFF, TRUE);
 
@@ -2872,10 +2874,10 @@ irqreturn_t mdp_isr(int irq, void *ptr)
 		complete(&dma->comp);
 #else
 #ifdef CONFIG_FB_MSM_EBI2
-			/* LGE_CHANGE
-			 * FIXME: EBI2 LCD support. If QCT is implement, should be removed.
-			 * 2011-06-17, bongkyu.kim@lge.com
-			 */
+			/*           
+                                                                      
+                                     
+    */
 		if (mdp_prim_panel_type == MIPI_CMD_PANEL ||
 				mdp_prim_panel_type == EBI2_PANEL) {
 #else
@@ -3332,7 +3334,7 @@ static int mdp_irq_clk_setup(struct platform_device *pdev,
 	return 0;
 }
 
-// LGE_CHANGE_S, sohyun.nam@lge.com
+//                                 
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 #define __LGE_TO_INT(ch)		((ch)-'0')
 int k_cal_flag = 0;
@@ -3343,21 +3345,21 @@ int mdp_write_kcal_reg(const char* buf)
 	uint32 r, g, b;
 	uint32 cal_R, cal_G, cal_B;
 	uint32 gain_R, gain_G, gain_B;
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 2012-10-26, to swap cal_R and cal_B for V7*/
-/* LGE_CHANGE_S, jungrock.oh@lge.com, 2012-12-09, add cal_R , cal_G and cal_C for U0*/
+/*                                                                             */
+/*                                                                                  */
 #if defined(CONFIG_MACH_MSM7X27A_U0)
 	int iRed, iGreen, iBlue;
 	sscanf(buf, "%d,%d,%d", &iRed, &iGreen, &iBlue);
 	cal_R = (unsigned int)iRed;
 	cal_G = (unsigned int)iGreen;
 	cal_B = (unsigned int)iBlue;
-/* LGE_CHANGE_E, jungrock.oh@lge.com, 2012-12-09, add cal_R , cal_G and cal_C for U0*/
+/*                                                                                  */
 #else 
 	cal_R = __LGE_TO_INT(buf[0])*100 + __LGE_TO_INT(buf[1])*10 + __LGE_TO_INT(buf[2]);
         cal_G = __LGE_TO_INT(buf[3])*100 + __LGE_TO_INT(buf[4])*10 + __LGE_TO_INT(buf[5]);
         cal_B = __LGE_TO_INT(buf[6])*100 + __LGE_TO_INT(buf[7])*10 + __LGE_TO_INT(buf[8]);
 #endif
-/* LGE_CHANGE_E, sohyun.nam@lge.com, 2012-10-26, to swap cal_R and cal_B for V7 */
+/*                                                                              */
 	if(g_lge_lcd_k_cal[0]==cal_R && g_lge_lcd_k_cal[1] == cal_G && g_lge_lcd_k_cal[2] ==cal_B)
 	{
 		printk("####%s g_lge_lcd_k_cal the same new one \n", __func__);
@@ -3409,8 +3411,8 @@ int mdp_write_kcal_reg(const char* buf)
 	return 1;
 }
 EXPORT_SYMBOL(mdp_write_kcal_reg);
-#endif /* CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE */
-// LGE_CHANGE_E, sohyun.nam@lge.com
+#endif /*                                  */
+//                                 
 
 static int mdp_probe(struct platform_device *pdev)
 {
@@ -3645,7 +3647,7 @@ static int mdp_probe(struct platform_device *pdev)
 		pdata->off = mdp_dsi_video_off;
 		mfd->hw_refresh = TRUE;
 		mfd->dma_fnc = mdp_dsi_video_update;
-// LGE_CHANGE_S, sohyun.nam@lge.com
+//                                 
 #ifndef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 		mfd->do_histogram = mdp_do_histogram;
 #endif
@@ -3695,11 +3697,11 @@ static int mdp_probe(struct platform_device *pdev)
 #else
 
 		mfd->dma_fnc = mdp_dma2_update;
-// LGE_CHANGE_S, sohyun.nam@lge.com
+//                                 
 #ifndef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE
 		mfd->do_histogram = mdp_do_histogram;
-#endif /* CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE */
-// LGE_CHANGE_E, sohyun.nam@lge.com
+#endif /*                                  */
+//                                 
 		mfd->start_histogram = mdp_histogram_start;
 		mfd->stop_histogram = mdp_histogram_stop;
 		mfd->vsync_ctrl = mdp_dma_vsync_ctrl;
@@ -3848,7 +3850,7 @@ static int mdp_probe(struct platform_device *pdev)
 
 #endif
 
-// LGE_CHANGE_S, sohyun.nam@lge.com
+//                                 
 #ifdef CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE //sohyun.nam
 		printk("### call the initial lut update routine\n");
 #if defined(CONFIG_MACH_MSM8X25_V7)
@@ -3856,8 +3858,8 @@ static int mdp_probe(struct platform_device *pdev)
 			memcpy(lge_gc_lut, lge_gc_lut_tovis, sizeof(lge_gc_lut));
 #endif
 		mdp_lut_init_update_lcdc();
-#endif /* CONFIG_LGE_FB_MSM_MDP_LUT_ENABLE */
-// LGE_CHANGE_E, sohyun.nam@lge.com
+#endif /*                                  */
+//                                 
 
 	/* set driver data */
 	platform_set_drvdata(msm_fb_dev, mfd);

@@ -522,10 +522,10 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 		goto out;
 	}
 
-/* [LGE_CHANGE_S] bohyun.jung@lge.com  
- * issue hpi command on PROG STATE.  
- * once mmc_send_hpi_cmd(), state remain PROG for 20ms. 
- * original code has possibility sending hpi cmd continously */
+/*                                     
+                                     
+                                                        
+                                                             */
 #if defined(CONFIG_MMC_ISSUE_HPI_CMD_ON_PRG_STATE)
        switch (R1_CURRENT_STATE(status)) {
        case R1_STATE_IDLE:
@@ -670,36 +670,36 @@ int mmc_is_exception_event(struct mmc_card *card, unsigned int value)
 {
 	int err;
 
-	/* [LGE_CHANGE_S] bohyun.jung@lge.com 
-	 * QCT code behavior on bkops is like below.
-	 * level 1 / 2      - start bkops and send HPI before sending general r/w command.
-	 * level 3 (Urgent) - start bkops sync mode (timeout 240s)
-	 * If bkops in urgent mode does not end with 240s, emmc fails on io error. 
-	 * AS IS 			- start bkops, and send HPI before sending general r/w command.
-	 *
-	 * disable bkops until final fix.
-	 * DO NOT add feature for v7/u0/m4/etc without firm reason on emmc spec or vendor confirm */
+	/*                                    
+                                             
+                                                                                   
+                                                           
+                                                                            
+                                                                            
+   
+                                  
+                                                                                           */
 #if defined (CONFIG_MACH_MSM7X25A_V3) && defined (CONFIG_MACH_SAMSUNG_EMMC_V441_PLUS)
 //	pr_err("mmc_is_exception_event : %s - disable bkops for now.\n", mmc_hostname(card->host));
  	return 0;
 #endif
 
-	/* [LGE_CHANGE_S] bohyun.jung@lge.com 
-	 * U0 JB also disable bkops.
-	 * It is confirmd by Hynix that there is no performance gain with bkops */
-#if defined (CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM7X25A_V1)
+	/*                                    
+                             
+                                                                         */
+#if defined (CONFIG_MACH_MSM7X27A_U0)
  	return 0;
 #endif
 
-	/* [LGE_CHANGE_S] satya.kamasali@lge.com 
-	 * Disable bkops. */
+	/*                                       
+                   */
 
 #if defined (CONFIG_MACH_MSM8X25_V7)
  	return 0;
 #endif
 
-	/* [LGE_CHANGE_S] hyungjoon.jeon@lge.com 
-	 * Disable bkops. */
+	/*                                       
+                   */
 #if defined (CONFIG_MACH_MSM7X25A_M4)
  	return 0;
 #endif
@@ -1919,11 +1919,11 @@ int mmc_can_discard(struct mmc_card *card)
 	 */
 	if (card->ext_csd.feature_support & MMC_DISCARD_FEATURE)
 	{
-		// LGE_CHANGE_S : bohyun.jung@lge.com -  Debug Info for discard option.
+		//                                                                     
 		pr_warning("mmc_can_discard : %s enabled\n", mmc_hostname(card->host));
 		return 1;
 	}
-	// LGE_CHANGE_S : bohyun.jung@lge.com -  Debug Info for discard option.
+	//                                                                     
 	pr_warning("mmc_can_discard : %s disabled\n", mmc_hostname(card->host));
 
 	return 0;

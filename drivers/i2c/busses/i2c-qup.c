@@ -131,7 +131,7 @@ enum {
 
 static char const * const i2c_rsrcs[] = {"i2c_clk", "i2c_sda"};
 
-/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 #if !defined (CONFIG_MACH_MSM7X27A_U0) 
 #if !defined (CONFIG_MACH_MSM7X25A_M4)	// samjinjang I2C recover QCT patch 0514
 static struct gpiomux_setting recovery_config = {
@@ -141,7 +141,7 @@ static struct gpiomux_setting recovery_config = {
 };
 #endif
 #endif
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 
 struct qup_i2c_dev {
 	struct device                *dev;
@@ -673,15 +673,15 @@ qup_set_wr_mode(struct qup_i2c_dev *dev, int rem)
 	return ret;
 }
 
-/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 #if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
 static int qup_i2c_recover_bus_busy(struct qup_i2c_dev *dev)	// samjinjang I2C recover QCT patch 0514
 #else	// original
 static void qup_i2c_recover_bus_busy(struct qup_i2c_dev *dev)
 #endif
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 {
-/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 #if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
 	int i;
 //	uint32_t status = readl(dev->base + QUP_I2C_STATUS);
@@ -815,7 +815,7 @@ static void qup_i2c_recover_bus_busy(struct qup_i2c_dev *dev)
 recovery_end:
 	enable_irq(dev->err_irq);
 #endif
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 }
 
 static int
@@ -1029,7 +1029,7 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 					timeout =
 					wait_for_completion_timeout(&complete,
 									HZ);
-/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 #if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
 					if (timeout)
 					{
@@ -1040,9 +1040,9 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 					if (timeout)
 						goto timeout_err;
 #endif
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 				}
-/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 #if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
 				disable_irq(dev->err_irq);
 				dev_err(dev->dev,"2. timeout: status == BUS_ACTIVE || status != BUS_MASTER\n");
@@ -1061,7 +1061,7 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 					"Transaction timed out, SL-AD = 0x%x\n",
 					dev->msg->addr);
 #endif
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 				dev_err(dev->dev, "I2C Status: %x\n", istatus);
 				dev_err(dev->dev, "QUP Status: %x\n", qstatus);
 				dev_err(dev->dev, "OP Flags: %x\n", op_flgs);
@@ -1073,7 +1073,7 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 				ret = -ETIMEDOUT;
 				goto out_err;
 			}
-/* LGE_CHANGE_S : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 #if defined (CONFIG_MACH_MSM7X27A_U0) || defined (CONFIG_MACH_MSM7X25A_M4)
 handle_irq:		// samjinjang I2C recover QCT patch 0514
 			if (dev->err) {
@@ -1179,7 +1179,7 @@ timeout_err:
 			} else
 				filled = false; /* refill output FIFO */
 #endif
-/* LGE_CHANGE_E : 2012-12-05 mjoh@lge.com I2C recover patch from ICS */
+/*                                                                   */
 			dev_dbg(dev->dev, "pos:%d, len:%d, cnt:%d\n",
 					dev->pos, msgs->len, dev->cnt);
 		} while (dev->cnt > 0);

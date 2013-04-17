@@ -24,12 +24,12 @@
 #include <linux/module.h>
 
 #define DRIVER_NAME "ats_input"
-// BEGIN: 0010583 alan.park@lge.com 2010.11.06
+//                                            
 // ADD 0010583: [ETA/MTC] ETA Capture, Key, Touch, Logging / MTC Key, Logging 		
 #if 0
 extern int touch_get_x_max (void);
 extern int touch_get_y_max(void);
-// END: 0010583 alan.park@lge.com 2010.11.06 
+//                                           
 #endif  
 static struct input_dev *ats_input_dev;
 
@@ -53,7 +53,7 @@ static int __devinit ats_input_probe(struct platform_device *pdev)
 	}
 	ats_input_dev->name = "ats_input";
 
-	/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] DIAG Key Input Code test Patch [START] */ 
+	/*                                                                                         */ 
 	#if 0 /*seven temporally blocked */
 	for(i=0; i<EV_CNT; i++)
 		set_bit(i, ats_input_dev->evbit);
@@ -81,20 +81,20 @@ static int __devinit ats_input_probe(struct platform_device *pdev)
 	set_bit(ABS_MT_TOUCH_MAJOR, ats_input_dev->absbit);
 	clear_bit(EV_REP, ats_input_dev->evbit);
 	#endif /*seven temporally blocked*/
-	/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] DIAG Key Input Code test Patch [END] */ 
+	/*                                                                                       */ 
 
 	rc = input_register_device(ats_input_dev);
 	if (rc)
 		printk(KERN_ERR"%s : input_register_device failed\n", __func__);
 
 	/* FIXME: Touch resolution should be given by platform data */
-// BEGIN: 0010583 alan.park@lge.com 2010.11.06
+//                                            
 // MOD 0010583: [ETA/MTC] ETA Capture, Key, Touch, Logging / MTC Key, Logging  
 #if 0
 	input_set_abs_params(ats_input_dev, ABS_MT_POSITION_X, 0, touch_get_x_max(), 0, 0);
 	input_set_abs_params(ats_input_dev, ABS_MT_POSITION_Y, 0, touch_get_y_max(), 0, 0);
 #endif 
-// END: 0010583 alan.park@lge.com 2010.11.06 
+//                                           
 	return rc;
 }
 
@@ -126,7 +126,7 @@ static void __exit ats_input_exit(void)
 
 
 EXPORT_SYMBOL(get_ats_input_dev);
-//#LGE_CHANGE : 2012-10-24 Sanghun,Lee(eee3114.@lge.com) sensor change from bmc150 to bmc050
+//                                                                                          
 #if 1
 late_initcall(ats_input_init);
 #else

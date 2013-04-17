@@ -64,10 +64,10 @@ ion_phys_addr_t ion_carveout_allocate(struct ion_heap *heap,
 				carveout_heap->total_size -
 				carveout_heap->allocated_bytes, size);
 
-		// LGE_CHANGE_S bohyun.jung@lge.com - debug msg on alloc failure.
+		//                                                               
 		pr_info("ion_carveout_allocate: ION_CARVEOUT_ALLOCATE_FAIL - ION heap (%s) request size (%lx), tot allocate_bytes (%lx)\n", 
 			heap->name, size, carveout_heap->allocated_bytes);
-		// LGE_CHANGE_E bohyun.jung@lge.com - debug msg on alloc failure.
+		//                                                               
 
 		return ION_CARVEOUT_ALLOCATE_FAIL;
 	}
@@ -85,10 +85,10 @@ void ion_carveout_free(struct ion_heap *heap, ion_phys_addr_t addr,
 
 	if (addr == ION_CARVEOUT_ALLOCATE_FAIL)
 	{
-		// LGE_CHANGE_S bohyun.jung@lge.com - debug msg on free failure.
+		//                                                              
 		pr_info("ion_carveout_free: ION_CARVEOUT_ALLOCATE_FAIL - ION heap (%s) request size (%lx), tot allocate_bytes (%lx)\n", 
 				heap->name, size, carveout_heap->allocated_bytes);
-		// LGE_CHANGE_E bohyun.jung@lge.com - debug msg on free failure.
+		//                                                              
 		return;
 	}
 	gen_pool_free(carveout_heap->pool, addr, size);

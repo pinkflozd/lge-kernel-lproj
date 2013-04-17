@@ -269,12 +269,12 @@
  * of the Gadget, USB Mass Storage, and SCSI protocols.
  */
 
- /* This function driver is heavily derived by mass storage function driver.
-  * Rather than using cdrom module param of LUN already in mass storage
-  * function driver, we use seperated function driver because of binding
-  * process of android gadget. This function driver will be used as dedicated
-  * virtual cdrom for feature like Autorun.
-  * 2011-03-02, hyunhui.park@lge.com
+ /*                                                                         
+                                                                       
+                                                                        
+                                                                             
+                                           
+                                    
   */
 
 /* #define VERBOSE_DEBUG */
@@ -313,9 +313,9 @@
 #define FSG_NO_OTG               1
 #define FSG_NO_INTR_EP           1
 
-/* Belows are LGE-customized SCSI cmd and
- * sub-cmd for autorun processing.
- * 2011-03-09, hyunhui.park@lge.com
+/*                                       
+                                  
+                                   
  */
 #define SC_LGE_SPE      		0xF1
 #define SUB_CODE_MODE_CHANGE		0x01
@@ -352,7 +352,7 @@
 #define SUB_ACK_STATUS_ASK		0x03
 #define SUB_ACK_STATUS_CGO		0x04
 #define SUB_ACK_STATUS_TET		0x05
-/* 2011-03-09, hyunhui.park@lge.com */
+/*                                  */
 
 #ifdef CONFIG_USB_CSW_HACK
 static int write_error_after_csw_sent;
@@ -361,9 +361,9 @@ static int write_error_after_csw_sent;
 
 struct cdrom_fsg_dev;
 
-/* Belows are uevent string to communicate with
- * android framework and application.
- * 2011-03-09, hyunhui.park@lge.com
+/*                                             
+                                     
+                                   
  */
 
 
@@ -411,7 +411,7 @@ enum check_mode_state {
 	ACK_STATUS_TET = SUB_ACK_STATUS_TET,
 	ACK_STATUS_ERR,
 };
-/* 2011-03-09, hyunhui.park@lge.com */
+/*                                  */
 
 /* Data shared by all the FSG instances. */
 struct cdrom_fsg_common {
@@ -473,7 +473,7 @@ struct cdrom_fsg_common {
 	 * hexadecimal digits) and NUL byte */
 	char inquiry_string[8 + 16 + 4 + 1];
 
-	/* LGE-customized USB mode */
+	/*                         */
 	enum chg_mode_state mode_state;
 
 	struct kref		ref;
@@ -527,7 +527,7 @@ struct cdrom_fsg_dev {
 	struct usb_ep		*bulk_out;
 };
 
-/* LGE_CHANGE_S : USB Autorun function. hyunjin2.lim@lge.com */
+/*                                                           */
 /* file operations for /dev/usb_autorun */
 static const struct file_operations autorun_fops = {
 	.owner = THIS_MODULE,
@@ -539,12 +539,12 @@ static struct miscdevice autorun_device = {
 	.fops = &autorun_fops,
 };
 char *envp_ack[2] = { "AUTORUN=ACK", NULL };
-/* LGE_CNANGE_S lbh.lee@lge.com USB autorun uevent add */
+/*                                                     */
 static char *envp_mode[2] = {"AUTORUN=change_mode", NULL};
 
 static unsigned int user_mode = SUB_ACK_STATUS_CGO;
 static unsigned int already_acked;
-/* LGE_CNANGE_E lbh.lee@lge.com USB autorun uevent add */
+/*                                                     */
 
 
 static inline int __cdrom_fsg_is_set(struct cdrom_fsg_common *common,
@@ -1338,8 +1338,8 @@ static int cdrom_do_inquiry(struct cdrom_fsg_common *common, struct fsg_buffhd *
 	return 36;
 }
 
-/* Add function which handles LGE-customized command from PC.
- * 2011-03-09, hyunhui.park@lge.com
+/*                                                           
+                                   
  */
 static int cdrom_do_ack_status(struct cdrom_fsg_common *common, struct fsg_buffhd *bh, u8 ack)
 {
@@ -1424,7 +1424,7 @@ static int do_get_sub_ver(struct cdrom_fsg_common *common, struct fsg_buffhd *bh
 	return 7;
 }
 #endif
-/* 2011-03-09, hyunhui.park@lge.com */
+/*                                  */
 
 static int cdrom_do_request_sense(struct cdrom_fsg_common *common, struct fsg_buffhd *bh)
 {
@@ -1529,7 +1529,7 @@ static int cdrom_do_read_toc(struct cdrom_fsg_common *common, struct fsg_buffhd 
 	int		msf = common->cmnd[1] & 0x02;
 	int		start_track = common->cmnd[6];
 	u8		*buf = (u8 *) bh->buf;
-/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [START]*/
+/*                                                                                              */
 #ifdef CONFIG_LGE_USB_ANDROID_CDROM_MAC_SUPPORT
 	u8              format;
        int             ret;
@@ -1571,7 +1571,7 @@ static int cdrom_do_read_toc(struct cdrom_fsg_common *common, struct fsg_buffhd 
 	store_cdrom_address(&buf[16], msf, curlun->num_sectors);
 	return 20;
 #endif
-/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [END]*/
+/*                                                                                            */
 
 }
 
@@ -2190,8 +2190,8 @@ static int cdrom_check_command(struct cdrom_fsg_common *common, int cmnd_size,
 	return 0;
 }
 
-/* moved from downstair for using switch driver.
- * 2011-03-09, hyunhui.park@lge.com
+/*                                              
+                                   
  */
 static struct cdrom_fsg_dev			*the_fsg;
 
@@ -2228,9 +2228,9 @@ static int cdrom_do_scsi_command(struct cdrom_fsg_common *common)
 			reply = cdrom_do_inquiry(common, bh);
 		break;
 
-	/* Handle LGE-customized SCSI cmd.
-	 * 2011-03-09, hyunhui.park@lge.com
-	 */
+	/*                                
+                                    
+  */
 	case SC_LGE_SPE:
 		pr_debug("%s : SC_LGE_SPE - %x %x %x\n", __func__,
 			  common->cmnd[0], common->cmnd[1], common->cmnd[2]);
@@ -2270,16 +2270,16 @@ static int cdrom_do_scsi_command(struct cdrom_fsg_common *common)
 					default:
 						common->mode_state = MODE_STATE_UNKNOWN;
 				}
-				//pr_debug("%s: SC_LGE_MODE - %d\n", __func__, common->mode_state);
+				//                                                                 
 				printk(KERN_INFO "%s: SC_LGE_MODE - %d\n", __func__, common->mode_state);
-				/* LGE_CHANGE_S : USB Autorun function. hyunjin2.lim@lge.com */
+				/*                                                           */
 		//		kobject_uevent_env(&autorun_device.this_device->kobj, KOBJ_CHANGE, envp_ack);
-				/* LGE_CHANGE_E : USB Autorun function. */
+				/*                                      */
 				
-				/* LGE_CNANGE_S lbh.lee@lge.com USB autorun uevent add */
+				/*                                                     */
 				kobject_uevent_env(&autorun_device.this_device->kobj,KOBJ_CHANGE, envp_mode);
 				already_acked = 0;
-				/* LGE_CNANGE_E lbh.lee@lge.com USB autorun uevent add */
+				/*                                                     */
 				
 				reply = 0;
 				break;
@@ -2304,13 +2304,13 @@ static int cdrom_do_scsi_command(struct cdrom_fsg_common *common)
 										(7<<1), 1, check_str[user_mode])) == 0)
 							reply=cdrom_do_ack_status(common, bh, user_mode);
 
-						/* LGE_CNANGE_S lbh.lee@lge.com USB autorun uevent add */
-						if (!already_acked) { //lbh.lee@lge.com fot autorun Uevent add
+						/*                                                     */
+						if (!already_acked) { //                                      
 								kobject_uevent_env(&autorun_device.this_device->kobj,
 										KOBJ_CHANGE, envp_ack);
 								already_acked = 1;
 						}
-						/* LGE_CNANGE_E lbh.lee@lge.com USB autorun uevent add */
+						/*                                                     */
 						/* For reseting Autorun App watchdog timer */
 						//switch_set_state(&the_fsg->sdev, common->mode_state); ??????
 						break;
@@ -2459,7 +2459,7 @@ static int cdrom_do_scsi_command(struct cdrom_fsg_common *common)
 		common->data_size_from_cmnd =
 			get_unaligned_be16(&common->cmnd[7]);
 		
-/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [START]*/
+/*                                                                                              */
 #ifdef CONFIG_LGE_USB_ANDROID_CDROM_MAC_SUPPORT
 		reply = cdrom_check_command(common, 10, DATA_DIR_TO_HOST,
 								(0xf<<6) | (1<<1), 1,
@@ -2469,7 +2469,7 @@ static int cdrom_do_scsi_command(struct cdrom_fsg_common *common)
 				      (7<<6) | (1<<1), 1,
 				      "READ TOC");
 #endif
-/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [END]*/
+/*                                                                                            */
 
 		if (reply == 0)
 			reply = cdrom_do_read_toc(common, bh);
@@ -2708,7 +2708,7 @@ static int cdrom_get_next_command(struct cdrom_fsg_common *common)
 
 /*-------------------------------------------------------------------------*/
 
-/* 2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] cdrom fsg endpoint enable for support cdrom [START] */
+/*                                                                                                     */
 
 static int cdrom_enable_endpoint(struct cdrom_fsg_common *common, struct usb_ep *ep,
 		const struct usb_endpoint_descriptor *d)
@@ -2722,7 +2722,7 @@ static int cdrom_enable_endpoint(struct cdrom_fsg_common *common, struct usb_ep 
 		ERROR(common, "can't enable %s, result %d\n", ep->name, rc);
 	return rc;
 }
-/* 2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] cdrom fsg endpoint enable for support cdrom [END] */
+/*                                                                                                   */
 
 static int cdrom_alloc_request(struct cdrom_fsg_common *common, struct usb_ep *ep,
 		struct usb_request **preq)
@@ -2805,7 +2805,7 @@ static int cdrom_fsg_set_alt(struct usb_function *f, unsigned intf, unsigned alt
 	struct cdrom_fsg_dev *fsg = cdrom_fsg_from_func(f);
 	struct cdrom_fsg_common *common = fsg->common;
 
-/* 2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] cdrom fsg endpoint enable for support cdrom [START] */
+/*                                                                                                     */
 
 #ifndef CONFIG_LGE_USB_GADGET_DRIVER
 	const struct usb_endpoint_descriptor *d;
@@ -2854,7 +2854,7 @@ static int cdrom_fsg_set_alt(struct usb_function *f, unsigned intf, unsigned alt
 	common->bulk_out_maxpacket = le16_to_cpu(d->wMaxPacketSize);
 #endif
 
-/* 2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] cdrom fsg endpoint enable for support cdrom [END] */
+/*                                                                                                   */
 
 	clear_bit(IGNORE_BULK_OUT, &fsg->atomic_bitflags);
 	fsg->common->new_fsg = fsg;
@@ -2884,8 +2884,8 @@ static void cdrom_fsg_disable(struct usb_function *f)
 
 /*-------------------------------------------------------------------------*/
 
-/* move to upstair for using switch driver.
- * 2011-03-09, hyunhui.park@lge.com
+/*                                         
+                                   
  */
 /* static struct cdrom_fsg_dev			*the_fsg; */
 
@@ -3005,7 +3005,7 @@ static void cdrom_handle_exception(struct cdrom_fsg_common *common)
 
 	case FSG_STATE_CONFIG_CHANGE:
 		cdrom_do_set_interface(common, common->new_fsg);
-		/* XXX: Temporary comment out, 2011-03-09, hyunhui.park@lge.com */
+		/*                                                              */
 		/* switch_set_state(&the_fsg->sdev, !!common->new_fsg); */
 		break;
 
@@ -3386,13 +3386,13 @@ buffhds_first_it:
 
 	DBG(common, "I/O thread pid: %d\n", task_pid_nr(common->thread_task));
 
-	/* LGE_CHANGE_S : USB Autorun function. hyunjin2.lim@lge.com */
+	/*                                                           */
 	rc = misc_register(&autorun_device);
 	if (rc) {
 		printk(KERN_ERR "USB cdrom gadget driver failed to initialize\n");
 		goto error_release;
 	}
-	/* LGE_CHANGE_E : USB Autorun function. */
+	/*                                      */
 
 
 	wake_up_process(common->thread_task);
@@ -3452,9 +3452,9 @@ static void cdrom_fsg_common_release(struct kref *ref)
 	if (common->free_storage_on_release)
 		kfree(common);
 
-	/* LGE_CHANGE_S : USB Autorun function. hyunjin2.lim@lge.com */
+	/*                                                           */
 	misc_deregister(&autorun_device);
-	/* LGE_CHANGE_E : USB Autorun function. */
+	/*                                      */
 }
 
 

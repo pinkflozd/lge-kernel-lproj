@@ -86,14 +86,6 @@ config HI707_PWR_SEPARATE
 	Hynix VGA Soc Sensor, DVDD and IOVDD is separated
 # LGE_CHANGE_E : 2012-11-14 sungmin.cho@lge.com DVDD and IOVDD is separated before Rev A
 
-# LGE_CHANGE_S: V1 T4K28 Camera Bringup - aidan.choi@lge.com 2013/03/08
-config T4K28
-	bool "Sensor T4K28 (YUV 2M)"
-	depends on MSM_CAMERA && MSM_CAMERA_V4L2
-	---help---
-	Toshiba 2M YUV Sensor
-# LGE_CHANGE_E: V1 T4K28 Camera Bringup - aidan.cho@lge.com 2013/03/08	
-
 # LGE_CHANGE_S: V3 HI351 Camera Bringup - hong.junki@lge.com 2012/09/25
 config HI351
 	bool "Sensor HI351 (YUV 3M)"

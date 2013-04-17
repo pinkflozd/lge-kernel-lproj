@@ -251,7 +251,7 @@ static void msm_vb2_ops_buf_cleanup(struct vb2_buffer *vb)
 		spin_unlock_irqrestore(&pcam_inst->vq_irqlock, flags);
 	}
 	pmctl = msm_camera_get_mctl(pcam->mctl_handle);
-/*LGE_CHANGE_S QCT PATCH for kernel panic SR 01067319 hong.junki@lge.com 2013-01-04 */
+/*                                                                                  */
         if (pmctl == NULL || pmctl->client == NULL) {
 			buf->state = MSM_BUFFER_STATE_UNUSED;
         }else{
@@ -261,7 +261,7 @@ static void msm_vb2_ops_buf_cleanup(struct vb2_buffer *vb)
 			}
         buf->state = MSM_BUFFER_STATE_UNUSED;
 		}
-/*LGE_CHANGE_E QCT PATCH for kernel panic SR 01067319 hong.junki@lge.com 2013-01-04 */
+/*                                                                                  */
 }
 
 static int msm_vb2_ops_start_streaming(struct vb2_queue *q, unsigned int count)
@@ -512,9 +512,9 @@ struct msm_cam_v4l2_dev_inst *msm_mctl_get_pcam_inst(
 		 * search in the user's video node */
 		if (pmctl->vfe_output_mode == VFE_OUTPUTS_MAIN_AND_THUMB
 		|| pmctl->vfe_output_mode == VFE_OUTPUTS_THUMB_AND_MAIN
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		/*|| pmctl->vfe_output_mode == VFE_OUTPUTS_MAIN_AND_PREVIEW*/) {
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 			if (pcam->mctl_node.dev_inst_map[image_mode]
 			&& is_buffer_queued(pcam, image_mode)) {
 				idx =
@@ -529,7 +529,7 @@ struct msm_cam_v4l2_dev_inst *msm_mctl_get_pcam_inst(
 				D("%s Found instance %p in video device\n",
 				__func__, pcam_inst);
 			}
-		/* LGE_CHANGE_S : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */
+		/*                                                                                             */
 		} else if (image_mode == MSM_V4L2_EXT_CAPTURE_MODE_V2X_LIVESHOT) {
 			image_mode = MSM_V4L2_EXT_CAPTURE_MODE_MAIN;
 			if (pcam->mctl_node.dev_inst_map[image_mode] &&
@@ -544,7 +544,7 @@ struct msm_cam_v4l2_dev_inst *msm_mctl_get_pcam_inst(
 				D("%s Found instance %p in video device\n",
 					__func__, pcam_inst);
 			}
-		/* LGE_CHANGE_E : sungmin.cho@lge.com 2012-12-07 [CASE 1043026] QCT patch, Live snapshot crash */			
+		/*                                                                                             */			
 		} else {
 			if (pcam->mctl_node.dev_inst_map[image_mode]) {
 				idx = pcam->mctl_node.dev_inst_map[image_mode]

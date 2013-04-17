@@ -22,7 +22,7 @@ typedef uint16 diagpkt_subsys_rsp_cnt;
 #define FALSE 0
 #define ON 1
 #define OFF 0
-/*LGE_CHANGE_S, 2010-10-08, [dongp.kim@lge.com], #define LG_FW_WLAN_TEST for WI-FI TestMode */
+/*                                                                                          */
 #define LG_FW_WLAN_TEST 1 
-/*LGE_CHANGE_E, 2010-10-08, [dongp.kim@lge.com], #define LG_FW_WLAN_TEST for WI-FI TestMode */
+/*                                                                                          */
 #endif /* LG_COMDEF_H */

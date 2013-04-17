@@ -106,7 +106,7 @@ eMFSRet_t MFS_ISC_update(void)
 	MFS_I2C_set_slave_addr(MFS_DEFAULT_SLAVE_ADDR);
 
 
-	/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */
+	/*                                                                                */
 #if defined(CONFIG_MACH_MSM7X25A_V3_DS)
 	if ((ret = firmware_write(MELFAS_binary)) && ret != MRET_SUCCESS)
 		goto MCSDL_DOWNLOAD_FINISH;
@@ -120,7 +120,7 @@ eMFSRet_t MFS_ISC_update(void)
 	if ((ret = firmware_verify(MELFAS_SINGLE_binary)) && ret != MRET_SUCCESS)
 		goto MCSDL_DOWNLOAD_FINISH;
 #endif
-	/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [END] */
+	/*                                                                              */
 
 	MFS_debug_msg("<MELFAS> FIRMWARE_UPDATE_FINISHED!!!\n\n", 0, 0, 0);
 

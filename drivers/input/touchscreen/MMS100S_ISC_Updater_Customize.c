@@ -63,14 +63,14 @@ struct mms100s_ts_device {
 	int (*power)(unsigned char onoff);
 	struct workqueue_struct *ts_wq;
 
-	/*20110607 seven.kim@lge.com for touch frimware download [START] */
+	/*                                                               */
 	struct wake_lock wakelock;
 	int irq_sync;
 	int fw_version;
 	int hw_version;
 	int status;
 	int tsp_type;
-	/*20110607 seven.kim@lge.com for touch frimware download [END] */
+	/*                                                             */
 };
 extern struct mms100s_ts_device mcs8000_ts_dev;
 

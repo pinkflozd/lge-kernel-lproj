@@ -47,10 +47,10 @@
 
 #ifdef CONFIG_LGE_MTS
 #include "mtsk_tty.h"
-#endif /* CONFIG_LGE_MTS */
+#endif /*                */
 #ifdef CONFIG_LGE_MTS_CHAR
 #include "mtschar.h"
-#endif /* CONFIG_LGE_MTS_CHAR */
+#endif /*                     */
 
 int diag_debug_buf_idx;
 unsigned char diag_debug_buf[1024];
@@ -1599,7 +1599,7 @@ int diagfwd_connect(void)
 
 #ifdef CONFIG_LGE_MTS_CHAR
 	wake_up_interruptible(&mtschar->waitq);
-#endif /* CONFIG_LGE_MTS_CHAR */
+#endif /*                     */
 
 	printk(KERN_DEBUG "diag: USB connected\n");
 	err = usb_diag_alloc_req(driver->legacy_ch, N_LEGACY_WRITE,
@@ -1640,7 +1640,7 @@ int diagfwd_disconnect(void)
 {
 #ifdef CONFIG_LGE_MTS_CHAR
 	wake_up_interruptible(&mtschar->waitq);
-#endif /* CONFIG_LGE_MTS_CHAR */
+#endif /*                     */
 
 	printk(KERN_DEBUG "diag: USB disconnected\n");
 	driver->usb_connected = 0;

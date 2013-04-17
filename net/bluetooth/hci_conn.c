@@ -120,7 +120,7 @@ static void hci_le_connect_cancel(struct hci_conn *conn)
 {
 	hci_send_cmd(conn->hdev, HCI_OP_LE_CREATE_CONN_CANCEL, 0, NULL);
 }
-// +s LGBT_QCT_BT_PATCH_SR01004311 A2DP mute issue during opp transmission christine.lee@lge.com 2012-11-02
+//                                                                                                         
 static inline bool is_role_switch_possible(struct hci_dev *hdev)
 {
 	if (hci_conn_hash_lookup_state(hdev, ACL_LINK, BT_CONNECTED)) {
@@ -165,7 +165,7 @@ void hci_acl_connect(struct hci_conn *conn)
 
 	cp.pkt_type = cpu_to_le16(conn->pkt_type);
 //	if (lmp_rswitch_capable(hdev) && !(hdev->link_mode & HCI_LM_MASTER))
-// +s LGBT_QCT_BT_PATCH_SR01004311 A2DP mute issue during opp transmission christine.lee@lge.com 2012-11-02
+//                                                                                                         
 	if (lmp_rswitch_capable(hdev) && !(hdev->link_mode & HCI_LM_MASTER)
 		&& is_role_switch_possible(hdev)) {
 // +e LGBT_QCT_BT_PATCH_SR01004311

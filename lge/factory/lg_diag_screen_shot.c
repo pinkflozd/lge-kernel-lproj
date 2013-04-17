@@ -76,7 +76,7 @@ unsigned long convert_32_to_16_bpp(byte* target_buf, byte* src_buf, struct fb_va
 }
 #endif
 #if 0
-/* LGE_S     jihye.ahn   2010-10-01    convert RGBA8888 to RGB565 */
+/*                                                                */
 static void to_rgb565(byte* from, u16* to)
 {
 	int i;
@@ -94,7 +94,7 @@ static void to_rgb565(byte* from, u16* to)
 	
 	}
 }
-/* LGE_E     jihye.ahn   2010-10-01    convert RGBA8888 to RGB565 */
+/*                                                                */
 #endif
 
 static void read_framebuffer(byte* pBuf)

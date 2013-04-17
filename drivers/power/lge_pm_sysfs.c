@@ -22,9 +22,9 @@
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include <mach/lge/lge_pm.h>
 
-#include <../../kernel/power/power.h>
+#include "../../kernel/power/power.h"
 #include <mach/msm_smsm.h>
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 #include <mach/msm_hsusb.h>
 #endif
 #ifdef CONFIG_LGE_LOW_VOLTAGE_BATTERY_CHECK
@@ -32,13 +32,13 @@
 #include <linux/reboot.h>
 #include <linux/cpumask.h>
 #endif
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
+/*                                                                                */
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7)
 #include <mach/msm_battery.h>
 #endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
+/*                                                                                */
 
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 extern int get_charger_type(void); /* defined in msm72k_udc.c */
 #endif
 extern u32 msm_batt_get_vbatt_level(void);
@@ -62,12 +62,12 @@ static ssize_t batt_therm_show(struct device* dev,struct device_attribute* attr,
 {
 	return snprintf(buf, PAGE_SIZE, "%d\n", lge_get_batt_therm());
 }
-// 2012-11-10 Jinhong Kim(miracle.kim@lge.com)	[V7][Power] read batt therm 8bit raw [START]
+//                                                                                         
 static ssize_t batt_therm_8bit_raw_show(struct device* dev,struct device_attribute* attr,char* buf)
 {
 	return snprintf(buf, PAGE_SIZE, "%d\n", lge_get_batt_therm_8bit_raw());
 }
-// 2012-11-10 Jinhong Kim(miracle.kim@lge.com)	[V7][Power] read batt therm 8bit raw [END]
+//                                                                                       
 static ssize_t batt_volt_raw_show(struct device* dev,struct device_attribute* attr,char* buf)
 {
 	return snprintf(buf, PAGE_SIZE, "%d\n", lge_get_batt_volt_raw());
@@ -97,8 +97,8 @@ static ssize_t lge_battery_id_info_show(struct device* dev,struct device_attribu
 }
 #endif
 
-/* LGE_CHANGE_S: [murali.ramaiah@lge.com] 2013-01-07 */
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+/*                                                   */
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 static ssize_t msm_batt_chgr_status_show(struct device* dev, struct device_attribute* attr, char* buf)
 {
 	int chg_type;
@@ -106,15 +106,15 @@ static ssize_t msm_batt_chgr_status_show(struct device* dev, struct device_attri
 	return sprintf(buf,"%d\n", (chg_type == USB_CHG_TYPE__WALLCHARGER) ? 1 : (chg_type == USB_CHG_TYPE__SDP) ? 1 : 0);
 }
 #endif /* CONFIG_MACH_MSM7X25A_V3 */
-/* LGE_CHANGE_S: [murali.ramaiah@lge.com] 2013-01-07 */
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
+/*                                                   */
+/*                                                                                */
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7)
 static ssize_t msm_batt_capacity_show(struct device* dev, struct device_attribute* attr, char* buf)
 {
 	return snprintf(buf, PAGE_SIZE,"%d\n", msm_batt_get_vbatt_capacity());
 }
 #endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
+/*                                                                                */
 
 static ssize_t msm_batt_level_show(struct device* dev, struct device_attribute* attr, char* buf)
 {
@@ -125,9 +125,9 @@ static DEVICE_ATTR(chg_therm, S_IRUGO, chg_therm_show, NULL);
 static DEVICE_ATTR(pcb_version, S_IRUGO, pcb_version_show, NULL);
 static DEVICE_ATTR(chg_curr_volt, S_IRUGO, chg_curr_volt_show, NULL);
 static DEVICE_ATTR(batt_therm, S_IRUGO, batt_therm_show, NULL);
-// 2012-11-10 Jinhong Kim(miracle.kim@lge.com)	[V7][Power] read batt therm 8bit raw [START]
+//                                                                                         
 static DEVICE_ATTR(batt_therm_8bit_raw, S_IRUGO, batt_therm_8bit_raw_show, NULL);
-// 2012-11-10 Jinhong Kim(miracle.kim@lge.com)	[V7][Power] read batt therm 8bit raw [END]
+//                                                                                       
 static DEVICE_ATTR(batt_volt_raw, S_IRUGO, batt_volt_raw_show, NULL);
 static DEVICE_ATTR(chg_stat_reg, S_IRUGO, chg_stat_reg_show, NULL);
 static DEVICE_ATTR(chg_en_reg, S_IRUGO, chg_en_reg_show, NULL);
@@ -136,14 +136,14 @@ static DEVICE_ATTR(pm_suspend_state, S_IRUGO, pm_suspend_state_show, NULL);
 #ifdef CONFIG_LGE_PM_BATT_ID_DETECTION
 static DEVICE_ATTR(lge_battery_id_info, S_IRUGO, lge_battery_id_info_show, NULL);
 #endif
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 static DEVICE_ATTR(chgr_status, S_IRUGO, msm_batt_chgr_status_show, NULL);
 #endif
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
+/*                                                                                */
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7)
 static DEVICE_ATTR(batt_capacity, S_IRUGO, msm_batt_capacity_show, NULL);
 #endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
+/*                                                                                */
 
 static DEVICE_ATTR(msm_batt_level, S_IRUGO, msm_batt_level_show, NULL);
 
@@ -153,9 +153,9 @@ static struct attribute* dev_attrs_lge_pm_info[] = {
 	&dev_attr_pcb_version.attr,
 	&dev_attr_chg_curr_volt.attr,
 	&dev_attr_batt_therm.attr,
-// 2012-11-10 Jinhong Kim(miracle.kim@lge.com)	[V7][Power] read batt therm 8bit raw [START]
+//                                                                                         
 	&dev_attr_batt_therm_8bit_raw.attr,
-// 2012-11-10 Jinhong Kim(miracle.kim@lge.com)	[V7][Power] read batt therm 8bit raw [END]
+//                                                                                       
 	&dev_attr_batt_volt_raw.attr,	
 	&dev_attr_chg_stat_reg.attr,
 	&dev_attr_chg_en_reg.attr,
@@ -164,14 +164,14 @@ static struct attribute* dev_attrs_lge_pm_info[] = {
 #ifdef CONFIG_LGE_PM_BATT_ID_DETECTION
 	&dev_attr_lge_battery_id_info.attr,
 #endif
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3)
 	&dev_attr_chgr_status.attr,
 #endif
-/* LGE_CHANGE_S [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
-#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7) || defined (CONFIG_MACH_MSM7X25A_V1)
+/*                                                                                */
+#if defined(CONFIG_MACH_MSM7X27A_U0) || defined(CONFIG_MACH_MSM8X25_V7)
 	&dev_attr_batt_capacity.attr,
 #endif
-/* LGE_CHANGE_E [jongjin7.park@lge.com] 20130122 Added direct read capacity sysfs */
+/*                                                                                */
 	&dev_attr_msm_batt_level.attr,
 	NULL,
 };
@@ -207,7 +207,7 @@ static struct platform_driver lge_pm_driver = {
 			 },
 };
 
-// LGE_CHANGE_S,narasimha.chikka@lge.com,Add BATT_ID Check
+//                                                        
 #if defined(CONFIG_LGE_PM_BATT_ID_DETECTION)
 static void  __init  lge_pm_boot_batt_id_check(void)
 {
@@ -236,7 +236,7 @@ static void  __init  lge_pm_boot_batt_id_check(void)
 	}
 }
 #endif
-// LGE_CHANGE_E,narasimha.chikka@lge.com,Add BATT_ID Check
+//                                                        
 
 #ifdef CONFIG_LGE_LOW_VOLTAGE_BATTERY_CHECK
 static void pm_do_poweroff(struct work_struct *dummy)

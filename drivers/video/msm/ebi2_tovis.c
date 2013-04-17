@@ -39,15 +39,8 @@
 #include CONFIG_LGE_BOARD_HEADER_FILE
 #include <linux/pm_qos_params.h>
 
-#ifdef CONFIG_MACH_MSM7X25A_V1	
-	#include <mach/lge/lge_proc_comm.h>
-	
-#endif
-
 #define QVGA_WIDTH        240
 #define QVGA_HEIGHT       320
-
-#define  GPIO_LCD_TID      126
 
 static void *DISP_CMD_PORT;
 static void *DISP_DATA_PORT;
@@ -65,31 +58,26 @@ struct pm_qos_request_list *tovis_pm_qos_req;
 * it again
 */
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 #if 0
 static boolean display_on = FALSE;
 #else
-#ifdef CONFIG_MACH_MSM7X25A_V1	
-
-extern int display_on; 
-#else
 int display_on = FALSE; 
 #endif
-#endif
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 
-/*[2012-12-20][junghoon79.kim@lge.com] boot time reduction [START]*/
+/*                                                                */
 #define LCD_INIT_SKIP_FOR_BOOT_TIME
-/*[2012-12-20][junghoon79.kim@lge.com] boot time reduction [END]*/
+/*                                                              */
 #ifdef LCD_INIT_SKIP_FOR_BOOT_TIME
 int lcd_init_skip_cnt = 0;
 #endif
 
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-07] :SE 85591 remove white screen during power on */
+/*                                                                                               */
 #define LCD_RESET_SKIP 1
 int IsFirstDisplayOn = LCD_RESET_SKIP; 
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-07] :SE 85591 remove white screen during power on */
+/*                                                                                               */
 
 #define DISP_SET_RECT(csp, cep, psp, pep) \
 	{ \
@@ -109,10 +97,6 @@ int IsFirstDisplayOn = LCD_RESET_SKIP;
 #ifdef TUNING_INITCODE
 module_param(te_lines, uint, 0644);
 module_param(mactl, uint, 0644);
-#endif
-
-#ifdef CONFIG_MACH_MSM7X25A_V1
-extern	int lge_rt8966a_backlight_control( int onoff );
 #endif
 
 static void tovis_qvga_disp_init(struct platform_device *pdev)
@@ -138,29 +122,17 @@ static void msm_fb_ebi2_power_save(int on)
 		pdata->lcd_power_save(on);
 }
 
-#ifdef CONFIG_MACH_MSM7X25A_V1	
-int StatusBacklightOnOff = 1;
-#endif
-
 static int ilitek_qvga_disp_off(struct platform_device *pdev)
 {
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 #if 1
 	struct msm_panel_ilitek_pdata *pdata = tovis_qvga_panel_pdata;
 #endif
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 
-#ifdef CONFIG_MACH_MSM7X25A_V1	
-	//do not control when suspend after just working chargerlogo
-		if(StatusBacklightOnOff==1) {
+
 	printk("%s: display off...\n", __func__);
-			lge_rt8966a_backlight_control(0);
-			StatusBacklightOnOff = 0;
-			IsFirstDisplayOn = 0;
-		}
-#endif
-
 	if (!disp_initialized)
 		tovis_qvga_disp_init(pdev);
 
@@ -173,12 +145,12 @@ static int ilitek_qvga_disp_off(struct platform_device *pdev)
 	EBI2_WRITE16C(DISP_CMD_PORT, 0x10); // SPLIN
 	msleep(120);
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 #if 1 
 	if(pdata->gpio)
 		gpio_set_value(pdata->gpio, 0);
 #endif	
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 
 	msm_fb_ebi2_power_save(0);
 	display_on = FALSE;
@@ -195,248 +167,8 @@ static void ilitek_qvga_disp_set_rect(int x, int y, int xres, int yres) // xres 
 	EBI2_WRITE16C(DISP_CMD_PORT,0x2c); // Write memory start
 }
 
-#ifdef CONFIG_MACH_MSM7X25A_V1
-static void panel_CMIDisplay_init(void)
-{
-
-
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x11); //Exit Sleep
-	msleep(120);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0x3A);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x55);
-
-				
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xCF); //EXTC option
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x00);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0xA1);
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xB1); //
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x00);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x1E); //frame rate control
-	EBI2_WRITE16C(DISP_CMD_PORT, 0XB4); //inversion control
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x02); //2 dots inversion
-	EBI2_WRITE16C(DISP_CMD_PORT, 0XB6);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x02);
-	EBI2_WRITE16C(DISP_CMD_PORT, 0XC0); //power control
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0F); //
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0D); //
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xC1); //power control
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x01); //VGH =6x VCI VGL= -5xVCI
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xC2); //power control
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x33);
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xC5); // VCOMDC=-1
-	EBI2_WRITE16D(DISP_DATA_PORT, 0xE7);
-
-	/* Blanking Porch control*/
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xb5);
-	EBI2_WRITE16D(DISP_DATA_PORT,0x02);
-	EBI2_WRITE16D(DISP_DATA_PORT,0x02);
-	EBI2_WRITE16D(DISP_DATA_PORT,0x0a);
-	EBI2_WRITE16D(DISP_DATA_PORT,0x14);
-
-	
-	/* Tearing Effect Line On */
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x35);
-	EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-
-	/* Tearing effect Control Parameter */
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x44);
-	EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-	EBI2_WRITE16D(DISP_DATA_PORT,0xef);
-
-	EBI2_WRITE16C(DISP_CMD_PORT, 0xE0); //Set Gamma
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x05);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x08);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0D);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x07);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x10);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x08);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x33);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x35);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x45);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x04);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0B);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x08);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x1A);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x1D);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0F);
-
-	EBI2_WRITE16C(DISP_CMD_PORT, 0XE1); //Set Gamma
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x06);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x23);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x26);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x00);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0C);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x01);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x39);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x02);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x4A);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x02);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0C);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x07);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x31);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x36);
-	EBI2_WRITE16D(DISP_DATA_PORT, 0x0F);
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x29); //display on
-
-}
-
-static void panel_tianmaDisplay_init(void)
-{
-	
-	
-	 EBI2_WRITE16C(DISP_CMD_PORT, 0xCB);
-                EBI2_WRITE16D(DISP_DATA_PORT, 0x39);
-                EBI2_WRITE16D(DISP_DATA_PORT, 0x2C);
-                EBI2_WRITE16D(DISP_DATA_PORT, 0x00);
-                EBI2_WRITE16D(DISP_DATA_PORT, 0x34);   //Vcore 1.6V
-                EBI2_WRITE16D(DISP_DATA_PORT, 0x02);   //AVDD 5.8V
-
-	EBI2_WRITE16C(DISP_CMD_PORT,0xCF);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-                EBI2_WRITE16D(DISP_DATA_PORT,0xd9);//83
-                EBI2_WRITE16D(DISP_DATA_PORT,0X30);
-
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xE8);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x85); 
-                EBI2_WRITE16D(DISP_DATA_PORT,0x10); 	   //00
-                EBI2_WRITE16D(DISP_DATA_PORT,0x78); 
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xEA);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xED);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x64);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x03);
-                EBI2_WRITE16D(DISP_DATA_PORT,0X12);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x81);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xF2);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xF7);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x20);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xC0);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1B);	//	GVDD 4.20V
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xC1);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x10);	//VGH X7   VGL X -4	   AVDD X2
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xC5);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x3f);	  //VCOMH 4.275V
-                EBI2_WRITE16D(DISP_DATA_PORT,0x48);	  //VCOML -0.7V
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xC7);
-                EBI2_WRITE16D(DISP_DATA_PORT,0xb9);	 //8F	//VCOM OFFSET	
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0x36);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);   //80 -> 00 бзб■?воиби╧во 	RGB
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0x3A);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x55);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xB1);           
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1a);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xb6);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0a);
-				EBI2_WRITE16D(DISP_DATA_PORT,0xa2);
-				
-				/* Blanking Porch control*/
-				EBI2_WRITE16C(DISP_CMD_PORT, 0xb5);
-				EBI2_WRITE16D(DISP_DATA_PORT,0x02);
-				EBI2_WRITE16D(DISP_DATA_PORT,0x02);
-				EBI2_WRITE16D(DISP_DATA_PORT,0x0a);
-				EBI2_WRITE16D(DISP_DATA_PORT,0x14);
-				
-				
-				/* Tearing Effect Line On */
-				EBI2_WRITE16C(DISP_CMD_PORT, 0x35);
-				EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-				
-				/* Tearing effect Control Parameter */
-				EBI2_WRITE16C(DISP_CMD_PORT, 0x44);
-				EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-				EBI2_WRITE16D(DISP_DATA_PORT,0xef);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xE0);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0F);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x22); 
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1e);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0c); 
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0d);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x07);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x4c);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x85);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x3d);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x07);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x12);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x05); 
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1d); 
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1a);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0xE1);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1a);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x1e);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x04);	
-                EBI2_WRITE16D(DISP_DATA_PORT,0x10);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x05);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x33);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x24);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x43);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x04);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0c);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0b); 
-                EBI2_WRITE16D(DISP_DATA_PORT,0x24);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x28);
-                EBI2_WRITE16D(DISP_DATA_PORT,0x0f);
-
-    EBI2_WRITE16C(DISP_CMD_PORT,0x11);
-	
-	 msleep(120);
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x29);
-
-
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x2A);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0xEF);
-
-	EBI2_WRITE16C(DISP_CMD_PORT, 0x2B);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x00);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x01);
-					   EBI2_WRITE16D(DISP_DATA_PORT,0x3F);
-
-				   
-	 EBI2_WRITE16C(DISP_CMD_PORT,0x2c); // Write memory start
-	 {
-		 int x, y;
-		 for(y = 0; y < QVGA_HEIGHT; y++) {
-			 for(x = 0; x < QVGA_WIDTH; x++) {
-				 EBI2_WRITE16D(DISP_DATA_PORT, 0);
-			 }
-		 }
-	 }
-	 msleep(80);
-	
-	 EBI2_WRITE16C(DISP_CMD_PORT,0x29); // Display On
-
-}
-#endif
-
-#ifdef CONFIG_MACH_MSM7X25A_V3
-
 static void panel_lgdisplay_init(void)
 {
-
 	/* SET EXTC */
 	EBI2_WRITE16C(DISP_CMD_PORT, 0xcf);
 	EBI2_WRITE16D(DISP_DATA_PORT,0x00);
@@ -583,12 +315,9 @@ static void panel_lgdisplay_init(void)
 
 	EBI2_WRITE16C(DISP_CMD_PORT,0x29); // Display On
 }
-#endif
 
-
-
-#if 0/*2012-09-26 junghoon-kim(junghoon79.kim@lge.com) V3 not use [START]*/
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+#if 0/*                                                                  */
+/*                                                                        */
 extern int Is_Backlight_Set ; 
 #ifdef CONFIG_BACKLIGHT_RT9396
 extern int rt9396_force_set(void);
@@ -597,81 +326,36 @@ extern int bu61800_force_set(void);
 #endif
 //extern int mcs8000_ts_on(void);//dajiniv
 
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
-#endif/*2012-09-26 junghoon-kim(junghoon79.kim@lge.com) V3 not use [END]*/
-
+/*                                                                        */
+#endif/*                                                                */
 
 
 static int ilitek_qvga_disp_on(struct platform_device *pdev)
 {
-#ifdef CONFIG_MACH_MSM7X25A_V1
-	int readport;
-#endif
-
 	struct msm_panel_ilitek_pdata *pdata = tovis_qvga_panel_pdata;
 
 	printk("%s: display on... \n", __func__);
-		
 	if (!disp_initialized)
 		tovis_qvga_disp_init(pdev);
 
 #ifdef LCD_INIT_SKIP_FOR_BOOT_TIME
    if((pdata->initialized && system_state == SYSTEM_BOOTING) || lcd_init_skip_cnt < 1) {
-   
       lcd_init_skip_cnt =1;
-      printk("%s: display on...Skip!!!!!! and back light off charger logo mode\n", __func__);
-	  
+      printk("%s: display on...Skip!!!!!!  \n", __func__);
 #else
 	if(pdata->initialized && system_state == SYSTEM_BOOTING) {
 		/* Do not hw initialize */      
 #endif
 	} else {
 
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2012-02-01] 
-		: For the Wakeup Issue */
+		/*                                                     
+                         */
 		//mcs8000_ts_on();//dajiniv
-		/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2012-02-01] 
-		: For the Wakeup Issue */
+		/*                                                     
+                         */
 	
 		msm_fb_ebi2_power_save(1);
 
-		/* use pdata->maker_id to detect panel */
-		
-#ifdef CONFIG_MACH_MSM7X25A_V1
-		gpio_tlmm_config(GPIO_CFG(GPIO_LCD_TID, 0, GPIO_CFG_INPUT, GPIO_CFG_NO_PULL, GPIO_CFG_2MA), GPIO_CFG_ENABLE);
-		readport = gpio_get_value(GPIO_LCD_TID);
-
-		if(readport==0)
-		{
-			if(pdata->gpio) {
-				mdelay(10);	// prevent stop to listen to music with BT
-				gpio_set_value(pdata->gpio, 1);
-				mdelay(10);
-				gpio_set_value(pdata->gpio, 0);
-				mdelay(10);
-				gpio_set_value(pdata->gpio, 1);
-				msleep(120);
-			}
-			
-			panel_tianmaDisplay_init();
-			printk("----------tianma Enabled-----------\n");
-
-			
-		}else {
-			if(pdata->gpio) {
-				mdelay(10);	// prevent stop to listen to music with BT
-				gpio_set_value(pdata->gpio, 1);
-				mdelay(10);
-				gpio_set_value(pdata->gpio, 0);
-				mdelay(10);
-				gpio_set_value(pdata->gpio, 1);
-				msleep(120);
-			}
-			panel_CMIDisplay_init();
-			printk("----------CMI Enabled--------------\n");
-			
-		}
-#else
 		if(pdata->gpio) {
 			//mdelay(10);	// prevent stop to listen to music with BT
 			gpio_set_value(pdata->gpio, 1);
@@ -682,29 +366,16 @@ static int ilitek_qvga_disp_on(struct platform_device *pdev)
 			msleep(1);
 		}
 
-#endif
-
-#ifdef CONFIG_MACH_MSM7X25A_V3
+		/* use pdata->maker_id to detect panel */
 		panel_lgdisplay_init();
-#endif
-
 	}
 
-#ifdef CONFIG_MACH_MSM7X25A_V1	
-	if(StatusBacklightOnOff==0) {
-		if(IsFirstDisplayOn==0){
-			lge_rt8966a_backlight_control(1);
-			IsFirstDisplayOn = 1;
-			StatusBacklightOnOff = 1;
-		}
-	}
-
-#endif
 	pm_qos_update_request(tovis_pm_qos_req, 65000);
 	display_on = TRUE;
 
-#if 0 /*2012-09-26 junghoon-kim(junghoon79.kim@lge.com) V3 not use [START]*/
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+
+#if 0 /*                                                                  */
+/*                                                                        */
 	if(!Is_Backlight_Set)
 	{
 		msleep(50);
@@ -714,8 +385,8 @@ static int ilitek_qvga_disp_on(struct platform_device *pdev)
       bu61800_force_set();    //backlight current level force setting here
       #endif
 	}
-   /* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
-#endif/*2012-09-26 junghoon-kim(junghoon79.kim@lge.com) V3 not use [END]*/
+   /*                                                                        */
+#endif/*                                                                */
 
 	  
 	return 0;
@@ -801,7 +472,7 @@ static int __init tovis_qvga_init(void)
 		pinfo->yres = QVGA_HEIGHT;
 		pinfo->type = EBI2_PANEL;
 		pinfo->pdest = DISPLAY_1;
-		pinfo->wait_cycle = 0x428000; // 0x908000; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-30] : LCD write timing matching */
+		pinfo->wait_cycle = 0x428000; //                                                                                            
 
 		pinfo->bpp = 16;
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
@@ -811,17 +482,17 @@ static int __init tovis_qvga_init(void)
 #endif
 		pinfo->lcd.vsync_enable = TRUE;
 		pinfo->lcd.refx100 = 6000;
-/*[2012-12-22][junghoon79.kim@lge.com] V3 camera tearing issue(QCT SR: 01031535) [START]*/
-#if defined(CONFIG_MACH_MSM7X25A_V3) || defined(CONFIG_MACH_MSM7X25A_V1)
-		pinfo->lcd.v_back_porch = 150;
+/*                                                                                      */
+      #ifdef CONFIG_MACH_MSM7X25A_V3
+      pinfo->lcd.v_back_porch = 150;
 		pinfo->lcd.v_front_porch = 140;
 		pinfo->lcd.v_pulse_width = 40;
-#else
+      #else
 		pinfo->lcd.v_back_porch = 0x06;
 		pinfo->lcd.v_front_porch = 0x0a;
 		pinfo->lcd.v_pulse_width = 2;
-#endif
-/*[2012-12-22][junghoon79.kim@lge.com] V3 camera tearing issue(QCT SR: 01031535) [END]*/
+      #endif
+/*                                                                                    */
 		pinfo->lcd.hw_vsync_mode = TRUE;
 		pinfo->lcd.vsync_notifier_period = 0;
 

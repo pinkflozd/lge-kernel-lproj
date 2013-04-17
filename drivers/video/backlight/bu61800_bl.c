@@ -38,10 +38,10 @@
 #include <linux/earlysuspend.h>
 #endif
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-20] : Factory reset white screen */
+/*                                                                              */
 //#include <linux/notifier.h> 
 #include <linux/reboot.h>
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-20] : Factory reset white screen */
+/*                                                                              */
 
 
 /********************************************
@@ -434,12 +434,12 @@ static void bu61800_wakeup(struct bu61800_driver_data *drvdata)
 #endif /* CONFIG_PM */
 
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 #if 1
 extern int display_on; 
 int Is_Backlight_Set = 0;
 #endif
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 
 #if 1//defined(CONFIG_MACH_MSM7X25A_E1BR)
 
@@ -464,7 +464,7 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 	      current_value = 0x63;			
 		  dprintk("Invalid setting level = %d\n", level);
 		}
-	/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+	/*                                                                        */
 #if 1
 	if((display_on==0) && (level!=0)) {
 		   drvdata->intensity = level;
@@ -472,7 +472,7 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 	      return 0;
 	   	}
 #endif		
-	/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+	/*                                                                        */
 
 	if ((drvdata->intensity != level)&& (level != 0))
 	{
@@ -480,7 +480,7 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 		dprintk("BACK LIGHT SETTING....\n");
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_current, current_value);
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_m, val);
-		Is_Backlight_Set = 1; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+		Is_Backlight_Set = 1; /*                                                                        */
 	}
 	else if(level == 0)
 	{
@@ -488,11 +488,11 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 		dprintk("BACK LIGHT OFF\n");		
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_current, current_value);
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_m, val);
-		Is_Backlight_Set = 0; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+		Is_Backlight_Set = 0; /*                                                                        */
 	}
 	else
 	{
-	    Is_Backlight_Set = 1; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+	    Is_Backlight_Set = 1; /*                                                                        */
 	}
 
 	led_bl_onoff_state = val;
@@ -522,7 +522,7 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 	      current_value = 0x63;			
 		  dprintk("Invalid setting level = %d\n", level);
 		}
-	/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+	/*                                                                        */
 #if 1
 	   if((display_on==0) && (level!=0)) 
 	   	{
@@ -530,16 +530,16 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 	      return 0;
 	   	}
 #endif		
-	/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+	/*                                                                        */
 
 
-	/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-05] : bl dimming error */
+	/*                                                                    */
 	if ((drvdata->intensity != level)&& (level != 0))
 	{
 		dprintk("BACK LIGHT SETTING....\n");
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_current, current_value);
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_m, LCD_BL_ON);
-		Is_Backlight_Set = 1; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+		Is_Backlight_Set = 1; /*                                                                        */
 
 	}
 	else if(level == 0)
@@ -547,15 +547,15 @@ static int bu61800_send_intensity(struct bu61800_driver_data *drvdata, int level
 		dprintk("BACK LIGHT OFF\n");		
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_current, current_value);
 		bu61800_write(drvdata->client, drvdata->reg_addrs.bl_m, LCD_BL_OFF);
-		Is_Backlight_Set = 0; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+		Is_Backlight_Set = 0; /*                                                                        */
 
 	}
 	else
 	{
-	      Is_Backlight_Set = 1; /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+	      Is_Backlight_Set = 1; /*                                                                        */
 
 	}
-	/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-05] : bl dimming error */
+	/*                                                                    */
 
 	drvdata->intensity = level;	
 	return 0;
@@ -639,7 +639,7 @@ EXPORT_SYMBOL(bu61800_force_set);
 
 #else
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 
 int bu61800_force_set(void)
 {
@@ -674,7 +674,7 @@ int bu61800_force_set(void)
 
 EXPORT_SYMBOL(bu61800_force_set);
 #endif
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-22] : BL control error fix */
+/*                                                                        */
 
 
 #ifdef CONFIG_PM
@@ -864,7 +864,7 @@ static struct led_classdev bu61800_led_dev = {
 	.brightness_set = leds_brightness_set,
 };
 
-/* dajin.kim@lge.com */
+/*                   */
 #ifdef USE_BUTTON_BACKLIGHT
 static void button_leds_brightness_set(struct led_classdev *led_cdev, enum led_brightness value)
 {
@@ -884,7 +884,7 @@ static struct led_classdev bu61800_keyled_dev = {
 	.brightness		= LED_OFF,
 };
 #endif
-/* dajin.kim@lge.com */
+/*                   */
 #endif
 
 static int bu61800_probe(struct i2c_client *i2c_dev, const struct i2c_device_id *i2c_dev_id)
@@ -955,12 +955,12 @@ static int bu61800_probe(struct i2c_client *i2c_dev, const struct i2c_device_id 
 		err = device_create_file(drvdata->led->dev, &dev_attr_drvstat);
 	}
 #ifdef USE_BUTTON_BACKLIGHT
-	/* dajin.kim@lge.com */
+	/*                   */
 	if (led_classdev_register(&i2c_dev->dev, &bu61800_keyled_dev) == 0) {
 		eprintk("Registering led class dev successfully.\n");
 		drvdata->led = &bu61800_keyled_dev;
 	}
-	/* dajin.kim@lge.com */
+	/*                   */
 #endif
 #endif
 
@@ -1020,7 +1020,7 @@ static struct i2c_driver bu61800_driver = {
 };
 
 
-/* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-20] : Factory reset white screen */
+/*                                                                              */
 static int bu61800_send_off(struct notifier_block *this,
 				unsigned long event, void *cmd)
 {
@@ -1036,7 +1036,7 @@ struct notifier_block lge_chg_reboot_nb = {
 };
 
 extern int register_reboot_notifier(struct notifier_block *nb);
-/* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-20] : Factory reset white screen */
+/*                                                                              */
 
 
 
@@ -1044,9 +1044,9 @@ static int __init bu61800_init(void)
 {
 	printk("BU61800 init start\n");
 
- /* LGE_CHANGE_S: E0 jiwon.seo@lge.com [2011-11-20] : Factory reset white screen */
+ /*                                                                              */
        register_reboot_notifier(&lge_chg_reboot_nb);
- /* LGE_CHANGE_E: E0 jiwon.seo@lge.com [2011-11-20] : Factory reset white screen */
+ /*                                                                              */
  
 	return i2c_add_driver(&bu61800_driver);
 }

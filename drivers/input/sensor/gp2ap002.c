@@ -146,9 +146,9 @@ struct proximity_gp2ap_device {
 	spinlock_t			lock;			/* protect resources */
 	int op_mode;	/* operation mode - 0:A, 1:B1, 2:B2 */
 	u8	reg_backup[7];	/* for on/off */
-	/* LGE_CHANGE_S : yangwook.lim 20120216 DV issue wakelock when interrupt occurred. */
+	/*                                                                                 */
 	struct wake_lock wakelock;	
-	/* LGE_CHANGE_E : yangwook.lim 20120216 DV issue wakelock when interrupt occurred. */
+	/*                                                                                 */
 };
 
 struct detection_cycle {
@@ -302,7 +302,7 @@ gp2ap_device_initialise(void)
 		}
 	}
 
-/* LGE_CHANGE_S for debugging */
+/*                            */
 	ret = prox_i2c_write(GP2AP_REG_CON, 0x18, GP2AP_NO_INTCLEAR);
 	if (ret < 0) {
 		printk(KERN_INFO "PROXI: REG_CON - 0x18 init error");
@@ -350,7 +350,7 @@ gp2ap_device_initialise(void)
 
 	return ret;
 
-/* LGE_CHANGE_E */
+/*              */
 
 end_device_init:
 	PROXE("failed to initailise\n");
@@ -433,11 +433,11 @@ gp2ap_work_func(struct work_struct *work)
 	int vo_data;
 
 
-	/* LGE_CHANGE_S : yangwook.lim 20120216 DV issue issue wakelock when interrupt occurred. */
+	/*                                                                                       */
 	if(wake_lock_active(&dev->wakelock))
 		wake_unlock(&dev->wakelock);
 	wake_lock_timeout(&dev->wakelock, 2 * HZ);
-	/* LGE_CHANGE_E : yangwook.lim 20120216 DV issue issue wakelock when interrupt occurred. */
+	/*                                                                                       */
 
 
 	if (GP2AP_DEBUG_FUNC_TRACE & gp2ap_debug_mask)
@@ -572,13 +572,13 @@ gp2ap_cycle_store(struct device *dev, struct device_attribute *attr, const char 
 	int cycle;
 
 	sscanf(buf, "%d", &cycle);
-/* LGE_CHANGE_S homin.jeon@lge.com - modify Buffer Overflow (TD issue)*/
+/*                                                                    */
 #ifndef CONFIG_MACH_MSM7X27A_U0
 	if ((cycle < 0) || (cycle > ARRAY_SIZE(gp2ap_cycle_table))) {
 #else
 	if ((cycle < 0) || (cycle >= ARRAY_SIZE(gp2ap_cycle_table))) {
 #endif
-/* LGE_CHANGE_E homin.jeon@lge.com - modify Buffer Overflow (TD issue)*/
+/*                                                                    */
 		printk(KERN_INFO "Usage: echo [0 ~ %d] > cycle\n", ARRAY_SIZE(gp2ap_cycle_table));
 		printk(KERN_INFO " 0(8ms),1(16ms),2(32ms),3(64ms),4(128ms)\n");
 		printk(KERN_INFO " 5(256ms),6(512ms),7(1024ms)\n");
@@ -812,10 +812,10 @@ gp2ap_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id)
 		}
 	}
 
-	/* LGE_CHANGE_S [yoonsoo.kim@lge.com] 20120305 : Proximity Init work function during booting */
+	/*                                                                                           */
 	wake_lock_init(&gp2ap_pdev->wakelock, WAKE_LOCK_SUSPEND, "gp2ap");
 	INIT_DELAYED_WORK(&gp2ap_pdev->dwork, gp2ap_work_func);
-	/* LGE_CHANGE_E  [yoonsoo.kim@lge.com] 20120305 : Proximity Init work function during booting */
+	/*                                                                                            */
 	
 	if (GP2AP_DEBUG_GEN_INFO & gp2ap_debug_mask)
 		PROXD("vout gpio(%d), irq(%d)\n", gp2ap_pdev->vout_gpio, gp2ap_pdev->irq);
@@ -848,7 +848,7 @@ gp2ap_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id)
 
 	dummy_state.event = 0;
 
-/* LGE_CHANGE, FIXME : just blocked for test, when suspend enable, it should be unblocked. */
+/*                                                                                         */
 	gp2ap_suspend(gp2ap_pdev->client, dummy_state);
 
 

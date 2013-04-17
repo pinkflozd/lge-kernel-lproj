@@ -73,15 +73,15 @@ int vfs_fstatat(int dfd, const char __user *filename, struct kstat *stat,
 {
 	struct path path;
 	int error = -EINVAL;
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20130117:Apply kernel mainline patch
- *http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=commitdiff;h=836fb7e7b978e5f3b8b52e40838ddc50264723f0
+/*                                                                       
+                                                                                                                      
  */
 	#if 0  //QCT original
 	int lookup_flags = 0;
 	#else //mainline patch
 	unsigned int lookup_flags = 0;
 	#endif
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20130117*/
+/*                                           */
 
 	if ((flag & ~(AT_SYMLINK_NOFOLLOW | AT_NO_AUTOMOUNT |
 		      AT_EMPTY_PATH)) != 0)
@@ -91,7 +91,7 @@ int vfs_fstatat(int dfd, const char __user *filename, struct kstat *stat,
 		lookup_flags |= LOOKUP_FOLLOW;
 	if (flag & AT_EMPTY_PATH)
 		lookup_flags |= LOOKUP_EMPTY;
-/*LGE_CHANGE_S[jyothishre.nk@lge.com]20130117:Apply kernel mainline patch*/
+/*                                                                       */
 retry:
 	error = user_path_at(dfd, filename, lookup_flags, &path);
 	if (error)
@@ -103,7 +103,7 @@ retry:
 		lookup_flags |= LOOKUP_REVAL;
 		goto retry;
 	}
-/*LGE_CHANGE_E[jyothishre.nk@lge.com]20130117*/
+/*                                           */
 out:
 	return error;
 }

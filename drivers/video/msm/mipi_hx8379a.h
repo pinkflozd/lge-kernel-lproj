@@ -32,10 +32,10 @@
 
 
 
-/*[LGSI_SP4_BSP_BEGIN] [kiran.jainapure@lge.com] - Support not required - as QCT is supporting this feature. 
-For details check board file.*/
+/*                                                                                                           
+                             */
 //#define CONFIG_FB_MSM_MIPI_DSI_LG4573B_BOOT_LOGO 1
-/*[LGSI_SP4_BSP_END] [kiran.jainapure@lge.com] */
+/*                                             */
 
 #define GPIO_U0_LCD_RESET 125
 

@@ -693,7 +693,7 @@ static int fsg_lun_open(struct fsg_lun *curlun, const char *filename)
 		rc = (int) size;
 		goto out;
 	}
-/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [START]*/
+/*                                                                                              */
 	if (curlun->cdrom) {
 #ifdef CONFIG_LGE_USB_ANDROID_CDROM_MAC_SUPPORT
 		curlun->blksize = 512;
@@ -731,7 +731,7 @@ static int fsg_lun_open(struct fsg_lun *curlun, const char *filename)
 					(int) num_sectors);
 		}
 #endif
-	/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [end]*/
+	/*                                                                                            */
 
 	}
 	if (num_sectors < min_sectors) {
@@ -797,7 +797,7 @@ static void store_cdrom_address(u8 *dest, int msf, u32 addr)
 	}
 }
 
-/*2012-11-01 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [START]*/
+/*                                                                                              */
 #ifdef CONFIG_LGE_USB_ANDROID_CDROM_MAC_SUPPORT
 /**
  * fsg_get_toc() - Builds a TOC with required format @format.
@@ -866,7 +866,7 @@ static int fsg_get_toc(struct fsg_lun *curlun, int msf, int format, u8 *buf)
 
 /*-------------------------------------------------------------------------*/
 
-/*2012-10-11 Byungho-LEE(lbh.lee@lge.com) [td:NA] support hybrid ISO image for MAX OS-X. [END]*/
+/*                                                                                            */
 
 
 static ssize_t fsg_show_ro(struct device *dev, struct device_attribute *attr,

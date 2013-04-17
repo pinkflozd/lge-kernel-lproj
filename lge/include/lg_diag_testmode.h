@@ -20,11 +20,11 @@
 /********************** END PACK() Definition *****************************/
 
 
-/* BEGIN: 0014654 jihoon.lee@lge.com 20110124 */
+/*                                            */
 /* MOD 0014654: [TESTMODE] SYNC UP TESTMODE PACKET STRUCTURE TO KERNEL */
 //#define MAX_KEY_BUFF_SIZE    200
 #define MAX_KEY_BUFF_SIZE    201
-/* END: 0014654 jihoon.lee@lge.com 2011024 */
+/*                                         */
 
 typedef enum
 {
@@ -167,7 +167,7 @@ typedef enum
     VIRTUAL_SIM_ON,
     VIRTUAL_SIM_STATUS,
     CAMP_CHECK = 3,
-//LGE_UPDATE_S 2012/12/04 eunshin.cho@lge.com Testmode diag campreq
+//                                                                 
     CAMPREQ_EGSM 		= 4,       
     CAMPREQ_GSM850 		= 5,	       
     CAMPREQ_PCS 			= 6,         
@@ -188,7 +188,7 @@ typedef enum
     CAMPREQ_DETACH			= 21,
     CAMPREQ_GSM_WCDMA_ONLY = 49,
     LPM_ONOFF			= 100
-//LGE_UPDATE_E 2012/12/04 eunshin.cho@lge.com Testmode diag campreq
+//                                                                 
 }test_mode_req_virtual_sim_type;
 
 typedef enum
@@ -293,7 +293,7 @@ typedef enum
 
 #define BT_ADDR_CNT 12
 
-// +s LG_BTUI_DIAGCMD_DUTMODE munho2.lee@lge.com 110915
+//                                                     
 typedef enum
 {
   BT_GET_ADDR, //no use anymore
@@ -316,7 +316,7 @@ typedef struct {
 }test_mode_req_bt_addr_type;
 
 #define WIFI_MAC_ADDR_CNT 12
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 typedef enum
 {
   WLAN_TEST_MODE_54G_ON=4,
@@ -350,7 +350,7 @@ typedef enum
   WLAN_TEST_MODE_CTGRY_NOT_SUPPORTED,
 } test_mode_ret_wifi_ctgry_t;
 
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
 typedef enum
 {
@@ -369,14 +369,14 @@ typedef enum {
     XO_FACTORY_CALIBRATION,
 } test_mode_req_XOCalDataBackup_Type;
 
-// LGE_UPDATE_FOTA_S M3 bryan.oh@lge.com 2011/10/18
+//                                                 
 typedef enum
 {
     FOTA_ID_CHECK,
     FOTA_ID_READ
 }test_mode_req_fota_id_check_type;
 
-/* LGE_CHANGE_S [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+/*                                                                   */
 typedef enum
 {
   LCD_INITIAL=0,
@@ -464,16 +464,16 @@ typedef enum
   VOL_LEV_MEDIUM,
   VOL_LEV_MAX
 }test_mode_req_volume_level_type;
-/* LGE_CHANGE_E [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+/*                                                                   */
 
-// [LGE_UPDATE_S]  minwoo.jung 20120207
+//                                     
 typedef enum
 {
     MLT_DISABLE,
     MLT_ENABLE,
 }test_mode_req_mlt_enable_type;
-// LGE_UPDATE_E  minwoo.jung 20120207
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+//                                   
+/*                                                                    */
 
 typedef enum 
 {
@@ -482,7 +482,7 @@ typedef enum
   PROXI_SENSOR_CAL,
   PROXI_SENSOR_POWER_CHECK ,  
 } test_mode_req_proximity_sensor_type;
-/* LGE_CHANGE_S [sohyun.nam@lge.com] 2012-02-06 support test mode 8.9*/
+/*                                                                   */
 typedef struct
 {
     byte type_subcmd;
@@ -493,7 +493,7 @@ typedef struct
 		unsigned int	data_lcd_get[4];
 	};
 } PACKED test_mode_req_mft_lcd_type;
-/* LGE_CHANGE_E [sohyun.nam@lge.com] 2012-02-06 support test mode 8.9*/ 	
+/*                                                                   */ 	
 
 typedef enum 
 {
@@ -507,7 +507,7 @@ typedef enum
   SENSOR_CALIBRATION_START = 0,
   SENSOR_CALIBRATION_RESULT,
 }test_mode_req_calibration_sensor_type;
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
 typedef struct {
 	byte type_subcmd;
 	union {
@@ -516,16 +516,16 @@ typedef struct {
 	};
 } PACKED test_mode_req_fmtransceiver_test_type;
 
-// LGE_CHANGE_S, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]	
+//                                                                  
 typedef enum
 {
   GNSS_ON = 0,
   GNSS_MEASURE = 1,   
   GNSS_MODE_CHECK = 2,
 }test_mode_req_gnss_cmd_type;
-// LGE_CHANGE_E, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]
+//                                                                 
 
-//[[ NFCDiag wongab.jeon@lge.com
+//                              
 typedef enum
 {
 	NFC_TEST_MODE_ON=0,
@@ -559,7 +559,7 @@ typedef enum
   KEY_UNLOCK,
 } test_mode_req_key_lock_unlock_type;
 
-// LGE_CHANGE_S, hoseong.kang@lge.com
+//                                   
 typedef enum
 {
 	VOLUME_READ = 0,
@@ -574,7 +574,7 @@ typedef struct
 		unsigned int	data_volume;
 	};
 } PACKED test_mode_req_mft_volume_test_type;
-// LGE_CHANGE_E, hoseong.kang@lge.com
+//                                   
 typedef struct
 {
     byte type_subcmd;
@@ -583,7 +583,7 @@ typedef struct
 		unsigned int	data_key_num;
 	};
 } PACKED test_mode_req_keytest_mft;
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [Start]
+//                                                             
 #define LGE_TESTMODE_AATSET_DATA		100
 typedef enum
 {	
@@ -596,33 +596,33 @@ typedef struct {
 	byte sub2;
 	byte aatset_data[LGE_TESTMODE_AATSET_DATA];
 } PACKED test_mode_req_aatset_type;
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [End]
+//                                                           
 
-// +s LGBT_DIAG_BT_WIFI_FOR_MFT 250-136-0 / 250-136-1 sunmee.choi@lge.com 2012-10-18
+//                                                                                  
 typedef enum
 {
   BT_WIFI_FOR_MFT_ON = 0,
   BT_WIFI_FOR_MFT_OFF = 1
 }test_mode_req_bt_wifi_for_mft_type;
 // +e LGBT_DIAG_BT_WIFI_FOR_MFT
-// LGE_CHANGE_S, narasimha.chikka@lge.com, Added for power reset
+//                                                              
 typedef enum
 {
 	POWER_RESET,
 	POWER_OFF,
 }test_mode_req_power_reset_type;
-// LGE_CHANGE_E, narasimha.chikka@lge.com, Added for power reset
+//                                                              
 
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 typedef enum
 {
 	MTS_ENABLE  = 0,
 	MTS_DISABLE = 1,
 	MTS_STATUS  = 2,
 } test_mode_req_mts_type;
-//LGE_CHANGE_E 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                   
 #define NTCODE_MAX_STRING_SIZE 1250
 #define NTCODE_GROUP_LIST 40
 #define NTCODE_GROUP_SIZE (3+4+4+1)
@@ -645,7 +645,7 @@ typedef struct {
 	int data_len;
 	byte ntcode_list[NTCODE_GROUP_LIST][NTCODE_GROUP_SIZE];
 } PACKED test_mode_rsp_ntcode_type;
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                 
 
 typedef union
 {
@@ -663,9 +663,9 @@ typedef union
     test_mode_req_vco_self_tunning_type vco_self_tunning;
     test_mode_req_factory_reset_mode_type test_factory_mode;
     byte CGPSTest;
-// LGE_CHANGE_S, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]	
+//                                                                  
     test_mode_req_gnss_cmd_type  GNSSTest;
-// LGE_CHANGE_E, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]
+//                                                                 
     test_mode_req_batter_bar_type batt;
     test_mode_req_manual_test_mode_type test_manual_mode; 
     test_mode_req_sw_version_type sw_version;
@@ -680,25 +680,25 @@ typedef union
     test_mode_req_change_usb_driver_type change_usb_driver;
     test_mode_req_irda_fmrt_finger_uim_type ext_device_cmd;
     test_mode_req_reset_production_type reset_production_cmd;
-	// +s LG_BTUI_DIAGCMD_DUTMODE munho2.lee@lge.com 110915
+	//                                                     
 	test_mode_req_bt_type bt;
 	// +e LG_BTUI_DIAGCMD_DUTMODE
     test_mode_req_bt_addr_type bt_ad;
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
     test_mode_req_wifi_type wifi;
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]	
+//                                                             
     test_mode_req_wifi_addr_type wifi_mac_ad;
     test_mode_req_XOCalDataBackup_Type XOCalDataBackup;
 
-// LGE_UPDATE_FOTA_S M3 bryan.oh@lge.com 2011/10/18
+//                                                 
     test_mode_req_fota_id_check_type fota_id_check;
-// LGE_UPDATE_FOTA_E M3 bryan.oh@lge.com 2011/10/18
+//                                                 
 
-// LGE_CHANGE_S, narasimha.chikka@lge.com, Added for power reset
+//                                                              
     test_mode_req_power_reset_type		power_reset;	
-// LGE_CHANGE_E, narasimha.chikka@lge.com, Added for power reset
+//                                                              
 
-	/* LGE_CHANGE_S [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+	/*                                                                   */
     test_mode_req_lcd_type lcd;
     test_mode_req_lcd_cal_type lcd_cal;
     test_mode_req_motor_type motor;
@@ -708,50 +708,50 @@ typedef union
     test_mode_req_mp3_test_type mp3_play;
     test_mode_req_speaker_phone_type speaker_phone;
     test_mode_req_volume_level_type volume_level;
-    /* LGE_CHANGE_E [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+    /*                                                                   */
     test_mode_req_fmtransceiver_test_type fm_transceiver;
-	//[[ NFCDiag wongab.jeon@lge.com
+	//                              
 	test_mode_req_nfc_type 					nfc;
 	//]] NFCDiag
 	test_mode_req_led_type	led;
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                   
 	test_mode_req_ntcode_type ntcode;
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
-// [LGE_UPDATE_S]  minwoo.jung 20120207
+//                                                                 
+//                                     
     test_mode_req_mlt_enable_type mlt_enable;
-// [LGE_UPDATE_E]  minwoo.jung 20120207
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+//                                     
+/*                                                                    */
     test_mode_req_proximity_sensor_type proximity;
     test_mode_req_calibration_sensor_type sensor_calibration;
     test_mode_req_proximityMFT_sensor_type proximityMFT;
     char sensor_data[256];
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
 
 
-/* LGE_CHANGE_S [sohyun.nam@lge.com] 2012-02-06 support test mode 8.9*/
+/*                                                                   */
 	byte MaxRGB[10];
  	test_mode_req_mft_lcd_type mft_lcd; //250-116-6
-/* LGE_CHANGE_E [sohyun.nam@lge.com] 2012-02-06 support test mode 8.9*/ 	
+/*                                                                   */ 	
 
-// LGE_CHANGE_S, hoseong.kang@lge.com
+//                                   
 	test_mode_req_mft_volume_test_type mft_volume;
-// LGE_CHANGE_E, hoseong.kang@lge.com
+//                                   
 	test_mode_req_touch_draw_type mft_touch_draw;
 	test_mode_req_key_lock_unlock_type key_lock_unlock;
 	test_mode_req_keytest_mft key_test_mft;
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [Start] 
+//                                                              
 	test_mode_req_aatset_type				aatset;
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [End]
-// +s LGBT_DIAG_BT_WIFI_FOR_MFT 250-136-0 / 250-136-1 sunmee.choi@lge.com 2012-10-18
+//                                                           
+//                                                                                  
 	test_mode_req_bt_wifi_for_mft_type bt_wifi_for_mft;
 // +e LGBT_DIAG_BT_WIFI_FOR_MFT
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 	test_mode_req_mts_type mts;
-//LGE_CHANGE_E 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 
-/*2012-11-07 jeongwon.choi@lge.com [UICC_Pathch] VSIM : process using ARM11 [END]*/
+/*                                                                               */
 	test_mode_req_virtual_sim_type	  virtual_sim_type;
-/*2012-11-07 jeongwon.choi@lge.com [UICC_Pathch] VSIM : process using ARM11 [END]*/
+/*                                                                               */
 } test_mode_req_type;
 
 typedef struct diagpkt_header
@@ -779,23 +779,23 @@ typedef struct
     uint16 MeasuredCNo;
 } PACKED CGPSResultType;
 
-// LGE_CHANGE_S, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]	
+//                                                                  
 typedef struct
 {
     uint16 GPS;
 	uint16 GLONASS;
 } PACKED GNSSResultType;
-// LGE_CHANGE_E, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]	
+//                                                                  
 
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 typedef struct
 {
 	int packet;
 	int per;
 } PACKED WlRxResults;
-// LGE_CHANGE_E, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
-//[[ NFCDiag wongab.jeon@lge.com
+//                              
 typedef struct
 {
 	boolean  swio_result;			//zÁÂÇ¥°ª	
@@ -810,30 +810,30 @@ typedef struct
 }PACKED test_mode_nfc_ant_rsp_type;
 //]] NFCDiag
 
-// LGE_CHANGE_S hoseong.kang@lge.com
+//                                  
 typedef struct 
 {
 	unsigned int  data_volume;
 } PACKED test_mode_mft_volume_rsp_type;
-// LGE_CHANGE_E hoseong.kang@lge.com
+//                                  
 
 
-/* BEGIN: 0014654 jihoon.lee@lge.com 20110124 */
+/*                                            */
 /* MOD 0014654: [TESTMODE] SYNC UP TESTMODE PACKET STRUCTURE TO KERNEL */
 typedef union
 {
     test_mode_req_version_type version;
     byte str_buf[64];
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [Start]
+//                                                             
 	byte						str_aat_buf[LGE_TESTMODE_AATSET_DATA];
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [End]
+//                                                           
     CGPSResultType TestResult[16];
-// LGE_CHANGE_S, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]	
+//                                                                  
 	GNSSResultType GNSSTestResult;
-//LGE_UPDATE_GPS [Add GNSS ON CHECK] seulgi.kim@lge.com 121022 START
+//                                                                  
 	int gnss_on_check;
-//LGE_UPDATE_GPS [Add GNSS ON CHECK] seulgi.kim@lge.com 121022 END
-// LGE_CHANGE_E, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE] 
+//                                                                
+//                                                                  
     char key_pressed_buf[MAX_KEY_BUFF_SIZE];
     char memory_check;
     uint32 socket_memory_size;
@@ -841,19 +841,19 @@ typedef union
     unsigned int mem_capa;
     char batt_voltage[5];
   	byte	chg_stat;
-  	//LGE_CHANGE_S, [hyo.park@lge.com] , 2011-10-04
+  	//                                             
   	char	battery_soc[3];
-  	//LGE_CHANGE_E, [hyo.park@lge.com] , 2011-10-04
+  	//                                             
     int manual_test;
     test_mode_req_pid_type pid;
     test_mode_req_sw_version_type sw_version;
     byte hkadc_value;
     byte uim_state;
     byte vco_value;
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
     byte wlan_status;
     WlRxResults wlan_rx_results;
-// LGE_CHANGE_S, real-wifi@lge.com, 20110928, [WLAN TEST MODE]
+//                                                            
 
     test_mode_req_cal_check_type cal_check;
     test_mode_req_factory_reset_mode_type factory_reset;
@@ -862,10 +862,10 @@ typedef union
     byte read_wifi_mac_addr[WIFI_MAC_ADDR_CNT];    
     test_mode_req_XOCalDataBackup_Type XOCalDataBackup;
 
-// LGE_UPDATE_FOTA_S M3 hyunbae.jun@lge.com 2011/10/19
+//                                                    
    byte fota_id[15];
 	
-	/* LGE_CHANGE_S [myunghwan.kim@lge.com] 2011-09-27 support test mode */
+	/*                                                                   */
     byte  led_status;
     test_mode_req_lcd_type lcd;
     test_mode_req_motor_type motor;
@@ -875,42 +875,42 @@ typedef union
     test_mode_req_mp3_test_type mp3_play;
     test_mode_req_speaker_phone_type speaker_phone;
     test_mode_req_volume_level_type volume_level;
-    /* LGE_CHANGE_E [myunghwan.kim@lge.com] 2011-09-27 support test mode */
-// [LGE_UPDATE_S]  minwoo.jung 20120207
+    /*                                                                   */
+//                                     
     byte mlt_enable;
-// [LGE_UPDATE_E]  minwoo.jung 20120207
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+//                                     
+/*                                                                    */
     int proximity;
     int accel_calibration;
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
 
-	//[[ NFCDiag wongab.jeon@lge.com
+	//                              
 	test_mode_nfc_swp_rsp_type nfc_swp;
 	test_mode_nfc_ant_rsp_type nfc_ant;
 	//]] NFCDiag
 
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 20120204, [LCD for MFT, TEST MODE]*/
+/*                                                                     */
 	byte lcd_getinfo[20]; //250-116-1
 	unsigned int lcd_get; //250-116-6	
-/* LGE_CHANGE_S, sohyun.nam@lge.com, 20120204, [LCD for MFT, TEST MODE]*/
+/*                                                                     */
 
-	// LGE_CHANGE_S, hoseong.kang@lge.com
+	//                                   
 	test_mode_mft_volume_rsp_type mft_volume;
-	// LGE_CHANGE_E, hoseong.kang@lge.com
+	//                                   
 	
-	// 2012-11-06 chiwon.son@lge.com [V3/V7][TestMode] Add Sleep mode check(250-42-4) and Flight mode check(250-42-5) [Start]
+	//                                                                                                                       
 	byte flight_sleep_mode_check;
-	// 2012-11-06 chiwon.son@lge.com [V3/V7][TestMode] Add Sleep mode check(250-42-4) and Flight mode check(250-42-5) [END]
+	//                                                                                                                     
 
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
 	byte mts;
-//LGE_CHANGE_E 2012.11 lg-msp@lge.com MTS TEAM
-// LGE_START 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                            
+//                                                                   
 	test_mode_rsp_ntcode_type ntcode;
-// LGE_END 20121113 seonbeom.lee [Security] support NTCODE max 40 .
+//                                                                 
     byte fmradio_mode_check;
 } PACKED test_mode_rsp_type;
-/* END: 0014654 jihoon.lee@lge.com 2011024 */
+/*                                         */
 
 typedef struct DIAG_TEST_MODE_F_rsp_tag {
     diagpkt_header_type		xx_header;
@@ -938,11 +938,11 @@ typedef enum
     TEST_MODE_FMRADIO_TEST,
     TEST_MODE_ISP_DOWNLOAD_TEST,
 
-/* LGE_CHANGE_S [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
+/*                                                                    */
 
     TEST_MODE_ORIENTATION_SENSOR=31,		//pitch,roll
-/* LGE_CHANGE_E [jiyeon.park@lge.com] 2012-01-19 support test mode 8.9*/
-    //[[ NFCDiag wongab.jeon@lge.com
+/*                                                                    */
+    //                              
     //TEST_MODE_ALCOHOL_SENSOR_TEST=32,
     TEST_MODE_NFC_TEST=32,
     //]] NFCDiag
@@ -1005,46 +1005,46 @@ typedef enum
 
 	TEST_MODE_VSLT_TEST = 97,
 
-// LGE_UPDATE_FOTA_S M3 bryan.oh@lge.com 2011/10/18
+//                                                 
     TEST_MODE_FOTA_ID_CHECK = 98,
-// LGE_UPDATE_FOTA_E M3 bryan.oh@lge.com 2011/10/18
+//                                                 
 	TEST_MODE_KEY_LOCK_UNLOCK = 99,
     TEST_MODE_ACCEL_SENSOR_TEST=100,		//on,off, sensor data
     TEST_MODE_COMPASS_SENSOR_TEST=102,     //on,off, sensor data 2
-// LGE_CHANGE_S, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]
+//                                                                 
   TEST_MODE_GNSS_TEST = 103,
 
-// LGE_CHANGE_S, narasimha.chikka@lge.com, Added for power reset
+//                                                              
   TEST_MODE_POWER_RESET=105,
-// LGE_CHANGE_E, narasimha.chikka@lge.com, Added for power reset
+//                                                              
 
-// LGE_CHANGE_E, soolim.you@lge.com, 20120113, [GPS DIAG TEST MODE]
-// [LGE_UPDATE_S] minwoo.jung 20120207
+//                                                                 
+//                                    
     TEST_MODE_MLT_ENABLE=106,
-// [LGE_UPDATE_E] minwoo.jung 20120207
-// LGE_CHANGE_S, sohyun.nam@lge.com, 20120204, [LCD for MFT, TEST MODE]
+//                                    
+//                                                                     
 	TEST_MODE_LCD=116, 
-// LGE_CHANGE_E, sohyun.nam@lge.com, 20120204, [LCD for MFT, TEST MODE]
+//                                                                     
     TEST_MODE_MFT_CAMERA = 118,
     TEST_MODE_MFT_CAMCORDER = 119,
 	TEST_MODE_KEY_TEST_FOR_MFT = 120,
     TEST_MODE_PROXIMITY_MFT_SENSOR_TEST = 121,
-// LGE_CHANGE_S, hoseong.kang@lge.com
+//                                   
 	TEST_MODE_VOLUME_TEST_FOR_MFT = 123,
-// LGE_CHANGE_E, hoseong.kang@lge.com
+//                                   
 	TEST_MODE_TOUCH_DRAW_FOR_MFT = 124,
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [Start]
+//                                                             
     TEST_MODE_MFT_AAT_SET=130,
-//LGE_CHANGE jini1711 20120409 add AAT SET diag command [End]
-/* LGE_CHANGE_S  : adiyoung.lee, Testmode : Model Name Read, 2012-12-20 */
+//                                                           
+/*                                                                      */
     TEST_MODE_MODEL_NAME_READ=132,
-/* LGE_CHANGE_E  : adiyoung.lee, Testmode : Model Name Read, 2012-12-20 */
-// +s LGBT_DIAG_BT_WIFI_FOR_MFT 250-136-0 / 250-136-1 sunmee.choi@lge.com 2012-10-18
+/*                                                                      */
+//                                                                                  
     TEST_MODE_BT_WIFI_FOR_MFT=136,
 // +e LGBT_DIAG_BT_WIFI_FOR_MFT
-//LGE_CHANGE_S 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
     TEST_MODE_MTS=143,
-//LGE_CHANGE_E 2012.11 lg-msp@lge.com MTS TEAM
+//                                            
     TEST_MODE_XO_CAL_DATA_COPY=250,
 
     MAX_TEST_MODE_SUBCMD = 0xFFFF
@@ -1064,7 +1064,7 @@ typedef struct
     byte  which_procesor;             // to choose which processor will do act.
 }testmode_user_table_entry_type;
 
-/* LGE_CHANGES_S, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 typedef struct
 {
     uint16 countresult;
@@ -1086,7 +1086,7 @@ typedef struct
     unsigned long rxbadplcp_old;
     unsigned long rxbadplcp_new;
 }wlan_status;
-/* LGE_CHANGES_E, [dongp.kim@lge.com], 2010-01-10, <LGE_FACTORY_TEST_MODE for WLAN RF Test > */
+/*                                                                                           */
 
 typedef struct DIAG_TEST_MODE_KEY_F_rsp_tag {
     diagpkt_header_type xx_header;

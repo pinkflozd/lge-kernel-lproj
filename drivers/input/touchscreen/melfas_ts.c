@@ -80,7 +80,7 @@ static void Release_All_Fingers(void);
 #define TS_READ_START_ADDR 								0x0F
 #define TS_READ_START_ADDR2 							0x10
 
-#if 1	//  woden@lge.com [2013-02-26] => New TS Firmware was applied.
+#if 1	//                                                            
 #define TS_LATEST_FW_VERSION_EU_SUN	0x16
 #define TS_LATEST_FW_VERSION_EU_INO	0x20
 #else
@@ -101,9 +101,7 @@ static void Release_All_Fingers(void);
 #define	SET_DOWNLOAD_BY_GPIO							1
 #define GPIO_TOUCH_ID 121
 
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
 #define KEY_SIM_SWITCH 223
-#endif
 
 int power_flag=0;
 static int irq_flag;
@@ -135,14 +133,14 @@ struct mcs8000_ts_device {
 	int (*power)(unsigned char onoff);
 	struct workqueue_struct *ts_wq;
 
-	/*20110607 seven.kim@lge.com for touch frimware download [START] */
+	/*                                                               */
 	//struct wake_lock wakelock;
 	int irq_sync;
 	int fw_version;
 	int hw_version;
 	int status;
 	int tsp_type;
-	/*20110607 seven.kim@lge.com for touch frimware download [END] */
+	/*                                                             */
 };
 
 static struct input_dev *mcs8000_ts_input = NULL;
@@ -208,8 +206,8 @@ static int melfas_init_panel(struct mcs8000_ts_device *ts)
 }
 */
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */
+/*                                                     
+                                              */
 static void ResetTS(void)
 {
 	struct mcs8000_ts_device *dev;
@@ -220,12 +218,12 @@ static void ResetTS(void)
 	//disable_irq(dev->num_irq);
 
 
-	/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+	/*                                                      */	
 	if(power_flag==1){
 			power_flag--;
 			dev->power(OFF);
 	}	
-	/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+	/*                                                      */	
 
 
 
@@ -237,12 +235,12 @@ static void ResetTS(void)
 
 	//enable_irq(dev->num_irq);
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */ 
+/*                                                     
+                                              */ 
 
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */
+/*                                                     
+                                              */
 int CheckTSForESD(unsigned char ucData)
 {
 	unsigned char ucStatus;
@@ -256,8 +254,8 @@ int CheckTSForESD(unsigned char ucData)
 		return FALSE;
 	}
 }
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-07] 
-: For an abnormal condition after getting ESD */ 
+/*                                                     
+                                              */ 
 
 static void Release_All_Fingers(void)
 {
@@ -302,11 +300,11 @@ static void mcs8000_work(struct work_struct *work)
   int keyID 	= 0;
 	int iTouchedCnt;
 	
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/
+	/*                                                     
+                                                                             */
 	int Is_Touch_Valid = 0;
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 
+	/*                                                     
+                                                                             */ 
 	
 #if DEBUG_PRINT
 	printk(KERN_ERR "melfas_ts_work_func\n");
@@ -315,12 +313,12 @@ static void mcs8000_work(struct work_struct *work)
 			printk(KERN_ERR "melfas_ts_work_func : TS NULL\n");
 #endif
 
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-TD1416085584 :  After sleep on and off while sensing a touchscreen,
-Touchscreen doesn't work*/
+/*                                                       
+                                                                   
+                        */
 	
 	
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+/*                                                    */
 
 
 	buf[0] = TS_READ_START_ADDR;
@@ -354,9 +352,9 @@ Touchscreen doesn't work*/
 
 	read_num = buf[0];
 			
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-10-17] : 
-TD1416085584 :  After sleeping on and off while sensing a touchscreen,
-Touchscreen doesn't work*/
+/*                                                       
+                                                                      
+                        */
 
 	iTouchedCnt = 6*5;
 
@@ -368,15 +366,15 @@ Touchscreen doesn't work*/
 		}
 		return ;
 	}
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+/*                                                    */
 
 	if(read_num>0)
 	{
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-: For an abnormal condition of touchscreen after the phone sleeps on and off*/	
+/*                                                     
+                                                                            */	
 	    Is_Touch_Valid = 1;
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 
+/*                                                     
+                                                                            */ 
 		
 		buf[0] = TS_READ_START_ADDR2;
 
@@ -406,8 +404,8 @@ Touchscreen doesn't work*/
 #endif 
 		}
 
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-28] 
-	: For an abnormal condition after getting ESD */
+	/*                                                     
+                                               */
 		ucSensedInfo  = buf[0];
 		if (CheckTSForESD(ucSensedInfo))
 		{
@@ -418,8 +416,8 @@ Touchscreen doesn't work*/
 			
 			return;
 		}
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-28] 
-	: For an abnormal condition after getting ESD */ 
+	/*                                                     
+                                               */ 
 
 		for(i = 0; i < read_num; i = i + 6)
 		{
@@ -452,15 +450,15 @@ Touchscreen doesn't work*/
 				keyID = (buf[i] & 0x0F);
 				touchState = (buf[i] & 0x80);
 
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
 				#if 1
 				if(g_touchLogEnable)
 					printk(KERN_INFO "keyID    : [%d]\n", keyID);
 				#endif
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */
 
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
-				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
+				#if defined(CONFIG_MACH_MSM7X25A_V3_DS)
+				/*                                                                                     */ 
 				switch(keyID)
 				{
 					case 0x1:
@@ -480,9 +478,9 @@ Touchscreen doesn't work*/
 						//or printk msg
 						break;					
 				}
-				/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [END] */ 
-#else
-				/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [START] */ 
+				/*                                                                                   */ 
+				#else
+				/*                                                                                */ 
 				#if 0
 				if (keyID == 0x1)
 					input_report_key(ts->input_dev, KEY_MENU, touchState ? PRESS_KEY : RELEASE_KEY);
@@ -494,25 +492,25 @@ Touchscreen doesn't work*/
 				if (keyID == 0x2)
 					input_report_key(ts->input_dev, KEY_MENU, touchState ? PRESS_KEY : RELEASE_KEY);
 				#endif
-				/* 2012-10-23 JongWook-Park(blood9874@lge.com) [V3] Single Touch Bring Up [END] */ 
-#endif
-				/* LGE_CHANGE_E: E1 yongboem.kim@lge.com [2012-01-10] : for Rev.A Touch Key */
+				/*                                                                              */ 
+				#endif
+				/*                                                                          */
 			}
 		}
 
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-19] : 
-		For the MIP Protocal*/
+		/*                                                       
+                      */
 
-		/* 2012-11-27 JongWook-Park(blood9874@lge.com) mms-128s touch work function patch [START] */ 
+		/*                                                                                        */ 
 		if (touchType == TOUCH_SCREEN){ 
 			for(j = 0; j < MELFAS_MAX_TOUCH; j++) 
 			{
 				if(g_Mtouch_info[j].strength== -1)
 					continue;
 
-				/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-09] : 
-				TD1416085584 :  After sleeping on and off while sensing a touchscreen,
-				Touchscreen doesn't work*/
+				/*                                                       
+                                                                          
+                            */
 				if(Is_Release_Error[j]==1) {			
 					input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, j);
 					input_report_abs(ts->input_dev, ABS_MT_POSITION_X, g_Mtouch_info[j].posX);
@@ -521,10 +519,10 @@ Touchscreen doesn't work*/
 					input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, g_Mtouch_info[j].width);
 	                input_report_abs(ts->input_dev, ABS_MT_PRESSURE, g_Mtouch_info[j].strength);                        
 					input_mt_sync(ts->input_dev);		  
-					//input_sync(ts->input_dev);/* LGE_CHANGE_S : wonsang.yoon@lge.com [2011-12-17]  blocking*/
+					//                                                                                         
 					Is_Release_Error[j]=0;
 				}		
-				/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-09]*/
+				/*                                                    */
 				
 				if (g_Mtouch_info[j].strength > 0) {	// Press
 				input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, j);
@@ -537,7 +535,7 @@ Touchscreen doesn't work*/
 				} else {	// Release
 					input_mt_sync(ts->input_dev);
 				}
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [START] */
+				/*                                                                                    */
 				#if 1
 				if(g_touchLogEnable)
 				{
@@ -545,7 +543,7 @@ Touchscreen doesn't work*/
 							j, (g_Mtouch_info[j].strength>0), g_Mtouch_info[j].posX, g_Mtouch_info[j].posY, g_Mtouch_info[j].strength, g_Mtouch_info[j].width);
 				}
 				#endif	
-				/* 2012-10-08 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s TSD patch [END] */
+				/*                                                                                  */
 
 				if(g_Mtouch_info[j].strength == 0){
 					g_Mtouch_info[j].strength = -1;
@@ -555,26 +553,26 @@ Touchscreen doesn't work*/
 			#if 0
 			if(g_touchLogEnable)
 			{
-				/* 2012-10-31 JongWook-Park(blood9874@lge.com) [V3] Melfas mms-128s Sensitivity Debug */
+				/*                                                                                    */
 				intensity_extract();
 			}
 			#endif	
 
 		}
-		/* 2012-11-27 JongWook-Park(blood9874@lge.com) mms-128s touch work function patch [END] */ 
+		/*                                                                                      */ 
 		
 		input_sync(ts->input_dev);
 
 	}			
-	/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/
+	/*                                                     
+                                                                             */
 	if(Is_Touch_Valid){
-		/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-12-20] 
-		: msleep function takes more than setting up delay time*/
+		/*                                                     
+                                                         */
 		//msleep(1);
 		usleep_range(1000,1000);	
-		/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-12-20] 
-		: msleep function takes more than setting up delay time*/
+		/*                                                     
+                                                         */
 	}
 	else{
 		#if DEBUG_PRINT
@@ -582,8 +580,8 @@ Touchscreen doesn't work*/
 		#endif
 		msleep(20); 
 	}
-	/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
-	: For an abnormal condition of touchscreen after the phone sleeps on and off*/  
+	/*                                                     
+                                                                             */  
 	if (irq_flag == 0) {
 		irq_flag++;
 		enable_irq(ts->client->irq);
@@ -633,12 +631,12 @@ static int mcs8000_ts_off(void)
 
 	dev = &mcs8000_ts_dev;
 
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 	if(power_flag==1){
 			power_flag--;
 			ret = dev->power(OFF);
 	}	
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 
 	if (ret < 0) {
 		printk(KERN_ERR "mcs8000_ts_on power on failed\n");
@@ -650,44 +648,44 @@ err_power_failed:
 	return ret;
 }
 #endif
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: For Touch screen non response after wakeup*/
+/*                                                   
+                                            */
 int mcs8000_ts_on(void)
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: For Touch screen non response after wakeup*/
+/*                                                   
+                                            */
 {
 	struct mcs8000_ts_device *dev = NULL;
 	int ret = 0;
 
 	dev = &mcs8000_ts_dev;
 
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 		if(power_flag==0){
 			power_flag++;
 			ret = dev->power(ON);
 		}
-/* add Touch power flag eungjin.kim@lge.com [2012-02-06]*/	
+/*                                                      */	
 
 	if (ret < 0) {
 		printk(KERN_ERR "mcs8000_ts_on power on failed\n");
 		goto err_power_failed;
 	}
 	
-/* LGE_CHANGE_S: E0 kevinzone.han@lge.com [2011-11-23] 
-: For an abnormal condition of touchscreen after the phone sleeps on and off*/	
+/*                                                     
+                                                                            */	
 	msleep(30);
-/* LGE_CHANGE_E: E0 kevinzone.han@lge.com [2011-11-23] 
+/*                                                     
 
-: For an abnormal condition of touchscreen after the phone sleeps on and off*/ 
+                                                                            */ 
 err_power_failed:
 	return ret;
 }
 
-/* LGE_CHANGE_S: E1 eungjin.kim@lge.com [2012-02-16] 
-: For Touch screen non response after wakeup*/
+/*                                                   
+                                            */
 EXPORT_SYMBOL(mcs8000_ts_on);
-/* LGE_CHANGE_E: E0 eungjin.kim@lge.com [2012-02-16] 
-: For  For Touch screen non response after wakeup*/
+/*                                                   
+                                                 */
 
 void mcs8000_firmware_info(unsigned char *fw_ver, unsigned char *hw_ver,unsigned char *touch_id)
 {
@@ -800,16 +798,16 @@ static int mcs8000_ts_probe(struct i2c_client *client, const struct i2c_device_i
 
 	ts_pdata = client->dev.platform_data;
 
-/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [START] */ 
+/*                                                                                     */ 
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_POSITION_X, 0, TS_MAX_X_COORD, 0, 0);
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_POSITION_Y, 0, TS_MAX_Y_COORD, 0, 0);
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_TOUCH_MAJOR, 0, TS_MAX_Z_TOUCH, 0, 0);
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_TRACKING_ID, 0, MELFAS_MAX_TOUCH-1, 0, 0);
-	/* LGE_CHANGE_S mystery184.kim@lge.com fix multi-touch protocol */
+	/*                                                              */
 	input_set_abs_params(mcs8000_ts_input, ABS_MT_PRESSURE, 0, 255, 0, 0);
-	/* LGE_CHANGE_E mystery184.kim@lge.com fix multi-touch protocol */
+	/*                                                              */
 	/* input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, TS_MAX_W_TOUCH, 0, 0); */
-	/* 2012-09-25 JongWook-Park(blood9874@lge.com) [V3] Bring up V3 mms-128s touch [END] */ 
+	/*                                                                                   */ 
 
 #if DEBUG_PRINT
   printk(KERN_INFO "ABS_MT_POSITION_X123 :  ABS_MT_POSITION_Y = [%d] : [%d] \n", ts_pdata->ts_x_max, ts_pdata->ts_y_max);
@@ -1087,7 +1085,7 @@ static int __devinit mcs8000_ts_init(void)
 	#else
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_BACK)] |= BIT_MASK(KEY_BACK);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_MENU)] |= BIT_MASK(KEY_MENU);
-#if defined(CONFIG_MACH_MSM7X25A_V3_DS) || defined(CONFIG_MACH_MSM7X25A_V1)
+#if defined(CONFIG_MACH_MSM7X25A_V3_DS)    
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_HOMEPAGE)] |= BIT_MASK(KEY_HOMEPAGE);
 		mcs8000_ts_input->keybit[BIT_WORD(KEY_SIM_SWITCH)] |= BIT_MASK(KEY_SIM_SWITCH);
 #endif

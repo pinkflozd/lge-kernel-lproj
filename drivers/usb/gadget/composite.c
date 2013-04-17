@@ -786,33 +786,33 @@ static int unbind_config(struct usb_composite_dev *cdev,
 		f = list_first_entry(&config->functions,
 				struct usb_function, list);
 
-		/*2013-01-03 [TD:NA] lbh.lee@lge.com for factory USB fast insert remove, kernel crash [START]*/
+		/*                                                                                           */
 		if ( f &&  (&f->list) ) {
 				   list_del(&f->list);
 		}
-		/*2013-01-03 [TD:NA] lbh.lee@lge.com for factory USB fast insert remove, kernel crash[END]*/
+		/*                                                                                        */
 		if (f->unbind) {
 			DBG(cdev, "unbind function '%s'/%p\n", f->name, f);
 			f->unbind(config, f);
 			/* may free memory for "f" */
 		}
 	}
-	/*2012-12-11 [TD:NA] lbh.lee@lge.com for factory USB insert kernel crash [START]*/
+	/*                                                                              */
 	if(config->cdev != NULL)
 	{
 
-		/*2013-01-03 [TD:NA] lbh.lee@lge.com for factory USB fast insert remove, kernel crash [START]*/
+		/*                                                                                           */
 		if (config&&  (&config->list) ) {
 		list_del(&config->list);
 		}
-		/*2013-01-03 [TD:NA] lbh.lee@lge.com for factory USB fast insert remove, kernel crash[END]*/
+		/*                                                                                        */
 		if (config->unbind) {
 			DBG(cdev, "unbind config '%s'/%p\n", config->label, config);
 			config->unbind(config);
 			/* may free memory for "c" */
 		}
 	}
-      /*2012-12-11 [TD:NA] lbh.lee@lge.com for factory USB insert kernel crash [END]*/
+      /*                                                                            */
 	return 0;
 }
 
@@ -834,9 +834,9 @@ int usb_remove_config(struct usb_composite_dev *cdev,
 
 	if (cdev->config == config)
 		reset_config(cdev);
-	/*2012-12-11 [TD:NA] lbh.lee@lge.com for factory USB insert kernel crash [START]*/
+	/*                                                                              */
 	//list_del(&config->list);
-	 /*2012-12-11 [TD:NA] lbh.lee@lge.com for factory USB insert kernel crash [END]*/
+	 /*                                                                            */
 	spin_unlock_irqrestore(&cdev->lock, flags);
 
 	return unbind_config(cdev, config);
