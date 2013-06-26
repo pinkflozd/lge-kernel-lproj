@@ -172,4 +172,16 @@ static inline void flush_tlb_kernel_range(unsigned long start,
 	flush_tlb_all();
 }
 
+static inline void local_flush_tlb_kernel_range(unsigned long start,
+		unsigned long end)
+{
+	if (cpu_has_invlpg) {
+		while (start < end) {
+			__flush_tlb_single(start);
+			start += PAGE_SIZE;
+		}
+	} else
+		local_flush_tlb();
+}
+
 #endif /* _ASM_X86_TLBFLUSH_H */
