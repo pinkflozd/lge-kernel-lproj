@@ -309,7 +309,7 @@ static int lm3530_read(struct i2c_client *client, u8 reg, u8 *pval)
 	ret = i2c_smbus_read_byte_data(client, reg);
 	if (ret < 0) {
 		status = -EIO;
-		eprintk("fail to read(reg=0x%x,val=0x%x)\n", reg,*pval);	
+//		eprintk("fail to read(reg=0x%x,val=0x%x)\n", reg,*pval);
 	}
 
 	*pval = ret;

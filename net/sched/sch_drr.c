@@ -70,7 +70,7 @@ static int drr_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
 	struct nlattr *opt = tca[TCA_OPTIONS];
 	struct nlattr *tb[TCA_DRR_MAX + 1];
 	u32 quantum;
-	int err;
+	int err = 0;
 
 	if (!opt)
 		return -EINVAL;
@@ -351,7 +351,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch)
 {
 	struct drr_sched *q = qdisc_priv(sch);
 	struct drr_class *cl;
-	int err;
+	int err = 0;
 
 	cl = drr_classify(skb, sch, &err);
 	if (cl == NULL) {
@@ -437,7 +437,7 @@ static unsigned int drr_drop(struct Qdisc *sch)
 static int drr_init_qdisc(struct Qdisc *sch, struct nlattr *opt)
 {
 	struct drr_sched *q = qdisc_priv(sch);
-	int err;
+	int err = 0;
 
 	err = qdisc_class_hash_init(&q->clhash);
 	if (err < 0)
