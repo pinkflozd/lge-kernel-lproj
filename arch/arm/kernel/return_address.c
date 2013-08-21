@@ -11,7 +11,7 @@
 #include <linux/export.h>
 #include <linux/ftrace.h>
 
-#if defined(CONFIG_FRAME_POINTER) || defined(CONFIG_ARM_UNWIND)
+#if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND)
 #include <linux/sched.h>
 
 #include <asm/stacktrace.h>
@@ -26,7 +26,7 @@ static int save_return_addr(struct stackframe *frame, void *d)
 	struct return_address_data *data = d;
 
 	if (!data->level) {
-		data->addr = (void *)frame->pc;
+		data->addr = (void *)frame->lr;
 
 		return 1;
 	} else {
@@ -41,8 +41,7 @@ void *return_address(unsigned int level)
 	struct stackframe frame;
 	register unsigned long current_sp asm ("sp");
 
-	data.level = level + 2;
-	data.addr = NULL;
+	data.level = level + 1;
 
 	frame.fp = (unsigned long)__builtin_frame_address(0);
 	frame.sp = current_sp;
@@ -57,13 +56,17 @@ void *return_address(unsigned int level)
 		return NULL;
 }
 
-#else /* CONFIG_FRAME_POINTER || CONFIG_ARM_UNWIND */
+#else /* if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND) */
+
+#if defined(CONFIG_ARM_UNWIND)
+#warning "TODO: return_address should use unwind tables"
+#endif
 
 void *return_address(unsigned int level)
 {
 	return NULL;
 }
 
-#endif /* CONFIG_FRAME_POINTER || CONFIG_ARM_UNWIND */
+#endif /* if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND) / else */
 
 EXPORT_SYMBOL_GPL(return_address);
